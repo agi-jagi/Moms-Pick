@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Getter
 @NoArgsConstructor
@@ -16,10 +15,10 @@ public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger categoryId;
+    private Long categoryId;
 
     @Column(nullable = true)
-    private BigInteger categoryId2;
+    private Long categoryId2;
 
     @Column
     private String categoryName;
