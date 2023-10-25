@@ -20,7 +20,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/mpick
     username: root
-    password: ssafy
+    password: root
 
   sql:
     init:
