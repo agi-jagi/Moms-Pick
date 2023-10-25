@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.UUID;
 import java.sql.Timestamp;
 
@@ -21,34 +20,34 @@ public class TradeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger tradeId;
+    private Long tradeId;
 
     @Column
     private UUID sellerId;
 
     @Column
-    private BigInteger categoryId;
+    private Long categoryId;
 
     @Column
-    private int addressId;
+    private Integer addressId;
 
     @Column
     private String title;
 
     @Column
-    private int price;
+    private Integer price;
 
     @Column
     private String explain;
 
     @Column(name = "count", insertable = false)
-    private int wishCount;
+    private Integer wishCount;
 
     @Column(insertable = false)
-    private int viewCount;
+    private Integer viewCount;
 
     @Column
-    private int tradeState;
+    private Integer tradeState;
 
     @CreationTimestamp
     @Column(name = "created_date", insertable = false)
@@ -64,7 +63,7 @@ public class TradeEntity {
 
     public void decreaseWishCount() { this.wishCount--; }
 
-    public void updateTrade(BigInteger categoryId, int addressId, String title, int price, String explain, int tradeState) {
+    public void updateTrade(Long categoryId, Integer addressId, String title, Integer price, String explain, Integer tradeState) {
         this.categoryId = categoryId;
         this.addressId = addressId;
         this.title = title;

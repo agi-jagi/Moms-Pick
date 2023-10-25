@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Getter
 @NoArgsConstructor
@@ -19,7 +18,7 @@ public class TradeMonthEntity {
     private Integer tradeMonthId;
 
     @Column
-    private BigInteger tradeId;
+    private Long tradeId;
 
     @Column
     private Integer babyMonthId;

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigInteger;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +14,7 @@ import java.math.BigInteger;
 public class CategoryMonthId implements Serializable {
 
     @Column(name = "category_id")
-    private BigInteger categoryId;
+    private Long categoryId;
 
     @Column(name = "baby_month_id")
     private Integer babyMonthId;
