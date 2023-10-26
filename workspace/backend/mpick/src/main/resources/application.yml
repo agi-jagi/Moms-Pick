@@ -3,6 +3,7 @@ spring:
     include:
       - db
       - swagger
+      - log
 
 server:
   port: 5000
