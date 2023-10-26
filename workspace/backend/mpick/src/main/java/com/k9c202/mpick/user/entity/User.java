@@ -1,4 +1,4 @@
-package com.k9c202.mpick.global.entity;
+package com.k9c202.mpick.user.entity;
 
 public class User {
 }
