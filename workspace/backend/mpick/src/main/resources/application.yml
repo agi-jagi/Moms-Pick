@@ -13,6 +13,7 @@ spring:
     include:
       - db
       - swagger
+      - server
 
   mvc:
     pathmatch:
