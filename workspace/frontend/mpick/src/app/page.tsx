@@ -5,7 +5,8 @@ export default function Home() {
   return (
     <div>
       <Provider>
-        <Test />
+        {/* <Test /> */}
+        홈페이지
       </Provider>
     </div>
   );

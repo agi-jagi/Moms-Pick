@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "./Provider";
+import Link from "next/link";
+import { Button } from "@nextui-org/button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +21,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <Head>
         <meta name="theme-color" content="#317EFB" />
       </Head>
       <body className={inter.className}>
         <Provider>
+          
+          <div className="navbar dark">
+
+            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+            <Link href="/">Home</Link>
+            </Button>
+
+            <Button className="bg-gradient-to-r from-green-300 to-[#438fff] text-white shadow-lg">
+            <Link href="/trade">Trade</Link>
+            </Button>
+
+            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+            <Link href="/month">Month</Link>
+            </Button>
+
+            <Button className="bg-gradient-to-r from-green-300 to-[#438fff] text-white shadow-lg">
+            <Link href="/auth">Auth</Link>
+            </Button>
+
+          </div>
           {children}
         </Provider>
         </body>
