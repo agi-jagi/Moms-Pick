@@ -10,5 +10,5 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        format_sql: true  # SQL 쿼리 보기 좋게 표시
-        show_sql: true    # SQL 쿼리 확인
+        format_sql: true
+        show_sql: true

@@ -4,10 +4,10 @@ spring:
       - db
       - swagger
       - log
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 server:
   port: 5000
 
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
