@@ -9,6 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@material-tailwind/react": "^2.1.4",
+    "@mui/material": "^5.14.15",
+    "axios": "^1.5.1",
     "next": "13.5.6",
     "next-pwa": "^5.6.0",
     "react": "^18",
