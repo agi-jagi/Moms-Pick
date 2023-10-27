@@ -6,7 +6,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.UUID;
-import java.math.BigInteger;
 
 @Data
 @Embeddable
@@ -16,5 +15,5 @@ public class ViewRecordId implements Serializable {
     private UUID userId;
 
     @Column
-    private BigInteger tradeId;
+    private Long tradeId;
 }
