@@ -1,4 +1,4 @@
-package com.k9c202.mpick.global.entity;
+package com.k9c202.mpick.trade.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @SuperBuilder
 @Table(name = "category_month")
 @Entity
-public class CategoryMonthEntity {
+public class CategoryMonth {
 
     @EmbeddedId
     private CategoryMonthId categoryMonthId;
