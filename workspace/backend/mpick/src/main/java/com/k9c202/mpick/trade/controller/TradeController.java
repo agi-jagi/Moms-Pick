@@ -1,4 +1,4 @@
-package com.k9c202.mpick.domain.trade.controller;
+package com.k9c202.mpick.trade.controller;
 
 public class TradeController {
 }
