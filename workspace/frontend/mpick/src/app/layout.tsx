@@ -23,33 +23,31 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Head>
+        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#317EFB" />
       </Head>
       <body className={inter.className}>
         <Provider>
-          
           <div className="navbar dark">
-
             <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-            <Link href="/">Home</Link>
+              <Link href="/">Home</Link>
             </Button>
 
             <Button className="bg-gradient-to-r from-green-300 to-[#438fff] text-white shadow-lg">
-            <Link href="/trade">Trade</Link>
+              <Link href="/trade">Trade</Link>
             </Button>
 
             <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-            <Link href="/month">Month</Link>
+              <Link href="/month">Month</Link>
             </Button>
 
             <Button className="bg-gradient-to-r from-green-300 to-[#438fff] text-white shadow-lg">
-            <Link href="/auth">Auth</Link>
+              <Link href="/auth">Auth</Link>
             </Button>
-
           </div>
           {children}
         </Provider>
-        </body>
+      </body>
     </html>
   );
 }
