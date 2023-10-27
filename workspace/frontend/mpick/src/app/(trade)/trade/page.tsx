@@ -1,27 +1,31 @@
 'use client';
 
 import useStore from "../../../store/useStore";
-import { useTradeStore } from "@/store/tradeStore";
-import { Button } from "@nextui-org/react"
-import { useEffect } from "react";
+import { useTradeStore } from "@/store/TradeStore";
+import { Button } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 
 export default function Trade() {
 
+  const [ isClient, setIsClient ] = useState(false);
   const { postId, setPostId, postTitle, setPostTitle } = useTradeStore();
 
   useEffect(() => {
-    if (typeof window != 'undefined') {
-      const res = localStorage.getItem('postId');
-      console.log(res)
-      // setPostId(res);
+    console.log(postId);
 
+    if (typeof window !== 'undefined' && window.document) {
+      setIsClient(true);
     }
-  },[])
+
+  },[]);
 
   
 
   return (
-    <div>
+    <>
+    {
+      isClient === true ? (
+        <div>
       Trade 페이지
       <br />
       {postId}
@@ -29,8 +33,13 @@ export default function Trade() {
       {postTitle}
       <br />
       <Button onClick={() => setPostId(30)}>postId 변경</Button>
-
-
-    </div>
+      </div>
+      ) : (
+        <>
+        아직 서버
+        </>
+      )
+    }
+    </>
   );
 }
