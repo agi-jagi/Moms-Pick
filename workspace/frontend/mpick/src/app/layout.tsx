@@ -5,6 +5,7 @@ import "./globals.css";
 import Provider from "./Provider";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
+import NavBar from "./_navbar/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,24 +29,8 @@ export default function RootLayout({
       </Head>
       <body className={inter.className}>
         <Provider>
-          <div className="navbar dark">
-            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-              <Link href="/">Home</Link>
-            </Button>
-
-            <Button className="bg-gradient-to-r from-green-300 to-[#438fff] text-white shadow-lg">
-              <Link href="/trade">Trade</Link>
-            </Button>
-
-            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-              <Link href="/month">Month</Link>
-            </Button>
-
-            <Button className="bg-gradient-to-r from-green-300 to-[#438fff] text-white shadow-lg">
-              <Link href="/auth">Auth</Link>
-            </Button>
-          </div>
           {children}
+          <NavBar />
         </Provider>
       </body>
     </html>
