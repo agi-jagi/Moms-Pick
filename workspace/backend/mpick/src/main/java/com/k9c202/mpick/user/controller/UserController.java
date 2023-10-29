@@ -1,5 +1,6 @@
 package com.k9c202.mpick.user.controller;
 
+import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
 import com.k9c202.mpick.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -36,9 +37,18 @@ public class UserController {
         // 다른 형식 예) return ResponseEntity.status(HttpStatus.CONFLICT).body(userDto);
     }
 
-    @GetMapping("/hello")
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+        userService.login(loginDto);
+        return ResponseEntity.ok(userService.login(loginDto));
+    }
+
+
+    // 요청 및 security 확인 시 사용할 test url
+    @GetMapping("/test")
     public String hello(){
-        return "hello";
+        return "test";
     }
 
 

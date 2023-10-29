@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 // NoArgsConstructor, AllArgsConstructor 체크 필요
 @NoArgsConstructor
 @AllArgsConstructor
