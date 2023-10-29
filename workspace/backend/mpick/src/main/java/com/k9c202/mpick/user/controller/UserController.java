@@ -1,6 +1,7 @@
 package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
+import com.k9c202.mpick.user.controller.response.EmailVerificationResult;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
@@ -45,9 +46,7 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
-        //값 null
-        //길이 제한
-        //포멧팅
+        // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
         log.debug("call UserController#signup");
         log.debug("JoinUserRequest={}", request);
 
@@ -68,12 +67,29 @@ public class UserController {
     }
 
 
+    @PostMapping("/emails/verification-requests")
+//    public ResponseEntity sendMessage(@RequestParam("email") @Valid @CustomEmail String email) {
+    public ResponseEntity<?> sendMessage(@RequestParam("email") @Valid String email) {
+        userService.sendCodeToEmail(email);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/emails/verifications")
+//    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid @CustomEmail String email,
+    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid String email,
+                                            @RequestParam("code") String authCode) {
+        EmailVerificationResult response = userService.verifiedCode(email, authCode);
+
+        return ResponseEntity.ok(response);
+    }
+
+
     // 요청 및 security 확인 시 사용할 test url
     @GetMapping("/test")
     public String hello(){
         return "test";
     }
-
 
 
 }

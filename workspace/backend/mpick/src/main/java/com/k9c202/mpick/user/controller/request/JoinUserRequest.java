@@ -8,8 +8,8 @@ import javax.validation.constraints.*;
 @Data
 public class JoinUserRequest {
 
-    @NotEmpty(message = "로그인 아이디는 필수값입니다.")
-    @Size(max = 20)
+    @NotEmpty(message = "로그인 아이디는 필수값입니다.") // null
+    @Size(max = 20) // 길이 제한
     private String loginId;
 
     @NotEmpty
@@ -22,7 +22,7 @@ public class JoinUserRequest {
 
     @NotEmpty
     @Size(max = 100)
-    @Email
+    @Email  // 이메일 형식 체크
     private String email;
 
     public UserDto toUserDto() {
