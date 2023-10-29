@@ -7,8 +7,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+#      ddl-auto: none 나중에 적용할 값
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
         show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
