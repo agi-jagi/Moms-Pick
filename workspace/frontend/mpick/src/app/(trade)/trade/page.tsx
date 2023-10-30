@@ -114,7 +114,7 @@ export default function Trade() {
         />
       </CardBody>
     </Card> */}
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-4 ml-4 items-center mb-4">
       <Avatar isBordered color="default" src="/nezko.jfif" />
       <Avatar isBordered color="primary" src="/nezko.jfif" />
       <Avatar isBordered color="secondary" src="/nezko.jfif" />
@@ -167,6 +167,141 @@ export default function Trade() {
         />
       </div>
     </div>
+    <div className="w-[390px] h-[128px] mt-4">
+      <div className="relative h-[128px]">
+        <img
+          className="absolute w-[34px] h-[34px] top-[6px] left-[178px] object-cover"
+          alt="Image"
+          src="/이유용품.png"
+        />
+        <div className="absolute w-[390px] h-[128px] top-0 left-0">
+          <div className="top-[6px] left-[10px] absolute w-[62px] h-[54px]">
+            <div className="absolute w-[34px] h-[34px] top-0 left-[14px] bg-white">
+              <div className="h-[34px]" />
+            </div>
+            <div className="absolute w-[38px] h-[14px] top-[40px] left-[12px] overflow-hidden">
+              <div className="w-[38px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                유모차
+              </div>
+            </div>
+          </div>
+          <div className="top-[68px] left-[10px] absolute w-[62px] h-[54px]">
+            <div className="relative w-[44px] h-[14px] top-[40px] left-[10px] overflow-hidden">
+              <div className="w-[44px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                외출용품
+              </div>
+            </div>
+          </div>
+          <div className="top-[6px] left-[87px] absolute w-[62px] h-[54px]">
+            <div className="relative w-[61px] h-[14px] top-[40px] left-px overflow-hidden">
+              <div className="w-[61px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                수유용품
+              </div>
+            </div>
+          </div>
+          <div className="top-[68px] left-[87px] overflow-hidden absolute w-[62px] h-[54px]">
+            <div className="relative w-[38px] h-[16px] top-[40px] left-[12px]">
+              <div className="absolute w-[19px] h-[14px] top-0 left-[9px]" />
+              <div className="absolute w-[38px] h-[14px] top-[2px] left-0 overflow-hidden">
+                <div className="w-[38px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                  의류
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="top-[6px] left-[164px] absolute w-[62px] h-[54px]">
+            <div className="relative w-[38px] h-[14px] top-[40px] left-[12px]">
+              <div className="absolute w-[34px] h-[14px] top-0 left-[2px]" />
+              <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                이유용품
+              </div>
+            </div>
+          </div>
+          <div className="top-[68px] left-[164px] absolute w-[62px] h-[54px]">
+            <div className="relative w-[38px] h-[14px] top-[40px] left-[12px]">
+              <div className="absolute w-[19px] h-[14px] top-0 left-[9px]" />
+              <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                기저귀
+              </div>
+            </div>
+          </div>
+          <div className="top-[6px] left-[241px] absolute w-[62px] h-[54px]">
+            <div className="relative w-[42px] h-[14px] top-[40px] left-[12px] overflow-hidden">
+              <div className="w-[42px] -top-px absolute h-[13px] left-[-2px] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                목욕용품
+              </div>
+            </div>
+          </div>
+          <div className="top-[68px] left-[241px] absolute w-[62px] h-[54px]">
+            <div className="relative w-[38px] h-[15px] top-[39px] left-[14px]">
+              <div className="absolute w-[19px] h-[14px] top-px left-[8px]" />
+              <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                임산부
+              </div>
+            </div>
+          </div>
+          <div className="top-[6px] left-[318px] absolute w-[62px] h-[54px]">
+            <div className="absolute w-[34px] h-[34px] top-0 left-[14px] bg-white" />
+            <div className="absolute w-[38px] h-[14px] top-[40px] left-[12px] overflow-hidden">
+              <div className="w-[38px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                장난감
+              </div>
+            </div>
+          </div>
+          <div className="top-[68px] left-[318px] absolute w-[62px] h-[54px]">
+            <div className="absolute w-[34px] h-[34px] top-0 left-[14px] bg-white">
+              <img
+                className="absolute w-[34px] h-[34px] top-0 left-0"
+                alt="Picture shortcut"
+                src="/기타.png"
+              />
+            </div>
+            <div className="absolute w-[38px] h-[14px] top-[40px] left-[14px]">
+              <div className="absolute w-[29px] h-[14px] top-0 left-[3px]" />
+              <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                기타
+              </div>
+            </div>
+          </div>
+        </div>
+        <img
+          className="absolute w-[34px] h-[34px] top-[6px] left-[101px] object-cover"
+          alt="Image"
+          src="/수유용품.png"
+        />
+        <img
+          className="absolute w-[34px] h-[34px] top-[68px] left-[101px] object-cover"
+          alt="Image"
+          src="/의류.png"
+        />
+        <img
+          className="absolute w-[34px] h-[34px] top-[6px] left-[255px] object-cover"
+          alt="Image"
+          src="/목욕용품.png"
+        />
+        <img className="absolute w-[34px] h-[34px] top-[6px] left-[24px] object-cover" alt="Image" src="/유모차.png" />
+        <img
+          className="absolute w-[34px] h-[34px] top-[6px] left-[332px] object-cover"
+          alt="Image"
+          src="/장난감.png"
+        />
+        <img
+          className="absolute w-[34px] h-[34px] top-[68px] left-[178px] object-cover"
+          alt="Image"
+          src="/기저귀.png"
+        />
+        <img
+          className="absolute w-[34px] h-[34px] top-[68px] left-[257px] object-cover"
+          alt="Image"
+          src="/임산부.png"
+        />
+        <img
+          className="absolute w-[34px] h-[34px] top-[70px] left-[24px] object-cover"
+          alt="Image"
+          src="/외출용품.png"
+        />
+      </div>
+    </div>
     {/* <Input
       isClearable
       type="search"
@@ -177,7 +312,7 @@ export default function Trade() {
       onClear={() => console.log("input cleared")}
       className="max-w-[240px]"
     /> */}
-    <div className="mt-2 gap-2 grid grid-cols-2 sm:grid-cols-4">
+    <div className="mt-4 gap-2 grid grid-cols-2 sm:grid-cols-4">
       {list.map((item, index) => (
         <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
           <CardBody className="overflow-visible p-0">
