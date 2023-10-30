@@ -38,7 +38,7 @@ public class Trade {
     private Integer price;
 
     @Column
-    private String explain;
+    private String tradeExplain;
 
     @Column(name = "count", insertable = false)
     private Integer wishCount;
@@ -63,12 +63,12 @@ public class Trade {
 
     public void decreaseWishCount() { this.wishCount--; }
 
-    public void updateTrade(Long categoryId, Integer addressId, String title, Integer price, String explain, Integer tradeState) {
+    public void updateTrade(Long categoryId, Integer addressId, String title, Integer price, String tradeExplain, Integer tradeState) {
         this.categoryId = categoryId;
         this.addressId = addressId;
         this.title = title;
         this.price = price;
-        this.explain = explain;
+        this.tradeExplain = tradeExplain;
         this.tradeState = tradeState;
     }
 }
