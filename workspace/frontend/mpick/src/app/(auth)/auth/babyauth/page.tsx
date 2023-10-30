@@ -177,7 +177,7 @@ export default function BabyAuth() {
 
           <div
             style={{
-              border: "0.5px solid #333",
+              border: "1px solid #333",
               marginBottom: "5%",
               marginTop: "5%",
             }}
@@ -193,7 +193,9 @@ export default function BabyAuth() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <span style={{ fontSize: "140%", fontWeight: "bold" }}>아이가 더 있어요</span>
+          {babyList.length < 5 && (
+            <span style={{ fontSize: "140%", fontWeight: "bold" }}>아이가 더 있어요</span>
+          )}
           {babyList.length < 5 && (
             <span onClick={addBabyInfo}>
               <BiPlusCircle style={{ fontSize: "280%", marginLeft: "5%" }} />
