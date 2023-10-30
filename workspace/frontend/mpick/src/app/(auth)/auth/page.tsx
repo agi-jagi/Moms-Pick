@@ -1,5 +1,6 @@
 import Signup from "./signup";
 import GoBack from "./goback";
+import Search from "./addressSearch";
 
 export default function Auth() {
   return (
@@ -15,7 +16,8 @@ export default function Auth() {
         </div>
         <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
       </div>
-      <Signup />
+      {/* <Signup /> */}
+      <Search />
     </div>
   );
 }

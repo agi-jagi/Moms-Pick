@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-import Search from "./addressSearch";
 
 export default function Signup() {
   const [userId, setUserId] = useState<string>("");
@@ -42,7 +41,11 @@ export default function Signup() {
         className="flex w-full flex-wrap md:flex-nowrap gap-4"
         style={{ justifyContent: "center" }}
       >
-        <div className="flex justify-center" style={{ width: "100%" }}>
+        <p className="font-bold text-3xl">회원 정보 입력</p>
+        <div
+          className="flex justify-center"
+          style={{ width: "100%", marginTop: "10px" }}
+        >
           <Input
             isRequired
             isClearable
@@ -51,11 +54,14 @@ export default function Signup() {
             className="w-full"
             onValueChange={setUserId}
           />
-          <Button style={{ height: "100%" }}>
+          <Button color="primary" style={{ height: "100%" }}>
             <p className="font-bold text-base">중복확인</p>
           </Button>
         </div>
-        <div className="flex justify-center" style={{ width: "100%" }}>
+        <div
+          className="flex justify-center"
+          style={{ width: "100%", marginTop: "10px" }}
+        >
           <Input
             isRequired
             isClearable
@@ -64,11 +70,11 @@ export default function Signup() {
             className="w-full"
             onValueChange={setUserNickName}
           />
-          <Button style={{ height: "100%" }}>
+          <Button color="primary" style={{ height: "100%" }}>
             <p className="font-bold text-base">중복확인</p>
           </Button>
         </div>
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", marginTop: "10px" }}>
           <Input
             isRequired
             isClearable
@@ -96,7 +102,7 @@ export default function Signup() {
             onValueChange={checkPw}
           />
         </div>
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", marginTop: "10px" }}>
           <Input
             isRequired
             isClearable
@@ -111,9 +117,27 @@ export default function Signup() {
             onValueChange={setUserEmail}
           />
         </div>
-        <Button style={{ width: "100%", margin: "20px 0" }}>
-          <p className="font-bold text-base">회원가입</p>
-        </Button>
+        <div
+          style={{
+            width: "100%",
+            margin: "30px",
+            padding: "0 20px",
+            height: "50px",
+            position: "fixed",
+            bottom: "0",
+            zIndex: "2",
+          }}
+        >
+          <Button
+            color="primary"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <p className="font-bold text-xl">다음</p>
+          </Button>
+        </div>
       </div>
     </div>
   );
