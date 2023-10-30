@@ -1,5 +1,6 @@
 package com.k9c202.mpick.trade.entity;
 
+import com.k9c202.mpick.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,21 +15,24 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "trade")
 @Entity
+@Table(name = "trade")
 public class Trade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tradeId;
+    @Column(name = "trade_id")
+    private Long id;
 
-    @Column
-    private UUID sellerId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column
+    @Column(name = "address_id")
     private Integer addressId;
 
     @Column
@@ -46,8 +50,8 @@ public class Trade {
     @Column(insertable = false)
     private Integer viewCount;
 
-    @Column
-    private Integer tradeState;
+    @Enumerated(EnumType.ORDINAL)
+    private TradeStatus tradeStatus;
 
     @CreationTimestamp
     @Column(name = "created_date", insertable = false)
@@ -63,12 +67,12 @@ public class Trade {
 
     public void decreaseWishCount() { this.wishCount--; }
 
-    public void updateTrade(Long categoryId, Integer addressId, String title, Integer price, String tradeExplain, Integer tradeState) {
-        this.categoryId = categoryId;
+    public void updateTrade(Category category, Integer addressId, String title, Integer price, String tradeExplain, TradeStatus tradeStatus) {
+        this.category = category;
         this.addressId = addressId;
         this.title = title;
         this.price = price;
         this.tradeExplain = tradeExplain;
-        this.tradeState = tradeState;
+        this.tradeStatus = tradeStatus;
     }
 }

@@ -9,17 +9,18 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "baby_month")
 @Entity
+@Table(name = "baby_month")
 public class BabyMonth {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer babyMonthId;
+    @Column(name = "baby_month_id")
+    private Integer id;
 
-    @Column
+    @Column(nullable = false)
     private Integer startMonth;
 
-    @Column(nullable = true)
+    @Column
     private Integer endMonth;
 }

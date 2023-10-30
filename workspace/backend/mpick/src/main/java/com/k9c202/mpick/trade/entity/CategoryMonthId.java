@@ -13,9 +13,11 @@ import java.io.Serializable;
 @Embeddable
 public class CategoryMonthId implements Serializable {
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column(name = "baby_month_id")
-    private Integer babyMonthId;
+    @ManyToOne
+    @JoinColumn(name = "baby_month_id")
+    private BabyMonth babyMonth;
 }

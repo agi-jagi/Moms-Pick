@@ -9,17 +9,24 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "category")
 @Entity
+@Table(name = "category")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    @Column(name = "category_id")
+    private Long id;
 
-    @Column(nullable = true)
+    @Column(name = "category_id2")
     private Long categoryId2;
 
-    @Column
+    @Column(nullable = false)
     private String categoryName;
+
+    @Column(nullable = false)
+    private String uploadFileName;
+
+    @Column(nullable = false)
+    private String saveFileName;
 }
