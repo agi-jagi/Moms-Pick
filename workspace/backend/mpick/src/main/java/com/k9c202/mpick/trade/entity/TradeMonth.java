@@ -1,0 +1,25 @@
+package com.k9c202.mpick.trade.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@SuperBuilder
+@Table(name = "trade_month")
+@Entity
+public class TradeMonth {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer tradeMonthId;
+
+    @Column
+    private Long tradeId;
+
+    @Column
+    private Integer babyMonthId;
+}

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.connection import engineconnection
+from routes.recommend import router as recommed_router
 
 app = FastAPI()
 
@@ -21,9 +22,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+common_prefix = "/api"
+
 engine = engineconnection()
 session = engine.sessionmaker()
 
 @app.get("/")
 async def root():
     return {"message": "test"}
+
+app.include_router(recommed_router, prefix=common_prefix, tags = ['recommend'])
