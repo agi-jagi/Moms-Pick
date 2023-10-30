@@ -56,6 +56,8 @@ public class TokenProvider implements InitializingBean {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
+                // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ claim으로 id 넣는 코드 수정 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+                // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ name -> id를 찾아야 하는 과정 필요 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 // .build();와 동일한 역할

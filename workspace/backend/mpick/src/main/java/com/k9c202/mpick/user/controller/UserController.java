@@ -46,10 +46,12 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
+        // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
         // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
         log.debug("call UserController#signup");
         log.debug("JoinUserRequest={}", request);
 
+        // JoinUserRequest 에서 정의한 toUserDto (id, password, nickname, email)
         JoinUserResponse response = userService.signup(request.toUserDto());
         log.debug("JoinUserResponse={}", response);
 
