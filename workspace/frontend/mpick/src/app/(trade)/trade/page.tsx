@@ -177,7 +177,7 @@ export default function Trade() {
         />
       </div>
     </div>
-    <img className="mt-4" src="rengoku.gif" alt="" />
+    <img className="mt-4" src="asd.gif" alt="" />
     {/* 대분류 카테고리 */}
     <div className="w-[390px] h-[128px] mt-4">
       <div className="relative h-[128px]">
