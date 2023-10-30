@@ -1,4 +1,4 @@
-package com.k9c202.mpick.global.entity;
+package com.k9c202.mpick.trade.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,17 +9,17 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "trade_month")
+@Table(name = "baby_month")
 @Entity
-public class TradeMonthEntity {
+public class BabyMonth {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tradeMonthId;
-
-    @Column
-    private Long tradeId;
-
-    @Column
     private Integer babyMonthId;
+
+    @Column
+    private Integer startMonth;
+
+    @Column(nullable = true)
+    private Integer endMonth;
 }

@@ -1,4 +1,4 @@
-package com.k9c202.mpick.global.entity;
+package com.k9c202.mpick.trade.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @Table(name = "trade")
 @Entity
-public class TradeEntity {
+public class Trade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

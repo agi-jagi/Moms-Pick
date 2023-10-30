@@ -1,4 +1,4 @@
-package com.k9c202.mpick.global.entity;
+package com.k9c202.mpick.trade.entity;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
