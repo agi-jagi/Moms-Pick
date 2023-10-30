@@ -177,6 +177,7 @@ export default function Trade() {
         />
       </div>
     </div>
+    <img className="mt-4" src="rengoku.gif" alt="" />
     {/* 대분류 카테고리 */}
     <div className="w-[390px] h-[128px] mt-4">
       <div className="relative h-[128px]">
@@ -323,6 +324,11 @@ export default function Trade() {
       onClear={() => console.log("input cleared")}
       className="max-w-[240px]"
     /> */}
+    <div className="w-[161px] h-[21px]">
+      <div className="relative w-[161px] h-[21px] top-0 mt-4 left-4 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold text-[#1f1f1f] text-[18px] tracking-[-0.60px] leading-[24px] whitespace-nowrap">
+        회원님을 위한 추천 상품
+      </div>
+    </div>
     {/* 상품 목록 현재 8개 - 추후 swipe로 전개 */}
     <div className="mt-4 gap-2 grid grid-cols-2 sm:grid-cols-4">
       {list.map((item, index) => (
