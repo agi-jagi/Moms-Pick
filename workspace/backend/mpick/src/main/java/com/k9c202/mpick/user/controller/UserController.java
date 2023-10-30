@@ -64,8 +64,10 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        userService.login(loginDto);
-        return ResponseEntity.ok(null);
+//        userService.login(loginDto);
+//        return ResponseEntity.ok(null);
+        // login 요청시 jwt 토큰을 반환하도록 변경
+        return ResponseEntity.ok(userService.login(loginDto));
     }
 
 

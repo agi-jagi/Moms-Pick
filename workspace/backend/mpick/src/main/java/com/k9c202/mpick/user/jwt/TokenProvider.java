@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -56,8 +57,6 @@ public class TokenProvider implements InitializingBean {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
-                // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ claim으로 id 넣는 코드 수정 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
-                // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ name -> id를 찾아야 하는 과정 필요 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 // .build();와 동일한 역할
@@ -72,14 +71,20 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+//        Collection<? extends GrantedAuthority> authorities =
+//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+//                        .map(SimpleGrantedAuthority::new)
+//                        .collect(Collectors.toList());
+//
+//        User principal = new User(claims.getSubject(), "", authorities);
+//
+//        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        // tokenProvider:authority를 안 쓰기 때문에 빈 array를 넣어주는 것으로 대체
+        User principal = new User(claims.getSubject(), "", new ArrayList<>());
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(principal, token, new ArrayList<>());
+
     }
 
     public boolean validateToken(String token) {
