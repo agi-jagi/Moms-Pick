@@ -16,8 +16,8 @@ export default function Auth() {
         </div>
         <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
       </div>
-      {/* <Signup /> */}
-      <Search />
+      <Signup />
+      {/* <Search /> */}
     </div>
   );
 }

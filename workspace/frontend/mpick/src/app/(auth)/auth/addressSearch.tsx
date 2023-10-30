@@ -154,12 +154,6 @@ export default function Search() {
 
   return (
     <div>
-      <div
-        className="flex w-full flex-wrap md:flex-nowrap gap-4"
-        style={{ justifyContent: "center", padding: "0 20px" }}
-      >
-        <p className="font-bold text-3xl">회원 정보 입력</p>
-      </div>
       <div style={{ padding: "0 20px" }}>
         <div
           id="map"
@@ -174,27 +168,6 @@ export default function Search() {
             <p className="font-bold text-base">도로명주소 : {roadAddress}</p>
           </div>
         </div>
-      </div>
-      <div
-        style={{
-          width: "100%",
-          margin: "30px 0",
-          padding: "0 20px",
-          height: "50px",
-          position: "fixed",
-          bottom: "0",
-          zIndex: "2",
-        }}
-      >
-        <Button
-          color="primary"
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <p className="font-bold text-xl">다음</p>
-        </Button>
       </div>
     </div>
   );
