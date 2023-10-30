@@ -1,6 +1,4 @@
-console.log(1);
-
-
+import CoverNavbar from "../../_navbar/coverNavbar";
 
 export default function AuthLayout({
   children,
@@ -9,9 +7,8 @@ export default function AuthLayout({
 }) {
   return (
     <>
-
-    {children}
-
+      {children}
+      <CoverNavbar />
     </>
   );
 }

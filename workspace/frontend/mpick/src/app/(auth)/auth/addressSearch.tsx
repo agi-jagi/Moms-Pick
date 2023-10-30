@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
+import { Button } from "@nextui-org/react";
+import Image from "next/image";
+import marker from "../../../../public/marker.png";
 
 declare global {
   interface Window {
@@ -10,6 +13,10 @@ declare global {
 }
 
 export default function Search() {
+  const [address, setAddress] = useState<string>("");
+  const [roadAddress, setRoadAddress] = useState<string>("");
+  const [maps, setMaps] = useState<any>();
+
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
   );
@@ -52,14 +59,21 @@ export default function Search() {
           const marker = new window.kakao.maps.Marker({
             position: markerPosition,
           });
-
-          marker.setMap(map);
+          markers.push(marker);
+          marker.setMap(maps);
 
           const bounds = new window.kakao.maps.LatLngBounds();
           bounds.extend(markerPosition);
-          console.log("bounds : ", bounds);
-          console.log("map : ", map);
-          map.setBounds(bounds);
+          maps.setBounds(bounds);
+
+          const callback = function (result: any, status: any) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              setAddress(result[0].address.address_name);
+              setRoadAddress(result[0].road_address.address_name);
+            }
+          };
+          const geocoder = new window.kakao.maps.services.Geocoder();
+          geocoder.coord2Address(result[0].x, result[0].y, callback);
 
           // 결과값으로 받은 위치를 마커로 표시합니다
           // var marker = new window.kakao.maps.Marker({
@@ -85,23 +99,34 @@ export default function Search() {
     window.kakao.maps.load(() => {
       navigator.geolocation.getCurrentPosition((position) => {
         const mapContainer = document.getElementById("map");
-        const mapOption = {
-          center: new window.kakao.maps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude
-          ), // 지도의 중심좌표
-        };
-        map = new window.kakao.maps.Map(mapContainer, mapOption);
-        const markerPosition = new window.kakao.maps.LatLng(
+        const coord = new window.kakao.maps.LatLng(
           position.coords.latitude,
           position.coords.longitude
         );
+        const mapOption = {
+          center: coord, // 지도의 중심좌표
+        };
+        map = new window.kakao.maps.Map(mapContainer, mapOption);
+        setMaps(map);
+        const markerPosition = coord;
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
         });
-
         markers.push(marker);
         marker.setMap(map);
+
+        const callback = function (result: any, status: any) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            setAddress(result[0].address.address_name);
+            setRoadAddress(result[0].road_address.address_name);
+          }
+        };
+        const geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.coord2Address(
+          position.coords.longitude,
+          position.coords.latitude,
+          callback
+        );
       });
     });
   };
@@ -129,10 +154,21 @@ export default function Search() {
 
   return (
     <div>
-      <div id="map" style={{ width: "auto", height: "500px" }}></div>
-      <button type="button" onClick={handleClick}>
-        Open
-      </button>
+      <div style={{ padding: "0 20px" }}>
+        <div
+          id="map"
+          style={{ width: "auto", height: "500px", marginTop: "10px" }}
+        ></div>
+        <div className="flex" style={{ marginTop: "20px" }}>
+          <button type="button" onClick={handleClick} style={{ width: "40px" }}>
+            <Image src={marker} alt="marker" width={20} height={20} />
+          </button>
+          <div>
+            <p className="font-bold text-base">지번주소 : {address}</p>
+            <p className="font-bold text-base">도로명주소 : {roadAddress}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
