@@ -2,8 +2,10 @@
 
 import useStore from "../../../store/useStore";
 import { useTradeStore } from "@/store/TradeStore";
-import { Button, Card, CardFooter,CardHeader, CardBody, Image, Avatar } from "@nextui-org/react";
+import { Button, Card, CardFooter,CardHeader, CardBody, Image, Avatar, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import {SearchIcon} from "./searchIcon";
+
 
 export default function Trade() {
 
@@ -77,6 +79,49 @@ export default function Trade() {
       <Avatar isBordered color="warning" src="/nezko.jfif" />
       <Avatar isBordered color="danger" src="/nezko.jfif" />
     </div>
+    <div className="w-[340px] h-[240px] px-8 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+      <Input
+        label="Search"
+        isClearable
+        radius="lg"
+        classNames={{
+          label: "text-black/50 dark:text-white/90",
+          input: [
+            "bg-transparent",
+            "text-black/90 dark:text-white/90",
+            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+          ],
+          innerWrapper: "bg-transparent",
+          inputWrapper: [
+            "shadow-xl",
+            "bg-default-200/50",
+            "dark:bg-default/60",
+            "backdrop-blur-xl",
+            "backdrop-saturate-200",
+            "hover:bg-default-200/70",
+            "dark:hover:bg-default/70",
+            "group-data-[focused=true]:bg-default-200/50",
+            "dark:group-data-[focused=true]:bg-default/60",
+            "!cursor-text",
+          ],
+        }}
+        placeholder="검색어 입력"
+        startContent={
+          <SearchIcon />
+        }
+      />
+    </div>
+    <Input
+      isClearable
+      type="search"
+      label="Search"
+      variant="bordered"
+      placeholder="검색어 입력"
+      defaultValue="호윤"
+      onClear={() => console.log("input cleared")}
+      className="max-w-xs"
+    />
+    
       </>
       ) : (
         <>
