@@ -153,7 +153,7 @@ export default function Search() {
         label="대분류"
         color="primary"
         value={selected대분류}
-        onValueChange={setSelected대분류}
+        onValueChange={() => {setSelected대분류}}
       >
         <Checkbox value="유모차">유모차</Checkbox>
         <Checkbox value="수유용품">수유용품</Checkbox>
@@ -185,7 +185,7 @@ export default function Search() {
         label="중분류"
         color="primary"
         value={selected중분류}
-        onValueChange={setSelected중분류}
+        onValueChange={() => {setSelected중분류}}
       >
         <Checkbox value="디럭스형">디럭스형</Checkbox>
         <Checkbox value="절충형">절충형</Checkbox>
@@ -216,7 +216,7 @@ export default function Search() {
         label="개월 분류"
         color="primary"
         value={selected개월}
-        onValueChange={setSelected개월}
+        onValueChange={() => {setSelected개월}}
       >
         <Checkbox value="1~3개월">1~3개월</Checkbox>
         <Checkbox value="4~6개월">4~6개월</Checkbox>

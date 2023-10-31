@@ -1,4 +1,4 @@
-import GoBack from "../goback";
+import GoBack from "../GoBack";
 
 export default function BabyAuthLayout({
   children,
