@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
-import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import marker from "../../../../public/marker.png";
 
@@ -52,10 +51,7 @@ export default function Search() {
             markers[i].setMap(null);
           }
 
-          const markerPosition = new window.kakao.maps.LatLng(
-            result[0].y,
-            result[0].x
-          );
+          const markerPosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
           const marker = new window.kakao.maps.Marker({
             position: markerPosition,
           });
@@ -122,11 +118,7 @@ export default function Search() {
           }
         };
         const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.coord2Address(
-          position.coords.longitude,
-          position.coords.latitude,
-          callback
-        );
+        geocoder.coord2Address(position.coords.longitude, position.coords.latitude, callback);
       });
     });
   };
@@ -155,10 +147,7 @@ export default function Search() {
   return (
     <div>
       <div style={{ padding: "0 20px" }}>
-        <div
-          id="map"
-          style={{ width: "auto", height: "500px", marginTop: "10px" }}
-        ></div>
+        <div id="map" style={{ width: "auto", height: "500px", marginTop: "10px" }}></div>
         <div className="flex" style={{ marginTop: "20px" }}>
           <button type="button" onClick={handleClick} style={{ width: "40px" }}>
             <Image src={marker} alt="marker" width={20} height={20} />
