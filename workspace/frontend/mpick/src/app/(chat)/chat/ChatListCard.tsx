@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import profile from "../../../../public/profile.png";
 import car from "../../../../public/유모차.png";
 
 export default function chat() {
-  const [chatList, setChatList] = useState<any>([
+  const chatList= [
     {
       name: "이름",
       address: "주소",
@@ -19,13 +18,13 @@ export default function chat() {
       time: "시간",
       recentChat: "최근채팅",
     },
-  ]);
+  ];
 
   return (
     <div>
       {chatList.map((info: any, index: any) => {
         return (
-          <div style={{ margin: "20px 20px 0 20px" }}>
+          <div key={index} style={{ margin: "20px 20px 0 20px" }}>
             <div key={index} style={{ display: "flex", justifyContent: "space-between" }}>
               <div style={{ display: "flex" }}>
                 <div style={{ marginRight: "15px" }}>
