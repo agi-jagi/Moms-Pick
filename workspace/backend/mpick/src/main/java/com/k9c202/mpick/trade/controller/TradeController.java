@@ -1,5 +1,6 @@
 package com.k9c202.mpick.trade.controller;
 
+import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
 import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
@@ -47,10 +48,13 @@ public class TradeController {
         return ResponseEntity.ok(result);
     }
 
-//    @GetMapping("/item/{id}")
-//    public TradeDetailResponse TradeDetail(
-//            @PathVariable Long id) {
-//
-//    }
+    @PostMapping("item")
+    public Long tradeAdd(
+            @RequestBody TradeAddRequest request) {
+
+        Long result = tradeService.tradeAdd(request);
+
+        return result;
+    }
 
 }

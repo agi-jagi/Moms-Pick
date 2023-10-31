@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.UUID;
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -44,12 +44,15 @@ public class Trade {
     @Column
     private String tradeExplain;
 
-    @Column(name = "count", insertable = false)
+    @Column(name = "count")
+    @ColumnDefault("0")
     private Integer wishCount;
 
-    @Column(insertable = false)
+    @Column
+    @ColumnDefault("0")
     private Integer viewCount;
 
+    @Column
     @Enumerated(EnumType.ORDINAL)
     private TradeStatus tradeStatus;
 
