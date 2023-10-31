@@ -1,17 +1,10 @@
-console.log(1);
+import CoverNavbar from "../../_navbar/CoverNavbar";
 
-
-
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-
-    {children}
-
+      {children}
+      <CoverNavbar />
     </>
   );
 }
