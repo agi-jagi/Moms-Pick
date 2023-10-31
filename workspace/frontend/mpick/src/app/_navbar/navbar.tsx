@@ -7,8 +7,8 @@ import { AiOutlineUser } from "react-icons/ai";
 
 export default function navBar() {
   return (
-    <div className="w-full" style={{ position: "fixed", bottom: "0" }}>
-      <Divider className="my-4" />
+    <div className="w-full" style={{ position: "fixed", bottom: "0", backgroundColor: "white" }}>
+      <Divider className="my-4" style={{ marginTop: "0" }} />
       <div className="columns-4" style={{ height: "60px" }}>
         <div style={{ alignItems: "center" }}>
           <Link href="/trade">
@@ -47,7 +47,7 @@ export default function navBar() {
           </Link>
         </div>
         <div>
-          <Link href="/auth">
+          <Link href="/mypage">
             <div>
               <div className="flex justify-center">
                 <AiOutlineUser size="24" />
