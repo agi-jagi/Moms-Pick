@@ -3,12 +3,14 @@ package com.k9c202.mpick.user.entity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 // NoArgsConstructor, AllArgsConstructor 체크 필요
 //@NoArgsConstructor
 //@AllArgsConstructor

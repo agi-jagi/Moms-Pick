@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class JoinUserResponse {
-
+    // 개발 시 확인할 값들
+    // 자주 사용되는 값을 위쪽으로 위치시키기
     private Long userId;
     private String loginId;
     private String nickname;
@@ -36,6 +37,7 @@ public class JoinUserResponse {
         return "휴면";
     }
 
+    // of
     public static JoinUserResponse of(User user) {
         return JoinUserResponse.builder()
                 .userId(user.getId())

@@ -1,34 +1,38 @@
 package com.k9c202.mpick.trade.entity;
 
+import com.k9c202.mpick.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.UUID;
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "trade")
 @Entity
+@Table(name = "trade")
 public class Trade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tradeId;
+    @Column(name = "trade_id")
+    private Long id;
 
-    @Column
-    private UUID sellerId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column
+    @Column(name = "address_id")
     private Integer addressId;
 
     @Column
@@ -40,22 +44,25 @@ public class Trade {
     @Column
     private String tradeExplain;
 
-    @Column(name = "count", insertable = false)
+    @Column(name = "count")
+    @ColumnDefault("0")
     private Integer wishCount;
 
-    @Column(insertable = false)
+    @Column
+    @ColumnDefault("0")
     private Integer viewCount;
 
     @Column
-    private Integer tradeState;
+    @Enumerated(EnumType.ORDINAL)
+    private TradeStatus tradeStatus;
 
     @CreationTimestamp
     @Column(name = "created_date", insertable = false)
-    private Timestamp trade_create_date;
+    private Timestamp tradeCreateDate;
 
     @UpdateTimestamp
     @Column(name = "update_date", insertable = false)
-    private Timestamp trade_update_date;
+    private Timestamp tradeUpdateDate;
 
     public void increaseViewCount() { this.viewCount++; }
 
@@ -63,12 +70,12 @@ public class Trade {
 
     public void decreaseWishCount() { this.wishCount--; }
 
-    public void updateTrade(Long categoryId, Integer addressId, String title, Integer price, String tradeExplain, Integer tradeState) {
-        this.categoryId = categoryId;
+    public void updateTrade(Category category, Integer addressId, String title, Integer price, String tradeExplain, TradeStatus tradeStatus) {
+        this.category = category;
         this.addressId = addressId;
         this.title = title;
         this.price = price;
         this.tradeExplain = tradeExplain;
-        this.tradeState = tradeState;
+        this.tradeStatus = tradeStatus;
     }
 }

@@ -1,6 +1,7 @@
 package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
+import com.k9c202.mpick.user.controller.response.EmailVerificationResult;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
@@ -45,12 +46,12 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
-        //값 null
-        //길이 제한
-        //포멧팅
+        // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
+        // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
         log.debug("call UserController#signup");
         log.debug("JoinUserRequest={}", request);
 
+        // JoinUserRequest 에서 정의한 toUserDto (id, password, nickname, email)
         JoinUserResponse response = userService.signup(request.toUserDto());
         log.debug("JoinUserResponse={}", response);
 
@@ -63,8 +64,28 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        userService.login(loginDto);
-        return ResponseEntity.ok(null);
+//        userService.login(loginDto);
+//        return ResponseEntity.ok(null);
+        // login 요청시 jwt 토큰을 반환하도록 변경
+        return ResponseEntity.ok(userService.login(loginDto));
+    }
+
+
+    @PostMapping("/emails/verification-requests")
+//    public ResponseEntity sendMessage(@RequestParam("email") @Valid @CustomEmail String email) {
+    public ResponseEntity<?> sendMessage(@RequestParam("email") @Valid String email) {
+        userService.sendCodeToEmail(email);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/emails/verifications")
+//    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid @CustomEmail String email,
+    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid String email,
+                                            @RequestParam("code") String authCode) {
+        EmailVerificationResult response = userService.verifiedCode(email, authCode);
+
+        return ResponseEntity.ok(response);
     }
 
 
@@ -73,7 +94,6 @@ public class UserController {
     public String hello(){
         return "test";
     }
-
 
 
 }

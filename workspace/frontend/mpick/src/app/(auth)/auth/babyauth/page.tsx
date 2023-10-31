@@ -175,13 +175,14 @@ export default function BabyAuth() {
             </div>
           )}
 
-          <div
+          {/* <div
             style={{
               border: "1px solid #333",
               marginBottom: "5%",
               marginTop: "5%",
             }}
-          ></div>
+          ></div> */}
+          <hr style={{ marginTop: "5%", marginBottom: "5%" }}></hr>
         </div>
       ))}
       <div
