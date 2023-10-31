@@ -25,7 +25,7 @@ public class MailService {
             log.debug("MailService.sendEmail exception occur toEmail: {}, " +
                     "title: {}, text: {}", toEmail, title, text);
 //            throw new BusinessLogicException(ExceptionCode.UNABLE_TO_SEND_EMAIL);
-            throw new RuntimeException("Unable to send email");
+            throw new RuntimeException("email을 전송할 수 없습니다.");
         }
     }
 
@@ -34,9 +34,9 @@ public class MailService {
                                               String title,
                                               String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject(title);
-        message.setText(text);
+        message.setTo(toEmail); // 메일 수신자
+        message.setSubject(title);  // 메일 제목
+        message.setText(text);  // 메일 본문 내용
 
         return message;
     }

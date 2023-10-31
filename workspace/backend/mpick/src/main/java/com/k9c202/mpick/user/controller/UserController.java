@@ -71,6 +71,8 @@ public class UserController {
     }
 
 
+    // ㅡㅡㅡ 이메일 ㅡㅡㅡ //
+    // 인증 코드 발송
     @PostMapping("/emails/verification-requests")
 //    public ResponseEntity sendMessage(@RequestParam("email") @Valid @CustomEmail String email) {
     public ResponseEntity<?> sendMessage(@RequestParam("email") @Valid String email) {
@@ -79,6 +81,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 인증 코드 확인
     @GetMapping("/emails/verifications")
 //    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid @CustomEmail String email,
     public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid String email,
@@ -89,7 +92,7 @@ public class UserController {
     }
 
 
-    // 요청 및 security 확인 시 사용할 test url
+    // ㅡㅡ 요청 및 security 확인 시 사용할 test url ㅡㅡ //
     @GetMapping("/test")
     public String hello(){
         return "test";
