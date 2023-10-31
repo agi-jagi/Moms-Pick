@@ -1,4 +1,4 @@
-
+import TopNavBar from "./TopNavBar";
 
 export default function TradeLayout({
   children,
@@ -7,7 +7,7 @@ export default function TradeLayout({
 }) {
   return (
     <>
-
+    <TopNavBar />
     {children}
 
     </>
