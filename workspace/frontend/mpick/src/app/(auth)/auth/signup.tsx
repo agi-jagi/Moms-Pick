@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
-import SignupInfo from "./signupInfo";
-import AddressSearch from "./addressSearch";
+import SignupInfo from "./SignUpInfo";
+import AddressSearch from "./AddressSearch";
 
-export default function Signup() {
+export default function SignUp() {
   const [userId, setUserId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");

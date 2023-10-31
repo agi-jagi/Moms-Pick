@@ -1,6 +1,6 @@
 import { IoIosArrowForward } from "react-icons/io";
 
-export default function infolist() {
+export default function InfoList() {
   return (
     <div
       style={{
