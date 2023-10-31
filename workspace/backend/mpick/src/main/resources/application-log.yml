@@ -3,7 +3,7 @@ logging:
     name: ./logs/mpick.log
   level:
     root: info
-    com.windows33.com.windows33.cavendish: debug
+    com.k9c202.mpick: debug
     org:
       hibernate:
         type:
