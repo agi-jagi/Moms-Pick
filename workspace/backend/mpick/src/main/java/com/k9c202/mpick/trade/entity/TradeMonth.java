@@ -9,17 +9,20 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "trade_month")
 @Entity
+@Table(name = "trade_month")
 public class TradeMonth {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tradeMonthId;
+    @Column(name = "trade_month_id")
+    private Integer id;
 
-    @Column
-    private Long tradeId;
+    @ManyToOne
+    @JoinColumn(name = "trade_id")
+    private Trade trade;
 
-    @Column
-    private Integer babyMonthId;
+    @ManyToOne
+    @JoinColumn(name = "baby_month_id")
+    private BabyMonth babyMonth;
 }

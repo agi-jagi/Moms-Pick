@@ -12,8 +12,8 @@ import java.sql.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 @Getter
 @SuperBuilder
-@Table(name = "view_record")
 @Entity
+@Table(name = "view_record")
 public class ViewRecord {
 
     @EmbeddedId

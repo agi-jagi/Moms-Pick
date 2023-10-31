@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "category_month")
 @Entity
+@Table(name = "category_month")
 public class CategoryMonth {
 
     @EmbeddedId
