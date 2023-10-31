@@ -34,27 +34,27 @@ public class TradeController {
     @Autowired
     private final TradeService tradeService;
 
-    @GetMapping()
+    @PostMapping
     public ResponseEntity<List<TradeSearchResponse>> search(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer page,
-            @RequestBody @Valid TradeSearchRequest request) {
+            @RequestBody TradeSearchRequest request) {
 
-        if (page.equals(null)) {
+        if (page == null) {
             page = 0;
         }
-        List<TradeSearchResponse> result = new ArrayList<>();
+        List<TradeSearchResponse> result = tradeService.tradeFilter(request, page, keyword);
 
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("item")
-    public Long tradeAdd(
+    @PostMapping("/item")
+    public ResponseEntity<Long> tradeAdd(
             @RequestBody TradeAddRequest request) {
 
         Long result = tradeService.tradeAdd(request);
 
-        return result;
+        return ResponseEntity.ok(result);
     }
 
 }
