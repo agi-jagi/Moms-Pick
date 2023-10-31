@@ -7,7 +7,13 @@ import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.AbstractPageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,21 +30,21 @@ public class TradeController {
 
 //    final private int size = 9;
 
+    @Autowired
     private final TradeService tradeService;
 
     @GetMapping()
-    public List<TradeSearchResponse> search(
-            @RequestParam int page,
+    public ResponseEntity<List<TradeSearchResponse>> search(
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer page,
             @RequestBody @Valid TradeSearchRequest request) {
 
-//        PageRequest pageable = PageRequest.of(page, size);
-
+        if (page.equals(null)) {
+            page = 0;
+        }
         List<TradeSearchResponse> result = new ArrayList<>();
 
-        result = tradeService.tradeSearch(request);
-
-        return result;
+        return ResponseEntity.ok(result);
     }
 
 //    @GetMapping("/item/{id}")

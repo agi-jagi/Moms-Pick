@@ -55,11 +55,11 @@ public class Trade {
 
     @CreationTimestamp
     @Column(name = "created_date", insertable = false)
-    private Timestamp trade_create_date;
+    private Timestamp tradeCreateDate;
 
     @UpdateTimestamp
     @Column(name = "update_date", insertable = false)
-    private Timestamp trade_update_date;
+    private Timestamp tradeUpdateDate;
 
     public void increaseViewCount() { this.viewCount++; }
 
