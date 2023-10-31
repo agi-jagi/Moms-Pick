@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-const goBack = () => {
+const GoBack = () => {
   const router = useRouter();
   return (
     <div>
@@ -16,4 +16,4 @@ const goBack = () => {
   );
 };
 
-export default goBack;
+export default GoBack;

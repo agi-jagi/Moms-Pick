@@ -8,7 +8,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import boy from "../../../../public/boy.png";
 import girl from "../../../../public/girl.png";
 
-export default function myfamily() {
+export default function MyFamily() {
   const [baby, setBaby] = useState<any>([
     { name: "아들", gender: "boy", birth: "2023-08-10" },
     { name: "딸", gender: "girl", birth: "2023-08-10" },

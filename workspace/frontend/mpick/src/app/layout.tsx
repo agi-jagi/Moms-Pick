@@ -5,7 +5,7 @@ import "./globals.css";
 import Provider from "./Provider";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
-import NavBar from "./_navbar/navbar";
+import NavBar from "./_navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 

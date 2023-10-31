@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export default function Search() {
+export default function AddressSearch() {
   const [address, setAddress] = useState<string>("");
   const [roadAddress, setRoadAddress] = useState<string>("");
   const [maps, setMaps] = useState<any>();

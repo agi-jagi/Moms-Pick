@@ -5,7 +5,7 @@ import { LuBaby } from "react-icons/lu";
 import { PiWechatLogoBold } from "react-icons/pi";
 import { AiOutlineUser } from "react-icons/ai";
 
-export default function navBar() {
+export default function NavBar() {
   return (
     <div className="w-full" style={{ position: "fixed", bottom: "0", backgroundColor: "white" }}>
       <Divider className="my-4" style={{ marginTop: "0" }} />

@@ -1,6 +1,6 @@
-import GoBack from "../auth/goback";
-import Myfamily from "./myfamily";
-import InfoList from "./infolist";
+import GoBack from "../auth/GoBack";
+import Myfamily from "./MyFamily";
+import InfoList from "./InfoList";
 
 export default function mypage() {
   return (
