@@ -1,23 +1,35 @@
 package com.k9c202.mpick.baby.controller;
 
+import com.k9c202.mpick.baby.dto.BabyDto;
 import com.k9c202.mpick.baby.repository.BabyDSLRepository;
+import com.k9c202.mpick.baby.service.BabyService;
 import com.k9c202.mpick.global.response.CommonResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/test")
+@RequestMapping("/api/profiles/child")
 public class BabyController {
-    private BabyDSLRepository babyDSLRepository;
+    private final BabyService babyService;
 
-    @GetMapping
-    public CommonResponse test(){
-        System.out.println("1");
-        babyDSLRepository.loadBaby();
-        System.out.println("2");
+    //추가
+    @PostMapping
+    @Operation(summary = "아기 추가", description = "아기 추가")
+    public CommonResponse<String> addChild(){
+
+        return CommonResponse.OK("yes");
+    }
+    //삭제
+    @DeleteMapping
+    public CommonResponse deleteChild(){
+        return CommonResponse.OK("");
+    }
+
+    //수정
+    @PatchMapping
+    public CommonResponse modifyChild(){
         return CommonResponse.OK("");
     }
 }

@@ -1,7 +1,9 @@
 package com.k9c202.mpick.global.response;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class CommonResponse<T> {
 
     private final boolean success;

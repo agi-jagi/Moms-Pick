@@ -8,4 +8,5 @@ import java.util.List;
 public interface BabyRepository extends JpaRepository<Baby,Long> {
 
     List<Baby> findAll();
+
 }
