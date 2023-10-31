@@ -1,4 +1,4 @@
-package com.k9c202.mpick.global.entity;
+package com.k9c202.mpick.trade.entity;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -13,9 +13,11 @@ import java.io.Serializable;
 @Embeddable
 public class CategoryMonthId implements Serializable {
 
-    @Column(name = "category_id")
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column(name = "baby_month_id")
-    private Integer babyMonthId;
+    @ManyToOne
+    @JoinColumn(name = "baby_month_id")
+    private BabyMonth babyMonth;
 }

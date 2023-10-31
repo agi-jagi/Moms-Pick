@@ -5,9 +5,9 @@ from decouple import config
 db_info = {
     "user": config('SQL_USER'),
     "password": config('SQL_PASSWORD'),
-    "host": config('HOST'),
-    "port": config('SQL_PORT'),
-    "database": config('DATABASE_NAME')
+    "host": config('DB_HOST'),
+    "port": config('DB_PORT'),
+    "database": config('DB_NAME')
 }
 
 conn_string = f'mysql+pymysql://{db_info["user"]}:{db_info["password"]}@{db_info["host"]}:{db_info["port"]}/{db_info["database"]}'

@@ -1,5 +1,5 @@
-import Signup from "./signup";
-import GoBack from "./goback";
+import SignUp from "./SignUp";
+import GoBack from "./GoBack";
 
 export default function Auth() {
   return (
@@ -15,7 +15,7 @@ export default function Auth() {
         </div>
         <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
       </div>
-      <Signup />
+      <SignUp />
     </div>
   );
 }

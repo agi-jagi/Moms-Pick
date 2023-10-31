@@ -31,7 +31,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
                         // 아래 url은 권한 필요X
-                        .antMatchers("/api/login","/api/join","/api/emails/*").permitAll()
+                        // .antMatchers("/api/login","/api/join","/api/emails/*").permitAll()
+                        .antMatchers("/**").permitAll()
                         // 나머지 경로는 권한(인증) 필요
                         .anyRequest().authenticated()
                 )
