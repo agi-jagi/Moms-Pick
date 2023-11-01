@@ -27,7 +27,6 @@ public class MailService {
     private final JavaMailSender emailSender;
     private final RedisService redisService;
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
-    private final MailService mailService;
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
 
