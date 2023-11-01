@@ -15,6 +15,7 @@ import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -47,7 +48,7 @@ public class TradeService {
         return result;
     }
 
-    public Long tradeAdd(TradeAddRequest request) {
+    public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles) {
 
         Optional<User> userOptional = userRepository.findOneByLoginId(request.getLoginId());
 
