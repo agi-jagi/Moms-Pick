@@ -51,10 +51,12 @@ public class UserController {
     public ResponseEntity<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
         // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
         // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
+        // log level : trace, debug, info, warning, error
         log.debug("call UserController#signup");
         log.debug("JoinUserRequest={}", request);
 
         // JoinUserRequest 에서 정의한 toUserDto (id, password, nickname, email)
+        // 반환한 UserDto를 signup에 넣음
         JoinUserResponse response = userService.signup(request.toUserDto());
         log.debug("JoinUserResponse={}", response);
 
@@ -73,6 +75,26 @@ public class UserController {
         return ResponseEntity.ok(userService.login(loginDto));
     }
 
+    // 아이디 중복체크
+    @GetMapping("/id-check")
+    public ResponseEntity<?> idCheck(@RequestParam String loginId){
+        userService.checkDuplicatedLoginId(loginId);
+        return ResponseEntity.ok(null);
+    }
+
+    // 닉네임 중복체크
+    @GetMapping("/nickname-check")
+    public ResponseEntity<?> nicknameCheck(@RequestParam String nickname){
+        userService.checkDuplicatedNickname(nickname);
+        return ResponseEntity.ok(null);
+    }
+
+    // 이메일 중복체크
+    @GetMapping("/email-check")
+    public ResponseEntity<?> emailCheck(@RequestParam String email){
+        userService.checkDuplicatedEmail(email);
+        return ResponseEntity.ok(null);
+    }
 
     // 이메일 인증 코드 발송
     @PostMapping("/emails/verification-requests")

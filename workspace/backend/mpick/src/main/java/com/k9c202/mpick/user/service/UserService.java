@@ -55,23 +55,10 @@ public class UserService {
     // 아래는 builder 형식
 
     public JoinUserResponse signup(UserDto userDto) {
-        //로그인 아이디 중복
-        boolean isExistLoginId = userQueryRepository.existLoginId(userDto.getLoginId());
-        if (isExistLoginId) {
-            throw new IllegalArgumentException("로그인 아이디 중복");
-        }
-
-        //이메일 중복
-        boolean isExistEmail = userQueryRepository.existEmail(userDto.getEmail());
-        if (isExistEmail) {
-            throw new IllegalArgumentException("이메일 중복");
-        }
-
-        //닉네임 중복
-        boolean isExistNickname = userQueryRepository.existNickname(userDto.getNickname());
-        if (isExistNickname) {
-            throw new IllegalArgumentException("닉네임 중복");
-        }
+        
+        checkDuplicatedLoginId(userDto.getLoginId());
+        checkDuplicatedEmail(userDto.getEmail());
+        checkDuplicatedNickname(userDto.getNickname());
 
         User user = User.builder()
                 .loginId(userDto.getLoginId())
@@ -85,6 +72,30 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return JoinUserResponse.of(savedUser);
+    }
+
+    public void checkDuplicatedLoginId(String loginId) {
+        //로그인 아이디 중복
+        boolean isExistLoginId = userQueryRepository.existLoginId(loginId);
+        if (isExistLoginId) {
+            throw new IllegalArgumentException("로그인 아이디 중복");
+        }
+    }
+
+    public void checkDuplicatedNickname(String nickname) {
+        //닉네임 중복
+        boolean isExistNickname = userQueryRepository.existNickname(nickname);
+        if (isExistNickname) {
+            throw new IllegalArgumentException("닉네임 중복");
+        }
+    }
+
+    public void checkDuplicatedEmail(String email) {
+        //이메일 중복
+        boolean isExistEmail = userQueryRepository.existEmail(email);
+        if (isExistEmail) {
+            throw new IllegalArgumentException("이메일 중복");
+        }
     }
 
     public String login(LoginDto loginDto) {
