@@ -1,5 +1,6 @@
 package com.k9c202.mpick.trade.controller;
 
+import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
@@ -39,7 +40,7 @@ public class TradeController {
     private final TradeService tradeService;
 
     @PostMapping
-    public ResponseEntity<List<TradeSearchResponse>> search(
+    public CommonResponse<List<TradeSearchResponse>> search(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer page,
             @RequestBody TradeSearchRequest request) {
@@ -50,16 +51,16 @@ public class TradeController {
 
         List<TradeSearchResponse> result = tradeService.tradeFilter(request, page, keyword);
 
-        return ResponseEntity.ok(result);
+        return CommonResponse.OK(result);
     }
 
     @PostMapping(value = "/item", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Long> tradeAdd(
+    public CommonResponse<Long> tradeAdd(
             @RequestPart(value = "data") TradeAddRequest request,
             @RequestPart(value = "files") List<MultipartFile> multipartFiles) {
 
         Long result = tradeService.tradeAdd(request, multipartFiles);
 
-        return ResponseEntity.ok(result);
+        return CommonResponse.OK(result);
     }
 }
