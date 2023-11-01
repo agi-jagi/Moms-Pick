@@ -85,7 +85,7 @@ export default function SignUpInfo(props: any) {
           onValueChange={checkPw}
         />
       </div>
-      <div style={{ width: "100%", marginTop: "20px" }}>
+      <div className="flex justify-center" style={{ width: "100%", marginTop: "20px" }}>
         <Input
           isRequired
           type="email"
@@ -99,6 +99,9 @@ export default function SignUpInfo(props: any) {
           onValueChange={props.setUserEmail}
           defaultValue={props.userEmail}
         />
+        <Button color="primary" style={{ height: "56px" }}>
+          <p className="font-bold text-base">본인인증</p>
+        </Button>
       </div>
     </div>
   );
