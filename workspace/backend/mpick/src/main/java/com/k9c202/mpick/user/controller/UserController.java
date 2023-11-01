@@ -5,6 +5,7 @@ import com.k9c202.mpick.user.controller.response.EmailVerificationResult;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
+import com.k9c202.mpick.user.service.MailService;
 import com.k9c202.mpick.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class UserController {
      */
 
     private final UserService userService;
+    private final MailService mailService;
 
 
     // /api/users 경로로 post요청이 왔을 때 실행될 부분
@@ -44,6 +46,7 @@ public class UserController {
     //        return userDto;
     //    }
 
+    // 회원가입
     @PostMapping("/join")
     public ResponseEntity<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
         // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
@@ -61,7 +64,7 @@ public class UserController {
         // 다른 형식 예) return ResponseEntity.status(HttpStatus.CONFLICT).body(userDto);
     }
 
-
+    // 로그인
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
 //        userService.login(loginDto);
@@ -71,22 +74,21 @@ public class UserController {
     }
 
 
-    // ㅡㅡㅡ 이메일 ㅡㅡㅡ //
-    // 인증 코드 발송
+    // 이메일 인증 코드 발송
     @PostMapping("/emails/verification-requests")
 //    public ResponseEntity sendMessage(@RequestParam("email") @Valid @CustomEmail String email) {
     public ResponseEntity<?> sendMessage(@RequestParam("email") @Valid String email) {
-        userService.sendCodeToEmail(email);
+        mailService.sendCodeToEmail(email);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // 인증 코드 확인
+    // 이메일 인증 코드 확인
     @GetMapping("/emails/verifications")
 //    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid @CustomEmail String email,
     public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid String email,
                                             @RequestParam("code") String authCode) {
-        EmailVerificationResult response = userService.verifiedCode(email, authCode);
+        EmailVerificationResult response = mailService.verifiedCode(email, authCode);
 
         return ResponseEntity.ok(response);
     }
