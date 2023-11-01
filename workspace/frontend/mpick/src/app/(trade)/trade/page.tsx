@@ -4,7 +4,7 @@ import useStore from "../../../store/useStore";
 import { useTradeStore } from "@/store/TradeStore";
 import { Button, Card, CardFooter, CardHeader, CardBody, Image, Avatar, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import {SearchIcon} from "./searchIcon";
+import { useRouter } from "next/navigation";
 
 // 대분류 카테고리 클릭 시 해당 대분류 id를 가지고 필터링 페이지로 !
 // 대분류 카테고리 컴포넌트 분리 필요
@@ -20,6 +20,8 @@ export default function Trade() {
 
   const [ isClient, setIsClient ] = useState(false);
   const { postId, setPostId, postTitle, setPostTitle } = useTradeStore();
+
+  let router = useRouter();
 
   const list = [
     {
@@ -130,53 +132,14 @@ export default function Trade() {
       <Avatar isBordered color="success" src="/nezko.jfif" />
       <Avatar isBordered color="warning" src="/nezko.jfif" />
       <Avatar isBordered color="danger" src="/nezko.jfif" />
+      
     </div>
+    <Button onClick={()=>{ router.push('/trade/search')}}>검색페이지</Button>
+    <Button onClick={()=>{ router.push('/trade/detail/1')}}>디테일페이지</Button>
+
     {/* <div className="w-[240px] h-[60px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg">
      */}
-     {/* 상단바 - 반경 설정 & 검색어 입력 */}
-    <div className="flex items-center gap-4 ml-4">
-      <div className="w-[84px] h-[42px]">
-        <div className="relative w-[94px] h-[94px] top-[-20px] left-[-10px]">
-          <div className="absolute h-[19px] top-[33px] left-[46px] [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#212124] text-[14px] tracking-[0] leading-[18.9px] whitespace-nowrap">
-            탄지로
-          </div>
-          <img className="absolute w-[79px] h-[94px] top-0 left-0" alt="Pin" src="/pin.svg" />
-          <div className="absolute w-[84px] h-[42px] top-[20px] left-[10px]" />
-        </div>
-      </div>
-      <div className="w-[260px] h-[50px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-blue-200 via-green-100 to-cyan-200 text-black shadow-lg">
-        <Input
-          label=""
-          isClearable
-          radius="lg"
-          classNames={{
-            label: "text-black/50 dark:text-white/90",
-            input: [
-              "bg-transparent",
-              "text-black/90 dark:text-white/90",
-              "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-            ],
-            innerWrapper: "bg-transparent",
-            inputWrapper: [
-              "shadow-xl",
-              "bg-default-200/50",
-              "dark:bg-default/60",
-              "backdrop-blur-xl",
-              "backdrop-saturate-200",
-              "hover:bg-default-200/70",
-              "dark:hover:bg-default/70",
-              "group-data-[focused=true]:bg-default-200/50",
-              "dark:group-data-[focused=true]:bg-default/60",
-              "!cursor-text",
-            ],
-          }}
-          placeholder="검색어 입력"
-          startContent={
-            <SearchIcon />
-          }
-        />
-      </div>
-    </div>
+    {/* 상단 배너 */}
     <img className="mt-4" src="asd.gif" alt="" />
     {/* 대분류 카테고리 */}
     <div className="w-[390px] h-[128px] mt-4">

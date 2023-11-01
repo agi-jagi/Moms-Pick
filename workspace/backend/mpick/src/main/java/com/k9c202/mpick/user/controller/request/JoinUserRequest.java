@@ -7,9 +7,11 @@ import javax.validation.constraints.*;
 
 @Data
 public class JoinUserRequest {
+    // 회원가입 시 입력받는 값들 (Dto와 동일한 변수들)
+    // 입력값 체크
 
-    @NotEmpty(message = "로그인 아이디는 필수값입니다.")
-    @Size(max = 20)
+    @NotEmpty(message = "로그인 아이디는 필수값입니다.") // null
+    @Size(max = 20) // 길이 제한
     private String loginId;
 
     @NotEmpty
@@ -22,9 +24,10 @@ public class JoinUserRequest {
 
     @NotEmpty
     @Size(max = 100)
-    @Email
+    @Email  // 이메일 형식 체크
     private String email;
 
+    // to
     public UserDto toUserDto() {
         return UserDto.builder()
                 .loginId(this.loginId)

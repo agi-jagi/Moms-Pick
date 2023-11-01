@@ -26,6 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 //    public CustomUserDetailsService(UserRepository userRepository) {
 //        this.userRepository = userRepository;
 //    }
+// -> @RequiredArgsConstructor
 
     // 어떤 User 정보를 넘겨줄지 정의하는 부분
     @Override

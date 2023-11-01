@@ -13,8 +13,8 @@ declare global {
 
 export default function AddressSearch() {
   const [address, setAddress] = useState<string>("");
-  const [roadAddress, setRoadAddress] = useState<string>("");
   const [maps, setMaps] = useState<any>();
+  const [markers, setMarkers] = useState<any>([]);
 
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -25,7 +25,6 @@ export default function AddressSearch() {
   };
 
   let map: any = null;
-  const markers: any = [];
 
   const handleComplete = (data: any) => {
     let fullAddress = data.address;
@@ -65,7 +64,6 @@ export default function AddressSearch() {
           const callback = function (result: any, status: any) {
             if (status === window.kakao.maps.services.Status.OK) {
               setAddress(result[0].address.address_name);
-              setRoadAddress(result[0].road_address.address_name);
             }
           };
           const geocoder = new window.kakao.maps.services.Geocoder();
@@ -108,13 +106,12 @@ export default function AddressSearch() {
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
         });
-        markers.push(marker);
+        setMarkers([marker]);
         marker.setMap(map);
 
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
             setAddress(result[0].address.address_name);
-            setRoadAddress(result[0].road_address.address_name);
           }
         };
         const geocoder = new window.kakao.maps.services.Geocoder();
@@ -134,7 +131,7 @@ export default function AddressSearch() {
       mapScript.async = true;
       // script.src에 map을 불러오는 api를 넣어주자.
       // 여기에서 우리가 기존에 발급 받았던 apiKey를 넣어주면 된다.
-      mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_APPKEY}&libraries=services&autoload=false`;
+      mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAOMAP_APPKEY}&libraries=services&autoload=false`;
 
       //이제 우리가 만든 script를 document에 붙여주자.
       document.head.appendChild(mapScript);
@@ -146,15 +143,14 @@ export default function AddressSearch() {
 
   return (
     <div>
-      <div style={{ padding: "0 20px" }}>
-        <div id="map" style={{ width: "auto", height: "500px", marginTop: "10px" }}></div>
+      <div style={{ padding: "0 10px" }}>
+        <div id="map" style={{ width: "auto", height: "60vh", marginTop: "10px" }}></div>
         <div className="flex" style={{ marginTop: "20px" }}>
           <button type="button" onClick={handleClick} style={{ width: "40px" }}>
             <Image src={marker} alt="marker" width={20} height={20} />
           </button>
           <div>
             <p className="font-bold text-base">지번주소 : {address}</p>
-            <p className="font-bold text-base">도로명주소 : {roadAddress}</p>
           </div>
         </div>
       </div>

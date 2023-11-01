@@ -1,0 +1,17 @@
+version: "3.0"
+
+services:
+  spring:
+    build: ./backend/mpick
+    ports:
+      - "5000:5000"
+  
+  front:
+    build: ./frontend/mpick
+    ports:
+      - "3000:3000"
+
+  python:
+    build: ./recommend
+    ports:
+      - "8000:8000"
