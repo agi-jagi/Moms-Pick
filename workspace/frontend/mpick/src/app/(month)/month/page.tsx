@@ -1,10 +1,12 @@
 "use client";
 import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
+// import { Carousel } from "react-responsive-carousel";
 import { MdOutlineFace2 } from "react-icons/md";
 import Link from "next/link";
 import { useMonthStore } from "@/store/MonthStore";
+import { FaCheck } from "react-icons/fa";
+import Carousel from "react-material-ui-carousel";
 
 export default function Month() {
   const monthList: string[] = [
@@ -24,41 +26,26 @@ export default function Month() {
   return (
     <div>
       <Carousel
-        showArrows={true}
-        centerSlidePercentage={50}
-        showThumbs={false}
-        showStatus={false}
+        cycleNavigation={true}
+        navButtonsAlwaysInvisible={true}
         autoPlay={true}
-        infiniteLoop={true}
         className="rounded-xl"
+        animation={"slide"}
+        interval={5000}
       >
-        <a
-          target="_blank"
-          href="https://www.childcare.go.kr/cpin/main1.jsp"
-          rel="noreferrer"
-        >
-          <Image
+        <a target="_blank" href="https://www.childcare.go.kr/cpin/main1.jsp" rel="noreferrer">
+          <img
             src="/month/banner1.png"
             alt="아이사랑"
-            width={500}
-            height={300}
-            layout="responsive"
-            style={{ width: "100%", height: "auto" }}
-          ></Image>
+            style={{ width: "100%", height: "100%" }}
+          ></img>
         </a>
-        <a
-          target="_blank"
-          href="https://central.childcare.go.kr/ccef/main.jsp"
-          rel="noreferrer"
-        >
-          <Image
-            src="/month/banner2.jpg"
+        <a target="_blank" href="https://central.childcare.go.kr/ccef/main.jsp" rel="noreferrer">
+          <img
+            src="/month/banner2.png"
             alt="중앙종합육아지원센터"
-            width={500}
-            height={300}
-            layout="responsive"
-            style={{ width: "100%", height: "auto" }}
-          ></Image>
+            style={{ width: "100%", height: "100%" }}
+          ></img>
         </a>
       </Carousel>
       <br></br>
@@ -67,12 +54,12 @@ export default function Month() {
           display: "flex",
           alignItems: "center",
           marginLeft: "3%",
-          fontSize: "160%",
-          marginBottom: "5%",
+          fontSize: "130%",
+          marginBottom: "3%",
         }}
       >
         <p>알고 싶은 개월 수 선택</p>
-        <MdOutlineFace2></MdOutlineFace2>
+        <FaCheck></FaCheck>
       </div>
       <div
         style={{
@@ -89,30 +76,38 @@ export default function Month() {
               position: "relative",
               flex: "0 0 33%",
               textAlign: "center",
-              marginBottom: "5%",
+              marginBottom: "3%",
               padding: "1%",
             }}
             onClick={() => setMonth(monthItem)}
           >
             <Link href="/month/monthinfo/" passHref>
-              <Image
+              <div
+                style={{
+                  width: "100%",
+                  paddingBottom: "100%",
+                  backgroundColor: "#F8DCD8",
+                  borderRadius: "25%",
+                  position: "relative",
+                }}
+              ></div>
+              {/* <Image
                 src="/month/box1.png"
                 alt={monthItem}
                 width={80}
                 height={80}
                 style={{ width: "100%", height: "100%" }}
-              ></Image>
+              ></Image> */}
               <div
                 style={{
                   position: "absolute",
                   top: "50%",
                   left: "50%",
-                  transform: "translate(-50%, -50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "100%",
                 }}
               >
-                <p style={{ color: "white", fontWeight: "bold" }}>
-                  {monthItem}
-                </p>
+                <p style={{ color: "white", fontWeight: "bold" }}>{monthItem}</p>
               </div>
             </Link>
           </div>
