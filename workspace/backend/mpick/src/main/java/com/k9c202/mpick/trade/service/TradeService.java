@@ -63,6 +63,8 @@ public class TradeService {
                 .tradeExplain(request.getTradeExplain())
                 .tradeStatus(TradeStatus.ING)
                 .addressId(request.getAddressId())
+                .viewCount(0)
+                .wishCount(0)
                 .build();
 
         Long tradeId = tradeRepository.save(trade).getId();
