@@ -10,4 +10,7 @@ const withPWA = require("next-pwa")({
 module.exports = withPWA({
   // next.js config
   reactStrictMode: true,
+  env: {
+    KAKAOMAP_APPKEY: "a7d4463b676b95709da00fcec2cdfbc1",
+  },
 });
