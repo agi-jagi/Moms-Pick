@@ -4,8 +4,7 @@ import useStore from "../../../store/useStore";
 import { useTradeStore } from "@/store/TradeStore";
 import { Button, Card, CardFooter, CardHeader, CardBody, Image, Avatar, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import {SearchIcon} from "./searchIcon";
-import TopNavBar from "./TopNavBar";
+import { useRouter } from "next/navigation";
 
 // 대분류 카테고리 클릭 시 해당 대분류 id를 가지고 필터링 페이지로 !
 // 대분류 카테고리 컴포넌트 분리 필요
@@ -21,6 +20,8 @@ export default function Trade() {
 
   const [ isClient, setIsClient ] = useState(false);
   const { postId, setPostId, postTitle, setPostTitle } = useTradeStore();
+
+  let router = useRouter();
 
   const list = [
     {
@@ -131,7 +132,11 @@ export default function Trade() {
       <Avatar isBordered color="success" src="/nezko.jfif" />
       <Avatar isBordered color="warning" src="/nezko.jfif" />
       <Avatar isBordered color="danger" src="/nezko.jfif" />
+      
     </div>
+    <Button onClick={()=>{ router.push('/trade/search')}}>검색페이지</Button>
+    <Button onClick={()=>{ router.push('/trade/detail/1')}}>디테일페이지</Button>
+
     {/* <div className="w-[240px] h-[60px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg">
      */}
     {/* 상단 배너 */}
