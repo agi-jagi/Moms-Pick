@@ -1,10 +1,6 @@
 import GoBack from "../GoBack";
 
-export default function BabyAuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function BabyAuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div>
