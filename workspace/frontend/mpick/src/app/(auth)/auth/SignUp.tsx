@@ -11,7 +11,7 @@ export default function SignUp() {
   const [userEmail, setUserEmail] = useState<string>("");
   const [userNickName, setUserNickName] = useState<string>("");
   const [isInfoValid, setIsInfoValid] = useState<boolean>(false);
-  const [signupStep, setSignupStep] = useState<number>(0);
+  const [signupStep, setSignupStep] = useState<number>(1);
 
   const isWriteAll = () => {
     if (userId === "") {
@@ -46,37 +46,41 @@ export default function SignUp() {
   };
 
   return (
-    <div style={{ padding: "0 20px" }}>
+    <div>
       <div
-        className="flex w-full flex-wrap md:flex-nowrap gap-4"
-        style={{ justifyContent: "center" }}
+      // className="flex w-full flex-wrap md:flex-nowrap gap-4"
+      // style={{ justifyContent: "center" }}
       >
-        <p className="font-bold text-3xl">회원 정보 입력</p>
-        {signupStep === 0 ? (
-          <SignupInfo
-            userId={userId}
-            setUserId={setUserId}
-            userPw={userPw}
-            setUserPw={setUserPw}
-            userEmail={userEmail}
-            setUserEmail={setUserEmail}
-            userNickName={userNickName}
-            setUserNickName={setUserNickName}
-            setIsInfoValid={setIsInfoValid}
-          />
-        ) : (
-          <AddressSearch />
-        )}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <p className="font-bold text-3xl">회원 정보 입력</p>
+        </div>
+        <div style={{ margin: "0 20px" }}>
+          {signupStep === 0 ? (
+            <SignupInfo
+              userId={userId}
+              setUserId={setUserId}
+              userPw={userPw}
+              setUserPw={setUserPw}
+              userEmail={userEmail}
+              setUserEmail={setUserEmail}
+              userNickName={userNickName}
+              setUserNickName={setUserNickName}
+              setIsInfoValid={setIsInfoValid}
+            />
+          ) : (
+            <AddressSearch />
+          )}
+        </div>
         {signupStep === 0 ? (
           <div
             style={{
               width: "100%",
-              margin: "30px",
+              margin: "30px 0",
               padding: "0 20px",
               height: "50px",
               position: "fixed",
               bottom: "0",
-              zIndex: "2",
+              zIndex: "12",
             }}
           >
             <Button
@@ -96,12 +100,12 @@ export default function SignUp() {
           <div
             style={{
               width: "100%",
-              margin: "30px",
+              margin: "30px 0",
               padding: "0 20px",
               height: "50px",
               position: "fixed",
               bottom: "0",
-              zIndex: "2",
+              zIndex: "12",
             }}
             className="flex justify-around"
           >
