@@ -1,6 +1,6 @@
-package com.k9c202.mpick.user.repository;
+package com.k9c202.mpick.trade.repository;
 
-import com.k9c202.mpick.user.entity.Wish;
+import com.k9c202.mpick.trade.entity.Wish;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
