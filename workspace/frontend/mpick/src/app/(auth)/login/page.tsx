@@ -20,14 +20,11 @@ export default function Login() {
         password: userPw,
       })
       .then((res) => {
-        console.log(res);
         if (typeof window !== "undefined") {
           localStorage.setItem("accessToken", res.data);
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   // 인터셉터 적용 예시
@@ -45,9 +42,7 @@ export default function Login() {
   return (
     <div>
       <div style={{ padding: "0 20px" }}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Image src={logo} alt="logo" width={500} height={500} />
-        </div>
+        <Image src={logo} alt="logo" width={500} height={500} />
         <div style={{ width: "100%", marginTop: "10px" }}>
           <Input label="아이디" variant="bordered" className="w-full" onValueChange={setUserId} />
         </div>

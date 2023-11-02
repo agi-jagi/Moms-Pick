@@ -3,11 +3,9 @@
 import React, { useState, useMemo } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-import axios from "axios";
 
 export default function SignUpInfo(props: any) {
   const [userPwCheck, setUserPwCheck] = useState<boolean>(false);
-  const [certifyPharse, setCertifyPharse] = useState<string>("");
 
   const validateEmail = (userEmail: string) =>
     userEmail.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
@@ -33,20 +31,6 @@ export default function SignUpInfo(props: any) {
     }
   };
 
-  const certifyEmail = () => {
-    axios
-      .get("api/emails/verifications", {
-        params: { email: props.userEmail, code: certifyPharse },
-      })
-      .then((res) => {
-        console.log(res);
-        props.setUserEmailVerify(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <div style={{ width: "100%" }}>
       <div className="flex justify-center" style={{ width: "100%", marginTop: "10px" }}>
@@ -58,13 +42,7 @@ export default function SignUpInfo(props: any) {
           onValueChange={props.setUserId}
           defaultValue={props.userId}
         />
-        <Button
-          onClick={() => {
-            props.idCheck();
-          }}
-          color="primary"
-          style={{ height: "56px" }}
-        >
+        <Button color="primary" style={{ height: "56px" }}>
           <p className="font-bold text-base">중복확인</p>
         </Button>
       </div>
@@ -77,13 +55,7 @@ export default function SignUpInfo(props: any) {
           onValueChange={props.setUserNickName}
           defaultValue={props.userNickName}
         />
-        <Button
-          onClick={() => {
-            props.nickNameCheck();
-          }}
-          color="primary"
-          style={{ height: "56px" }}
-        >
+        <Button color="primary" style={{ height: "56px" }}>
           <p className="font-bold text-base">중복확인</p>
         </Button>
       </div>
@@ -127,34 +99,8 @@ export default function SignUpInfo(props: any) {
           onValueChange={props.setUserEmail}
           defaultValue={props.userEmail}
         />
-        <Button
-          onClick={() => {
-            props.emailCheck();
-          }}
-          color="primary"
-          style={{ height: "56px" }}
-        >
+        <Button color="primary" style={{ height: "56px" }}>
           <p className="font-bold text-base">본인인증</p>
-        </Button>
-      </div>
-      <div className="flex justify-center" style={{ width: "100%", marginTop: "20px" }}>
-        <Input
-          isRequired
-          label="인증번호"
-          variant="bordered"
-          fullWidth
-          className="w-full"
-          onValueChange={setCertifyPharse}
-          defaultValue={certifyPharse}
-        />
-        <Button
-          onClick={() => {
-            certifyEmail();
-          }}
-          color="primary"
-          style={{ height: "56px" }}
-        >
-          <p className="font-bold text-base">인증</p>
         </Button>
       </div>
     </div>

@@ -16,9 +16,8 @@ module.exports = withPWA({
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
-        destination: "https://k9c202.p.ssafy.io/api/:path*",
-        // destination: "http://localhost:5000/:path*",
+        source: "/:path*",
+        destination: "http://localhost:5000/:path*",
       },
     ];
   },
