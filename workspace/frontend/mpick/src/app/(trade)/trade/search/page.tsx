@@ -13,15 +13,15 @@ import { BiSolidMessageSquareAdd } from "react-icons/bi";
 export default function Search() {
 
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const [selected대분류, setSelected대분류] = useState([]);
+  const [selected대분류, setSelected대분류] = useState<string[]>([]);
 
   const [중분류open, set중분류Open] = useState(false);
   const handleOpen중분류 = () => set중분류Open(!중분류open);
-  const [selected중분류, setSelected중분류] = useState([]);
+  const [selected중분류, setSelected중분류] = useState<string[]>([]);
 
   const [개월수open, set개월수Open] = useState(false);
   const handleOpen개월수 = () => set개월수Open(!개월수open);
-  const [selected개월, setSelected개월] = useState([]);
+  const [selected개월, setSelected개월] = useState<string[]>([]);
   
 
   const list = [
@@ -153,7 +153,7 @@ export default function Search() {
         label="대분류"
         color="primary"
         value={selected대분류}
-        onValueChange={() => {setSelected대분류}}
+        onValueChange={setSelected대분류}
       >
         <Checkbox value="유모차">유모차</Checkbox>
         <Checkbox value="수유용품">수유용품</Checkbox>
@@ -163,7 +163,7 @@ export default function Search() {
     </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onPress={onClose}>
+                <Button className="bg-[#5E9FF2] text-white" onPress={onClose}>
                   적용하기
                 </Button>
               </ModalFooter>
@@ -185,7 +185,7 @@ export default function Search() {
         label="중분류"
         color="primary"
         value={selected중분류}
-        onValueChange={() => {setSelected중분류}}
+        onValueChange={setSelected중분류}
       >
         <Checkbox value="디럭스형">디럭스형</Checkbox>
         <Checkbox value="절충형">절충형</Checkbox>
@@ -195,7 +195,7 @@ export default function Search() {
     </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={handleOpen중분류}>
+                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen중분류}>
                   적용하기
                 </Button>
               </ModalFooter>
@@ -216,7 +216,7 @@ export default function Search() {
         label="개월 분류"
         color="primary"
         value={selected개월}
-        onValueChange={() => {setSelected개월}}
+        onValueChange={setSelected개월}
       >
         <Checkbox value="1~3개월">1~3개월</Checkbox>
         <Checkbox value="4~6개월">4~6개월</Checkbox>
@@ -226,7 +226,7 @@ export default function Search() {
     </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={handleOpen개월수}>
+                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen개월수}>
                   적용하기
                 </Button>
               </ModalFooter>
