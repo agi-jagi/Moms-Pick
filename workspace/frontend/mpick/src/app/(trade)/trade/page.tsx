@@ -6,6 +6,8 @@ import { Button, Card, CardFooter, CardBody, Image, Avatar } from "@nextui-org/r
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+
 import axios from "axios";
 
 // 대분류 카테고리 클릭 시 해당 대분류 id를 가지고 필터링 페이지로 !
@@ -21,12 +23,18 @@ import axios from "axios";
 export default function Trade() {
 
   const [ isClient, setIsClient ] = useState(false);
-  const { postId, setPostId, postTitle, setPostTitle } = useTradeStore();
+
+  const  [tradeId, setTradeId] = useState<number>(0);
+
+  const [recommendList, setRecommendList] = useState<any[]>([]);
+
+  
 
   const fastAPIURL = "http://localhost:8000";
 
   async function getRecommend() {
 
+    
 
     try {
       const data :any = {
@@ -34,7 +42,12 @@ export default function Trade() {
       };
 
       const res = await axios.post(fastAPIURL + "/api/recommend", data); 
-      console.log(res);
+      console.log(res.data)
+      console.log(res.data[0]);
+
+      setRecommendList(res.data);
+      console.log(recommendList)
+
     } catch(err) {
       console.log(err);
     }
@@ -86,7 +99,6 @@ export default function Trade() {
   ];
 
   useEffect(() => {
-    console.log(postId);
 
     if (typeof window !== 'undefined' && window.document) {
       setIsClient(true);
@@ -156,7 +168,6 @@ export default function Trade() {
     </div>
     <Button className="bg-[#5E9FF2] text-white" onClick={()=>{ router.push('/trade/search')}}>검색페이지</Button>
     <Button className="bg-[#5E9FF2] text-white" onClick={()=>{ router.push('/trade/detail/1')}}>디테일페이지</Button>
-    <Button onClick={()=>{getRecommend()}} >추천 목록 보여줘</Button>
 
     {/* <div className="w-[240px] h-[60px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg">
      */}
@@ -313,9 +324,9 @@ export default function Trade() {
         회원님을 위한 추천 상품
       </div>
     </div>
-    {/* 상품 목록 현재 8개 - 추후 swipe로 전개 */}
+    {/* 상품 목록 현재 10개 - 추후 swipe로 전개 */}
     <div className="mt-4 gap-2 grid grid-cols-2 sm:grid-cols-4">
-      {list.map((item, index) => (
+      {recommendList.map((item, index) => (
         <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
           <CardBody className="overflow-visible p-0">
             <Image
@@ -324,7 +335,7 @@ export default function Trade() {
               width="100%"
               alt={item.title}
               className="w-full object-cover h-[140px]"
-              src={item.img}
+              src={item.save_file_name}
             />
           </CardBody>
           <CardFooter className="text-small justify-between">
@@ -335,6 +346,38 @@ export default function Trade() {
       ))}
     </div>
     </div>
+    {/* swipe 적용하기 */}
+    
+    <Swiper
+      slidesPerView={2} // 두 개의 슬라이드를 보이도록 설정
+      spaceBetween={20} // 슬라이드 간 간격 설정
+      pagination={true}
+      className="mt-4"
+      style={{ width: "100%", height: "100%" }}
+      direction="horizontal"
+    >
+    {recommendList.map((item, index) => (
+    <SwiperSlide key={index}>
+        <Card shadow="md" isPressable onPress={() => setTradeId(item.trade_id)}>
+          <CardBody className="overflow-visible p-0">
+            <Image
+              shadow="sm"
+              radius="lg"
+              width="100%"
+              alt={item.title}
+              className=""
+              src={item.save_file_name}
+            />
+          </CardBody>
+          <CardFooter className="text-small justify-between">
+            <b>{item.title}</b>
+            <p className="text-default-500">{item.price}</p>
+          </CardFooter>
+        </Card>
+    </SwiperSlide>
+  ))}
+</Swiper>
+    
       </>
       ) : (
         <>
