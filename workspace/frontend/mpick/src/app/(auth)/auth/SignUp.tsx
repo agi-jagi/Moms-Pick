@@ -13,6 +13,9 @@ export default function SignUp() {
   const [userNickName, setUserNickName] = useState<string>("");
   const [isInfoValid, setIsInfoValid] = useState<boolean>(false);
   const [signupStep, setSignupStep] = useState<number>(0);
+  const [userIdCheck, setUserIdCheck] = useState<boolean>(false);
+  const [userNickNameCheck, setUserNickNameCheck] = useState<boolean>(false);
+  const [userEmailVerify, setUserEmailVerify] = useState<boolean>(false);
 
   const isWriteAll = () => {
     if (userId === "") {
@@ -63,6 +66,73 @@ export default function SignUp() {
       });
   };
 
+  const idCheck = () => {
+    if (userId === "") {
+      alert("아이디를 입력해주세요");
+      return;
+    }
+    axios
+      .get(`/api/id-check`, {
+        params: { loginId: userId },
+      })
+      .then((res) => {
+        console.log(res);
+        setUserIdCheck(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const nickNameCheck = () => {
+    if (userNickName === "") {
+      alert("닉네임을 입력해주세요");
+      return;
+    }
+    axios
+      .get("/api/nickname-check", {
+        params: { nickname: userNickName },
+      })
+      .then((res) => {
+        console.log(res);
+        setUserNickNameCheck(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const emailCheck = async () => {
+    if (userEmail === "") {
+      alert("이메일을 입력해주세요");
+      return;
+    }
+    await axios
+      .get("/api/email-check", {
+        params: { email: userEmail },
+      })
+      .then((res) => {
+        console.log(res);
+        verifyEmail();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const verifyEmail = async () => {
+    await axios
+      .post("/api/emails/verification-requests", {
+        params: { email: userEmail },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       <div>
@@ -81,6 +151,10 @@ export default function SignUp() {
               userNickName={userNickName}
               setUserNickName={setUserNickName}
               setIsInfoValid={setIsInfoValid}
+              idCheck={idCheck}
+              nickNameCheck={nickNameCheck}
+              emailCheck={emailCheck}
+              setUserEmailVerify={setUserEmailVerify}
             />
           ) : (
             <AddressSearch />
