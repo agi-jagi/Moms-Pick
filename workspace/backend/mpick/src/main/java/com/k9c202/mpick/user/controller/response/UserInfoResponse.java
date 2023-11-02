@@ -7,25 +7,21 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class JoinUserResponse {
+public class UserInfoResponse {
     // 개발 시 확인할 값들
     // 자주 사용되는 값을 위쪽으로 위치시키기
-    private Long userId;
     private String loginId;
     private String nickname;
     private String email;
     private String status;
-    private LocalDateTime createdDate;
 
     // builder 정의
     @Builder
-    private JoinUserResponse(Long userId, String loginId, String nickname, String email, Integer status, LocalDateTime createdDate) {
-        this.userId = userId;
+    private UserInfoResponse(String loginId, String nickname, String email, Integer status) {
         this.loginId = loginId;
         this.nickname = nickname;
         this.email = email;
         this.status = getStatus(status);
-        this.createdDate = createdDate;
     }
 
     private String getStatus(int status) {
@@ -40,14 +36,12 @@ public class JoinUserResponse {
 
     // of
     // builder 사용
-    public static JoinUserResponse of(User user) {
-        return JoinUserResponse.builder()
-                .userId(user.getId())
+    public static UserInfoResponse of(User user) {
+        return UserInfoResponse.builder()
                 .loginId(user.getLoginId())
                 .nickname(user.getNickname())
                 .email(user.getEmail())
                 .status(user.getStatus())
-                .createdDate(user.getCreatedDate())
                 .build();
     }
 

@@ -28,6 +28,9 @@ public class JoinUserRequest {
     private String email;
 
     // to
+    // 객체 생성 시 생성자 또는 builder를 사용
+    // 생성자 또는 builder를 사용하는 함수 정의
+    // 반환타입(UserDto) 함수이름(toUserDto)
     public UserDto toUserDto() {
         return UserDto.builder()
                 .loginId(this.loginId)
