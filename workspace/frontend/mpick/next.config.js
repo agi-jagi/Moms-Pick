@@ -13,4 +13,12 @@ module.exports = withPWA({
   env: {
     KAKAOMAP_APPKEY: "a7d4463b676b95709da00fcec2cdfbc1",
   },
+  async rewrites() {
+    return [
+      {
+        source: "/:path*",
+        destination: "http://localhost:5000/:path*",
+      },
+    ];
+  },
 });

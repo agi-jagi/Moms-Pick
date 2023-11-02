@@ -1,22 +1,22 @@
 package com.k9c202.mpick.trade.service;
 
+import com.k9c202.mpick.trade.controller.component.ImageSaveForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
-import com.k9c202.mpick.trade.entity.Category;
-import com.k9c202.mpick.trade.entity.Trade;
-import com.k9c202.mpick.trade.entity.TradeStatus;
-import com.k9c202.mpick.trade.repository.CategoryQueryRepository;
-import com.k9c202.mpick.trade.repository.TradeQueryRepository;
-import com.k9c202.mpick.trade.repository.TradeRepository;
+import com.k9c202.mpick.trade.entity.*;
+import com.k9c202.mpick.trade.repository.*;
+import com.k9c202.mpick.trade.util.FileStoreUtil;
 import com.k9c202.mpick.user.entity.User;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -38,6 +38,14 @@ public class TradeService {
     @Autowired
     private final CategoryQueryRepository categoryQueryRepository;
 
+    private final TradeImageRepository tradeImageRepository;
+
+    private final TradeMonthRepository tradeMonthRepository;
+
+    private final BabyMonthRepository babyMonthRepository;
+
+    private final FileStoreUtil fileStoreUtil;
+
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
         TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
@@ -47,7 +55,7 @@ public class TradeService {
         return result;
     }
 
-    public Long tradeAdd(TradeAddRequest request) {
+    public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles) {
 
         Optional<User> userOptional = userRepository.findOneByLoginId(request.getLoginId());
 
@@ -68,6 +76,33 @@ public class TradeService {
                 .build();
 
         Long tradeId = tradeRepository.save(trade).getId();
+
+        List<ImageSaveForm> imageSaveForms = new ArrayList<>();
+
+        imageSaveForms = fileStoreUtil.uploadFiles("tradeImg", multipartFiles);
+
+        for (ImageSaveForm imageSaveForm : imageSaveForms) {
+            tradeImageRepository.save(
+                    TradeImage.builder()
+                            .trade(trade)
+                            .uploadFileName(imageSaveForm.getUploadFileName())
+                            .saveFileName(imageSaveForm.getSaveFileName())
+                            .sequence(imageSaveForm.getSequence())
+                            .build()
+            );
+        }
+
+        for (Integer startMonth : request.getStartMonths()) {
+            BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth);
+
+            tradeMonthRepository.save(
+                    TradeMonth.builder()
+                            .trade(trade)
+                            .babyMonth(babyMonth)
+                            .build()
+            );
+        }
+
 
         return tradeId;
     }

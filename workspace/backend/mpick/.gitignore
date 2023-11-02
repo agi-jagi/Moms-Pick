@@ -7,6 +7,7 @@ logs/
 !**/src/test/**/build/
 src/main/resources/application-db.yml
 src/main/resources/application-email.yml
+src/main/resources/application.yml
 
 ### STS ###
 .apt_generated

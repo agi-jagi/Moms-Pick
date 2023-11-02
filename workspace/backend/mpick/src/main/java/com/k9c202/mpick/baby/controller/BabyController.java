@@ -17,9 +17,9 @@ public class BabyController {
     //추가
     @PostMapping
     @Operation(summary = "아기 추가", description = "아기 추가")
-    public CommonResponse<String> addChild(){
+    public CommonResponse<String> addChild(@RequestBody BabyDto babyDto){
 
-        return CommonResponse.OK("yes");
+        return CommonResponse.OK(babyService.add(babyDto));
     }
     //삭제
     @DeleteMapping
