@@ -7,9 +7,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ImageSaveForm {
 
-    private String uploadFileName;
-
     private String saveFileName;
-
-    private Integer sequence;
 }

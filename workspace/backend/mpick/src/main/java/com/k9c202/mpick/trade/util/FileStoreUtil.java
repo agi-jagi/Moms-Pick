@@ -17,6 +17,8 @@ import java.util.List;
 @Component
 public class FileStoreUtil {
 
+
+
     private final String currentPath = System.getProperty("user.dir");
 
     /**
@@ -56,9 +58,7 @@ public class FileStoreUtil {
             }
 
             ImageSaveForm imageSaveForm = ImageSaveForm.builder()
-                            .uploadFileName(originalFileName)
                             .saveFileName(uploadFileUrl)
-                            .sequence(seq++)
                             .build();
 
             imageSaveForms.add(imageSaveForm);
