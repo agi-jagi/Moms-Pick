@@ -85,12 +85,12 @@ export default function MonthInfoLayout({ children }: { children: React.ReactNod
         </Box>
         <Box sx={{ width: "48%" }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">용품 선택</InputLabel>
+            <InputLabel id="demo-simple-select-label">카테고리</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={article}
-              label="용품 선택"
+              label="카테고리"
               onChange={articleChange}
             >
               {articleList.map((article, index) => (
