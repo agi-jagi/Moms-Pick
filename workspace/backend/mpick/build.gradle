@@ -57,7 +57,7 @@ dependencies {
 
 	// email
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'
-	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
