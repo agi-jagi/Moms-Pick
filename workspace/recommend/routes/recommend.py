@@ -31,8 +31,8 @@ async def get_recommend_list(RecommendRequest: RecommendRequest):
         dummy_result.append(
             {
                 'trade_id' : i,
-                'nickname' : '네즈코',
-                'title' : '벽력일섬',
+                'nickname' : '네즈코' + str(i),
+                'title' : '벽력일섬' + str(i),
                 'price' : 100000,
                 'save_file_name' : 'https://data.onnada.com/character/202105/3731841375_83bd7463_1.PNG'
             }

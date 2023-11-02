@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 //@Builder
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
-    // 일단 Long 타입으로 설정하고 테스트 (UUID 수정하거나)
-    @Column(name = "user_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment, IDENTITY는 기본키 생성을 DB에 위임
+    @Column(name = "user_id")   // 컬럼명 따로 지정
     private Long id;
 
+    // 중복/null값/수정 허용 여부, 길이제한
     @Column(unique = true, nullable = false, updatable = false, length = 20)
     private String loginId;
 

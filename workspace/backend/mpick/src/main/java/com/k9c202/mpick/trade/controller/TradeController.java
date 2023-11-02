@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.awt.print.Pageable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class TradeController {
     @PostMapping(value = "/item", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public CommonResponse<Long> tradeAdd(
             @RequestPart(value = "data") TradeAddRequest request,
-            @RequestPart(value = "files") List<MultipartFile> multipartFiles) {
+            @RequestPart(value = "files") List<MultipartFile> multipartFiles) throws IOException {
 
         Long result = tradeService.tradeAdd(request, multipartFiles);
 
