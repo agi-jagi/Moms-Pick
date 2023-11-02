@@ -194,7 +194,7 @@ export default function MyFamily() {
             <div className="flex justify-center mt-8">
               <Button
                 onClick={addNewBaby}
-                className="w-11/12"
+                className="w-full"
                 style={{ backgroundColor: "#5E9FF2", color: "white" }}
               >
                 추가

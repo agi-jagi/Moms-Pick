@@ -69,7 +69,7 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
         <div style={{ textAlign: "center" }}>
           <p className="font-bold text-2xl mb-4">아이 정보 수정</p>
         </div>
-        <p className="ml-6 mb-3 font-bold">성별</p>
+        <p className="ml-1 mb-3 font-bold">성별</p>
         <div className="flex gap-8 justify-center items-center mb-5">
           <Button
             variant="bordered"
@@ -96,42 +96,46 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
             <Image src="/girl.png" alt="여자 아기" width={80} height={80}></Image>
           </Button>
         </div>
-        <div className="ml-6 mb-5">
-          <p className="mb-3 font-bold">아이 별명</p>
-          <Input
-            isRequired
-            isClearable
-            label="아이 별명"
-            variant="bordered"
-            className="w-11/12"
-            radius={"sm"}
-            onValueChange={(name) => updateName(name)}
-            value={updateBaby.name}
-          ></Input>
+        <div className="mb-5">
+          <p className="ml-1 mb-3 font-bold">아이 별명</p>
+          <div className="flex justify-center">
+            <Input
+              isRequired
+              isClearable
+              label="아이 별명"
+              variant="bordered"
+              className="w-full"
+              radius={"sm"}
+              onValueChange={(name) => updateName(name)}
+              value={updateBaby.name}
+            ></Input>
+          </div>
         </div>
-        <div className="ml-6">
-          <p className="mb-3 font-bold">태어난 날 (출산 예정일)</p>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="생년월일"
-              disableFuture={true}
-              onChange={(newDate: dayjs.Dayjs | null) => updateBirth(newDate)}
-              format="YYYY-MM-DD"
-              sx={{ width: "91%" }}
-            ></DatePicker>
-          </LocalizationProvider>
+        <div>
+          <p className="ml-1 mb-3 font-bold">태어난 날 (출산 예정일)</p>
+          <div className="flex justify-center">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="생년월일"
+                disableFuture={true}
+                onChange={(newDate: dayjs.Dayjs | null) => updateBirth(newDate)}
+                format="YYYY-MM-DD"
+                sx={{ width: "100%" }}
+              ></DatePicker>
+            </LocalizationProvider>
+          </div>
         </div>
         <div className="flex justify-center mt-8">
           <Button
             onClick={handleDelete}
-            className="mr-4 w-32"
+            className="mr-4 w-36"
             style={{ backgroundColor: "#F85D5D", color: "white" }}
           >
             삭제
           </Button>
           <Button
             onClick={saveChanges}
-            className="w-32"
+            className="w-36"
             style={{ backgroundColor: "#5E9FF2", color: "white" }}
           >
             저장
