@@ -15,15 +15,15 @@ import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import BabyForm from "../auth/(component)/BabyForm";
-import UpdateBabyInfo from "../auth/(component)/UpdateBabyInfo";
+import BabyForm from "./(component)/BabyForm";
+import UpdateBabyInfo from "./(component)/UpdateBabyInfo";
 
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: "100%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -189,82 +189,16 @@ export default function MyFamily() {
               nameInput={nameInput}
               birthInput={birthInput}
               newBaby={newBaby}
+              closeModal={closeModal}
             ></BabyForm>
-            {/* <p
-              style={{
-                marginLeft: "8%",
-                marginBottom: "3%",
-                fontWeight: "bold",
-              }}
-            >
-              성별
-            </p>
-            <div
-              style={{
-                display: "flex",
-                gap: "10%",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: "5%",
-              }}
-            >
-              <Button
-                variant="bordered"
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  padding: "5%",
-                  backgroundColor: newBaby.gender === "M" ? "#D0F0FD" : "transparent",
-                }}
-                onClick={() => genderSelected("M")}
-              >
-                <Image src="/boy.png" alt="남자 아기" width={80} height={80}></Image>
-              </Button>
-              <Button
-                variant="bordered"
-                style={{
-                  width: "30%",
-                  height: "100%",
-                  padding: "5%",
-                  backgroundColor: newBaby.gender === "F" ? "#FDD0EF" : "transparent",
-                }}
-                onClick={() => genderSelected("F")}
-              >
-                <Image src="/girl.png" alt="여자 아기" width={80} height={80}></Image>
-              </Button>
-            </div>
-
-            <div style={{ marginLeft: "8%", marginBottom: "5%" }}>
-              <p style={{ marginBottom: "3%", fontWeight: "bold" }}>아이 별명</p>
-              <Input
-                isRequired
-                isClearable
-                label="아이 별명"
-                variant="bordered"
-                className="w-11/12"
-                radius={"sm"}
-                onValueChange={(name) => nameInput(name)}
-                value={newBaby.name}
-              ></Input>
-            </div>
-
-            <div style={{ marginLeft: "8%" }}>
-              <p style={{ marginBottom: "3%", fontWeight: "bold" }}>태어난 날 (출산 예정일)</p>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="생년월일"
-                  disableFuture={true}
-                  onChange={(newDate: dayjs.Dayjs | null) => birthInput(newDate)}
-                  format="YYYY-MM-DD"
-                  sx={{ width: "91%" }}
-                ></DatePicker>
-              </LocalizationProvider>
-            </div> */}
             <div className="flex justify-center mt-8">
-              <Button onClick={closeModal} className="mr-4">
-                닫기
+              <Button
+                onClick={addNewBaby}
+                className="w-11/12"
+                style={{ backgroundColor: "#5E9FF2", color: "white" }}
+              >
+                추가
               </Button>
-              <Button onClick={addNewBaby}>추가</Button>
             </div>
           </div>
         </Box>

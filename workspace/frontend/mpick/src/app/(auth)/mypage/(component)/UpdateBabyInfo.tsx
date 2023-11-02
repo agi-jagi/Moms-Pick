@@ -4,8 +4,6 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import Image from "next/image";
-import boy from "../../../../../public/boy.png";
-import girl from "../../../../../public/girl.png";
 import { Button, Input } from "@nextui-org/react";
 import { AiOutlineClose } from "react-icons/ai";
 
@@ -65,11 +63,11 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
-        <div className="flex justify-end mb-5" onClick={onClose}>
+        <div className="flex justify-end mb-3" onClick={onClose}>
           <AiOutlineClose style={{ fontSize: "180%" }} />
         </div>
         <div style={{ textAlign: "center" }}>
-          <p className="font-bold text-xl mb-4">아이 정보 수정</p>
+          <p className="font-bold text-2xl mb-4">아이 정보 수정</p>
         </div>
         <p className="ml-6 mb-3 font-bold">성별</p>
         <div className="flex gap-8 justify-center items-center mb-5">
