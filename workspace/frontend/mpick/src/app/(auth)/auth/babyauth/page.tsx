@@ -67,60 +67,27 @@ export default function BabyAuth() {
 
   return (
     <div>
-      <h1
-        style={{
-          fontSize: "140%",
-          fontWeight: "bold",
-          marginBottom: "5%",
-          textAlign: "center",
-        }}
-      >
-        아이 정보 입력
-      </h1>
+      <h1 className="font-bold mb-4 text-center text-2xl">아이 정보 입력</h1>
 
       {babyList.map((baby: BabyInfo, index: number) => (
         <div key={index}>
-          <div style={{ display: "flex", marginLeft: "2%" }}>
-            <span onClick={() => handleToggle(index)} style={{ cursor: "pointer" }}>
+          <div className="flex ml-1">
+            <span onClick={() => handleToggle(index)}>
               {baby.isFolded ? (
-                <AiFillCaretUp style={{ fontSize: "150%" }} />
+                <AiFillCaretUp className="text-2xl" />
               ) : (
-                <AiFillCaretDown style={{ fontSize: "150%" }} />
+                <AiFillCaretDown className="text-2xl" />
               )}
             </span>
             <span>{index + 1}번째 아기</span>
           </div>
           {!baby.isFolded && (
             <div>
-              <span
-                onClick={() => deleteInfo(index)}
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  marginRight: "1%",
-                  marginBottom: "1%",
-                }}
-              >
-                <AiFillMinusCircle style={{ fontSize: "180%" }} />
+              <span onClick={() => deleteInfo(index)} className="flex justify-end mr-2 mb-2">
+                <AiFillMinusCircle className="text-2xl" />
               </span>
-              <p
-                style={{
-                  marginLeft: "8%",
-                  marginBottom: "3%",
-                  fontWeight: "bold",
-                }}
-              >
-                성별
-              </p>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: "5%",
-                }}
-              >
+              <p className="ml-5 mb-3 font-bold">성별</p>
+              <div className="flex gap-10 justify-center items-center mb-5">
                 <Button
                   variant="bordered"
                   style={{
@@ -146,76 +113,54 @@ export default function BabyAuth() {
                   <Image src="/girl.png" alt="여자 아기" width={80} height={80}></Image>
                 </Button>
               </div>
-              <div style={{ marginLeft: "8%", marginBottom: "5%" }}>
-                <p style={{ marginBottom: "3%", fontWeight: "bold" }}>아이 별명</p>
-                <Input
-                  isRequired
-                  isClearable
-                  label="아이 별명"
-                  variant="bordered"
-                  className="w-11/12"
-                  radius={"sm"}
-                  onValueChange={(name) => babyNameInput(index, name)}
-                  value={baby.babyName}
-                ></Input>
+              <div className="mb-5">
+                <p className="ml-5 mb-3 font-bold">아이 별명</p>
+                <div className="flex justify-center">
+                  <Input
+                    isRequired
+                    isClearable
+                    label="아이 별명"
+                    variant="bordered"
+                    className="w-11/12"
+                    radius={"sm"}
+                    onValueChange={(name) => babyNameInput(index, name)}
+                    value={baby.babyName}
+                  ></Input>
+                </div>
               </div>
 
-              <div style={{ marginLeft: "8%" }}>
-                <p style={{ marginBottom: "3%", fontWeight: "bold" }}>태어난 날 (출산 예정일)</p>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="생년월일"
-                    disableFuture={true}
-                    onChange={(newDate: dayjs.Dayjs | null) => babyBirthInput(index, newDate)}
-                    format="YYYY-MM-DD"
-                    sx={{ width: "91%" }}
-                  ></DatePicker>
-                </LocalizationProvider>
+              <div>
+                <p className="ml-5 mb-3 font-bold">태어난 날 (출산 예정일)</p>
+                <div className="flex justify-center">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="생년월일"
+                      disableFuture={true}
+                      onChange={(newDate: dayjs.Dayjs | null) => babyBirthInput(index, newDate)}
+                      format="YYYY-MM-DD"
+                      sx={{ width: "91%" }}
+                    ></DatePicker>
+                  </LocalizationProvider>
+                </div>
               </div>
             </div>
           )}
-
-          {/* <div
-            style={{
-              border: "1px solid #333",
-              marginBottom: "5%",
-              marginTop: "5%",
-            }}
-          ></div> */}
-          <hr style={{ marginTop: "5%", marginBottom: "5%" }}></hr>
+          <hr className="mt-5 mb-5"></hr>
         </div>
       ))}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "10%",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center" }}>
-          {babyList.length < 5 && (
-            <span style={{ fontSize: "140%", fontWeight: "bold" }}>아이가 더 있어요</span>
-          )}
+      <div className="flex justify-center items-center mt-10">
+        <div className="flex items-center">
+          {babyList.length < 5 && <span className="text-2xl font-bold">아이가 더 있어요</span>}
           {babyList.length < 5 && (
             <span onClick={addBabyInfo}>
-              <BiPlusCircle style={{ fontSize: "280%", marginLeft: "5%" }} />
+              <BiPlusCircle className="text-4xl ml-0.5" />
             </span>
           )}
         </div>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "10%",
-        }}
-      >
-        <Button style={{ width: "100%", color: "white", backgroundColor: "#4F9DF6" }}>
-          회원 가입
-        </Button>
+      <div className="flex justify-center mt-10">
+        <Button className="w-11/12 text-white bg-[#5E9FF2] ">회원 가입</Button>
       </div>
     </div>
   );

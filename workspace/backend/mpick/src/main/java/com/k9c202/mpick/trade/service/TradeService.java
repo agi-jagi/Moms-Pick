@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -46,6 +47,8 @@ public class TradeService {
 
     private final FileStoreUtil fileStoreUtil;
 
+    private final S3Service s3Service;
+
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
         TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
@@ -55,7 +58,7 @@ public class TradeService {
         return result;
     }
 
-    public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles) {
+    public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles) throws IOException {
 
         Optional<User> userOptional = userRepository.findOneByLoginId(request.getLoginId());
 
@@ -77,31 +80,59 @@ public class TradeService {
 
         Long tradeId = tradeRepository.save(trade).getId();
 
-        List<ImageSaveForm> imageSaveForms = new ArrayList<>();
+//        List<ImageSaveForm> imageSaveForms = new ArrayList<>();
 
-        imageSaveForms = fileStoreUtil.uploadFiles("tradeImg", multipartFiles);
+//        imageSaveForms = fileStoreUtil.uploadFiles("tradeImg", multipartFiles);
 
-        for (ImageSaveForm imageSaveForm : imageSaveForms) {
+//        for (ImageSaveForm imageSaveForm : imageSaveForms) {
+//            tradeImageRepository.save(
+//                    TradeImage.builder()
+//                            .trade(trade)
+//                            .uploadFileName(imageSaveForm.getUploadFileName())
+//                            .saveFileName(imageSaveForm.getSaveFileName())
+//                            .sequence(imageSaveForm.getSequence())
+//                            .build()
+//            );
+//        }
+
+        List<String> imageSaveUrls = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            imageSaveUrls.add(
+                    s3Service.upload(multipartFile, "static")
+            );
+        }
+
+        Integer seq = 1;
+
+        for (String imageSaveUrl : imageSaveUrls) {
             tradeImageRepository.save(
                     TradeImage.builder()
                             .trade(trade)
-                            .uploadFileName(imageSaveForm.getUploadFileName())
-                            .saveFileName(imageSaveForm.getSaveFileName())
-                            .sequence(imageSaveForm.getSequence())
+                            .saveFileName(imageSaveUrl)
+                            .sequence(seq++)
                             .build()
             );
         }
 
-        for (Integer startMonth : request.getStartMonths()) {
-            BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth);
 
-            tradeMonthRepository.save(
-                    TradeMonth.builder()
-                            .trade(trade)
-                            .babyMonth(babyMonth)
-                            .build()
-            );
+        if (request.getStartMonths() != null) {
+            for (Integer startMonth : request.getStartMonths()) {
+                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth);
+
+                tradeMonthRepository.save(
+                        TradeMonth.builder()
+                                .trade(trade)
+                                .babyMonth(babyMonth)
+                                .build()
+                );
+            }
         }
+        else {
+
+        }
+
+
 
 
         return tradeId;

@@ -35,7 +35,7 @@ const BabyForm: React.FC<BabyFormProps> = ({
       <div style={{ textAlign: "center" }}>
         <p className="font-bold text-2xl mb-4">새로운 가족</p>
       </div>
-      <p className="ml-6 mb-3 font-bold">성별</p>
+      <p className="ml-1 mb-3 font-bold">성별</p>
       <div className="flex gap-8 justify-center items-center mb-5">
         <Button
           variant="bordered"
@@ -65,30 +65,34 @@ const BabyForm: React.FC<BabyFormProps> = ({
         </Button>
       </div>
 
-      <div className="ml-6 mb-5">
-        <p className="mb-3 font-bold">아이 별명</p>
-        <Input
-          isRequired
-          isClearable
-          label="아이 별명"
-          variant="bordered"
-          className="w-11/12"
-          radius={"sm"}
-          onValueChange={(name) => nameInput(name)}
-          value={newBaby.name}
-        ></Input>
+      <div className="mb-5">
+        <p className="ml-1 mb-3 font-bold">아이 별명</p>
+        <div className="flex justify-center">
+          <Input
+            isRequired
+            isClearable
+            label="아이 별명"
+            variant="bordered"
+            className="w-full"
+            radius={"sm"}
+            onValueChange={(name) => nameInput(name)}
+            value={newBaby.name}
+          ></Input>
+        </div>
       </div>
-      <div className="ml-6">
-        <p className="mb-3 font-bold">태어난 날 (출산 예정일)</p>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="생년월일"
-            disableFuture={true}
-            onChange={(newDate: dayjs.Dayjs | null) => birthInput(newDate)}
-            format="YYYY-MM-DD"
-            sx={{ width: "91%" }}
-          ></DatePicker>
-        </LocalizationProvider>
+      <div>
+        <p className="ml-1 mb-3 font-bold">태어난 날 (출산 예정일)</p>
+        <div className="flex justify-center">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="생년월일"
+              disableFuture={true}
+              onChange={(newDate: dayjs.Dayjs | null) => birthInput(newDate)}
+              format="YYYY-MM-DD"
+              sx={{ width: "100%" }}
+            ></DatePicker>
+          </LocalizationProvider>
+        </div>
       </div>
     </div>
   );

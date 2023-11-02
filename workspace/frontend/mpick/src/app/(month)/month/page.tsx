@@ -1,8 +1,5 @@
 "use client";
-import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-// import { Carousel } from "react-responsive-carousel";
-import { MdOutlineFace2 } from "react-icons/md";
 import Link from "next/link";
 import { useMonthStore } from "@/store/MonthStore";
 import { FaCheck } from "react-icons/fa";
@@ -49,26 +46,11 @@ export default function Month() {
         </a>
       </Carousel>
       <br></br>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginLeft: "3%",
-          fontSize: "130%",
-          marginBottom: "3%",
-        }}
-      >
+      <div className="flex justify-center items-center ml-3 text-2xl mb-3">
         <p>알고 싶은 개월 수 선택</p>
         <FaCheck></FaCheck>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="flex flex-wrap justify-center items-center">
         {monthList.map((monthItem: string, index: number) => (
           <div
             key={index}
@@ -91,13 +73,6 @@ export default function Month() {
                   position: "relative",
                 }}
               ></div>
-              {/* <Image
-                src="/month/box1.png"
-                alt={monthItem}
-                width={80}
-                height={80}
-                style={{ width: "100%", height: "100%" }}
-              ></Image> */}
               <div
                 style={{
                   position: "absolute",
@@ -107,33 +82,12 @@ export default function Month() {
                   width: "100%",
                 }}
               >
-                <p style={{ color: "white", fontWeight: "bold" }}>{monthItem}</p>
+                <p className="text-white font-bold text-lg">{monthItem}</p>
               </div>
             </Link>
           </div>
         ))}
       </div>
-      {/* <div
-        onClick={() => alert("임산부 클릭 완료")}
-        style={{
-          position: "absolute",
-          top: "20%",
-          left: "20%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <Image src={box} alt="임산부"></Image>
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <p style={{ color: "white" }}>임산부</p>
-        </div>
-      </div> */}
     </div>
   );
 }
