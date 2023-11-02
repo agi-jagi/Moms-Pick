@@ -179,7 +179,8 @@ export default function Detail(props: any) {
         </div>
       </CardBody>
       <CardFooter className="pt-3">
-        <Button size="lg" fullWidth={true}>
+        <Button className="bg-[#5E9FF2] text-white text-md" size="lg" fullWidth={true}>
+        <PiWechatLogoBold size="24"/>
           채팅하기
         </Button>
       </CardFooter>

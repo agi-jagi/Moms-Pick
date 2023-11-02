@@ -2,9 +2,11 @@
 
 import useStore from "../../../store/useStore";
 import { useTradeStore } from "@/store/TradeStore";
-import { Button, Card, CardFooter, CardHeader, CardBody, Image, Avatar, Input } from "@nextui-org/react";
+import { Button, Card, CardFooter, CardBody, Image, Avatar } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import axios from "axios";
 
 // 대분류 카테고리 클릭 시 해당 대분류 id를 가지고 필터링 페이지로 !
 // 대분류 카테고리 컴포넌트 분리 필요
@@ -20,6 +22,23 @@ export default function Trade() {
 
   const [ isClient, setIsClient ] = useState(false);
   const { postId, setPostId, postTitle, setPostTitle } = useTradeStore();
+
+  const fastAPIURL = "http://localhost:8000";
+
+  async function getRecommend() {
+
+
+    try {
+      const data :any = {
+        user_id: 0,
+      };
+
+      const res = await axios.post(fastAPIURL + "/api/recommend", data); 
+      console.log(res);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
   let router = useRouter();
 
@@ -71,6 +90,7 @@ export default function Trade() {
 
     if (typeof window !== 'undefined' && window.document) {
       setIsClient(true);
+      getRecommend();
     }
 
   },[]);
@@ -134,8 +154,9 @@ export default function Trade() {
       <Avatar isBordered color="danger" src="/nezko.jfif" />
       
     </div>
-    <Button onClick={()=>{ router.push('/trade/search')}}>검색페이지</Button>
-    <Button onClick={()=>{ router.push('/trade/detail/1')}}>디테일페이지</Button>
+    <Button className="bg-[#5E9FF2] text-white" onClick={()=>{ router.push('/trade/search')}}>검색페이지</Button>
+    <Button className="bg-[#5E9FF2] text-white" onClick={()=>{ router.push('/trade/detail/1')}}>디테일페이지</Button>
+    <Button onClick={()=>{getRecommend()}} >추천 목록 보여줘</Button>
 
     {/* <div className="w-[240px] h-[60px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg">
      */}

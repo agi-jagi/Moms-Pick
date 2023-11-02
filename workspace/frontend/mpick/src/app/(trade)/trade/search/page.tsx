@@ -163,7 +163,7 @@ export default function Search() {
     </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onPress={onClose}>
+                <Button className="bg-[#5E9FF2] text-white" onPress={onClose}>
                   적용하기
                 </Button>
               </ModalFooter>
@@ -195,7 +195,7 @@ export default function Search() {
     </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={handleOpen중분류}>
+                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen중분류}>
                   적용하기
                 </Button>
               </ModalFooter>
@@ -226,7 +226,7 @@ export default function Search() {
     </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={handleOpen개월수}>
+                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen개월수}>
                   적용하기
                 </Button>
               </ModalFooter>
