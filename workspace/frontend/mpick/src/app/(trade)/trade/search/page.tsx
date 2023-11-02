@@ -8,6 +8,7 @@ import { Chip, Card, CardFooter, Image, CardBody, Button,
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 
 export default function Search() {
