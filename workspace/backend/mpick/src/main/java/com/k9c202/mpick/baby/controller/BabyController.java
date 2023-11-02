@@ -6,6 +6,7 @@ import com.k9c202.mpick.baby.service.BabyService;
 import com.k9c202.mpick.global.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,13 +18,15 @@ public class BabyController {
     //추가
     @PostMapping
     @Operation(summary = "아기 추가", description = "아기 추가")
-    public CommonResponse<String> addChild(@RequestBody BabyDto babyDto){
-
-        return CommonResponse.OK(babyService.add(babyDto));
+    public CommonResponse<String> addChild(@RequestBody BabyDto babyDto, Authentication authentication){
+        //아기가 5명이 넘으면 안되게 예외 처리를 해줘야함
+        System.out.println(authentication.getName());
+        return CommonResponse.OK(babyService.add(babyDto,authentication.getName()));
     }
     //삭제
     @DeleteMapping
     public CommonResponse deleteChild(){
+
         return CommonResponse.OK("");
     }
 
