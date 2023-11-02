@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    include:
+      - db
+      - swagger
+      - log
+      - email
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # redis 설정
+  data:
+    redis:
+      host:
+        localhost
+      port:
+        6379
+
+
+# Spring 포트번호 5000으로 설정
+server:
+  port: 5000
+
+# jwt
+jwt:
+  # 암호화 키 (https://www.base64encode.org/ 사용해서 임의의 값 넣음)
+  secret: ${jwt.secret}
+  # 유효기간 (1일 설정)
+  token-validity-in-seconds: 86400
+
