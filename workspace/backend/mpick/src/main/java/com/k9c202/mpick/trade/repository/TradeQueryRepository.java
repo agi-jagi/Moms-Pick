@@ -1,5 +1,6 @@
 package com.k9c202.mpick.trade.repository;
 
+import com.k9c202.mpick.trade.controller.component.TradeDetailDto;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
@@ -52,4 +53,19 @@ public class TradeQueryRepository {
         return result;
     }
 
+
+
+    public void increaseViewCount(Long tradeId) {
+        Long updateCnt = queryFactory
+                .update(trade)
+                .set(trade.viewCount, trade.viewCount.add(1))
+                .where(trade.id.eq(tradeId))
+                .execute();
+        return;
+//        Long updateeViewCount = queryFactory
+//                .select(trade.viewCount)
+//                .from(trade)
+//                .where(trade.id.eq(tradeId))
+//                .fetchOne().longValue();
+    }
 }

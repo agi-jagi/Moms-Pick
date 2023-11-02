@@ -17,9 +17,6 @@ import java.util.List;
 public class TradeAddRequest {
 
     @NotEmpty
-    private String loginId;
-
-    @NotEmpty
     private Long categoryId;
 
     //주소 만들어지면 수정해야함
