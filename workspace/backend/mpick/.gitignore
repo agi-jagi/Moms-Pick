@@ -9,6 +9,7 @@ src/main/resources/application-db.yml
 src/main/resources/application-email.yml
 src/main/resources/application.yml
 src/main/resources/application-s3.yml
+src/main/resources/import.sql
 
 ### STS ###
 .apt_generated
