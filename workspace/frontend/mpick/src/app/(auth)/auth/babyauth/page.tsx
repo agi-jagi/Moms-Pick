@@ -78,7 +78,7 @@ export default function BabyAuth() {
         아이 정보 입력
       </h1>
 
-      {babyList.map((baby, index) => (
+      {babyList.map((baby: BabyInfo, index: number) => (
         <div key={index}>
           <div style={{ display: "flex", marginLeft: "2%" }}>
             <span onClick={() => handleToggle(index)} style={{ cursor: "pointer" }}>

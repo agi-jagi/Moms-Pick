@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
 import SignupInfo from "./SignUpInfo";
 import AddressSearch from "./AddressSearch";
+import axios from "axios";
 
 export default function SignUp() {
   const [userId, setUserId] = useState<string>("");
@@ -34,7 +35,8 @@ export default function SignUp() {
       alert("비밀번호가 일치하지 않습니다");
       return;
     }
-    nextStep();
+    // nextStep();
+    signup();
   };
 
   const nextStep = () => {
@@ -45,38 +47,55 @@ export default function SignUp() {
     setSignupStep(signupStep - 1);
   };
 
+  const signup = () => {
+    axios
+      .post("/api/join", {
+        loginId: userId,
+        nickname: userNickName,
+        password: userPw,
+        email: userEmail,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <div style={{ padding: "0 20px" }}>
-      <div
-        className="flex w-full flex-wrap md:flex-nowrap gap-4"
-        style={{ justifyContent: "center" }}
-      >
-        <p className="font-bold text-3xl">회원 정보 입력</p>
-        {signupStep === 0 ? (
-          <SignupInfo
-            userId={userId}
-            setUserId={setUserId}
-            userPw={userPw}
-            setUserPw={setUserPw}
-            userEmail={userEmail}
-            setUserEmail={setUserEmail}
-            userNickName={userNickName}
-            setUserNickName={setUserNickName}
-            setIsInfoValid={setIsInfoValid}
-          />
-        ) : (
-          <AddressSearch />
-        )}
+    <div>
+      <div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <p className="font-bold text-3xl">회원 정보 입력</p>
+        </div>
+        <div style={{ margin: "0 20px" }}>
+          {signupStep === 0 ? (
+            <SignupInfo
+              userId={userId}
+              setUserId={setUserId}
+              userPw={userPw}
+              setUserPw={setUserPw}
+              userEmail={userEmail}
+              setUserEmail={setUserEmail}
+              userNickName={userNickName}
+              setUserNickName={setUserNickName}
+              setIsInfoValid={setIsInfoValid}
+            />
+          ) : (
+            <AddressSearch />
+          )}
+        </div>
         {signupStep === 0 ? (
           <div
             style={{
               width: "100%",
-              margin: "30px",
+              margin: "30px 0",
               padding: "0 20px",
               height: "50px",
               position: "fixed",
               bottom: "0",
-              zIndex: "2",
+              zIndex: "12",
             }}
           >
             <Button
@@ -96,12 +115,12 @@ export default function SignUp() {
           <div
             style={{
               width: "100%",
-              margin: "30px",
+              margin: "30px 0",
               padding: "0 20px",
               height: "50px",
               position: "fixed",
               bottom: "0",
-              zIndex: "2",
+              zIndex: "12",
             }}
             className="flex justify-around"
           >

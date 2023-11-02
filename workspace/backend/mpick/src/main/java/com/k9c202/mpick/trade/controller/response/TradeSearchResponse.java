@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 public class TradeSearchResponse {
 
     @NotEmpty
-    private Integer tradeId;
+    private Long tradeId;
 
     @NotEmpty
     private String nickname;

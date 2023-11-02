@@ -45,11 +45,9 @@ public class Trade {
     private String tradeExplain;
 
     @Column(name = "count")
-    @ColumnDefault("0")
     private Integer wishCount;
 
     @Column
-    @ColumnDefault("0")
     private Integer viewCount;
 
     @Column
@@ -57,11 +55,11 @@ public class Trade {
     private TradeStatus tradeStatus;
 
     @CreationTimestamp
-    @Column(name = "created_date", insertable = false)
+    @Column(name = "created_date")
     private Timestamp tradeCreateDate;
 
     @UpdateTimestamp
-    @Column(name = "update_date", insertable = false)
+    @Column(name = "update_date")
     private Timestamp tradeUpdateDate;
 
     public void increaseViewCount() { this.viewCount++; }

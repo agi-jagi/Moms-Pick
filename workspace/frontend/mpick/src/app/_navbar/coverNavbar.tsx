@@ -6,7 +6,7 @@ export default function CoverNavBar() {
         position: "fixed",
         bottom: "0",
         backgroundColor: "white",
-        zIndex: "1",
+        zIndex: "11",
       }}
     >
       <div

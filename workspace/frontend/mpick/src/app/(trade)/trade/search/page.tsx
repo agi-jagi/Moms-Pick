@@ -2,13 +2,27 @@
 
 import { useTradeStore } from "@/store/TradeStore";
 import { useEffect, useState } from "react";
-import { Chip, Card, CardFooter, Image, CardBody, Button } from "@nextui-org/react";
+import { Chip, Card, CardFooter, Image, CardBody, Button,
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
+  CheckboxGroup, Checkbox } from "@nextui-org/react";
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 
 
 export default function Search() {
+
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [selected대분류, setSelected대분류] = useState<string[]>([]);
+
+  const [중분류open, set중분류Open] = useState(false);
+  const handleOpen중분류 = () => set중분류Open(!중분류open);
+  const [selected중분류, setSelected중분류] = useState<string[]>([]);
+
+  const [개월수open, set개월수Open] = useState(false);
+  const handleOpen개월수 = () => set개월수Open(!개월수open);
+  const [selected개월, setSelected개월] = useState<string[]>([]);
+  
 
   const list = [
     {
@@ -65,6 +79,8 @@ export default function Search() {
         color="default"
         endContent={<BsChevronDown className="mr-1"/>}
         className="shadow-md"
+        onClick={() => onOpen()}
+        
       >
         대분류
       </Chip>
@@ -74,6 +90,7 @@ export default function Search() {
         color="default"
         endContent={<BsChevronDown className="mr-1"/>}
         className="shadow-md"
+        onClick={() => handleOpen중분류()}
       >
         중분류
       </Chip>
@@ -83,6 +100,7 @@ export default function Search() {
         color="default"
         endContent={<BsChevronDown className="mr-1"/>}
         className="shadow-md"
+        onClick={() => handleOpen개월수()}
       >
         개월수
       </Chip>
@@ -121,7 +139,102 @@ export default function Search() {
           </CardFooter>
         </Card>
       ))}
+      
     </div>
+    {/* 대분류 카테고리 모달 */}
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+    <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">카테고리</ModalHeader>
+              <ModalBody>
+              <div className="flex flex-col gap-3">
+      <CheckboxGroup
+        label="대분류"
+        color="primary"
+        value={selected대분류}
+        onValueChange={setSelected대분류}
+      >
+        <Checkbox value="유모차">유모차</Checkbox>
+        <Checkbox value="수유용품">수유용품</Checkbox>
+        <Checkbox value="기저귀">기저귀</Checkbox>
+      </CheckboxGroup>
+      <p className="text-default-500 text-small">선택됨: {selected대분류.join(", ")}</p>
+    </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button className="bg-[#5E9FF2] text-white" onPress={onClose}>
+                  적용하기
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+
+    </Modal>
+
+    {/* 중분류 카테고리 모달 */}
+    <Modal isOpen={중분류open} onOpenChange={handleOpen중분류} >
+    <ModalContent>
+          {() => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">카테고리</ModalHeader>
+              <ModalBody>
+              <div className="flex flex-col gap-3">
+      <CheckboxGroup
+        label="중분류"
+        color="primary"
+        value={selected중분류}
+        onValueChange={setSelected중분류}
+      >
+        <Checkbox value="디럭스형">디럭스형</Checkbox>
+        <Checkbox value="절충형">절충형</Checkbox>
+        <Checkbox value="일반">일반</Checkbox>
+      </CheckboxGroup>
+      <p className="text-default-500 text-small">선택됨: {selected중분류.join(", ")}</p>
+    </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen중분류}>
+                  적용하기
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+
+    </Modal>
+    {/* 개월 카테고리 모달 */}
+    <Modal isOpen={개월수open} onOpenChange={handleOpen개월수} >
+    <ModalContent>
+          {() => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">카테고리</ModalHeader>
+              <ModalBody>
+              <div className="flex flex-col gap-3">
+      <CheckboxGroup
+        label="개월 분류"
+        color="primary"
+        value={selected개월}
+        onValueChange={setSelected개월}
+      >
+        <Checkbox value="1~3개월">1~3개월</Checkbox>
+        <Checkbox value="4~6개월">4~6개월</Checkbox>
+        <Checkbox value="7~9개월">7~9개월</Checkbox>
+      </CheckboxGroup>
+      <p className="text-default-500 text-small">선택됨: {selected개월.join(", ")}</p>
+    </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen개월수}>
+                  적용하기
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+
+    </Modal>
     </>
   )
 }
