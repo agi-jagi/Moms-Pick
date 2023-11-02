@@ -14,20 +14,19 @@ import java.util.Date;
 public class BabyDto {
 
     private Long babyId;
-    private User user;
     private String babyName;
     private String babyGender;
     private Date babyBirth;
     private Integer babyOrder;
 
-    public Baby toEntity(){
+    public Baby toEntity(User user){
         return Baby.builder()
                 .babyId(babyId)
+                .user(user)
                 .babyGender(babyGender)
                 .babyName(babyName)
                 .babyBirth(babyBirth)
                 .babyOrder(babyOrder)
-                .user(user)
                 .build();
     }
 
