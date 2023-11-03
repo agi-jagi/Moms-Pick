@@ -37,5 +37,9 @@ public class BabyController {
         return CommonResponse.OK("");
     }
 
-
+    @GetMapping
+    public CommonResponse<String> test(){
+        System.out.println("1111");
+        return CommonResponse.OK(babyService.test());
+    }
 }
