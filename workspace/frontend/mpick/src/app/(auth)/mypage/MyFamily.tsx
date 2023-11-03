@@ -17,6 +17,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import BabyForm from "./(component)/BabyForm";
 import UpdateBabyInfo from "./(component)/UpdateBabyInfo";
+import instance from "@/app/_config/axios";
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,6 +32,9 @@ const style = {
 };
 
 export default function MyFamily() {
+  const [userNickName, setUserNickName] = useState<string>("");
+  const [userAddress, setUserAddress] = useState<string>("");
+
   const [baby, setBaby] = useState<any>([{ name: "", gender: "", birth: "" }]);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -81,6 +85,30 @@ export default function MyFamily() {
   useEffect(() => {
     const date = new Date();
     const today = date.toLocaleDateString("ko-kr");
+    instance
+      .get("/api/users")
+      .then((res) => {
+        setUserNickName(res.data.response.nickname);
+      })
+      .catch((err) => {});
+    instance
+      .get("/api/users/addresses")
+      .then((res) => {
+        for (let i = 0; res.data.response.length; i++) {
+          if (res.data.response[i].isSet) {
+            const address = res.data.response[i].addressString;
+            const addressSplit = address.split(" ");
+            for (let j = 0; addressSplit.length; j++) {
+              if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
+                setUserAddress(addressSplit[j]);
+              }
+            }
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -103,8 +131,8 @@ export default function MyFamily() {
           />
           <div className="flex items-center ml-8">
             <div>
-              <p className="font-bold text-base">Full Snack Designer</p>
-              <p>기본 위치 : </p>
+              <p className="font-bold text-base">{userNickName}</p>
+              <p>최근 위치 : {userAddress}</p>
             </div>
           </div>
         </div>

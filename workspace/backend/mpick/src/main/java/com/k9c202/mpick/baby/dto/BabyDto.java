@@ -18,6 +18,7 @@ public class BabyDto {
     private String babyGender;
     private Date babyBirth;
     private Integer babyOrder;
+    private String status;
 
     public Baby toEntity(User user){
         return Baby.builder()
@@ -27,6 +28,7 @@ public class BabyDto {
                 .babyName(babyName)
                 .babyBirth(babyBirth)
                 .babyOrder(babyOrder)
+                .status(status)
                 .build();
     }
 
