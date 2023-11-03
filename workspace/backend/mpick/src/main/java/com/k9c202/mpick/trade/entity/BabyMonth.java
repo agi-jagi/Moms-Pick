@@ -18,7 +18,7 @@ public class BabyMonth {
     @Column(name = "baby_month_id")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private Integer startMonth;
 
     @Column

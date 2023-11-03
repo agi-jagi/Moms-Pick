@@ -46,7 +46,7 @@ public class Trade {
     @Column
     private String tradeExplain;
 
-    @Column(name = "count")
+    @Column
     private Long wishCount;
 
     @Column

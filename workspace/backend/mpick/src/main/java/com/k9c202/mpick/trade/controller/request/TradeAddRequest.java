@@ -19,10 +19,6 @@ public class TradeAddRequest {
     @NotEmpty
     private Long categoryId;
 
-    //주소 만들어지면 수정해야함
-    @NotEmpty
-    private Integer addressId;
-
     @NotEmpty
     private String title;
 
