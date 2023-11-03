@@ -7,6 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import axios from "../../../_config/axios";
 import {
   AiFillCaretDown,
   AiFillCaretUp,
@@ -15,6 +16,7 @@ import {
 } from "react-icons/ai";
 
 import { BiPlusCircle } from "react-icons/bi";
+import Link from "next/link";
 
 interface BabyInfo {
   babyName: string;
@@ -65,9 +67,30 @@ export default function BabyAuth() {
     setBabyList(newBaby);
   };
 
+  const registerBaby = async () => {
+    for (let i = 0; i < babyList.length; i++) {
+      const baby = babyList[i];
+
+      if (baby.babyName && baby.birth && baby.gender) {
+        const data = {
+          babyName: baby.babyName,
+          babyBirth: baby.birth,
+          babyGender: baby.gender,
+          babyOrder: i + 1,
+        };
+        try {
+          const response = await axios.post("/api/profiles/child", data);
+          console.log(response.data, "아이 등록 성공");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  };
+
   return (
     <div>
-      <h1 className="font-bold mb-4 text-center text-2xl">아이 정보 입력</h1>
+      {/* <h1 className="font-bold mb-4 text-center text-2xl">아이 정보 입력</h1> */}
 
       {babyList.map((baby: BabyInfo, index: number) => (
         <div key={index}>
@@ -159,8 +182,13 @@ export default function BabyAuth() {
         </div>
       </div>
 
-      <div className="flex justify-center mt-10">
-        <Button className="w-11/12 text-white bg-[#5E9FF2] ">회원 가입</Button>
+      <div className="flex justify-center mt-10 gap-6">
+        <Link href="/trade">
+          <Button className="text-white bg-[#5E9FF2] ">건너뛰기</Button>
+        </Link>
+        <Button className=" text-white bg-[#5E9FF2]" onClick={registerBaby}>
+          등록하기
+        </Button>
       </div>
     </div>
   );

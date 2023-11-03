@@ -1,4 +1,5 @@
 import GoBack from "../GoBack";
+import NavBar from "@/app/_navbar/Navbar";
 
 export default function BabyAuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -11,13 +12,17 @@ export default function BabyAuthLayout({ children }: { children: React.ReactNode
         >
           <GoBack />
           <div className="flex justify-center">
-            <p className="font-bold text-3xl">회원가입</p>
+            <p className="font-bold text-3xl">아이 정보 입력</p>
           </div>
           <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
         </div>
       </div>
 
       {children}
+
+      <div style={{ zIndex: "12" }}>
+        <NavBar></NavBar>
+      </div>
     </>
   );
 }
