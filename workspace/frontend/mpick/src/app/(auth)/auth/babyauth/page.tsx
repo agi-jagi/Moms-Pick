@@ -84,6 +84,8 @@ export default function BabyAuth() {
         } catch (error) {
           console.log(error);
         }
+      } else {
+        alert("아이 정보를 모두 입력해 주세요.");
       }
     }
   };
@@ -158,7 +160,6 @@ export default function BabyAuth() {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="생년월일"
-                      disableFuture={true}
                       onChange={(newDate: dayjs.Dayjs | null) => babyBirthInput(index, newDate)}
                       format="YYYY-MM-DD"
                       sx={{ width: "91%" }}
