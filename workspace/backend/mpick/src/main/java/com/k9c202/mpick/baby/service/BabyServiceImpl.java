@@ -28,28 +28,29 @@ public class BabyServiceImpl implements BabyService{
     public String add(BabyDto babyDto, String userName) {
 
         Baby baby = babyDto.toEntity(commonFunction.loadUser(userName));
-        
+        baby.setStatus("exist");
         babyRepository.save(baby);
         return "success";
     }
 
     @Override
-    public BabyDto delete(int babyId) {
-        return null;
+    public String delete(Long babyId, String userName) {
+
+        Optional<Baby> baby = babyRepository.findById(babyId);
+        if(baby.isPresent() && baby.get().getUser().getLoginId().equals(userName)){
+            baby.get().setStatus("delete");
+            babyRepository.save(baby.get());
+            return "success";
+        }else{
+            return "fail";
+        }
+
     }
 
     @Override
-    public BabyDto modify(BabyRequestDto babyRequestDto) {
+    public String modify(BabyRequestDto babyRequestDto) {
         return null;
     }
 
-    @Override
-    public String test() {
-        System.out.println("2222");
-        ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        System.out.println("3333");
-        values.set("testKey", "test");
-        System.out.println("4444");
-        return (String) values.get("testKey");
-    }
+
 }

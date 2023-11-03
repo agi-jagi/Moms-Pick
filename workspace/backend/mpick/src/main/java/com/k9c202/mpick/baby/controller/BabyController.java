@@ -26,8 +26,9 @@ public class BabyController {
     }
     //삭제
     @DeleteMapping
-    public CommonResponse<String> deleteChild(){
+    public CommonResponse<String> deleteChild(@RequestBody BabyDto babyDto, Authentication authentication){
 
+        babyService.delete(babyDto.getBabyId(), authentication.getName());
         return CommonResponse.OK("success");
     }
 
@@ -37,9 +38,5 @@ public class BabyController {
         return CommonResponse.OK("");
     }
 
-    @GetMapping
-    public CommonResponse<String> test(){
-        System.out.println("1111");
-        return CommonResponse.OK(babyService.test());
-    }
+
 }
