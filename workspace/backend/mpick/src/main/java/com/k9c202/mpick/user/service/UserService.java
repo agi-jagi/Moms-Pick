@@ -1,6 +1,6 @@
 package com.k9c202.mpick.user.service;
 
-import com.k9c202.mpick.user.controller.response.EmailVerificationResult;
+import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;

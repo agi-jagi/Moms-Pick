@@ -1,6 +1,6 @@
 package com.k9c202.mpick.user.service;
 
-import com.k9c202.mpick.user.controller.response.EmailVerificationResult;
+import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
 import com.k9c202.mpick.user.entity.User;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -86,12 +86,12 @@ public class MailService {
     }
 
     // 인증코드 검증
-    public EmailVerificationResult verifiedCode(String email, String authCode) {
+    public EmailVerificationResponse verifiedCode(String email, String authCode) {
         this.checkDuplicatedEmail(email);
         String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
         boolean authResult = redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode);
 
-        return EmailVerificationResult.of(authResult);
+        return EmailVerificationResponse.of(authResult);
     }
 
     // 중복 이메일 체크
