@@ -3,6 +3,8 @@ package com.k9c202.mpick.trade.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.k9c202.mpick.global.function.CommonFunction;
 import com.k9c202.mpick.trade.controller.component.ImageSaveForm;
+import com.k9c202.mpick.trade.controller.component.MainCategoryDto;
+import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
@@ -62,6 +64,8 @@ public class TradeService {
     private final ViewRecordQueryRepository viewRecordQueryRepository;
 
     private final AddressRepository addressRepository;
+
+    private final CategoryRepository categoryRepository;
 
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
@@ -213,4 +217,21 @@ public class TradeService {
         return viewCount + 1;
     }
 
+    public TradeAddCategoryForm getTradeAddCategoryForm() {
+
+        List<MainCategoryDto> mainCategoryList = categoryQueryRepository.findMainCategoryNameAndId();
+
+        TradeAddCategoryForm tradeAddCategoryForm = new TradeAddCategoryForm();
+
+        for (MainCategoryDto mainCategory : mainCategoryList) {
+            String newKey = mainCategory.getCategoryName();
+
+            List<String> subCategoryNames = categoryQueryRepository.findSubCategoryNameByCategoryId(mainCategory.getCategoryId());
+
+            tradeAddCategoryForm.putCategory(newKey, subCategoryNames);
+
+        }
+
+        return tradeAddCategoryForm;
+    }
 }

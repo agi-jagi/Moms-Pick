@@ -1,6 +1,7 @@
 package com.k9c202.mpick.trade.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
+import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
@@ -75,5 +76,11 @@ public class TradeController {
         Long viewCount = tradeService.increaseViewCount(id, authentication.getName());
 
         return CommonResponse.OK(tradeService.tradeDetail(id, authentication.getName(), viewCount));
+    }
+
+    @GetMapping(value = "/item/category")
+    public CommonResponse<TradeAddCategoryForm> tradeAddCategory(Authentication authentication) {
+
+        return CommonResponse.OK(tradeService.getTradeAddCategoryForm());
     }
 }
