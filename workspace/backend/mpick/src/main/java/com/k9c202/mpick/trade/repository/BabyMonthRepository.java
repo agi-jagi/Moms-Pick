@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface BabyMonthRepository extends JpaRepository<BabyMonth, Integer> {
 
-    BabyMonth findByStartMonth(Integer startMonth);
+    Optional<BabyMonth> findByStartMonth(Integer startMonth);
 }
