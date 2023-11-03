@@ -9,6 +9,7 @@ import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import axios from "axios";
 
 
 export default function Search() {
@@ -23,6 +24,35 @@ export default function Search() {
   const [개월수open, set개월수Open] = useState(false);
   const handleOpen개월수 = () => set개월수Open(!개월수open);
   const [selected개월, setSelected개월] = useState<string[]>([]);
+
+
+  // const [ filesImage, setFilesImage ] = useState<File[]>([]);
+
+  // const saveImage = (e :any) => {
+  //   e.preventDefault();
+  //   const files = e.target.files[0];
+  //   if (files) {
+  //     setFilesImage([...filesImage, files]);
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // const sendToImage = async () => {
+  //   if (filesImage) {
+  //     const formData = new FormData();
+  //     formData.append("files", filesImage[0]);
+
+  //     const data :any = {
+  //       categotyId: 0,
+  //       addressId: 0,
+  //       title: "test제목",
+  //       price: 100,
+  //       tradeExplain: "test내용",
+  //       startMonths: [1, 2, 3],
+  //     };
+  //   }
+  // }
   
 
   const list = [
@@ -68,6 +98,37 @@ export default function Search() {
     },
   ];
 
+
+  // 쏴라 ! 등록되는지 sample code
+  // async function test() {
+
+  //   try {
+  //     const data :any = {
+  //       categotyId: 0,
+  //       addressId: 0,
+  //       title: "test제목",
+  //       price: 100,
+  //       tradeExplain: "test내용",
+  //       startMonths: [1, 2, 3],
+  //     };
+
+  //     const testForm=new FormData()
+  //       testForm.append("data",new Blob([JSON.stringify(data)],{type:'application/json'}))
+
+  //     const res = await axios.post("/api/trades/item", testForm, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //         'Content-Type': 'multipart/form-data'
+  //       },
+  //     }); 
+  //     console.log(res.data)
+
+  //   } catch(err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  // 
 
 
   return (
