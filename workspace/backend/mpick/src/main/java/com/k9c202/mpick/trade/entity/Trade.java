@@ -1,5 +1,6 @@
 package com.k9c202.mpick.trade.entity;
 
+import com.k9c202.mpick.user.entity.Address;
 import com.k9c202.mpick.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,8 +33,9 @@ public class Trade {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "address_id")
-    private Integer addressId;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @Column
     private String title;
@@ -68,9 +70,9 @@ public class Trade {
 
     public void decreaseWishCount() { this.wishCount--; }
 
-    public void updateTrade(Category category, Integer addressId, String title, Integer price, String tradeExplain, TradeStatus tradeStatus) {
+    public void updateTrade(Category category, Address address, String title, Integer price, String tradeExplain, TradeStatus tradeStatus) {
         this.category = category;
-        this.addressId = addressId;
+        this.address = address;
         this.title = title;
         this.price = price;
         this.tradeExplain = tradeExplain;

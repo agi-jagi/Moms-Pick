@@ -13,4 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/months")
 public class MonthController {
+
+
 }

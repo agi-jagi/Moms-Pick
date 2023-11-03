@@ -11,7 +11,9 @@ import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.entity.*;
 import com.k9c202.mpick.trade.repository.*;
 import com.k9c202.mpick.trade.util.FileStoreUtil;
+import com.k9c202.mpick.user.entity.Address;
 import com.k9c202.mpick.user.entity.User;
+import com.k9c202.mpick.user.repository.AddressRepository;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +61,8 @@ public class TradeService {
 
     private final ViewRecordQueryRepository viewRecordQueryRepository;
 
+    private final AddressRepository addressRepository;
+
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
         TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
@@ -74,6 +78,9 @@ public class TradeService {
 
         Category category = categoryQueryRepository.findOne(request.getCategoryId());
 
+        Address address = addressRepository.findByUserLoginIdAndIsSet(loginId, true)
+                .orElseThrow(() -> new NotFoundException("찾을 수 없는 주소입니다."));
+
         Trade trade = Trade.builder()
                 .category(category)
                 .price(request.getPrice())
@@ -81,7 +88,7 @@ public class TradeService {
                 .title(request.getTitle())
                 .tradeExplain(request.getTradeExplain())
                 .tradeStatus(TradeStatus.ING)
-                .addressId(request.getAddressId())
+                .address(address)
                 .viewCount(0L)
                 .wishCount(0L)
                 .build();
@@ -111,7 +118,8 @@ public class TradeService {
 
         if (request.getStartMonths() != null) {
             for (Integer startMonth : request.getStartMonths()) {
-                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth);
+                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth)
+                        .orElseThrow(() -> new NotFoundException("해당 월령 카테고리는 존재하지 않습니다."));
 
                 tradeMonthRepository.save(
                         TradeMonth.builder()
@@ -140,7 +148,6 @@ public class TradeService {
 
         BigDecimal userRating = BigDecimal.valueOf(0.0);
 
-
         if (userRatings.size() < 10) {
             userRating = BigDecimal.valueOf(-1.0);
         }
@@ -154,7 +161,7 @@ public class TradeService {
 
         //주소 로직 추가 해야함
         return TradeDetailResponse.builder()
-                .Address("탄지로")
+                .Address(trade.getAddress().getAddressString())
                 .nickname(commonFunction.loadUser(loginId).getNickname())
                 .tradeStatus(trade.getTradeStatus())
                 .price(trade.getPrice())
