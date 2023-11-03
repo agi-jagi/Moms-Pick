@@ -13,6 +13,9 @@ export default function SignUp() {
   const [userNickName, setUserNickName] = useState<string>("");
   const [isInfoValid, setIsInfoValid] = useState<boolean>(false);
   const [signupStep, setSignupStep] = useState<number>(0);
+  const [userIdCheck, setUserIdCheck] = useState<boolean>(false);
+  const [userNickNameCheck, setUserNickNameCheck] = useState<boolean>(false);
+  const [userEmailVerify, setUserEmailVerify] = useState<boolean>(false);
 
   const isWriteAll = () => {
     if (userId === "") {
@@ -33,6 +36,18 @@ export default function SignUp() {
     }
     if (isInfoValid === false) {
       alert("비밀번호가 일치하지 않습니다");
+      return;
+    }
+    if (!userIdCheck) {
+      alert("아이디 중복체크가 필요합니다");
+      return;
+    }
+    if (!userNickNameCheck) {
+      alert("닉네임 중복체크가 필요합니다");
+      return;
+    }
+    if (!userEmailVerify) {
+      alert("이메일 인증이 필요합니다");
       return;
     }
     // nextStep();
@@ -63,6 +78,73 @@ export default function SignUp() {
       });
   };
 
+  const idCheck = () => {
+    if (userId === "") {
+      alert("아이디를 입력해주세요");
+      return;
+    }
+    axios
+      .get(`/api/id-check`, {
+        params: { loginId: userId },
+      })
+      .then((res) => {
+        console.log(res);
+        alert("사용가능한 아이디입니다");
+        setUserIdCheck(res.data.success);
+      })
+      .catch((err) => {
+        alert("이미 사용중인 아이디입니다");
+      });
+  };
+
+  const nickNameCheck = () => {
+    if (userNickName === "") {
+      alert("닉네임을 입력해주세요");
+      return;
+    }
+    axios
+      .get("/api/nickname-check", {
+        params: { nickname: userNickName },
+      })
+      .then((res) => {
+        alert("사용가능한 닉네임입니다");
+        setUserNickNameCheck(res.data.success);
+      })
+      .catch(() => {
+        alert("이미 사용중인 닉네임입니다");
+      });
+  };
+
+  const emailCheck = async () => {
+    if (userEmail === "") {
+      alert("이메일을 입력해주세요");
+      return;
+    }
+    await axios
+      .get("/api/email-check", {
+        params: { email: userEmail },
+      })
+      .then(() => {
+        verifyEmail();
+      })
+      .catch(() => {
+        alert("이미 가입된 이메일입니다");
+      });
+  };
+
+  const verifyEmail = async () => {
+    await axios
+      .post("/api/emails/verification-request", {
+        params: { email: userEmail },
+      })
+      .then(() => {
+        console.log("메일 전송 완료");
+      })
+      .catch(() => {
+        alert("메일 전송 실패");
+      });
+  };
+
   return (
     <div>
       <div>
@@ -81,6 +163,10 @@ export default function SignUp() {
               userNickName={userNickName}
               setUserNickName={setUserNickName}
               setIsInfoValid={setIsInfoValid}
+              idCheck={idCheck}
+              nickNameCheck={nickNameCheck}
+              emailCheck={emailCheck}
+              setUserEmailVerify={setUserEmailVerify}
             />
           ) : (
             <AddressSearch />

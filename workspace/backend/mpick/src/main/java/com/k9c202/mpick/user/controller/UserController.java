@@ -1,8 +1,9 @@
 package com.k9c202.mpick.user.controller;
 
+import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
-import com.k9c202.mpick.user.controller.response.EmailVerificationResult;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
+import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
 import com.k9c202.mpick.user.service.MailService;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
     /*
     REST ful
@@ -33,8 +34,6 @@ public class UserController {
      */
 
     private final UserService userService;
-    private final MailService mailService;
-
 
     // /api/users 경로로 post요청이 왔을 때 실행될 부분
     // 어떤 타입을 사용할지 모를 때 <?>
@@ -48,7 +47,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/join")
-    public ResponseEntity<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
+    public CommonResponse<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
         // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
         // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
         // log level : trace, debug, info, warning, error
@@ -62,65 +61,59 @@ public class UserController {
 
         // 200일 경우, return ResponseEntity.status(200).body(null);과 동일
         // 예외 처리를 어떻게 할지 정해야 함. 일단 성공인 경우만 적어놓음 (500으로 에러 처리 될 것)
-        return ResponseEntity.ok(response);
+        return CommonResponse.OK(null);
         // 다른 형식 예) return ResponseEntity.status(HttpStatus.CONFLICT).body(userDto);
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+    public CommonResponse<String> login(@RequestBody LoginDto loginDto){
 //        userService.login(loginDto);
 //        return ResponseEntity.ok(null);
         // login 요청시 jwt 토큰을 반환하도록 변경
-        return ResponseEntity.ok(userService.login(loginDto));
+        return CommonResponse.OK(userService.login(loginDto));
     }
+
+    // 회원 정보 조회
+    @GetMapping
+    public CommonResponse<UserInfoResponse> getUserInfo() {
+        return CommonResponse.OK(userService.getUserInfo());
+    }
+
+    // 로그아웃
+
+    // 회원탈퇴
+
+    // 회원 정보 수정
+
+    // 현재 비밀번호 체크
+
+    // 비밀번호 변경
+
 
     // 아이디 중복체크
     @GetMapping("/id-check")
-    public ResponseEntity<?> idCheck(@RequestParam String loginId){
+    public CommonResponse<?> idCheck(@RequestParam String loginId){
         userService.checkDuplicatedLoginId(loginId);
-        return ResponseEntity.ok(null);
+        return CommonResponse.OK(null);
     }
 
     // 닉네임 중복체크
     @GetMapping("/nickname-check")
-    public ResponseEntity<?> nicknameCheck(@RequestParam String nickname){
+    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
         userService.checkDuplicatedNickname(nickname);
-        return ResponseEntity.ok(null);
+        return CommonResponse.OK(null);
     }
 
     // 이메일 중복체크
     @GetMapping("/email-check")
-    public ResponseEntity<?> emailCheck(@RequestParam String email){
+    public CommonResponse<?> emailCheck(@RequestParam String email){
         userService.checkDuplicatedEmail(email);
-        return ResponseEntity.ok(null);
-    }
-
-    // 이메일 인증 코드 발송
-    @PostMapping("/emails/verification-requests")
-//    public ResponseEntity sendMessage(@RequestParam("email") @Valid @CustomEmail String email) {
-    public ResponseEntity<?> sendMessage(@RequestParam("email") @Valid String email) {
-        mailService.sendCodeToEmail(email);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    // 이메일 인증 코드 확인
-    @GetMapping("/emails/verifications")
-//    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid @CustomEmail String email,
-    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid String email,
-                                            @RequestParam("code") String authCode) {
-        EmailVerificationResult response = mailService.verifiedCode(email, authCode);
-
-        return ResponseEntity.ok(response);
+        return CommonResponse.OK(null);
     }
 
 
-    // ㅡㅡ 요청 및 security 확인 시 사용할 test url ㅡㅡ //
-    @GetMapping("/test")
-    public String hello(){
-        return "test";
-    }
+
 
 
 }

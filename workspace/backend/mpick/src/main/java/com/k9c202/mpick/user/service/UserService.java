@@ -1,7 +1,8 @@
 package com.k9c202.mpick.user.service;
 
-import com.k9c202.mpick.user.controller.response.EmailVerificationResult;
+import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
+import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
 import com.k9c202.mpick.user.entity.User;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,6 +112,15 @@ public class UserService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return tokenProvider.createToken(authentication);
+    }
+
+    public UserInfoResponse getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        System.out.println("loginId = " + loginId);
+        User user = userRepository.findOneByLoginId(loginId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return UserInfoResponse.of(user);
     }
 
 }
