@@ -48,7 +48,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/join")
-    public ResponseEntity<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
+    public CommonResponse<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
         // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
         // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
         // log level : trace, debug, info, warning, error
@@ -62,17 +62,17 @@ public class UserController {
 
         // 200일 경우, return ResponseEntity.status(200).body(null);과 동일
         // 예외 처리를 어떻게 할지 정해야 함. 일단 성공인 경우만 적어놓음 (500으로 에러 처리 될 것)
-        return ResponseEntity.ok(response);
+        return CommonResponse.OK(null);
         // 다른 형식 예) return ResponseEntity.status(HttpStatus.CONFLICT).body(userDto);
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+    public CommonResponse<String> login(@RequestBody LoginDto loginDto){
 //        userService.login(loginDto);
 //        return ResponseEntity.ok(null);
         // login 요청시 jwt 토큰을 반환하도록 변경
-        return ResponseEntity.ok(userService.login(loginDto));
+        return CommonResponse.OK(userService.login(loginDto));
     }
 
     // 회원 정보 조회
@@ -94,23 +94,23 @@ public class UserController {
 
     // 아이디 중복체크
     @GetMapping("/id-check")
-    public ResponseEntity<?> idCheck(@RequestParam String loginId){
+    public CommonResponse<?> idCheck(@RequestParam String loginId){
         userService.checkDuplicatedLoginId(loginId);
-        return ResponseEntity.ok(null);
+        return CommonResponse.OK(null);
     }
 
     // 닉네임 중복체크
     @GetMapping("/nickname-check")
-    public ResponseEntity<?> nicknameCheck(@RequestParam String nickname){
+    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
         userService.checkDuplicatedNickname(nickname);
-        return ResponseEntity.ok(null);
+        return CommonResponse.OK(null);
     }
 
     // 이메일 중복체크
     @GetMapping("/email-check")
-    public ResponseEntity<?> emailCheck(@RequestParam String email){
+    public CommonResponse<?> emailCheck(@RequestParam String email){
         userService.checkDuplicatedEmail(email);
-        return ResponseEntity.ok(null);
+        return CommonResponse.OK(null);
     }
 
 

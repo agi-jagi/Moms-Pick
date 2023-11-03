@@ -4,16 +4,16 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class EmailVerificationResult {
+public class EmailVerificationResponse {
     private boolean isSucceeded;
 
     @Builder
-    private EmailVerificationResult(boolean isSucceeded) {
+    private EmailVerificationResponse(boolean isSucceeded) {
         this.isSucceeded = isSucceeded;
     }
 
-    public static EmailVerificationResult of(boolean authResult) {
-        return EmailVerificationResult.builder()
+    public static EmailVerificationResponse of(boolean authResult) {
+        return EmailVerificationResponse.builder()
                 .isSucceeded(authResult)
                 .build();
     }
