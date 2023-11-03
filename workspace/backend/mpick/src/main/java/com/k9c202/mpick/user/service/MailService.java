@@ -34,12 +34,17 @@ public class MailService {
     public void sendEmail(String toEmail,
                           String title,
                           String text) {
+        System.out.println("6666");
         SimpleMailMessage emailForm = createEmailForm(toEmail, title, text);
+        System.out.println("77777");
         try {
+            System.out.println("8888");
             emailSender.send(emailForm);
-        } catch (RuntimeException e) {
+            System.out.println("9999");
+        } catch (Exception e) {
             log.debug("MailService.sendEmail exception occur toEmail: {}, " +
                     "title: {}, text: {}", toEmail, title, text);
+            e.printStackTrace();
 //            throw new BusinessLogicException(ExceptionCode.UNABLE_TO_SEND_EMAIL);
             throw new RuntimeException("email을 전송할 수 없습니다.");
         }
@@ -76,13 +81,20 @@ public class MailService {
 
     // 인증코드 전송
     public void sendCodeToEmail(String toEmail) {
+        System.out.println("11111");
         this.checkDuplicatedEmail(toEmail);
+        System.out.println("33333");
         String title = "맘스픽 이메일 인증 번호";
+        System.out.println("44444");
         String authCode = createCode();
+        System.out.println("55555");
         sendEmail(toEmail, title, authCode);
+        System.out.println("101010");
+
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
         redisService.setValues(AUTH_CODE_PREFIX + toEmail,
                 authCode, Duration.ofMillis(this.authCodeExpirationMillis));
+        System.out.println("11-11-11");
     }
 
     // 인증코드 검증
@@ -97,6 +109,7 @@ public class MailService {
     // 중복 이메일 체크
     private void checkDuplicatedEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
+        System.out.println("222222");
         if (user.isPresent()) {
             log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
 //            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
