@@ -75,6 +75,7 @@ public class MailService {
             for (int i = 0; i < length; i++) {
                 System.out.println("createCode: 5555");
                 builder.append(random.nextInt(10));
+                System.out.println(builder.toString());
             }
             System.out.println("createCode: 6666");
             return builder.toString();
