@@ -38,6 +38,18 @@ export default function SignUp() {
       alert("비밀번호가 일치하지 않습니다");
       return;
     }
+    if (!userIdCheck) {
+      alert("아이디 중복체크가 필요합니다");
+      return;
+    }
+    if (!userNickNameCheck) {
+      alert("닉네임 중복체크가 필요합니다");
+      return;
+    }
+    if (!userEmailVerify) {
+      alert("이메일 인증이 필요합니다");
+      return;
+    }
     // nextStep();
     signup();
   };
@@ -77,10 +89,11 @@ export default function SignUp() {
       })
       .then((res) => {
         console.log(res);
-        setUserIdCheck(true);
+        alert("사용가능한 아이디입니다");
+        setUserIdCheck(res.data.success);
       })
       .catch((err) => {
-        console.log(err);
+        alert("이미 사용중인 아이디입니다");
       });
   };
 
@@ -94,11 +107,11 @@ export default function SignUp() {
         params: { nickname: userNickName },
       })
       .then((res) => {
-        console.log(res);
-        setUserNickNameCheck(true);
+        alert("사용가능한 닉네임입니다");
+        setUserNickNameCheck(res.data.success);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        alert("이미 사용중인 닉네임입니다");
       });
   };
 
@@ -111,25 +124,24 @@ export default function SignUp() {
       .get("/api/email-check", {
         params: { email: userEmail },
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         verifyEmail();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        alert("이미 가입된 이메일입니다");
       });
   };
 
   const verifyEmail = async () => {
     await axios
-      .post("/api/emails/verification-requests", {
+      .post("/api/emails/verification-request", {
         params: { email: userEmail },
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        console.log("메일 전송 완료");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        alert("메일 전송 실패");
       });
   };
 

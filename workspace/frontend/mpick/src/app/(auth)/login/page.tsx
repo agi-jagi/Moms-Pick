@@ -1,28 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import Image from "next/image";
 import logo from "../../../../public/MOM_s_PICK__2_-removebg-preview.png";
 import axios from "axios";
-import Link from "next/link";
 import instance from "@/app/_config/axios";
 
 export default function Login() {
   const [userId, setUserId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
+  const router = useRouter();
 
   const login = () => {
     axios
-      .post("/api/login", {
+      .post("api/users/login", {
         loginId: userId,
         password: userPw,
       })
       .then((res) => {
-        console.log(res);
         if (typeof window !== "undefined") {
           localStorage.setItem("accessToken", res.data);
+          router.push("/trade");
         }
       })
       .catch((err) => {
@@ -60,11 +61,11 @@ export default function Login() {
             onValueChange={setUserPw}
           />
         </div>
-        <div className="flex flex-row-reverse ">
+        {/* <div className="flex flex-row-reverse ">
           <Link href="/auth">
             <p className="font-bold">회원가입</p>
           </Link>
-        </div>
+        </div> */}
       </div>
       <div
         style={{
@@ -73,7 +74,7 @@ export default function Login() {
           padding: "0 20px",
           height: "50px",
           position: "fixed",
-          bottom: "0",
+          bottom: "50px",
           zIndex: "12",
         }}
       >
@@ -85,9 +86,22 @@ export default function Login() {
           style={{
             width: "100%",
             height: "100%",
+            marginBottom: "15px",
           }}
         >
           <p className="font-bold text-xl">로그인</p>
+        </Button>
+        <Button
+          onClick={() => {
+            router.push("/auth");
+          }}
+          color="default"
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <p className="font-bold text-xl">회원가입</p>
         </Button>
       </div>
     </div>
