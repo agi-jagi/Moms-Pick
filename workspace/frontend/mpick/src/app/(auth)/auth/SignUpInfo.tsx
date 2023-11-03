@@ -35,15 +35,15 @@ export default function SignUpInfo(props: any) {
 
   const certifyEmail = () => {
     axios
-      .get("api/emails/verifications", {
+      .get("/api/emails/verifications", {
         params: { email: props.userEmail, code: certifyPharse },
       })
       .then((res) => {
-        console.log(res);
-        props.setUserEmailVerify(true);
+        alert("이메일 인증 성공");
+        props.setUserEmailVerify(res.data.success);
       })
       .catch((err) => {
-        console.log(err);
+        alert("다시 입력해주세요");
       });
   };
 
