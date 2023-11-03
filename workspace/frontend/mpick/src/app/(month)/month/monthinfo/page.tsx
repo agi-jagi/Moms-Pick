@@ -8,18 +8,18 @@ export default function MonthInfo() {
   const { month, article, setMonth, setArticle } = useMonthStore();
 
   // 컴포넌트가 마운트될 때 localSotrage에서 month 값을 가져옴
-  useEffect(() => {
-    const savedMonth = localStorage.getItem("selectedMonth");
-    if (savedMonth) {
-      setMonth(savedMonth);
-    }
-    setArticle("수유 용품");
-  }, [setArticle, setMonth]);
+  // useEffect(() => {
+  //   const savedMonth = localStorage.getItem("selectedMonth");
+  //   if (savedMonth) {
+  //     setMonth(savedMonth);
+  //   }
+  //   setArticle("수유 용품");
+  // }, [setArticle, setMonth]);
 
-  // month 값이 변경될 때마다 localStorage에 저장
-  useEffect(() => {
-    localStorage.setItem("selectedMonth", month);
-  }, [month]);
+  // // month 값이 변경될 때마다 localStorage에 저장
+  // useEffect(() => {
+  //   localStorage.setItem("selectedMonth", month);
+  // }, [month]);
 
   return (
     <div>
