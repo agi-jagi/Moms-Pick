@@ -26,9 +26,6 @@ public class TradeImage {
     private Trade trade;
 
     @Column
-    private String uploadFileName;
-
-    @Column
     private String saveFileName;
 
     @Column
