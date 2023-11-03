@@ -65,15 +65,22 @@ public class MailService {
     // 인증코드 생성
     private String createCode() {
         int length = 6;
+        System.out.println("createCode: 11111");
         try {
+            System.out.println("createCode: 2222");
             Random random = SecureRandom.getInstanceStrong();
+            System.out.println("createCode: 333");
             StringBuilder builder = new StringBuilder();
+            System.out.println("createCode: 4444");
             for (int i = 0; i < length; i++) {
+                System.out.println("createCode: 5555");
                 builder.append(random.nextInt(10));
             }
+            System.out.println("createCode: 6666");
             return builder.toString();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             log.debug("MemberService.createCode() exception occur");
+            e.printStackTrace();
 //            throw new BusinessLogicException(ExceptionCode.NO_SUCH_ALGORITHM);
             throw new RuntimeException("No such algorithm");
         }
