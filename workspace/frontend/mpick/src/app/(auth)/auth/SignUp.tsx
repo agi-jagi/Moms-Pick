@@ -141,13 +141,12 @@ export default function SignUp() {
 
   const verifyEmail = async () => {
     await axios
-      .post("/api/emails/verification-request", {
-        params: { email: userEmail },
-      })
+      .post(`/api/emails/verification-requests?email=${userEmail}`)
       .then(() => {
         console.log("메일 전송 완료");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         alert("메일 전송 실패");
       });
   };

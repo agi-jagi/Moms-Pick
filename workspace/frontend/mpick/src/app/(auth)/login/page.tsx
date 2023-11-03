@@ -22,7 +22,7 @@ export default function Login() {
       })
       .then((res) => {
         if (typeof window !== "undefined") {
-          localStorage.setItem("accessToken", res.data);
+          localStorage.setItem("accessToken", res.data.response);
           router.push("/trade");
         }
       })
