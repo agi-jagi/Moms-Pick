@@ -1,4 +1,4 @@
-version: "2.4"
+version: "3.0"
 
 services:
 
@@ -6,7 +6,6 @@ services:
     build: ./backend/mpick
     ports:
       - "5000:5000"
-    cpus: 0.5
     
   
   front:
