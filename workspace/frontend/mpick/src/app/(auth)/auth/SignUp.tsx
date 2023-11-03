@@ -2,9 +2,12 @@
 
 import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import SignupInfo from "./SignUpInfo";
 import AddressSearch from "./AddressSearch";
 import axios from "axios";
+import instance from "@/app/_config/axios";
+import Swal from "sweetalert2";
 
 export default function SignUp() {
   const [userId, setUserId] = useState<string>("");
@@ -16,42 +19,83 @@ export default function SignUp() {
   const [userIdCheck, setUserIdCheck] = useState<boolean>(false);
   const [userNickNameCheck, setUserNickNameCheck] = useState<boolean>(false);
   const [userEmailVerify, setUserEmailVerify] = useState<boolean>(false);
+  const [certifyInput, setCertifyInput] = useState<boolean>(false);
+  const [latitude, setLatitude] = useState<any>("");
+  const [longitude, setLongitude] = useState<any>("");
+  const [address, setAddress] = useState<string>("");
+  const router = useRouter();
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
   const isWriteAll = () => {
     if (userId === "") {
-      alert("아이디를 입력해주세요");
+      Toast.fire({
+        icon: "error",
+        title: "아이디를 입력해주세요",
+      });
       return;
     }
     if (userNickName === "") {
-      alert("닉네임을 입력해주세요");
+      Toast.fire({
+        icon: "error",
+        title: "닉네임을 입력해주세요",
+      });
       return;
     }
     if (userPw === "") {
-      alert("비밀번호를 입력해주세요");
+      Toast.fire({
+        icon: "error",
+        title: "비밀번호를 입력해주세요",
+      });
       return;
     }
     if (userEmail === "") {
-      alert("이메일을 입력해주세요");
+      Toast.fire({
+        icon: "error",
+        title: "이메일을 입력해주세요",
+      });
       return;
     }
     if (isInfoValid === false) {
-      alert("비밀번호가 일치하지 않습니다");
+      Toast.fire({
+        icon: "error",
+        title: "비밀번호가 일치하지 않습니다",
+      });
       return;
     }
     if (!userIdCheck) {
-      alert("아이디 중복체크가 필요합니다");
+      Toast.fire({
+        icon: "error",
+        title: '아이디 중복체크가 필요합니다"',
+      });
       return;
     }
     if (!userNickNameCheck) {
-      alert("닉네임 중복체크가 필요합니다");
+      Toast.fire({
+        icon: "error",
+        title: "닉네임 중복체크가 필요합니다",
+      });
       return;
     }
     // if (!userEmailVerify) {
-    //   alert("이메일 인증이 필요합니다");
+    //   Toast.fire({
+    //     icon: 'error',
+    //     title: '이메일 인증이 필요합니다'
+    //   })
     //   return;
     // }
-    // nextStep();
-    signup();
+
+    nextStep();
   };
 
   const nextStep = () => {
@@ -63,15 +107,57 @@ export default function SignUp() {
   };
 
   const signup = () => {
+    if (localStorage.getItem("accessToken")) {
+      setUserAddress();
+    } else {
+      axios
+        .post("/api/users/join", {
+          loginId: userId,
+          nickname: userNickName,
+          password: userPw,
+          email: userEmail,
+        })
+        .then((res) => {
+          getToken();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const getToken = () => {
     axios
-      .post("/api/users/join", {
+      .post("api/users/login", {
         loginId: userId,
-        nickname: userNickName,
         password: userPw,
-        email: userEmail,
       })
       .then((res) => {
-        console.log(res);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("accessToken", res.data.response);
+          setUserAddress();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const setUserAddress = () => {
+    instance
+      .post("/api/users/addresses", {
+        latitude: latitude,
+        longitude: longitude,
+        addressName: address,
+        addressString: address,
+        isSet: true,
+      })
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "회원가입이 완료되었습니다",
+        });
+        router.push("/auth/babyauth");
       })
       .catch((err) => {
         console.log(err);
@@ -80,7 +166,10 @@ export default function SignUp() {
 
   const idCheck = () => {
     if (userId === "") {
-      alert("아이디를 입력해주세요");
+      Toast.fire({
+        icon: "error",
+        title: "아이디를 입력해주세요",
+      });
       return;
     }
     axios
@@ -89,20 +178,32 @@ export default function SignUp() {
       })
       .then((res) => {
         if (res.data.success) {
-          alert("사용가능한 아이디입니다");
+          Toast.fire({
+            icon: "success",
+            title: "사용가능한 아이디입니다",
+          });
           setUserIdCheck(res.data.success);
         } else {
-          alert("이미 사용중인 아이디입니다");
+          Toast.fire({
+            icon: "error",
+            title: "이미 사용중인 아이디입니다",
+          });
         }
       })
       .catch(() => {
-        alert("네트워크 에러");
+        Toast.fire({
+          icon: "error",
+          title: "네트워크 에러",
+        });
       });
   };
 
   const nickNameCheck = () => {
     if (userNickName === "") {
-      alert("닉네임을 입력해주세요");
+      Toast.fire({
+        icon: "error",
+        title: "닉네임을 입력해주세요",
+      });
       return;
     }
     axios
@@ -111,20 +212,32 @@ export default function SignUp() {
       })
       .then((res) => {
         if (res.data.success) {
-          alert("사용가능한 닉네임입니다");
+          Toast.fire({
+            icon: "success",
+            title: "사용가능한 닉네임입니다",
+          });
           setUserNickNameCheck(res.data.success);
         } else {
-          alert("이미 사용중인 닉네임입니다");
+          Toast.fire({
+            icon: "error",
+            title: "이미 사용중인 닉네임입니다",
+          });
         }
       })
       .catch(() => {
-        alert("네트워크 에러");
+        Toast.fire({
+          icon: "error",
+          title: "네트워크 에러",
+        });
       });
   };
 
   const emailCheck = async () => {
     if (userEmail === "") {
-      alert("이메일을 입력해주세요");
+      Toast.fire({
+        icon: "error",
+        title: "이메일을 입력해주세요",
+      });
       return;
     }
     await axios
@@ -133,21 +246,25 @@ export default function SignUp() {
       })
       .then((res) => {
         verifyEmail();
+        setCertifyInput(true);
       })
       .catch(() => {
-        alert("이미 가입된 이메일입니다");
+        Toast.fire({
+          icon: "error",
+          title: "이미 가입된 이메일입니다",
+        });
       });
   };
 
   const verifyEmail = async () => {
     await axios
       .post(`/api/emails/verification-requests?email=${userEmail}`)
-      .then(() => {
-        console.log("메일 전송 완료");
-      })
+      .then(() => {})
       .catch((err) => {
-        console.log(err);
-        alert("메일 전송 실패");
+        Toast.fire({
+          icon: "error",
+          title: "메일 전송 실패",
+        });
       });
   };
 
@@ -173,9 +290,15 @@ export default function SignUp() {
               nickNameCheck={nickNameCheck}
               emailCheck={emailCheck}
               setUserEmailVerify={setUserEmailVerify}
+              certifyInput={certifyInput}
             />
           ) : (
-            <AddressSearch />
+            <AddressSearch
+              setLatitude={setLatitude}
+              setLongitude={setLongitude}
+              address={address}
+              setAddress={setAddress}
+            />
           )}
         </div>
         {signupStep === 0 ? (
@@ -230,7 +353,7 @@ export default function SignUp() {
             </Button>
             <Button
               onClick={() => {
-                nextStep();
+                signup();
               }}
               color="primary"
               style={{
@@ -238,7 +361,7 @@ export default function SignUp() {
                 height: "100%",
               }}
             >
-              <p className="font-bold text-xl">다음</p>
+              <p className="font-bold text-xl">회원가입</p>
             </Button>
           </div>
         )}

@@ -137,26 +137,44 @@ export default function SignUpInfo(props: any) {
           <p className="font-bold text-base">본인인증</p>
         </Button>
       </div>
-      <div className="flex justify-center" style={{ width: "100%", marginTop: "20px" }}>
-        <Input
-          isRequired
-          label="인증번호"
-          variant="bordered"
-          fullWidth
-          className="w-full"
-          onValueChange={setCertifyPharse}
-          defaultValue={certifyPharse}
-        />
-        <Button
-          onClick={() => {
-            certifyEmail();
-          }}
-          color="primary"
-          style={{ height: "56px" }}
-        >
-          <p className="font-bold text-base">인증</p>
-        </Button>
-      </div>
+      {props.certifyInput ? (
+        <div className="flex justify-center" style={{ width: "100%", marginTop: "20px" }}>
+          <Input
+            isRequired
+            label="인증번호"
+            variant="bordered"
+            fullWidth
+            className="w-full"
+            onValueChange={setCertifyPharse}
+            defaultValue={certifyPharse}
+          />
+          <Button
+            onClick={() => {
+              certifyEmail();
+            }}
+            color="primary"
+            style={{ height: "56px" }}
+          >
+            <p className="font-bold text-base">인증</p>
+          </Button>
+        </div>
+      ) : (
+        <div className="flex justify-center" style={{ width: "100%", marginTop: "20px" }}>
+          <Input
+            isDisabled
+            isRequired
+            label="인증번호"
+            variant="bordered"
+            fullWidth
+            className="w-full"
+            onValueChange={setCertifyPharse}
+            defaultValue={certifyPharse}
+          />
+          <Button isDisabled color="primary" style={{ height: "56px" }}>
+            <p className="font-bold text-base">인증</p>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
