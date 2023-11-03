@@ -49,6 +49,7 @@ public class CategoryQueryRepository {
                                 category.categoryName))
                 .from(category)
                 .where(category.categoryId2.isNull())
+                .orderBy(category.id.asc())
                 .fetch();
 
         return result;
@@ -62,5 +63,28 @@ public class CategoryQueryRepository {
                 .fetch();
 
         return result;
+    }
+
+    public Category findCategoryByMainCategoryNameAndSubCategoryName(String mainCategory, String subCategory) {
+        if (subCategory == null) {
+            return queryFactory
+                    .select(category)
+                    .from(category)
+                    .where(
+                            category.id.isNull(),
+                            category.categoryName.eq(mainCategory)
+                    )
+                    .fetchOne();
+        } else {
+            return queryFactory
+                    .select(category)
+                    .from(category)
+                    .where(
+                            category.id.isNotNull(),
+                            category.categoryName.eq(subCategory)
+                    )
+                    .fetchOne();
+        }
+
     }
 }

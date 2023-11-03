@@ -80,7 +80,7 @@ public class TradeService {
     // 주소 로직 추가해야함
     public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles, String loginId) throws IOException {
 
-        Category category = categoryQueryRepository.findOne(request.getCategoryId());
+        Category category = categoryQueryRepository.findCategoryByMainCategoryNameAndSubCategoryName(request.getMainCategory(), request.getSubCategory());
 
         Address address = addressRepository.findByUserLoginIdAndIsSet(loginId, true)
                 .orElseThrow(() -> new NotFoundException("찾을 수 없는 주소입니다."));
