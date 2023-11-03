@@ -1,6 +1,7 @@
 version: "3.0"
 
 services:
+
   spring:
     build: ./backend/mpick
     ports:
@@ -15,3 +16,9 @@ services:
     build: ./recommend
     ports:
       - "8000:8000"
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports: 
+      - "6379:6379"
+  
