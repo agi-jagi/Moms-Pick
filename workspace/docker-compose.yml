@@ -6,6 +6,7 @@ services:
     build: ./backend/mpick
     ports:
       - "5000:5000"
+    
   
   front:
     build: ./frontend/mpick

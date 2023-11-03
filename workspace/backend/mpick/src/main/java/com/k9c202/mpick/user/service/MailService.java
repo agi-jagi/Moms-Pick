@@ -37,9 +37,10 @@ public class MailService {
         SimpleMailMessage emailForm = createEmailForm(toEmail, title, text);
         try {
             emailSender.send(emailForm);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             log.debug("MailService.sendEmail exception occur toEmail: {}, " +
                     "title: {}, text: {}", toEmail, title, text);
+            e.printStackTrace();
 //            throw new BusinessLogicException(ExceptionCode.UNABLE_TO_SEND_EMAIL);
             throw new RuntimeException("email을 전송할 수 없습니다.");
         }
@@ -61,14 +62,16 @@ public class MailService {
     private String createCode() {
         int length = 6;
         try {
-            Random random = SecureRandom.getInstanceStrong();
+            Random random=new Random();
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < length; i++) {
-                builder.append(random.nextInt(10));
+                builder.append(random.nextInt(10)+1);
+                System.out.println(builder.toString());
             }
             return builder.toString();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             log.debug("MemberService.createCode() exception occur");
+            e.printStackTrace();
 //            throw new BusinessLogicException(ExceptionCode.NO_SUCH_ALGORITHM);
             throw new RuntimeException("No such algorithm");
         }
@@ -80,6 +83,7 @@ public class MailService {
         String title = "맘스픽 이메일 인증 번호";
         String authCode = createCode();
         sendEmail(toEmail, title, authCode);
+
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
         redisService.setValues(AUTH_CODE_PREFIX + toEmail,
                 authCode, Duration.ofMillis(this.authCodeExpirationMillis));
