@@ -45,10 +45,10 @@ public class Trade {
     private String tradeExplain;
 
     @Column(name = "count")
-    private Integer wishCount;
+    private Long wishCount;
 
     @Column
-    private Integer viewCount;
+    private Long viewCount;
 
     @Column
     @Enumerated(EnumType.ORDINAL)

@@ -1,4 +1,4 @@
-package com.k9c202.mpick.trade.controller.response;
+package com.k9c202.mpick.trade.controller.component;
 
 import com.k9c202.mpick.trade.entity.TradeStatus;
 import lombok.Data;
@@ -10,9 +10,7 @@ import java.util.List;
 
 @Data
 @SuperBuilder
-public class TradeDetailResponse {
-
-    private List<String> tradeImages;
+public class TradeDetailDto {
 
     private String title;
 
@@ -24,13 +22,7 @@ public class TradeDetailResponse {
 
     private String tradeExplain;
 
-    private String nickname;
-
-    private BigDecimal rating;
-
     private Long wishCount;
 
     private Long viewCount;
-
-    private String Address;
 }
