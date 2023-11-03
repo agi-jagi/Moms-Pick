@@ -46,10 +46,10 @@ export default function SignUp() {
       alert("닉네임 중복체크가 필요합니다");
       return;
     }
-    if (!userEmailVerify) {
-      alert("이메일 인증이 필요합니다");
-      return;
-    }
+    // if (!userEmailVerify) {
+    //   alert("이메일 인증이 필요합니다");
+    //   return;
+    // }
     // nextStep();
     signup();
   };
@@ -64,7 +64,7 @@ export default function SignUp() {
 
   const signup = () => {
     axios
-      .post("/api/join", {
+      .post("/api/users/join", {
         loginId: userId,
         nickname: userNickName,
         password: userPw,
@@ -84,16 +84,19 @@ export default function SignUp() {
       return;
     }
     axios
-      .get(`/api/id-check`, {
+      .get(`/api/users/id-check`, {
         params: { loginId: userId },
       })
       .then((res) => {
-        console.log(res);
-        alert("사용가능한 아이디입니다");
-        setUserIdCheck(res.data.success);
+        if (res.data.success) {
+          alert("사용가능한 아이디입니다");
+          setUserIdCheck(res.data.success);
+        } else {
+          alert("이미 사용중인 아이디입니다");
+        }
       })
-      .catch((err) => {
-        alert("이미 사용중인 아이디입니다");
+      .catch(() => {
+        alert("네트워크 에러");
       });
   };
 
@@ -103,15 +106,19 @@ export default function SignUp() {
       return;
     }
     axios
-      .get("/api/nickname-check", {
+      .get("/api/users/nickname-check", {
         params: { nickname: userNickName },
       })
       .then((res) => {
-        alert("사용가능한 닉네임입니다");
-        setUserNickNameCheck(res.data.success);
+        if (res.data.success) {
+          alert("사용가능한 닉네임입니다");
+          setUserNickNameCheck(res.data.success);
+        } else {
+          alert("이미 사용중인 닉네임입니다");
+        }
       })
       .catch(() => {
-        alert("이미 사용중인 닉네임입니다");
+        alert("네트워크 에러");
       });
   };
 
@@ -121,10 +128,10 @@ export default function SignUp() {
       return;
     }
     await axios
-      .get("/api/email-check", {
+      .get("/api/users/email-check", {
         params: { email: userEmail },
       })
-      .then(() => {
+      .then((res) => {
         verifyEmail();
       })
       .catch(() => {
