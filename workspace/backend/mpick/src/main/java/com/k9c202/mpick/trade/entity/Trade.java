@@ -78,4 +78,9 @@ public class Trade {
         this.tradeExplain = tradeExplain;
         this.tradeStatus = tradeStatus;
     }
+
+    public void tradeStatusDelete() {
+
+        this.tradeStatus = TradeStatus.DEL;
+    }
 }

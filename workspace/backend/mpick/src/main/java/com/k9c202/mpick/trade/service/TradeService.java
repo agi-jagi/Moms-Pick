@@ -270,4 +270,16 @@ public class TradeService {
             tradeRepository.save(trade);
         }
     }
+
+    public void deleteTrade(Long tradeId, String loginId) {
+
+        Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("없는 게시글 입니다."));
+
+        User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("없는 유저입니다."));
+
+        if (trade.getUser().equals(user)) {
+            trade.tradeStatusDelete();
+            tradeRepository.save(trade);
+        }
+    }
 }

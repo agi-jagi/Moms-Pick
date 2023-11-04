@@ -1,5 +1,6 @@
 package com.k9c202.mpick.trade.controller;
 
+import com.k9c202.mpick.global.function.CommonFunction;
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
@@ -94,6 +95,17 @@ public class TradeController {
             Authentication authentication) {
 
         tradeService.tradeWish(tradeId, authentication.getName());
+
+        return CommonResponse.OK(true);
+    }
+
+    @Operation(summary = "판매글 삭제 기능", description = "판매글 삭제 기능")
+    @DeleteMapping(value = "/item/{tradeId}")
+    public CommonResponse<?> tradeDelete(
+            @PathVariable Long tradeId,
+            Authentication authentication) {
+
+        tradeService.deleteTrade(tradeId, authentication.getName());
 
         return CommonResponse.OK(true);
     }
