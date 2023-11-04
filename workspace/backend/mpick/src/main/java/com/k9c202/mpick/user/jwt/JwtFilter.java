@@ -44,6 +44,8 @@ public class JwtFilter extends GenericFilterBean {
         } else if(isLogout(jwt)) {
             logger.debug("로그아웃된 회원 접근입니다. uri: {}", requestURI);
         } else {
+            // 토큰 검증 이후 유저 아이디 정보 저장
+            // 유저 아이디는 authentication 클래스 안에 담겨 있는 정보. 아이디 정보 얻을때 authentication.getName()으로 접근
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);

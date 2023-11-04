@@ -34,6 +34,7 @@ public class User {
     @Column(unique = true, nullable = false, updatable = false, length = 100)
     private String email;
 
+    @Setter
     @Column(nullable = false)
     private Integer status; //1
 

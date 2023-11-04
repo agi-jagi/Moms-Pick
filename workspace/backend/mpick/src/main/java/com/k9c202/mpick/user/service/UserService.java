@@ -57,6 +57,7 @@ public class UserService {
     // 생성자 형식 -> User a = new User(nickname,password,status,....)
     // 아래는 builder 형식
 
+    // 회원가입
     public JoinUserResponse signup(UserDto userDto) {
         
         checkDuplicatedLoginId(userDto.getLoginId());
@@ -77,34 +78,36 @@ public class UserService {
         return JoinUserResponse.of(savedUser);
     }
 
+    //로그인 아이디 중복체크
     public void checkDuplicatedLoginId(String loginId) {
-        //로그인 아이디 중복
         boolean isExistLoginId = userQueryRepository.existLoginId(loginId);
         if (isExistLoginId) {
             throw new IllegalArgumentException("로그인 아이디 중복");
         }
     }
 
+    // 닉네임 중복체크
     public void checkDuplicatedNickname(String nickname) {
-        //닉네임 중복
         boolean isExistNickname = userQueryRepository.existNickname(nickname);
         if (isExistNickname) {
             throw new IllegalArgumentException("닉네임 중복");
         }
     }
 
+    // 이메일 중복체크
     public void checkDuplicatedEmail(String email) {
-        //이메일 중복
         boolean isExistEmail = userQueryRepository.existEmail(email);
         if (isExistEmail) {
             throw new IllegalArgumentException("이메일 중복");
         }
     }
 
+    // 로그인
     public String login(LoginDto loginDto) {
         // 인증에 필요한 정보 authenticationToken에 저장
         UsernamePasswordAuthenticationToken authenticationToken =
                 // 입력받은 id, password 정보 사용
+                // loadUserByUsername의 반환값과 비교하여 일치여부 체크
                 new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
 
         // SecurityContext에 인증 여부(authentication) 저장
@@ -115,18 +118,39 @@ public class UserService {
         return tokenProvider.createToken(authentication);
     }
 
+    // 정보 조회
     public UserInfoResponse getUserInfo() {
+        // 유저 아이디 정보는 SecurityContextHolder.getContext().getAuthentication().getName()으로 얻을 수 있음
+        // JwtFilter에서 setAuthentication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
         System.out.println("loginId = " + loginId);
+        // 로그인 아이디에 해당하는 유저 정보 불러오기
+        // findOneByLoginId는 Optional 클래스를 반환하는데, User 클래스를 얻어야 함
+        // UserRepository에서 지정해준 클래스(User)로 반환하도록 Optional 함수 중 .orElseThrow 사용
+        // Optional 객체 접근 방법 : https://velog.io/@alicesykim95/Java-Optional
+        // 함수에 따라 반환값 다름
+        // null이 아니면 User 클래스 반환, null이면 UsernameNotFoundException 반환
         User user = userRepository.findOneByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
         return UserInfoResponse.of(user);
     }
 
+    // 로그아웃
+    // redis에 accesstoken을 저장하여 로그아웃 여부 체크
     public void logout(String accessToken) {
         long accessTokenExpirationMillis = tokenProvider.getTokenValidityInMilliseconds();
         redisService.setValues(accessToken, "logout", Duration.ofMillis(accessTokenExpirationMillis));
+    }
+
+    // 회원 탈퇴
+    public void withdraw() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        User user = userRepository.findOneByLoginId(loginId)
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
+        user.setStatus(2);
     }
 
 }

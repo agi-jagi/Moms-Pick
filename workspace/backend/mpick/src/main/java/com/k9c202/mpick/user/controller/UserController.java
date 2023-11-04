@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,14 +86,21 @@ public class UserController {
     }
 
     // 로그아웃
+    // 토큰 필요 (토큰이 아닌 아이디를 활용하도록 코드를 짜면 여러 곳에서 로그인 후 한 곳에서 로그아웃 하면 동시에 로그아웃 처리됨)
     @PostMapping("/logout")
     public CommonResponse<String> logout(HttpServletRequest request) {
         String accessToken = tokenProvider.resolveToken(request);
         userService.logout(accessToken);
-        return CommonResponse.OK("Logout");
+        return CommonResponse.OK("로그아웃 성공");
     }
 
     // 회원탈퇴
+    // 로그인 아이디 필요
+    @PostMapping("/withdraw")
+    public CommonResponse<String> withdraw() {
+        userService.withdraw();
+        return CommonResponse.OK("회원탈퇴 성공");
+    }
 
     // 회원 정보 수정
 

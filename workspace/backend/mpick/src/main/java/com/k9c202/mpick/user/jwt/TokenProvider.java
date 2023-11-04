@@ -69,6 +69,7 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
+    // jwt payload 데이터 : sub, auth, exp
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
                 .parserBuilder()
@@ -86,7 +87,7 @@ public class TokenProvider implements InitializingBean {
 //
 //        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 
-        // tokenProvider:authority를 안 쓰기 때문에 빈 array를 넣어주는 것으로 대체
+        // tokenProvider : 프로젝트에서 authority를 안 쓰기 때문에 빈 array를 넣어주는 것으로 대체함
         User principal = new User(claims.getSubject(), "", new ArrayList<>());
 
         return new UsernamePasswordAuthenticationToken(principal, token, new ArrayList<>());
