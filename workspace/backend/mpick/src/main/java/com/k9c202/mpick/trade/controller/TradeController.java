@@ -9,6 +9,7 @@ import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.entity.Trade;
 import com.k9c202.mpick.trade.service.TradeService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +41,9 @@ import java.util.List;
 public class TradeController {
 
 //    final private int size = 9;
-
-    @Autowired
     private final TradeService tradeService;
 
+    @Operation(summary = "판매글 검색 및 필터링(미완성)", description = "판매글 검색 및 필터링(미완성)")
     @PostMapping
     public CommonResponse<List<TradeSearchResponse>> search(
             @RequestParam(required = false) String keyword,
@@ -59,6 +59,7 @@ public class TradeController {
         return CommonResponse.OK(result);
     }
 
+    @Operation(summary = "판매글 작성", description = "판매글 작성")
     @PostMapping(value = "/item", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public CommonResponse<Long> tradeAdd(
             @RequestPart(value = "data") TradeAddRequest request,
@@ -70,6 +71,7 @@ public class TradeController {
         return CommonResponse.OK(result);
     }
 
+    @Operation(summary = "판매글 상세 조회", description = "판매글 상세 조회")
     @GetMapping(value = "/item/{id}")
     public CommonResponse<TradeDetailResponse> tradeDetail(@PathVariable Long id, Authentication authentication) {
 
@@ -78,9 +80,17 @@ public class TradeController {
         return CommonResponse.OK(tradeService.tradeDetail(id, authentication.getName(), viewCount));
     }
 
+    @Operation(summary = "판매글 작성 페이지 카테고리 조회", description = "판매글 작성 페이지에 필요한 카테고리 목록 조회")
     @GetMapping(value = "/item/category")
     public CommonResponse<TradeAddCategoryForm> tradeAddCategory(Authentication authentication) {
 
         return CommonResponse.OK(tradeService.getTradeAddCategoryForm());
+    }
+
+    @Operation(summary = "판매글 찜 기능", description = "판매글 찜 기능")
+    @PostMapping(value = "/wish")
+    public CommonResponse<?> tradeWish(Authentication authentication) {
+
+        return CommonResponse.OK(1);
     }
 }

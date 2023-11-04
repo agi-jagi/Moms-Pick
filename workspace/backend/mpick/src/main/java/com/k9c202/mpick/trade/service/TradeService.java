@@ -234,4 +234,8 @@ public class TradeService {
 
         return tradeAddCategoryForm;
     }
+
+    public void tradeWish() {
+
+    }
 }
