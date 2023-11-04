@@ -37,13 +37,16 @@ public class JwtFilter extends GenericFilterBean {
 
         // 유효한 토큰일 때
         // jwt 내용이 있어야 하고, 토큰이 유효해야하고, 로그아웃이 안된 상태여야 인증정보 저장
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt) && !isLogout(jwt)) {
+        if (!StringUtils.hasText(jwt)) {
+            logger.debug("비회원 접근입니다. uri: {}", requestURI);
+        } else if(!tokenProvider.validateToken(jwt)) {
+            logger.debug("유효하지 않은 JWT 토큰입니다. uri: {}", requestURI);
+        } else if(isLogout(jwt)) {
+            logger.debug("로그아웃된 회원 접근입니다. uri: {}", requestURI);
+        } else {
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
-        // 유효하지 않은 토큰일 때
-        } else {
-            logger.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
         }
 
         // 다음 필터 실행
