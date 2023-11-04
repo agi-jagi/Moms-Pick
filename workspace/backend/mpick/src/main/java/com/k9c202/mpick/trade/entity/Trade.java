@@ -53,7 +53,7 @@ public class Trade {
     private Long viewCount;
 
     @Column
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private TradeStatus tradeStatus;
 
     @CreationTimestamp
