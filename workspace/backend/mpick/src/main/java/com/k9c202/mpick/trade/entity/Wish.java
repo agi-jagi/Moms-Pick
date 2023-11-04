@@ -3,11 +3,15 @@ package com.k9c202.mpick.trade.entity;
 import com.k9c202.mpick.trade.entity.Trade;
 import com.k9c202.mpick.user.entity.User;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
+@SuperBuilder
 public class Wish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
@@ -22,4 +26,7 @@ public class Wish {
     @JoinColumn(name="trade_id")
     private Trade trade;
 
+    @Column
+    @CreationTimestamp
+    private Timestamp wishCreateDate;
 }

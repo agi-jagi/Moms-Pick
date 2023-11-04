@@ -67,6 +67,8 @@ public class TradeService {
 
     private final CategoryRepository categoryRepository;
 
+    private final WishRepository wishRepository;
+
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
         TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
@@ -173,7 +175,7 @@ public class TradeService {
                 .tradeCreateDate(trade.getTradeCreateDate())
                 .rating(userRating)
                 .title(trade.getTitle())
-                .viewCount(viewCount)
+                .viewCount(trade.getViewCount())
                 .wishCount(trade.getWishCount())
                 .tradeImages(imageUrls)
                 .build();
@@ -212,7 +214,10 @@ public class TradeService {
             return viewCount;
         }
 
-        tradeQueryRepository.increaseViewCount(tradeId);
+        trade.increaseViewCount();
+
+        tradeRepository.save(trade);
+//        tradeQueryRepository.increaseViewCount(tradeId);
 
         return viewCount + 1;
     }
@@ -235,7 +240,34 @@ public class TradeService {
         return tradeAddCategoryForm;
     }
 
-    public void tradeWish() {
+    public void tradeWish(Long tradeId, String loginId) {
+        User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("없는 유저입니다."));
 
+        Wish wish = wishRepository.findByUser(user).orElse(null);
+
+        if (user.equals(wish.getUser())) {
+            return;
+        }
+
+        Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+
+        if (wish == null) {
+
+            wishRepository.save(
+                    Wish.builder()
+                            .trade(trade)
+                            .user(user)
+                            .build()
+            );
+            trade.increaseWishCount();
+
+            tradeRepository.save(trade);
+        } else {
+            wishRepository.delete(wish);
+
+            trade.decreaseWishCount();
+
+            tradeRepository.save(trade);
+        }
     }
 }

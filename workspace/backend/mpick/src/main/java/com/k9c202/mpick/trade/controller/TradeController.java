@@ -72,12 +72,12 @@ public class TradeController {
     }
 
     @Operation(summary = "판매글 상세 조회", description = "판매글 상세 조회")
-    @GetMapping(value = "/item/{id}")
-    public CommonResponse<TradeDetailResponse> tradeDetail(@PathVariable Long id, Authentication authentication) {
+    @GetMapping(value = "/item/{tradeId}")
+    public CommonResponse<TradeDetailResponse> tradeDetail(@PathVariable Long tradeId, Authentication authentication) {
 
-        Long viewCount = tradeService.increaseViewCount(id, authentication.getName());
+        Long viewCount = tradeService.increaseViewCount(tradeId, authentication.getName());
 
-        return CommonResponse.OK(tradeService.tradeDetail(id, authentication.getName(), viewCount));
+        return CommonResponse.OK(tradeService.tradeDetail(tradeId, authentication.getName(), viewCount));
     }
 
     @Operation(summary = "판매글 작성 페이지 카테고리 조회", description = "판매글 작성 페이지에 필요한 카테고리 목록 조회")
@@ -88,9 +88,13 @@ public class TradeController {
     }
 
     @Operation(summary = "판매글 찜 기능", description = "판매글 찜 기능")
-    @PostMapping(value = "/wish")
-    public CommonResponse<?> tradeWish(Authentication authentication) {
+    @PostMapping(value = "/wish/{tradeId}")
+    public CommonResponse<Boolean> tradeWish(
+            @PathVariable Long tradeId,
+            Authentication authentication) {
 
-        return CommonResponse.OK(1);
+        tradeService.tradeWish(tradeId, authentication.getName());
+
+        return CommonResponse.OK(true);
     }
 }

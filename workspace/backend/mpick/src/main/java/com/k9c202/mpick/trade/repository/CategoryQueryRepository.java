@@ -71,7 +71,7 @@ public class CategoryQueryRepository {
                     .select(category)
                     .from(category)
                     .where(
-                            category.id.isNull(),
+                            category.categoryId2.isNull(),
                             category.categoryName.eq(mainCategory)
                     )
                     .fetchOne();
@@ -80,7 +80,7 @@ public class CategoryQueryRepository {
                     .select(category)
                     .from(category)
                     .where(
-                            category.id.isNotNull(),
+                            category.categoryId2.isNotNull(),
                             category.categoryName.eq(subCategory)
                     )
                     .fetchOne();
