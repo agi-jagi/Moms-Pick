@@ -3,6 +3,7 @@ package com.k9c202.mpick.user.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -13,13 +14,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import static com.k9c202.mpick.user.jwt.JwtFilter.AUTHORIZATION_HEADER;
 
 // token 생성, 검증
 @Component
@@ -28,6 +33,7 @@ public class TokenProvider implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private static final String AUTHORITIES_KEY = "auth";
     private final String secret;
+    @Getter
     private final long tokenValidityInMilliseconds;
     private Key key;
 
@@ -102,4 +108,19 @@ public class TokenProvider implements InitializingBean {
         }
         return false;
     }
+
+
+    // Header에서 token 부분 문자열 가져오기
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+
+        // 빈 문자열이 아니고 Bearer로 시작하면, 8번째 값부터("Bearer "가 7자리) 가져오기
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        return null;
+    }
+
+
 }

@@ -41,6 +41,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final RedisService redisService;
 
     // 생성자, 같은 이름으로 정의, 실제 객체를 만들 때 사용
     // UserService userService = new UserService(userRepository)에서 UserService에 대한 정의
@@ -121,6 +122,11 @@ public class UserService {
         User user = userRepository.findOneByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return UserInfoResponse.of(user);
+    }
+
+    public void logout(String accessToken) {
+        long accessTokenExpirationMillis = tokenProvider.getTokenValidityInMilliseconds();
+        redisService.setValues(accessToken, "logout", Duration.ofMillis(accessTokenExpirationMillis));
     }
 
 }

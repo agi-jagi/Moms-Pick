@@ -6,6 +6,7 @@ import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
+import com.k9c202.mpick.user.jwt.TokenProvider;
 import com.k9c202.mpick.user.service.MailService;
 import com.k9c202.mpick.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class UserController {
      */
 
     private final UserService userService;
+    private final TokenProvider tokenProvider;
 
     // /api/users 경로로 post요청이 왔을 때 실행될 부분
     // 어떤 타입을 사용할지 모를 때 <?>
@@ -81,6 +84,12 @@ public class UserController {
     }
 
     // 로그아웃
+    @PostMapping("/logout")
+    public CommonResponse<String> logout(HttpServletRequest request) {
+        String accessToken = tokenProvider.resolveToken(request);
+        userService.logout(accessToken);
+        return CommonResponse.OK("Logout");
+    }
 
     // 회원탈퇴
 
