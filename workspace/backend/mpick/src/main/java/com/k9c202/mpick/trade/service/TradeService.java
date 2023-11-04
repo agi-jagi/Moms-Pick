@@ -142,7 +142,7 @@ public class TradeService {
         return tradeId;
     }
 
-    public TradeDetailResponse tradeDetail(Long tradeId, String loginId, Long viewCount) {
+    public TradeDetailResponse tradeDetail(Long tradeId, String loginId) {
 
         List<String> imageUrls = tradeImageQueryRepository.findTradeDetailImages(tradeId);
 
@@ -184,7 +184,7 @@ public class TradeService {
     public void addViewRecord(Long tradeId, String loginId) {
 
     }
-    public Long increaseViewCount(Long tradeId, String loginId) {
+    public void increaseViewCount(Long tradeId, String loginId) {
 
         User user = commonFunction.loadUser(loginId);
 
@@ -208,18 +208,16 @@ public class TradeService {
 
             }
             else {
-                return viewCount;
+                return;
             }
         } else {
-            return viewCount;
+            return;
         }
 
         trade.increaseViewCount();
 
         tradeRepository.save(trade);
 //        tradeQueryRepository.increaseViewCount(tradeId);
-
-        return viewCount + 1;
     }
 
     public TradeAddCategoryForm getTradeAddCategoryForm() {
@@ -245,11 +243,11 @@ public class TradeService {
 
         Wish wish = wishRepository.findByUser(user).orElse(null);
 
-        if (user.equals(wish.getUser())) {
+        Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+
+        if (user.equals(trade.getUser())) {
             return;
         }
-
-        Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
 
         if (wish == null) {
 

@@ -76,9 +76,9 @@ public class TradeController {
     @GetMapping(value = "/item/{tradeId}")
     public CommonResponse<TradeDetailResponse> tradeDetail(@PathVariable Long tradeId, Authentication authentication) {
 
-        Long viewCount = tradeService.increaseViewCount(tradeId, authentication.getName());
+        tradeService.increaseViewCount(tradeId, authentication.getName());
 
-        return CommonResponse.OK(tradeService.tradeDetail(tradeId, authentication.getName(), viewCount));
+        return CommonResponse.OK(tradeService.tradeDetail(tradeId, authentication.getName()));
     }
 
     @Operation(summary = "판매글 작성 페이지 카테고리 조회", description = "판매글 작성 페이지에 필요한 카테고리 목록 조회")
