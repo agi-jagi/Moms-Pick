@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class JoinUserResponse {
-    // 개발 시 확인할 값들
-    // 자주 사용되는 값을 위쪽으로 위치시키기
     private Long userId;
     private String loginId;
     private String nickname;
@@ -17,7 +15,6 @@ public class JoinUserResponse {
     private String status;
     private LocalDateTime createdDate;
 
-    // builder 정의
     @Builder
     private JoinUserResponse(Long userId, String loginId, String nickname, String email, Integer status, LocalDateTime createdDate) {
         this.userId = userId;
