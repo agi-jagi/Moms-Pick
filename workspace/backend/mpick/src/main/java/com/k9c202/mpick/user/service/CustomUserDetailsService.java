@@ -1,6 +1,7 @@
 package com.k9c202.mpick.user.service;
 
 import com.k9c202.mpick.user.entity.User;
+import com.k9c202.mpick.user.entity.UserStatus;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,8 +55,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // 탈퇴한 계정은 로그인을 하지 못하도록 설정
         // user의 status가 2(탈퇴)가 아니면 true, 2(탈퇴)면 false
-        // user status는 기획 시 1정상, 2탈퇴, 3휴면으로 설정했음
-        boolean isEnabled = user.getStatus() != 2;
+        // user status는 기획 시 1(ACTIVE)정상, 2(WITHDRAW)탈퇴, 3(DEACTIVE)휴면으로 설정했음
+//        boolean isEnabled = user.getStatus() != 2;
+
+        // TODO: 2023-11-05 isEnabled가 false일 때 에러처리
+        boolean isEnabled = user.getStatus() != UserStatus.WITHDRAW;
 
         return new org.springframework.security.core.userdetails.User(
                 user.getLoginId(),

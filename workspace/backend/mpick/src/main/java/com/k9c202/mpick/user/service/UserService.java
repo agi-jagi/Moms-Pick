@@ -8,6 +8,7 @@ import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.dto.UserDto;
 import com.k9c202.mpick.user.entity.User;
+import com.k9c202.mpick.user.entity.UserStatus;
 import com.k9c202.mpick.user.jwt.JwtFilter;
 import com.k9c202.mpick.user.jwt.TokenProvider;
 import com.k9c202.mpick.user.repository.UserQueryRepository;
@@ -32,6 +33,8 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Random;
+
+import static com.k9c202.mpick.user.entity.UserStatus.*;
 
 @RequiredArgsConstructor
 @Service
@@ -138,8 +141,7 @@ public class UserService {
         // Optional 객체 접근 방법 : https://velog.io/@alicesykim95/Java-Optional
         // 함수에 따라 반환값 다름
         // null이 아니면 User 클래스 반환, null이면 UsernameNotFoundException 반환
-        User user = userRepository.findOneByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
+        User user = getUserEntity(loginId);
         return UserInfoResponse.of(user);
     }
 
@@ -154,40 +156,54 @@ public class UserService {
     public void withdraw() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
-
-        User user = userRepository.findOneByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
-        user.setStatus(2);
+        User user = getUserEntity(loginId);
+        user.editStatus(WITHDRAW);
     }
 
-    // 회원 정보 수정
-    public UserInfoResponse updateUserInfo(String loginId, UpdateUserInfoRequest updateUserInfoRequest, MultipartFile profileImg) throws IOException {
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            String loginId = authentication.getName();
-        User user = userRepository.findOneByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
-        // updateUserInfoRequest != null 조건을 추가하지 않으면 data없이 프로필이미지만 수정했을 때 null 에러 발생
-        if (updateUserInfoRequest != null) {
-            if (updateUserInfoRequest.getNickname() != null) {
-                user.setNickname(updateUserInfoRequest.getNickname());
-            }
-            if (updateUserInfoRequest.getEmail() != null) {
-                user.setEmail(updateUserInfoRequest.getEmail());
-            }
-            if (updateUserInfoRequest.getUserIntro() != null) {
-                user.setUserIntro(updateUserInfoRequest.getUserIntro());
-            }
-        }
-        if (profileImg != null) {
-            String profileUrl = s3Service.upload(profileImg, "profiles/");
-            user.setProfileImage(profileUrl);
-        }
-        return UserInfoResponse.of(user);
-    }
+    // TODO: 2023-11-05 UpdateUserInfoRequest 수정
+    // 이메일 수정
+
+    // 닉네임 수정
+
+    // 소개글 수정
+
+
+//    // 회원 정보 수정
+//    public UserInfoResponse updateUserInfo(String loginId, UpdateUserInfoRequest updateUserInfoRequest, MultipartFile profileImg) throws IOException {
+////            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+////            String loginId = authentication.getName();
+//
+////        User user = userRepository.findOneByLoginId(loginId)
+////                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
+//// ---> (수정)
+//        User user = getUserEntity(loginId);
+//
+//
+//        // updateUserInfoRequest != null 조건을 추가하지 않으면 data없이 프로필이미지만 수정했을 때 null 에러 발생
+//        /* 아래 조건은 Service가 아닌 request에서 처리
+//        if (updateUserInfoRequest != null) {
+//            if (updateUserInfoRequest.getNickname() != null) {
+//                user.setNickname(updateUserInfoRequest.getNickname());
+//            }
+//            if (updateUserInfoRequest.getEmail() != null) {
+//                user.setEmail(updateUserInfoRequest.getEmail());
+//            }
+//            if (updateUserInfoRequest.getUserIntro() != null) {
+//                user.setUserIntro(updateUserInfoRequest.getUserIntro());
+//            }
+//        }
+//        */
+//
+//        if (profileImg != null) {
+//            String profileUrl = s3Service.upload(profileImg, "profiles/");
+//            user.editProfileImage(profileUrl);
+//        }
+//        return UserInfoResponse.of(user);
+//    }
 
     // 현재 비밀번호 체크
     public void checkPassword(String loginId, String password) {
-        User user = userRepository.findOneByLoginId(loginId).orElseThrow();
+        User user = getUserEntity(loginId);
         // 사용자가 입력한 password를 암호화한 값과 같은지 비교
         boolean isPasswordCorrect = passwordEncoder.matches(password, user.getPassword());
         if (!isPasswordCorrect) {
@@ -198,12 +214,22 @@ public class UserService {
 
     // 현재 비밀번호 변경
     public void changePassword(String loginId, String password, String newPassword) {
-        User user = userRepository.findOneByLoginId(loginId).orElseThrow();
+        User user = getUserEntity(loginId);
         // 현재 비밀번호 체크 후 변경
         checkPassword(loginId, password);
         // 입력받은 새비밀번호 암호화 후 변경
         String encodedNewPassword = passwordEncoder.encode(newPassword);
-        user.setPassword(encodedNewPassword);
+        user.editPassword(encodedNewPassword);
+    }
+
+
+    // 로그인 아이디로 유저 정보 불러오기 (자주 사용되는 내용 함수로 따로 정의)
+    private User getUserEntity(String loginId) {
+        Optional<User> findUser = userRepository.findOneByLoginId(loginId);
+        if (findUser.isEmpty()) {
+            throw new UsernameNotFoundException("유저를 찾을 수 없습니다.");
+        }
+        return findUser.get();
     }
 
  }

@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 //@Builder
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment, IDENTITY는 기본키 생성을 DB에 위임
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment, IDENTITY는 기본키 생성을 DB에 위임
     @Column(name = "user_id")   // 컬럼명 따로 지정
     private Long id;
 
@@ -25,35 +26,36 @@ public class User {
     @Column(unique = true, nullable = false, updatable = false, length = 20)
     private String loginId;
 
-    @Setter
+//  Entity에서 @Setter 사용X -> editPassword() 따로 정의
     @Column(nullable = false, columnDefinition = "char(60)")
     private String password;
 
-    @Setter
+//    @Setter
     @Column(unique = true, nullable = false, length = 20)
     private String nickname;
 
-    @Setter
+//    @Setter
     @Column(unique = true, nullable = false, updatable = false, length = 100)
     private String email;
 
-    @Setter
+//    @Setter
     @Column(nullable = false)
-    private Integer status; //1
+    @Enumerated(value = EnumType.STRING)
+    private UserStatus status; // 1(ACTIVE)
 
-    @Setter
-    @Column(length=255)
-    private String profileImage; //null
+//    @Setter
+    @Column(length = 255)
+    private String profileImage; // null
 
-    @Setter
-    @Column(length=300)
+//    @Setter
+    @Column(length = 300)
     private String userIntro; // null
 
     @CreatedDate
     private LocalDateTime createdDate;
 
     protected User() {
-        this.status = 1;
+        this.status = UserStatus.ACTIVE;
         this.profileImage = null;
         this.userIntro = null;
     }
@@ -67,4 +69,39 @@ public class User {
         this.email = email;
     }
 
+    // 비밀번호 변경
+    public User editPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    // 닉네임 변경
+    public User editNickname(String nickname) {
+        this.nickname = nickname;
+        return this;
+    }
+
+    // 이메일 변경
+    public User editEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    // 회원 상태 변경
+    public User editStatus(UserStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    // 프로필 이미지 변경
+    public User editProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
+    }
+
+    // 유저 정보 변경
+    public User editUserIntro(String userIntro) {
+        this.userIntro = userIntro;
+        return this;
+    }
 }

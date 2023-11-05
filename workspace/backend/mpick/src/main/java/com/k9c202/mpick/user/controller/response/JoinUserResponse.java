@@ -1,6 +1,7 @@
 package com.k9c202.mpick.user.controller.response;
 
 import com.k9c202.mpick.user.entity.User;
+import com.k9c202.mpick.user.entity.UserStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,24 +17,15 @@ public class JoinUserResponse {
     private LocalDateTime createdDate;
 
     @Builder
-    private JoinUserResponse(Long userId, String loginId, String nickname, String email, Integer status, LocalDateTime createdDate) {
+    private JoinUserResponse(Long userId, String loginId, String nickname, String email, String status, LocalDateTime createdDate) {
         this.userId = userId;
         this.loginId = loginId;
         this.nickname = nickname;
         this.email = email;
-        this.status = getStatus(status);
+        this.status = status;
         this.createdDate = createdDate;
     }
 
-    private String getStatus(int status) {
-        if (status == 1) {
-            return "정상";
-        }
-        if (status == 2) {
-            return "탈퇴";
-        }
-        return "휴면";
-    }
 
     // of
     // builder 사용
@@ -43,7 +35,7 @@ public class JoinUserResponse {
                 .loginId(user.getLoginId())
                 .nickname(user.getNickname())
                 .email(user.getEmail())
-                .status(user.getStatus())
+                .status(user.getStatus().getText())
                 .createdDate(user.getCreatedDate())
                 .build();
     }
