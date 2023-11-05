@@ -186,7 +186,7 @@ public class UserService {
     }
 
     // 현재 비밀번호 체크
-    public void passwordCheck(String loginId, String password) {
+    public void checkPassword(String loginId, String password) {
         User user = userRepository.findOneByLoginId(loginId).orElseThrow();
         // 사용자가 입력한 password를 암호화한 값과 같은지 비교
         boolean isPasswordCorrect = passwordEncoder.matches(password, user.getPassword());
@@ -196,5 +196,14 @@ public class UserService {
 
     }
 
+    // 현재 비밀번호 변경
+    public void changePassword(String loginId, String password, String newPassword) {
+        User user = userRepository.findOneByLoginId(loginId).orElseThrow();
+        // 현재 비밀번호 체크 후 변경
+        checkPassword(loginId, password);
+        // 입력받은 새비밀번호 암호화 후 변경
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedNewPassword);
+    }
 
  }

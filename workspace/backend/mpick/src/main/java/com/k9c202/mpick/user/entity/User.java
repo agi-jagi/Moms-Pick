@@ -25,6 +25,7 @@ public class User {
     @Column(unique = true, nullable = false, updatable = false, length = 20)
     private String loginId;
 
+    @Setter
     @Column(nullable = false, columnDefinition = "char(60)")
     private String password;
 

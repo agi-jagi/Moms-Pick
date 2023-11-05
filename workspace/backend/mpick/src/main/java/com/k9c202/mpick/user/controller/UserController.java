@@ -2,24 +2,18 @@ package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
-import com.k9c202.mpick.user.controller.request.PasswordCheckRequest;
+import com.k9c202.mpick.user.controller.request.CheckPasswordRequest;
+import com.k9c202.mpick.user.controller.request.UpdatePasswordRequest;
 import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
-import com.k9c202.mpick.user.dto.UserDto;
 import com.k9c202.mpick.user.jwt.TokenProvider;
-import com.k9c202.mpick.user.service.MailService;
 import com.k9c202.mpick.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -121,16 +115,27 @@ public class UserController {
 
     // 현재 비밀번호 체크
     @PostMapping("/pw-check")
-    public CommonResponse<?> passwordCheck(
+    public CommonResponse<?> checkPassword(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody PasswordCheckRequest passwordCheckRequest
+            @RequestBody CheckPasswordRequest checkPasswordRequest
             ) {
-        userService.passwordCheck(userDetails.getUsername(), passwordCheckRequest.getPassword());
+        userService.checkPassword(userDetails.getUsername(), checkPasswordRequest.getPassword());
         return CommonResponse.OK(null);
     }
 
     // 비밀번호 변경
-
+    @PostMapping("/pw-change")
+    public CommonResponse<?> changePassword(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody UpdatePasswordRequest updatePasswordRequest
+            ) {
+        userService.changePassword(
+                userDetails.getUsername(),
+                updatePasswordRequest.getPassword(),
+                updatePasswordRequest.getNewPassword()
+        );
+        return CommonResponse.OK(null);
+    }
 
 
     // 아이디 중복체크
