@@ -2,6 +2,7 @@ package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
+import com.k9c202.mpick.user.controller.request.PasswordCheckRequest;
 import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
@@ -119,7 +120,14 @@ public class UserController {
     }
 
     // 현재 비밀번호 체크
-
+    @PostMapping("/pw-check")
+    public CommonResponse<?> passwordCheck(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody PasswordCheckRequest passwordCheckRequest
+            ) {
+        userService.passwordCheck(userDetails.getUsername(), passwordCheckRequest.getPassword());
+        return CommonResponse.OK(null);
+    }
 
     // 비밀번호 변경
 

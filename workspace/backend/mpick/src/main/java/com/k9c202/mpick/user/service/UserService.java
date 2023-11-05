@@ -83,7 +83,7 @@ public class UserService {
         return JoinUserResponse.of(savedUser);
     }
 
-    //로그인 아이디 중복체크
+    // 로그인 아이디 중복체크
     public void checkDuplicatedLoginId(String loginId) {
         boolean isExistLoginId = userQueryRepository.existLoginId(loginId);
         if (isExistLoginId) {
@@ -185,6 +185,16 @@ public class UserService {
         return UserInfoResponse.of(user);
     }
 
+    // 현재 비밀번호 체크
+    public void passwordCheck(String loginId, String password) {
+        User user = userRepository.findOneByLoginId(loginId).orElseThrow();
+        // 사용자가 입력한 password를 암호화한 값과 같은지 비교
+        boolean isPasswordCorrect = passwordEncoder.matches(password, user.getPassword());
+        if (!isPasswordCorrect) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+    }
 
 
  }
