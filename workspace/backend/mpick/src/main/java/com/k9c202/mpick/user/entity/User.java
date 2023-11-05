@@ -28,9 +28,11 @@ public class User {
     @Column(nullable = false, columnDefinition = "char(60)")
     private String password;
 
+    @Setter
     @Column(unique = true, nullable = false, length = 20)
     private String nickname;
 
+    @Setter
     @Column(unique = true, nullable = false, updatable = false, length = 100)
     private String email;
 
@@ -38,9 +40,11 @@ public class User {
     @Column(nullable = false)
     private Integer status; //1
 
+    @Setter
     @Column(length=255)
     private String profileImage; //null
 
+    @Setter
     @Column(length=300)
     private String userIntro; // null
 

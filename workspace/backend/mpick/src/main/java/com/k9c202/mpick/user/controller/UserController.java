@@ -2,6 +2,7 @@ package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
+import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
@@ -14,12 +15,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -96,17 +101,28 @@ public class UserController {
 
     // 회원탈퇴
     // 로그인 아이디 필요
-    @PostMapping("/withdraw")
+    @DeleteMapping("/withdraw")
     public CommonResponse<String> withdraw() {
         userService.withdraw();
         return CommonResponse.OK("회원탈퇴 성공");
     }
 
     // 회원 정보 수정
+    @PatchMapping
+    public CommonResponse<UserInfoResponse> updateUserInfo(
+            @AuthenticationPrincipal UserDetails userDetails,
+            // 프로필 이미지가 포함되어 있기 때문에 multipart
+            @RequestPart(name = "data", required = false) UpdateUserInfoRequest updateUserInfoRequest,
+            @RequestPart(name = "file", required = false) MultipartFile profileImg
+            ) throws IOException {
+        return CommonResponse.OK(userService.updateUserInfo(userDetails.getUsername(), updateUserInfoRequest, profileImg));
+    }
 
     // 현재 비밀번호 체크
 
+
     // 비밀번호 변경
+
 
 
     // 아이디 중복체크

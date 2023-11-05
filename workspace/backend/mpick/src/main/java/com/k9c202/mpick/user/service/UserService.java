@@ -1,5 +1,7 @@
 package com.k9c202.mpick.user.service;
 
+import com.k9c202.mpick.trade.service.S3Service;
+import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
 import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
@@ -22,7 +24,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -42,6 +46,7 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisService redisService;
+    private final S3Service s3Service;
 
     // 생성자, 같은 이름으로 정의, 실제 객체를 만들 때 사용
     // UserService userService = new UserService(userRepository)에서 UserService에 대한 정의
@@ -122,6 +127,8 @@ public class UserService {
     public UserInfoResponse getUserInfo() {
         // 유저 아이디 정보는 SecurityContextHolder.getContext().getAuthentication().getName()으로 얻을 수 있음
         // JwtFilter에서 setAuthentication
+        // 방법2(회원정보수정)/ @AuthenticationPrincipal UserDetails userDetails
+        //      userDetails.getUsername()
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
         System.out.println("loginId = " + loginId);
@@ -153,4 +160,31 @@ public class UserService {
         user.setStatus(2);
     }
 
-}
+    // 회원 정보 수정
+    public UserInfoResponse updateUserInfo(String loginId, UpdateUserInfoRequest updateUserInfoRequest, MultipartFile profileImg) throws IOException {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            String loginId = authentication.getName();
+        User user = userRepository.findOneByLoginId(loginId)
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
+        // updateUserInfoRequest != null 조건을 추가하지 않으면 data없이 프로필이미지만 수정했을 때 null 에러 발생
+        if (updateUserInfoRequest != null) {
+            if (updateUserInfoRequest.getNickname() != null) {
+                user.setNickname(updateUserInfoRequest.getNickname());
+            }
+            if (updateUserInfoRequest.getEmail() != null) {
+                user.setEmail(updateUserInfoRequest.getEmail());
+            }
+            if (updateUserInfoRequest.getUserIntro() != null) {
+                user.setUserIntro(updateUserInfoRequest.getUserIntro());
+            }
+        }
+        if (profileImg != null) {
+            String profileUrl = s3Service.upload(profileImg, "profiles/");
+            user.setProfileImage(profileUrl);
+        }
+        return UserInfoResponse.of(user);
+    }
+
+
+
+ }
