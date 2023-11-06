@@ -17,7 +17,9 @@ import java.util.List;
 public class TradeAddRequest {
 
     @NotEmpty
-    private Long categoryId;
+    private String mainCategory;
+
+    private String subCategory;
 
     @NotEmpty
     private String title;

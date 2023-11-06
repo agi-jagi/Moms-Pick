@@ -3,6 +3,8 @@ package com.k9c202.mpick.trade.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.k9c202.mpick.global.function.CommonFunction;
 import com.k9c202.mpick.trade.controller.component.ImageSaveForm;
+import com.k9c202.mpick.trade.controller.component.MainCategoryDto;
+import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
@@ -63,6 +65,10 @@ public class TradeService {
 
     private final AddressRepository addressRepository;
 
+    private final CategoryRepository categoryRepository;
+
+    private final WishRepository wishRepository;
+
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
         TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
@@ -76,7 +82,7 @@ public class TradeService {
     // 주소 로직 추가해야함
     public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles, String loginId) throws IOException {
 
-        Category category = categoryQueryRepository.findOne(request.getCategoryId());
+        Category category = categoryQueryRepository.findCategoryByMainCategoryNameAndSubCategoryName(request.getMainCategory(), request.getSubCategory());
 
         Address address = addressRepository.findByUserLoginIdAndIsSet(loginId, true)
                 .orElseThrow(() -> new NotFoundException("찾을 수 없는 주소입니다."));
@@ -136,7 +142,7 @@ public class TradeService {
         return tradeId;
     }
 
-    public TradeDetailResponse tradeDetail(Long tradeId, String loginId, Long viewCount) {
+    public TradeDetailResponse tradeDetail(Long tradeId, String loginId) {
 
         List<String> imageUrls = tradeImageQueryRepository.findTradeDetailImages(tradeId);
 
@@ -169,7 +175,7 @@ public class TradeService {
                 .tradeCreateDate(trade.getTradeCreateDate())
                 .rating(userRating)
                 .title(trade.getTitle())
-                .viewCount(viewCount)
+                .viewCount(trade.getViewCount())
                 .wishCount(trade.getWishCount())
                 .tradeImages(imageUrls)
                 .build();
@@ -178,7 +184,7 @@ public class TradeService {
     public void addViewRecord(Long tradeId, String loginId) {
 
     }
-    public Long increaseViewCount(Long tradeId, String loginId) {
+    public void increaseViewCount(Long tradeId, String loginId) {
 
         User user = commonFunction.loadUser(loginId);
 
@@ -202,15 +208,76 @@ public class TradeService {
 
             }
             else {
-                return viewCount;
+                return;
             }
         } else {
-            return viewCount;
+            return;
         }
 
-        tradeQueryRepository.increaseViewCount(tradeId);
+        trade.increaseViewCount();
 
-        return viewCount + 1;
+        tradeRepository.save(trade);
+//        tradeQueryRepository.increaseViewCount(tradeId);
     }
 
+    public TradeAddCategoryForm getTradeAddCategoryForm() {
+
+        List<MainCategoryDto> mainCategoryList = categoryQueryRepository.findMainCategoryNameAndId();
+
+        TradeAddCategoryForm tradeAddCategoryForm = new TradeAddCategoryForm();
+
+        for (MainCategoryDto mainCategory : mainCategoryList) {
+            String newKey = mainCategory.getCategoryName();
+
+            List<String> subCategoryNames = categoryQueryRepository.findSubCategoryNameByCategoryId(mainCategory.getCategoryId());
+
+            tradeAddCategoryForm.putCategory(newKey, subCategoryNames);
+
+        }
+
+        return tradeAddCategoryForm;
+    }
+
+    public void tradeWish(Long tradeId, String loginId) {
+        User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("없는 유저입니다."));
+
+        Wish wish = wishRepository.findByUser(user).orElse(null);
+
+        Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+
+        if (user.equals(trade.getUser())) {
+            return;
+        }
+
+        if (wish == null) {
+
+            wishRepository.save(
+                    Wish.builder()
+                            .trade(trade)
+                            .user(user)
+                            .build()
+            );
+            trade.increaseWishCount();
+
+            tradeRepository.save(trade);
+        } else {
+            wishRepository.delete(wish);
+
+            trade.decreaseWishCount();
+
+            tradeRepository.save(trade);
+        }
+    }
+
+    public void deleteTrade(Long tradeId, String loginId) {
+
+        Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("없는 게시글 입니다."));
+
+        User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("없는 유저입니다."));
+
+        if (trade.getUser().equals(user)) {
+            trade.tradeStatusDelete();
+            tradeRepository.save(trade);
+        }
+    }
 }

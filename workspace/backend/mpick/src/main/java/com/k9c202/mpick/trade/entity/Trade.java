@@ -25,15 +25,15 @@ public class Trade {
     @Column(name = "trade_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -53,7 +53,7 @@ public class Trade {
     private Long viewCount;
 
     @Column
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private TradeStatus tradeStatus;
 
     @CreationTimestamp
@@ -77,5 +77,10 @@ public class Trade {
         this.price = price;
         this.tradeExplain = tradeExplain;
         this.tradeStatus = tradeStatus;
+    }
+
+    public void tradeStatusDelete() {
+
+        this.tradeStatus = TradeStatus.DEL;
     }
 }

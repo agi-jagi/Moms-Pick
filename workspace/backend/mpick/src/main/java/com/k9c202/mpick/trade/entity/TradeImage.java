@@ -21,7 +21,7 @@ public class TradeImage {
     @Column(name = "trade_image_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trade_id")
     private Trade trade;
 

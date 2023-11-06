@@ -13,11 +13,11 @@ import java.io.Serializable;
 @Embeddable
 public class CategoryMonthId implements Serializable {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "baby_month_id")
     private BabyMonth babyMonth;
 }
