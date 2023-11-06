@@ -24,6 +24,7 @@ export default function Search() {
   const [개월수open, set개월수Open] = useState(false);
   const handleOpen개월수 = () => set개월수Open(!개월수open);
   const [selected개월, setSelected개월] = useState<string[]>([]);
+  
 
 
   // const [ filesImage, setFilesImage ] = useState<File[]>([]);
@@ -104,13 +105,16 @@ export default function Search() {
 
   //   try {
   //     const data :any = {
-  //       categotyId: 0,
-  //       addressId: 0,
+  //       mainCategory: "유모차",
+  //       subCategory: "",
   //       title: "test제목",
   //       price: 100,
   //       tradeExplain: "test내용",
-  //       startMonths: [1, 2, 3],
+  //       startMonths: [1],
   //     };
+
+
+    
 
   //     const testForm=new FormData()
   //       testForm.append("data",new Blob([JSON.stringify(data)],{type:'application/json'}))
@@ -129,11 +133,69 @@ export default function Search() {
   // }
 
   // 
+  async function onSubmit(e: any) {
+    e.preventDefault();
 
+    try {
+
+    let files = e.target.image_files.files;
+    let formData = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+
+    const data :any = {
+      mainCategory: "유모차",
+      subCategory: null,
+      title: "test제목",
+      price: 100,
+      tradeExplain: "test내용",
+      startMonths: [1],
+    };
+
+    formData.append("data",new Blob([JSON.stringify(data)],{type:'application/json'}))
+
+    const res = await axios.post("/api/trades/item", formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        'Content-Type': 'multipart/form-data'
+      },
+    }); 
+    console.log(res.data)
+
+
+  } catch(err) {
+    console.log(err);
+  };
+  };
+
+  async function getDetail() {
+    try {
+
+
+      const res = await axios.get(`/api/trades/item/${3}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(res.data);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+  
+
+  
 
   return (
     <>
       <div>
+      <form onSubmit={(e) => onSubmit(e)}>
+        <input type="file"
+          name="image_files" />
+          <Button type="submit">등록</Button>
+      </form>
+      <Button onClick={getDetail}>상세조회</Button>
       <div className="flex gap-4 mt-4 justify-center">
       <Chip
         startContent={<FilterIcon />}
