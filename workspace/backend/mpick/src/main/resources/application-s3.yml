@@ -1,0 +1,12 @@
+cloud:
+  aws:
+    s3:
+      bucket: mpick-img-storage
+    stack.auto: false
+    region:
+      static: ap-northeast-2
+      auto: false
+    credentials:
+      accessKey: ${s3.accessKey}
+      secretKey: ${s3.secretKey}
+
