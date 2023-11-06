@@ -24,21 +24,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Provider>
           {children}
-          <div
-            className="w-full"
-            style={{
-              position: "sticky",
-              bottom: "0",
-              backgroundColor: "white",
-            }}
-          >
-            <div
-              style={{
-                height: "77px",
-                width: "auto",
-              }}
-            ></div>
-          </div>
           <NavBar />
         </Provider>
       </body>
