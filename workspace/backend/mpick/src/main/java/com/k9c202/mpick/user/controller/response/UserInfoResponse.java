@@ -14,14 +14,18 @@ public class UserInfoResponse {
     private String nickname;
     private String email;
     private String status;
+    private String profileImage;
+    private String userIntro;
 
     // builder 정의
     @Builder
-    private UserInfoResponse(String loginId, String nickname, String email, Integer status) {
+    private UserInfoResponse(String loginId, String nickname, String email, Integer status, String profileImage, String userIntro) {
         this.loginId = loginId;
         this.nickname = nickname;
         this.email = email;
         this.status = getStatus(status);
+        this.profileImage = profileImage;
+        this.userIntro = userIntro;
     }
 
     private String getStatus(int status) {
@@ -42,6 +46,8 @@ public class UserInfoResponse {
                 .nickname(user.getNickname())
                 .email(user.getEmail())
                 .status(user.getStatus())
+                .profileImage(user.getProfileImage())
+                .userIntro(user.getUserIntro())
                 .build();
     }
 

@@ -86,7 +86,6 @@ const BabyForm: React.FC<BabyFormProps> = ({
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="생년월일"
-              disableFuture={true}
               onChange={(newDate: dayjs.Dayjs | null) => birthInput(newDate)}
               format="YYYY-MM-DD"
               sx={{ width: "100%" }}

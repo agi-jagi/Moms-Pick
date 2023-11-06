@@ -11,8 +11,7 @@ declare global {
   }
 }
 
-export default function AddressSearch() {
-  const [address, setAddress] = useState<string>("");
+export default function AddressSearch(props: any) {
   const [maps, setMaps] = useState<any>();
   const [markers, setMarkers] = useState<any>([]);
 
@@ -56,6 +55,8 @@ export default function AddressSearch() {
           });
           markers.push(marker);
           marker.setMap(maps);
+          props.setLatitude(result[0].y);
+          props.setLongitude(result[0].x);
 
           const bounds = new window.kakao.maps.LatLngBounds();
           bounds.extend(markerPosition);
@@ -63,7 +64,7 @@ export default function AddressSearch() {
 
           const callback = function (result: any, status: any) {
             if (status === window.kakao.maps.services.Status.OK) {
-              setAddress(result[0].address.address_name);
+              props.setAddress(result[0].address.address_name);
             }
           };
           const geocoder = new window.kakao.maps.services.Geocoder();
@@ -97,6 +98,8 @@ export default function AddressSearch() {
           position.coords.latitude,
           position.coords.longitude
         );
+        props.setLatitude(position.coords.latitude);
+        props.setLongitude(position.coords.longitude);
         const mapOption = {
           center: coord, // 지도의 중심좌표
         };
@@ -106,12 +109,17 @@ export default function AddressSearch() {
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
         });
+
+        var infowindow = new window.kakao.maps.InfoWindow({
+          content: '<div style="width:150px;text-align:center;padding:6px 0;">현재위치</div>',
+        });
+        infowindow.open(map, marker);
         setMarkers([marker]);
         marker.setMap(map);
 
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
-            setAddress(result[0].address.address_name);
+            props.setAddress(result[0].address.address_name);
           }
         };
         const geocoder = new window.kakao.maps.services.Geocoder();
@@ -150,7 +158,7 @@ export default function AddressSearch() {
             <Image src={marker} alt="marker" width={20} height={20} />
           </button>
           <div>
-            <p className="font-bold text-base">지번주소 : {address}</p>
+            <p className="font-bold text-base">지번주소 : {props.address}</p>
           </div>
         </div>
       </div>

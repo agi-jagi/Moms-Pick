@@ -117,7 +117,6 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="생년월일"
-                disableFuture={true}
                 onChange={(newDate: dayjs.Dayjs | null) => updateBirth(newDate)}
                 format="YYYY-MM-DD"
                 sx={{ width: "100%" }}

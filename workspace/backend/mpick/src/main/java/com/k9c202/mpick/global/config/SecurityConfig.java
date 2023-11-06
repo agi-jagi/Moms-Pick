@@ -2,6 +2,7 @@ package com.k9c202.mpick.global.config;
 
 import com.k9c202.mpick.user.jwt.JwtFilter;
 import com.k9c202.mpick.user.jwt.TokenProvider;
+import com.k9c202.mpick.user.service.RedisService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +24,7 @@ public class SecurityConfig {
     @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 // tokenProvider를 매개변수로 받을 수 있도록 수정
-        public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider) throws Exception {
+        public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider, RedisService redisService) throws Exception {
         http
                 .csrf().disable()
                 .sessionManagement(sessionManagement ->
@@ -37,7 +38,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 //  JwtFilter 필터 설정
-                .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(tokenProvider, redisService), UsernamePasswordAuthenticationFilter.class)
                 ;
         // HttpSecurity 안에 builder 有
         return http.build();

@@ -75,11 +75,31 @@ export default function MyFamily() {
     }
   };
 
+  const registerBaby = async () => {
+    const babyData = {
+      babyName: newBaby.name,
+      babyGender: newBaby.gender,
+      babyBirth: newBaby.birth,
+      babyOrder: baby.length,
+    };
+    try {
+      const response = await instance.post(`/api/profiles/child`, babyData);
+      setBaby([...baby, newBaby]);
+      setNewBaby({ name: "", gender: "", birth: "" });
+      console.log(response.data, "아이 정보 추가 성공");
+    } catch (error) {
+      console.log(error, "아이 정보 추가 실패");
+    }
+  };
+
   // 빈 값이면 추가 안 되도록 하기
   const addNewBaby = () => {
-    setBaby([...baby, newBaby]);
-    closeModal();
-    setNewBaby({ name: "", gender: "", birth: "" });
+    if (newBaby.name && newBaby.gender && newBaby.birth) {
+      registerBaby();
+      closeModal();
+    } else {
+      alert("아이 정보를 모두 입력해 주세요.");
+    }
   };
 
   useEffect(() => {

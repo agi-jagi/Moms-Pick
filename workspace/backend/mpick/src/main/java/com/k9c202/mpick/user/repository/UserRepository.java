@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // Optional : 조건문을 뒤에 달 수 있음 (ex null일때 실행할 내용들)
+    // Optional<Entity>
     Optional<User> findOneByLoginId(String loginId);
 
     Optional<User> findByEmail(String email);
