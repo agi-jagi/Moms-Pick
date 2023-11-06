@@ -61,7 +61,7 @@ public class TradeController {
     }
 
     @Operation(summary = "판매글 작성", description = "판매글 작성")
-    @PostMapping(value = "/item", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/item", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public CommonResponse<Long> tradeAdd(
             @RequestPart(value = "data") TradeAddRequest request,
             @RequestPart(value = "files") List<MultipartFile> multipartFiles,
