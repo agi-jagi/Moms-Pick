@@ -6,6 +6,8 @@ import lombok.Data;
 
 @Data
 public class ChatMessageRequest {
+    // 채팅방이 없는 경우, message & tradeId
+    // 채팅방이 있는 경우, message & chatRoomId
     private Long chatRoomId;
     private String message;
     private Long tradeId;
