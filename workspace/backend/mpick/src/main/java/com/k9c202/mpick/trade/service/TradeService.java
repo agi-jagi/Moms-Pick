@@ -241,9 +241,9 @@ public class TradeService {
     public void tradeWish(Long tradeId, String loginId) {
         User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("없는 유저입니다."));
 
-        Wish wish = wishRepository.findByUser(user).orElse(null);
-
         Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
+
+        Wish wish = wishRepository.findByUserIdAndTradeId(user.getId(), trade.getId()).orElse(null);
 
         if (user.equals(trade.getUser())) {
             return;
