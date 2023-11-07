@@ -85,6 +85,15 @@ public class CategoryQueryRepository {
                     )
                     .fetchOne();
         }
+    }
 
+    public String findMainCategoryNameById(Long categoryId) {
+        String result = queryFactory
+                .select(category.categoryName)
+                .from(category)
+                .where(category.id.eq(categoryId))
+                .fetchOne();
+
+        return result;
     }
 }
