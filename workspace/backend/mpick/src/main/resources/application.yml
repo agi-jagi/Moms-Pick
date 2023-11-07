@@ -6,6 +6,7 @@ spring:
       - log
       - email
       - s3
+      - ES
 
   mvc:
     pathmatch:
