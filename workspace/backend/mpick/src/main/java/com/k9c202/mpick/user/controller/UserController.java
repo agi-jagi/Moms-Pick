@@ -8,6 +8,7 @@ import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
+import com.k9c202.mpick.user.jwt.SecurityUtils;
 import com.k9c202.mpick.user.jwt.TokenProvider;
 import com.k9c202.mpick.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ import java.io.IOException;
 @Slf4j
 @RequestMapping("/api/users")
 public class UserController {
+    // TODO(지현): 2023-11-05 url 동사 사용X, POST -> PATCH
+    // 로그인 아이디는 자주 활용되기 때문에 jwt/SecurityUtils에서 getCurrentLoginId() 정의하여 사용 -> SecurityUtils.getCurrentLoginId();
     /*
     REST ful
     /schools/{schoolId}/classes/{classId}/students/{studentId}
@@ -102,35 +105,39 @@ public class UserController {
         return CommonResponse.OK("회원탈퇴 성공");
     }
 
-    // 회원 정보 수정
-    @PatchMapping
-    public CommonResponse<UserInfoResponse> updateUserInfo(
-            @AuthenticationPrincipal UserDetails userDetails,
-            // 프로필 이미지가 포함되어 있기 때문에 multipart
-            @RequestPart(name = "data", required = false) UpdateUserInfoRequest updateUserInfoRequest,
-            @RequestPart(name = "file", required = false) MultipartFile profileImg
-            ) throws IOException {
-        return CommonResponse.OK(userService.updateUserInfo(userDetails.getUsername(), updateUserInfoRequest, profileImg));
-    }
+    // TODO(지현): 2023-11-05 정보 수정 각각 나누기 (이메일, 닉네임, 소개글)
+ //    // 회원 정보 수정
+//    @PatchMapping
+//    public CommonResponse<UserInfoResponse> updateUserInfo(
+////            @AuthenticationPrincipal UserDetails userDetails,
+//            // 프로필 이미지가 포함되어 있기 때문에 multipart
+//            @RequestPart(name = "data", required = false) UpdateUserInfoRequest updateUserInfoRequest,
+//            @RequestPart(name = "file", required = false) MultipartFile profileImg
+//            ) throws IOException {
+////        return CommonResponse.OK(userService.updateUserInfo(userDetails.getUsername(), updateUserInfoRequest, profileImg));
+//        return CommonResponse.OK(userService.updateUserInfo(currentLoginId, updateUserInfoRequest, profileImg));
+//    }
 
     // 현재 비밀번호 체크
     @PostMapping("/pw-check")
     public CommonResponse<?> checkPassword(
-            @AuthenticationPrincipal UserDetails userDetails,
+//            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody CheckPasswordRequest checkPasswordRequest
             ) {
-        userService.checkPassword(userDetails.getUsername(), checkPasswordRequest.getPassword());
+//        userService.checkPassword(userDetails.getUsername(), checkPasswordRequest.getPassword());
+        userService.checkPassword(SecurityUtils.getCurrentLoginId(), checkPasswordRequest.getPassword());
         return CommonResponse.OK(null);
     }
 
     // 비밀번호 변경
     @PostMapping("/pw-change")
     public CommonResponse<?> changePassword(
-            @AuthenticationPrincipal UserDetails userDetails,
+//            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody UpdatePasswordRequest updatePasswordRequest
             ) {
         userService.changePassword(
-                userDetails.getUsername(),
+//                userDetails.getUsername(),
+                SecurityUtils.getCurrentLoginId(),
                 updatePasswordRequest.getPassword(),
                 updatePasswordRequest.getNewPassword()
         );
@@ -138,23 +145,27 @@ public class UserController {
     }
 
 
+    // 민감한 정보 체크는 GET이 아닌 POST 요청
     // 아이디 중복체크
-    @GetMapping("/id-check")
-    public CommonResponse<?> idCheck(@RequestParam String loginId){
+    @PostMapping("/id-check")
+//    public CommonResponse<?> idCheck(@RequestParam String loginId){
+    public CommonResponse<?> idCheck(@RequestBody String loginId){
         userService.checkDuplicatedLoginId(loginId);
         return CommonResponse.OK(null);
     }
 
     // 닉네임 중복체크
-    @GetMapping("/nickname-check")
-    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
+    @PostMapping("/nickname-check")
+//    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
+    public CommonResponse<?> nicknameCheck(@RequestBody String nickname){
         userService.checkDuplicatedNickname(nickname);
         return CommonResponse.OK(null);
     }
 
     // 이메일 중복체크
-    @GetMapping("/email-check")
-    public CommonResponse<?> emailCheck(@RequestParam String email){
+    @PostMapping("/email-check")
+//    public CommonResponse<?> emailCheck(@RequestParam String email){
+    public CommonResponse<?> emailCheck(@RequestBody String email){
         userService.checkDuplicatedEmail(email);
         return CommonResponse.OK(null);
     }

@@ -1,6 +1,5 @@
 package com.k9c202.mpick.user.repository;
 
-import com.k9c202.mpick.user.entity.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 

@@ -19,24 +19,24 @@ public class UserInfoResponse {
 
     // builder 정의
     @Builder
-    private UserInfoResponse(String loginId, String nickname, String email, Integer status, String profileImage, String userIntro) {
+    private UserInfoResponse(String loginId, String nickname, String email, String status, String profileImage, String userIntro) {
         this.loginId = loginId;
         this.nickname = nickname;
         this.email = email;
-        this.status = getStatus(status);
+        this.status = status;
         this.profileImage = profileImage;
         this.userIntro = userIntro;
     }
 
-    private String getStatus(int status) {
-        if (status == 1) {
-            return "정상";
-        }
-        if (status == 2) {
-            return "탈퇴";
-        }
-        return "휴면";
-    }
+//    private String getStatus(int status) {
+//        if (status == 1) {
+//            return "정상";
+//        }
+//        if (status == 2) {
+//            return "탈퇴";
+//        }
+//        return "휴면";
+//    }
 
     // of
     // builder 사용
@@ -45,7 +45,7 @@ public class UserInfoResponse {
                 .loginId(user.getLoginId())
                 .nickname(user.getNickname())
                 .email(user.getEmail())
-                .status(user.getStatus())
+                .status(user.getStatus().getText())
                 .profileImage(user.getProfileImage())
                 .userIntro(user.getUserIntro())
                 .build();
