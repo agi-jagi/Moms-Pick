@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/auth/emails/")
+@RequestMapping("/api/auth/emails")
 public class EmailController {
 
     private final MailService mailService;
@@ -40,6 +40,6 @@ public class EmailController {
     public CommonResponse<EmailVerificationResponse> verificationEmail(
             @RequestBody CheckEmailCodeRequest checkEmailCodeRequest) {
         EmailVerificationResponse response = mailService.verifiedCode(checkEmailCodeRequest.getEmail(), checkEmailCodeRequest.getAuthCode());
-        return CommonResponse.OK(null);
+        return CommonResponse.OK(response);
     }
 }
