@@ -21,13 +21,13 @@ public class ChatController {
     private final ChatService chatService;
 
     // TODO: 2023-11-07  userDetails.getUsername 부분 수정 고려
-    // 내 채팅방 목록 (로그인 아이디 사용)
+    // 내 채팅방 목록 조회 (로그인 아이디 사용)
     @GetMapping
     public CommonResponse<List<ChatRoomResponse>> getChatRooms(@AuthenticationPrincipal UserDetails userDetails){
         return CommonResponse.OK(chatService.getChatRooms(userDetails.getUsername()));
     }
 
-    // 채팅방 메세지 목록
+    // 채팅방 메세지 목록 조회
     // 특정 채팅방id를 통해 메세지 반환
     // 로그인id, 채팅방id
     @GetMapping("/{chatRoomId}")
