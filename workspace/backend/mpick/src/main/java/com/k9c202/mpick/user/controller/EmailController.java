@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/emails")
+@RequestMapping("/api/auth/emails")
 public class EmailController {
 
     private final MailService mailService;
