@@ -4,8 +4,8 @@ import { useTradeStore } from "@/store/TradeStore";
 import { useEffect, useState } from "react";
 import { Chip, Card, CardFooter, Image, CardBody, Button,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
-  CheckboxGroup, Checkbox } from "@nextui-org/react";
-import { Input } from "@material-tailwind/react";
+  CheckboxGroup, Checkbox, Select, SelectItem } from "@nextui-org/react";
+import { Input, Textarea, CardHeader, Typography, Dialog } from "@material-tailwind/react";
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
@@ -29,13 +29,29 @@ export default function Search() {
   const [ 등록open, set등록Open] = useState(false);
   const handleOpen등록 = () => set등록Open(!등록open);
 
-  const [ mainCategory, setMainCategory ] = useState<string>();
-  const [ subCategory, setSubCategory ] = useState<string>();
+  const [ selectedMainCategory, setSelectedMainCategory ] = useState<string>('');
+  const [ selectedSubCategory,setSelectedSubCategory ] = useState<string>('');
   const [ title, setTitle ] = useState("");
-  const [ price, setPrice ] = useState<number>();
+  const [ price, setPrice ] = useState("0");
   const [ tradeExplain, setTradeExplain ] = useState("");
-  const [ startMonths, setStartMonths ] = useState<number[]>([]);
+  // const [ startMonths, setStartMonths ] = useState<number[]>([]);
 
+  const [ tradeId, setTradeId ] = useState<number>(4);
+
+  const [ categoryList, setCategoryList ] = useState<any>({});
+
+  const mainCategoryList = [
+    "유모차",
+    "수유용품",
+    "이유용품",
+    "목욕용품",
+    "장난감",
+    "외출용품",
+    "의류",
+    "기저귀",
+    "임산부",
+    "기타"
+  ]
 
   
 
@@ -94,13 +110,15 @@ export default function Search() {
       formData.append("files", files[i]);
     }
 
+    const newPrice = parseInt(price);
+
     const data :any = {
-      mainCategory: mainCategory,
-      subCategory: subCategory,
+      mainCategory: selectedMainCategory,
+      subCategory: selectedSubCategory,
       title: title,
-      price: price,
+      price: newPrice,
       tradeExplain: tradeExplain,
-      startMonths: [1],
+      babyMonthIds: [1],
     };
 
     formData.append("data",new Blob([JSON.stringify(data)],{type:'application/json'}))
@@ -124,8 +142,7 @@ export default function Search() {
   async function getDetail() {
     try {
 
-
-      const res = await axios.get(`/api/trades/item/${4}`, {
+      const res = await axios.get(`/api/trades/item/${tradeId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -136,6 +153,26 @@ export default function Search() {
     }
   }
   
+  // getCategory 함수를 useEffect 내에서 호출
+  useEffect(() => {
+    async function getCategory() {
+      try {
+        const res = await axios.get(`/api/trades/item/category`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        console.log(res.data.response.category);
+        setCategoryList(res.data.response.category);
+
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getCategory(); // useEffect 내에서 getCategory 호출
+
+  }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
 
   
 
@@ -143,6 +180,10 @@ export default function Search() {
     <>
       <div>
       <Button onClick={getDetail}>상세조회</Button>
+      <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button>
+      <Button onClick={()=>console.log(selectedMainCategory)}>대분류 확인</Button>
+      <Button onClick={()=>console.log(selectedSubCategory)}>중분류 확인</Button>
+      <Button onClick={()=>console.log(typeof categoryList)}>확인</Button>
       <Image src="https://mpick-img-storage.s3.ap-northeast-2.amazonaws.com/static/3088fd38-eb9a-4bd4-85f8-243086e4ae15"></Image>
       <div className="flex gap-4 mt-4 justify-center">
       <Chip
@@ -192,12 +233,22 @@ export default function Search() {
           판매글 등록
         </Button>
         <Modal isOpen={등록open} onOpenChange={handleOpen등록} >
+          
     <ModalContent>
           {() => (
             <>
               
                 <form onSubmit={(e) => registerTrade(e)}>
                 <ModalBody>
+                  <CardHeader
+                      variant="gradient"
+                      color="blue"
+                      className="grid mb-4 h-28 place-items-center"
+                    >
+                      <Typography variant="h3" color="white">
+                        판매글 등록
+                      </Typography>
+                    </CardHeader>
                   <input type="file"
                     name="image_files" />
                   <Input 
@@ -205,16 +256,26 @@ export default function Search() {
                   label="글 제목" value={title} size="lg" onChange={(e) => setTitle(e.target.value)} />
                   <Input 
                   crossOrigin={true}
-                  label="가격" value={price} size="lg" onChange={(e) => setPrice(parseFloat(e.target.value))} />
-                  <Input 
-                  crossOrigin={true}
-                  label="글 내용" value={tradeExplain} size="lg" onChange={(e) => setTradeExplain(e.target.value)} />
-                  <Input 
-                  crossOrigin={true}
-                  label="대분류" value={mainCategory} size="lg" onChange={(e) => setMainCategory(e.target.value)} />
-                  <Input 
-                  crossOrigin={true}
-                  label="중분류" value={subCategory} size="lg" onChange={(e) => setSubCategory(e.target.value)} />
+                  label="가격" value={price} size="lg" onChange={(e) => setPrice(e.target.value)} />
+                  <Textarea
+                  label="글 내용" value={tradeExplain} onChange={(e) => setTradeExplain(e.target.value)} />
+                  <Select
+                  label="대분류 선택" 
+                  >
+                    {mainCategoryList.map((item, index) => (
+                      <SelectItem key={index} onClick={() => setSelectedMainCategory(item)}>{item}</SelectItem>
+                    ))}
+                  </Select>
+
+                  <Select
+                  label="중분류 선택"
+                  >
+                    {selectedMainCategory &&
+                      categoryList[selectedMainCategory]?.map((item :string) => (
+                        <SelectItem key={item} onClick={() => setSelectedSubCategory(item)}>{item}</SelectItem>
+                      ))}
+                  </Select>
+                  
                   {/* <Input 
                   crossOrigin={true}
                   label="개월 선택" value={startMonths} size="lg" onChange={(e) => setStartMonths(e.target.value)} /> */}
