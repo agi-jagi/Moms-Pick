@@ -1,5 +1,6 @@
 package com.k9c202.mpick.baby.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.k9c202.mpick.baby.dto.BabyDto;
 import com.k9c202.mpick.baby.dto.request.BabyRequestDto;
 import com.k9c202.mpick.baby.entity.Baby;
@@ -48,8 +49,19 @@ public class BabyServiceImpl implements BabyService{
     }
 
     @Override
-    public String modify(BabyRequestDto babyRequestDto) {
-        return null;
+    public String modify(BabyDto babyDto, String userName) {
+        Baby baby = babyRepository.findById(babyDto.getBabyId())
+                .orElseThrow(() -> new NotFoundException("실패했습니다."));
+
+        if (!baby.getUser().getLoginId().equals(userName)){
+            return "유효하지 않은 접근";
+        }
+        baby.setBabyBirth(babyDto.getBabyBirth());
+        baby.setBabyName(babyDto.getBabyName());
+        baby.setBabyGender(babyDto.getBabyGender());
+        baby.setBabyOrder(babyDto.getBabyOrder());
+        babyRepository.save(baby);
+        return "success";
     }
 
 

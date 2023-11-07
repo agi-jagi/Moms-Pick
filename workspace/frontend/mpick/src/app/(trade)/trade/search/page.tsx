@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Chip, Card, CardFooter, Image, CardBody, Button,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
   CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { Input } from "@material-tailwind/react";
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
@@ -24,36 +25,18 @@ export default function Search() {
   const [개월수open, set개월수Open] = useState(false);
   const handleOpen개월수 = () => set개월수Open(!개월수open);
   const [selected개월, setSelected개월] = useState<string[]>([]);
-  
+
+  const [ 등록open, set등록Open] = useState(false);
+  const handleOpen등록 = () => set등록Open(!등록open);
+
+  const [ mainCategory, setMainCategory ] = useState<string>();
+  const [ subCategory, setSubCategory ] = useState<string>();
+  const [ title, setTitle ] = useState("");
+  const [ price, setPrice ] = useState<number>();
+  const [ tradeExplain, setTradeExplain ] = useState("");
+  const [ startMonths, setStartMonths ] = useState<number[]>([]);
 
 
-  // const [ filesImage, setFilesImage ] = useState<File[]>([]);
-
-  // const saveImage = (e :any) => {
-  //   e.preventDefault();
-  //   const files = e.target.files[0];
-  //   if (files) {
-  //     setFilesImage([...filesImage, files]);
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // const sendToImage = async () => {
-  //   if (filesImage) {
-  //     const formData = new FormData();
-  //     formData.append("files", filesImage[0]);
-
-  //     const data :any = {
-  //       categotyId: 0,
-  //       addressId: 0,
-  //       title: "test제목",
-  //       price: 100,
-  //       tradeExplain: "test내용",
-  //       startMonths: [1, 2, 3],
-  //     };
-  //   }
-  // }
   
 
   const list = [
@@ -99,41 +82,8 @@ export default function Search() {
     },
   ];
 
-
-  // 쏴라 ! 등록되는지 sample code
-  // async function test() {
-
-  //   try {
-  //     const data :any = {
-  //       mainCategory: "유모차",
-  //       subCategory: "",
-  //       title: "test제목",
-  //       price: 100,
-  //       tradeExplain: "test내용",
-  //       startMonths: [1],
-  //     };
-
-
-    
-
-  //     const testForm=new FormData()
-  //       testForm.append("data",new Blob([JSON.stringify(data)],{type:'application/json'}))
-
-  //     const res = await axios.post("/api/trades/item", testForm, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //         'Content-Type': 'multipart/form-data'
-  //       },
-  //     }); 
-  //     console.log(res.data)
-
-  //   } catch(err) {
-  //     console.log(err);
-  //   }
-  // }
-
-  // 
-  async function onSubmit(e: any) {
+  //  판매글 등록 요청 함수
+  async function registerTrade(e: any) {
     e.preventDefault();
 
     try {
@@ -145,11 +95,11 @@ export default function Search() {
     }
 
     const data :any = {
-      mainCategory: "유모차",
-      subCategory: null,
-      title: "test제목",
-      price: 100,
-      tradeExplain: "test내용",
+      mainCategory: mainCategory,
+      subCategory: subCategory,
+      title: title,
+      price: price,
+      tradeExplain: tradeExplain,
       startMonths: [1],
     };
 
@@ -169,11 +119,13 @@ export default function Search() {
   };
   };
 
+
+  // 판매글 상세 조회 요청 함수
   async function getDetail() {
     try {
 
 
-      const res = await axios.get(`/api/trades/item/${3}`, {
+      const res = await axios.get(`/api/trades/item/${4}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -190,12 +142,8 @@ export default function Search() {
   return (
     <>
       <div>
-      <form onSubmit={(e) => onSubmit(e)}>
-        <input type="file"
-          name="image_files" />
-          <Button type="submit">등록</Button>
-      </form>
       <Button onClick={getDetail}>상세조회</Button>
+      <Image src="https://mpick-img-storage.s3.ap-northeast-2.amazonaws.com/static/3088fd38-eb9a-4bd4-85f8-243086e4ae15"></Image>
       <div className="flex gap-4 mt-4 justify-center">
       <Chip
         startContent={<FilterIcon />}
@@ -235,13 +183,55 @@ export default function Search() {
             검색 결과
           </div>
         </div>
-        <Button 
+        <Button
+          onClick={() => handleOpen등록()} 
           startContent={<BiSolidMessageSquareAdd />}
           radius="full" 
           className="top-3 right-4 bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg"
         >
           판매글 등록
         </Button>
+        <Modal isOpen={등록open} onOpenChange={handleOpen등록} >
+    <ModalContent>
+          {() => (
+            <>
+              
+                <form onSubmit={(e) => registerTrade(e)}>
+                <ModalBody>
+                  <input type="file"
+                    name="image_files" />
+                  <Input 
+                  crossOrigin={true}
+                  label="글 제목" value={title} size="lg" onChange={(e) => setTitle(e.target.value)} />
+                  <Input 
+                  crossOrigin={true}
+                  label="가격" value={price} size="lg" onChange={(e) => setPrice(parseFloat(e.target.value))} />
+                  <Input 
+                  crossOrigin={true}
+                  label="글 내용" value={tradeExplain} size="lg" onChange={(e) => setTradeExplain(e.target.value)} />
+                  <Input 
+                  crossOrigin={true}
+                  label="대분류" value={mainCategory} size="lg" onChange={(e) => setMainCategory(e.target.value)} />
+                  <Input 
+                  crossOrigin={true}
+                  label="중분류" value={subCategory} size="lg" onChange={(e) => setSubCategory(e.target.value)} />
+                  {/* <Input 
+                  crossOrigin={true}
+                  label="개월 선택" value={startMonths} size="lg" onChange={(e) => setStartMonths(e.target.value)} /> */}
+                
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" type="submit" 
+                onClick={handleOpen등록}
+                >
+                  등록하기
+                </Button>
+              </ModalFooter>
+              </form>
+            </>
+            )}
+            </ModalContent>
+          </Modal>
       </div>
     </div>
     <div className="mt-5 gap-2 grid grid-cols-2 sm:grid-cols-4">

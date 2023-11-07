@@ -81,6 +81,6 @@ public class Trade {
 
     public void tradeStatusDelete() {
 
-        this.tradeStatus = TradeStatus.DEL;
+        this.tradeStatus = TradeStatus.삭제됨;
     }
 }

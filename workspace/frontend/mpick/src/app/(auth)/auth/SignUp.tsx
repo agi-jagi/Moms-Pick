@@ -173,8 +173,8 @@ export default function SignUp() {
       return;
     }
     axios
-      .get(`/api/users/id-check`, {
-        params: { loginId: userId },
+      .post(`/api/users/id-check`, {
+        loginId: userId,
       })
       .then((res) => {
         if (res.data.success) {
@@ -191,9 +191,10 @@ export default function SignUp() {
         }
       })
       .catch(() => {
+        setUserIdCheck(false);
         Toast.fire({
           icon: "error",
-          title: "네트워크 에러",
+          title: "이미 사용중인 아이디입니다",
         });
       });
   };
@@ -207,8 +208,8 @@ export default function SignUp() {
       return;
     }
     axios
-      .get("/api/users/nickname-check", {
-        params: { nickname: userNickName },
+      .post("/api/users/nickname-check", {
+        nickname: userNickName,
       })
       .then((res) => {
         if (res.data.success) {
@@ -225,9 +226,10 @@ export default function SignUp() {
         }
       })
       .catch(() => {
+        setUserNickNameCheck(false);
         Toast.fire({
           icon: "error",
-          title: "네트워크 에러",
+          title: "이미 사용중인 닉네임입니다",
         });
       });
   };
@@ -241,8 +243,8 @@ export default function SignUp() {
       return;
     }
     await axios
-      .get("/api/users/email-check", {
-        params: { email: userEmail },
+      .post("/api/users/email-check", {
+        email: userEmail,
       })
       .then((res) => {
         verifyEmail();
@@ -259,7 +261,12 @@ export default function SignUp() {
   const verifyEmail = async () => {
     await axios
       .post(`/api/emails/verification-requests?email=${userEmail}`)
-      .then(() => {})
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "메일 전송 성공",
+        });
+      })
       .catch((err) => {
         Toast.fire({
           icon: "error",

@@ -34,8 +34,9 @@ public class BabyController {
 
     //수정
     @PatchMapping
-    public CommonResponse modifyChild(){
-        return CommonResponse.OK("");
+    public CommonResponse modifyChild(@RequestBody BabyDto babyDto, Authentication authentication){
+
+        return CommonResponse.OK(babyService.modify(babyDto, authentication.getName()));
     }
 
 

@@ -1,10 +1,7 @@
 package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
-import com.k9c202.mpick.user.controller.request.JoinUserRequest;
-import com.k9c202.mpick.user.controller.request.CheckPasswordRequest;
-import com.k9c202.mpick.user.controller.request.UpdatePasswordRequest;
-import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
+import com.k9c202.mpick.user.controller.request.*;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.controller.response.UserInfoResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
@@ -28,7 +25,10 @@ import java.io.IOException;
 @RequestMapping("/api/users")
 public class UserController {
     // TODO(지현): 2023-11-05 url 동사 사용X, POST -> PATCH
+    // TODO(지현): 2023-11-07 테스트코드 작성
+
     // 로그인 아이디는 자주 활용되기 때문에 jwt/SecurityUtils에서 getCurrentLoginId() 정의하여 사용 -> SecurityUtils.getCurrentLoginId();
+
     /*
     REST ful
     /schools/{schoolId}/classes/{classId}/students/{studentId}
@@ -145,28 +145,29 @@ public class UserController {
     }
 
 
+    // TODO: 2023-11-07 이미 있는 데이터 중복체크 실패  
     // 민감한 정보 체크는 GET이 아닌 POST 요청
     // 아이디 중복체크
     @PostMapping("/id-check")
 //    public CommonResponse<?> idCheck(@RequestParam String loginId){
-    public CommonResponse<?> idCheck(@RequestBody String loginId){
-        userService.checkDuplicatedLoginId(loginId);
+    public CommonResponse<?> idCheck(@RequestBody CheckLoginIdRequest checkLoginIdRequest){
+        userService.checkDuplicatedLoginId(checkLoginIdRequest.getLoginId());
         return CommonResponse.OK(null);
     }
 
     // 닉네임 중복체크
     @PostMapping("/nickname-check")
 //    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
-    public CommonResponse<?> nicknameCheck(@RequestBody String nickname){
-        userService.checkDuplicatedNickname(nickname);
+    public CommonResponse<?> nicknameCheck(@RequestBody CheckNicknameRequest checkNicknameRequest){
+        userService.checkDuplicatedNickname(checkNicknameRequest.getNickname());
         return CommonResponse.OK(null);
     }
 
     // 이메일 중복체크
     @PostMapping("/email-check")
 //    public CommonResponse<?> emailCheck(@RequestParam String email){
-    public CommonResponse<?> emailCheck(@RequestBody String email){
-        userService.checkDuplicatedEmail(email);
+    public CommonResponse<?> emailCheck(@RequestBody CheckEmailRequest checkEmailRequest){
+        userService.checkDuplicatedEmail(checkEmailRequest.getEmail());
         return CommonResponse.OK(null);
     }
 
