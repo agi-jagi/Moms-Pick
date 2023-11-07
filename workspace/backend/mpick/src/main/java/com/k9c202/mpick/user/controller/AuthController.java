@@ -26,7 +26,7 @@ public class AuthController {
     private final UserService userService;
 
     // 회원가입
-    @PostMapping("/join")
+    @PostMapping("/signup")
     public CommonResponse<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
         // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
         // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
@@ -56,7 +56,7 @@ public class AuthController {
 
     // 민감한 정보 체크는 GET이 아닌 POST 요청
     // 아이디 중복체크
-    @PostMapping("/check/id")
+    @PostMapping("/checks/id")
 //    public CommonResponse<?> idCheck(@RequestParam String loginId){
     public CommonResponse<?> idCheck(@RequestBody CheckLoginIdRequest checkLoginIdRequest){
         userService.checkDuplicatedLoginId(checkLoginIdRequest.getLoginId());
@@ -64,7 +64,7 @@ public class AuthController {
     }
 
     // 닉네임 중복체크
-    @PostMapping("/check/nickname")
+    @PostMapping("/checks/nickname")
 //    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
     public CommonResponse<?> nicknameCheck(@RequestBody CheckNicknameRequest checkNicknameRequest){
         userService.checkDuplicatedNickname(checkNicknameRequest.getNickname());
@@ -72,7 +72,7 @@ public class AuthController {
     }
 
     // 이메일 중복체크
-    @PostMapping("/check/email")
+    @PostMapping("/checks/email")
 //    public CommonResponse<?> emailCheck(@RequestParam String email){
     public CommonResponse<?> emailCheck(@RequestBody CheckEmailRequest checkEmailRequest){
         userService.checkDuplicatedEmail(checkEmailRequest.getEmail());

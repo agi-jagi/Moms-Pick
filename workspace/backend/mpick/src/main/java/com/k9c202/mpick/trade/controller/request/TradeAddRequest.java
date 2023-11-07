@@ -30,6 +30,5 @@ public class TradeAddRequest {
     private String tradeExplain;
 
     @NotEmpty
-    private List<Integer> startMonths;
-
+    private List<Integer> babyMonthIds;
 }

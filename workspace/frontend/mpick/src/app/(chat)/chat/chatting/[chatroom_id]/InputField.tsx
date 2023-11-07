@@ -15,8 +15,7 @@ const InputField = (props: any) => {
       >
         +
       </div>
-      <form
-        onSubmit={() => console.log(props.message)}
+      <div
         className="input-container"
         style={{ display: "flex", justifyContent: "space-between", width: "100%" }}
       >
@@ -26,16 +25,17 @@ const InputField = (props: any) => {
           onChange={(event) => props.setMessage(event.target.value)}
           style={{ width: "100%", height: "100%" }}
         />
-
         <Button
+          onClick={() => {
+            console.log(props.message);
+          }}
           disabled={props.message === ""}
-          type="submit"
           className="send-button"
           style={{ minWidth: "70px" }}
         >
           전송
         </Button>
-      </form>
+      </div>
     </div>
   );
 };
