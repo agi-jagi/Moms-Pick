@@ -24,7 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Provider>
           {children}
-          <NavBar />
+          <div style={{ zIndex: "10" }}>
+            <NavBar />
+          </div>
         </Provider>
       </body>
     </html>
