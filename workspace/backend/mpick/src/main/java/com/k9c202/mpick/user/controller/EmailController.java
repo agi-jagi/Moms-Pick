@@ -13,13 +13,13 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/emails")
+@RequestMapping("/api/auth/emails/")
 public class EmailController {
 
     private final MailService mailService;
 
     // 이메일 인증 코드 발송
-    @PostMapping("/verification-requests")
+    @PostMapping("/code-request")
     //    public ResponseEntity sendMessage(@RequestParam("email") @Valid @CustomEmail String email) {
     public CommonResponse<Object> sendMessage(@RequestParam("email") @Valid String email) {
         mailService.sendCodeToEmail(email);
@@ -29,7 +29,7 @@ public class EmailController {
     }
 
     // 이메일 인증 코드 확인
-    @GetMapping("/verifications")
+    @GetMapping("/code-verification")
     //    public ResponseEntity<EmailVerificationResult> verificationEmail(@RequestParam("email") @Valid @CustomEmail String email,
     public CommonResponse<EmailVerificationResponse> verificationEmail(@RequestParam("email") @Valid String email,
                                                                        @RequestParam("code") String authCode) {

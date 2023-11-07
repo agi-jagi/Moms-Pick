@@ -71,7 +71,7 @@ public class UserController {
 
     // 회원탈퇴
     // 로그인 아이디 필요
-    @DeleteMapping("/withdraw")
+    @DeleteMapping
     public CommonResponse<String> withdraw() {
         userService.withdraw();
         return CommonResponse.OK("회원탈퇴 성공");
@@ -91,7 +91,7 @@ public class UserController {
 //    }
 
     // 현재 비밀번호 체크
-    @PostMapping("/pw/exist")
+    @PostMapping("/check-password")
     public CommonResponse<?> checkPassword(
 //            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody CheckPasswordRequest checkPasswordRequest
@@ -102,7 +102,7 @@ public class UserController {
     }
 
     // 비밀번호 변경
-    @PostMapping("/pw-change")
+    @PutMapping("/change-password")
     public CommonResponse<?> changePassword(
 //            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody UpdatePasswordRequest updatePasswordRequest
