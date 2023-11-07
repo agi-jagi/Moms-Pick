@@ -8,13 +8,16 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import axios from "../../../_config/axios";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+
 import {
   AiFillCaretDown,
   AiFillCaretUp,
   AiFillPlusCircle,
   AiFillMinusCircle,
 } from "react-icons/ai";
-
+import { Select, SelectItem } from "@nextui-org/react";
 import { BiPlusCircle } from "react-icons/bi";
 import Link from "next/link";
 
@@ -23,12 +26,15 @@ interface BabyInfo {
   birth: string;
   gender: "M" | "F" | "";
   isFolded: boolean;
+  order: number;
 }
 
 export default function BabyAuth() {
   const [babyList, setBabyList] = useState<BabyInfo[]>([
-    { babyName: "", birth: "", gender: "", isFolded: false },
+    { babyName: "", birth: "", gender: "", order: 0, isFolded: false },
   ]);
+  const router = useRouter();
+  const babyOrder = { "첫 째": 1, "둘 째": 2, "셋 째": 3, "넷 째": 4, "다섯 째": 5 };
   console.log(babyList);
 
   const babyNameInput = (index: number, name: string) => {
@@ -51,8 +57,14 @@ export default function BabyAuth() {
     setBabyList(newBaby);
   };
 
+  const babyOrderSelected = (index: number, order: number) => {
+    const newBaby = [...babyList];
+    newBaby[index].order = order;
+    setBabyList(newBaby);
+  };
+
   const addBabyInfo = () => {
-    setBabyList([...babyList, { babyName: "", birth: "", gender: "", isFolded: false }]);
+    setBabyList([...babyList, { babyName: "", birth: "", gender: "", order: 0, isFolded: false }]);
   };
 
   const deleteInfo = (index: number) => {
@@ -66,6 +78,18 @@ export default function BabyAuth() {
     newBaby[index].isFolded = !newBaby[index].isFolded;
     setBabyList(newBaby);
   };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
   const registerBaby = async () => {
     for (let i = 0; i < babyList.length; i++) {
@@ -81,6 +105,11 @@ export default function BabyAuth() {
         try {
           const response = await axios.post("/api/profiles/child", data);
           console.log(response.data, "아이 등록 성공");
+          Toast.fire({
+            icon: "success",
+            title: "아이 정보가 등록되었습니다.",
+          });
+          router.push("/trade");
         } catch (error) {
           console.log(error);
         }
@@ -154,9 +183,9 @@ export default function BabyAuth() {
                 </div>
               </div>
 
-              <div>
+              <div className="mb-5">
                 <p className="ml-5 mb-3 font-bold">태어난 날 (출산 예정일)</p>
-                <div className="flex justify-center">
+                <div className="mb-3 flex justify-center">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="생년월일"
@@ -166,6 +195,16 @@ export default function BabyAuth() {
                     ></DatePicker>
                   </LocalizationProvider>
                 </div>
+              </div>
+              <p className="ml-5 mb-3 font-bold">아이 순서</p>
+              <div className="flex justify-center ">
+                <Select label="몇 째인가요?" variant="bordered" className="w-11/12 ">
+                  {Object.entries(babyOrder).map(([label, order]) => (
+                    <SelectItem key={order} onClick={() => babyOrderSelected(index, order)}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </Select>
               </div>
             </div>
           )}
@@ -183,7 +222,7 @@ export default function BabyAuth() {
         </div>
       </div>
 
-      <div className="flex justify-center mt-10 gap-6">
+      <div className="flex justify-center mt-8 gap-6 " style={{ zIndex: "14" }}>
         <Link href="/trade">
           <Button className="text-white bg-[#5E9FF2] ">건너뛰기</Button>
         </Link>
