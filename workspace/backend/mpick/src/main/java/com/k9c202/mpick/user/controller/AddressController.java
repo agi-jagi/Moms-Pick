@@ -41,7 +41,9 @@ public class AddressController {
 
     // 내 위치 수정
     @PutMapping("/{id}")
-    public CommonResponse<AddressResponse> updateAddress(@PathVariable("id") Long addressId, @RequestBody UpdateAddressRequest addressRequest){
+    public CommonResponse<AddressResponse> updateAddress(
+            @PathVariable("id") Long addressId,
+            @RequestBody UpdateAddressRequest addressRequest){
         return CommonResponse.OK(addressService.updateAddress(addressId,addressRequest.toAddressDto()));
     }
 
