@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface BabyService {
     String add(BabyDto babyDto, String userName);
     String delete(Long babyId, String userName);
-    String modify(BabyRequestDto babyRequestDto);
+    String modify(BabyDto babyDto, String useName);
 
 }
