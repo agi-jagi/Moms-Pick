@@ -28,6 +28,7 @@ public class UserController {
     // TODO(지현): 2023-11-07 테스트코드 작성
 
     // 로그인 아이디는 자주 활용되기 때문에 jwt/SecurityUtils에서 getCurrentLoginId() 정의하여 사용 -> SecurityUtils.getCurrentLoginId();
+    // 여러 방법 가능
 
     /*
     REST ful
@@ -52,35 +53,6 @@ public class UserController {
     //        userService.signup(userDto);
     //        return userDto;
     //    }
-
-    // 회원가입
-    @PostMapping("/join")
-    public CommonResponse<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
-        // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
-        // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
-        // log level : trace, debug, info, warning, error
-        log.debug("call UserController#signup");
-        log.debug("JoinUserRequest={}", request);
-
-        // JoinUserRequest 에서 정의한 toUserDto (id, password, nickname, email)
-        // 반환한 UserDto를 signup에 넣음
-        JoinUserResponse response = userService.signup(request.toUserDto());
-        log.debug("JoinUserResponse={}", response);
-
-        // 200일 경우, return ResponseEntity.status(200).body(null);과 동일
-        // 예외 처리를 어떻게 할지 정해야 함. 일단 성공인 경우만 적어놓음 (500으로 에러 처리 될 것)
-        return CommonResponse.OK(null);
-        // 다른 형식 예) return ResponseEntity.status(HttpStatus.CONFLICT).body(userDto);
-    }
-
-    // 로그인
-    @PostMapping("/login")
-    public CommonResponse<String> login(@RequestBody LoginDto loginDto){
-//        userService.login(loginDto);
-//        return ResponseEntity.ok(null);
-        // login 요청시 jwt 토큰을 반환하도록 변경
-        return CommonResponse.OK(userService.login(loginDto));
-    }
 
     // 회원 정보 조회
     @GetMapping
@@ -119,7 +91,7 @@ public class UserController {
 //    }
 
     // 현재 비밀번호 체크
-    @PostMapping("/pw-check")
+    @PostMapping("/pw/exist")
     public CommonResponse<?> checkPassword(
 //            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody CheckPasswordRequest checkPasswordRequest

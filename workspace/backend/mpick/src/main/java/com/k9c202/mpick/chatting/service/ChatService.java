@@ -90,6 +90,7 @@ public class ChatService {
     // 채팅메세지 Entity를 ChatMessageResponse로 변환
     private ChatMessageResponse convertChatMessageToChatMessageResponse(boolean isBuyer, ChatMessage chatMessage) {
         return ChatMessageResponse.builder()
+                .chatRoomId(chatMessage.getChatRoom().getId())
                 .chatMessageId(chatMessage.getId())
                 .toMe(chatMessage.getToSeller().equals(!isBuyer))
                 .message(chatMessage.getMessage())
