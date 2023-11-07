@@ -11,6 +11,8 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/profiles/child")
@@ -26,6 +28,7 @@ public class BabyController {
     }
     //삭제
     @DeleteMapping
+    @Operation(summary = "아기 삭제", description = "아기 삭제")
     public CommonResponse<String> deleteChild(@RequestBody BabyDto babyDto, Authentication authentication){
 
         babyService.delete(babyDto.getBabyId(), authentication.getName());
@@ -34,9 +37,17 @@ public class BabyController {
 
     //수정
     @PatchMapping
-    public CommonResponse modifyChild(@RequestBody BabyDto babyDto, Authentication authentication){
+    @Operation(summary = "아기 수정", description = "아기 수정")
+    public CommonResponse<String> modifyChild(@RequestBody BabyDto babyDto, Authentication authentication){
 
         return CommonResponse.OK(babyService.modify(babyDto, authentication.getName()));
+    }
+
+    @GetMapping
+    @Operation(summary = "아기 수정", description = "아기 수정")
+    public CommonResponse<List<BabyDto>> listBaby(Authentication authentication){
+
+        return CommonResponse.OK(babyService.loadBaby(authentication.getName()));
     }
 
 

@@ -4,6 +4,7 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.k9c202.mpick.baby.dto.BabyDto;
 import com.k9c202.mpick.baby.dto.request.BabyRequestDto;
 import com.k9c202.mpick.baby.entity.Baby;
+import com.k9c202.mpick.baby.repository.BabyDSLRepository;
 import com.k9c202.mpick.baby.repository.BabyRepository;
 import com.k9c202.mpick.global.function.CommonFunction;
 import com.k9c202.mpick.user.entity.User;
@@ -14,6 +15,8 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -24,7 +27,7 @@ public class BabyServiceImpl implements BabyService{
 
     private final BabyRepository babyRepository;
     private final CommonFunction commonFunction;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final BabyDSLRepository babyDSLRepository;
     @Override
     public String add(BabyDto babyDto, String userName) {
 
@@ -62,6 +65,19 @@ public class BabyServiceImpl implements BabyService{
         baby.setBabyOrder(babyDto.getBabyOrder());
         babyRepository.save(baby);
         return "success";
+    }
+
+    @Override
+    public List<BabyDto> loadBaby(String userName) {
+        List<BabyDto> result = new ArrayList<>();
+        List<Baby> baby = babyDSLRepository
+                .loadBaby(commonFunction.loadUser(userName).getId());
+
+        for(int i=0;i<baby.size();i++){
+            result.add(baby.get(i).toBabyDto());
+        }
+
+        return result;
     }
 
 
