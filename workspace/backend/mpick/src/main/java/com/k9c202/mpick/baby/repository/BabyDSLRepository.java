@@ -16,14 +16,14 @@ public class BabyDSLRepository {
 
     QBaby baby = QBaby.baby;
 
-    public List<Baby> loadBaby(){
-        System.out.println("1111");
+    public List<Baby> loadBaby(Long userId){
         List<Baby> result = jpaQueryFactory
                 .select(baby)
                 .from(baby)
+                .where(baby.user.id.eq(userId).and(baby.status.eq("exist")))
+                .orderBy(baby.babyOrder.asc())
                 .fetch();
 
-        System.out.println("2222");
         return result;
     }
 

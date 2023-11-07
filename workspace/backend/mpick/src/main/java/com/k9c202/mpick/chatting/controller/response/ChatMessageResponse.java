@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class ChatMessageResponse {
+    private Long chatRoomId;
     private Long chatMessageId;
     private Boolean toMe;   // 나에게 온 메세지인지 여부
     private String message; // 메세지 내용
@@ -16,6 +17,7 @@ public class ChatMessageResponse {
     // 수신자, 발신자가 뒤바뀌는 경우
     public ChatMessageResponse flipped(){
         return ChatMessageResponse.builder()
+                .chatRoomId(getChatRoomId())
                 .chatMessageId(getChatMessageId())
                 .toMe(!getToMe())
                 .message(getMessage())

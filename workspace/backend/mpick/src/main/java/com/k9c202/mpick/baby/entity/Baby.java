@@ -36,4 +36,15 @@ public class Baby {
 
     private String status;
 
+    public BabyDto toBabyDto(){
+        return BabyDto.builder()
+                .babyId(babyId)
+                .babyName(babyName)
+                .babyGender(babyGender)
+                .babyBirth(babyBirth)
+                .babyOrder(babyOrder)
+                .status(status)
+                .build();
+    }
+
 }
