@@ -174,10 +174,9 @@ export default function SignUp() {
     }
     axios
       .post(`/api/users/id-check`, {
-        data: { loginId: userId },
+        loginId: userId,
       })
       .then((res) => {
-        console.log(res);
         if (res.data.success) {
           Toast.fire({
             icon: "success",
@@ -192,9 +191,10 @@ export default function SignUp() {
         }
       })
       .catch(() => {
+        setUserIdCheck(false);
         Toast.fire({
           icon: "error",
-          title: "네트워크 에러",
+          title: "이미 사용중인 아이디입니다",
         });
       });
   };
@@ -209,7 +209,7 @@ export default function SignUp() {
     }
     axios
       .post("/api/users/nickname-check", {
-        data: { nickname: userNickName },
+        nickname: userNickName,
       })
       .then((res) => {
         if (res.data.success) {
@@ -226,9 +226,10 @@ export default function SignUp() {
         }
       })
       .catch(() => {
+        setUserNickNameCheck(false);
         Toast.fire({
           icon: "error",
-          title: "네트워크 에러",
+          title: "이미 사용중인 닉네임입니다",
         });
       });
   };
@@ -243,7 +244,7 @@ export default function SignUp() {
     }
     await axios
       .post("/api/users/email-check", {
-        data: { email: userEmail },
+        email: userEmail,
       })
       .then((res) => {
         verifyEmail();
