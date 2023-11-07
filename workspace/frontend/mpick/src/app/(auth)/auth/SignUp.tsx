@@ -111,7 +111,7 @@ export default function SignUp() {
       setUserAddress();
     } else {
       axios
-        .post("/api/users/join", {
+        .post("/api/auth/join", {
           loginId: userId,
           nickname: userNickName,
           password: userPw,
@@ -128,7 +128,7 @@ export default function SignUp() {
 
   const getToken = () => {
     axios
-      .post("api/users/login", {
+      .post("/api/auth/login", {
         loginId: userId,
         password: userPw,
       })
@@ -173,7 +173,7 @@ export default function SignUp() {
       return;
     }
     axios
-      .post(`/api/users/id-check`, {
+      .post(`/api/auth/check/id`, {
         loginId: userId,
       })
       .then((res) => {
@@ -208,7 +208,7 @@ export default function SignUp() {
       return;
     }
     axios
-      .post("/api/users/nickname-check", {
+      .post("/api/auth/check/nickname", {
         nickname: userNickName,
       })
       .then((res) => {
@@ -243,7 +243,7 @@ export default function SignUp() {
       return;
     }
     await axios
-      .post("/api/users/email-check", {
+      .post("/api/auth/check/email", {
         email: userEmail,
       })
       .then((res) => {

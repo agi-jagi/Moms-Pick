@@ -16,7 +16,7 @@ export default function Login() {
 
   const login = () => {
     axios
-      .post("api/users/login", {
+      .post("api/auth/login", {
         loginId: userId,
         password: userPw,
       })
