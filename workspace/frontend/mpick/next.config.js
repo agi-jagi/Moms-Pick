@@ -20,6 +20,10 @@ module.exports = withPWA({
         // destination: "https://k9c202.p.ssafy.io/api/:path*",
         destination: "http://localhost:5000/api/:path*",
       },
+      {
+        source: "/ws/:path",
+        destination: "http://localhost:5000/ws",
+      },
     ];
   },
 });
