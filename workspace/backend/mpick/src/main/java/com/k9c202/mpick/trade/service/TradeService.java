@@ -93,7 +93,7 @@ public class TradeService {
                 .user(commonFunction.loadUser(loginId))
                 .title(request.getTitle())
                 .tradeExplain(request.getTradeExplain())
-                .tradeStatus(TradeStatus.ING)
+                .tradeStatus(TradeStatus.판매중)
                 .address(address)
                 .viewCount(0L)
                 .wishCount(0L)
