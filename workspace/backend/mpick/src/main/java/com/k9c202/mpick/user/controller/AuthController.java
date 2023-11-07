@@ -1,6 +1,9 @@
 package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
+import com.k9c202.mpick.user.controller.request.CheckEmailRequest;
+import com.k9c202.mpick.user.controller.request.CheckLoginIdRequest;
+import com.k9c202.mpick.user.controller.request.CheckNicknameRequest;
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
@@ -17,7 +20,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserService userService;
@@ -49,6 +52,31 @@ public class AuthController {
 //        return ResponseEntity.ok(null);
         // login 요청시 jwt 토큰을 반환하도록 변경
         return CommonResponse.OK(userService.login(loginDto));
+    }
+
+    // 민감한 정보 체크는 GET이 아닌 POST 요청
+    // 아이디 중복체크
+    @PostMapping("/check/id")
+//    public CommonResponse<?> idCheck(@RequestParam String loginId){
+    public CommonResponse<?> idCheck(@RequestBody CheckLoginIdRequest checkLoginIdRequest){
+        userService.checkDuplicatedLoginId(checkLoginIdRequest.getLoginId());
+        return CommonResponse.OK(null);
+    }
+
+    // 닉네임 중복체크
+    @PostMapping("/check/nickname")
+//    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
+    public CommonResponse<?> nicknameCheck(@RequestBody CheckNicknameRequest checkNicknameRequest){
+        userService.checkDuplicatedNickname(checkNicknameRequest.getNickname());
+        return CommonResponse.OK(null);
+    }
+
+    // 이메일 중복체크
+    @PostMapping("/check/email")
+//    public CommonResponse<?> emailCheck(@RequestParam String email){
+    public CommonResponse<?> emailCheck(@RequestBody CheckEmailRequest checkEmailRequest){
+        userService.checkDuplicatedEmail(checkEmailRequest.getEmail());
+        return CommonResponse.OK(null);
     }
 
 }

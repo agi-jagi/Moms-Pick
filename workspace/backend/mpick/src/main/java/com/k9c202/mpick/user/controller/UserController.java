@@ -117,34 +117,5 @@ public class UserController {
     }
 
 
-    // TODO: 2023-11-07 이미 있는 데이터 중복체크 실패  
-    // 민감한 정보 체크는 GET이 아닌 POST 요청
-    // 아이디 중복체크
-    @PostMapping("/id-check")
-//    public CommonResponse<?> idCheck(@RequestParam String loginId){
-    public CommonResponse<?> idCheck(@RequestBody CheckLoginIdRequest checkLoginIdRequest){
-        userService.checkDuplicatedLoginId(checkLoginIdRequest.getLoginId());
-        return CommonResponse.OK(null);
-    }
-
-    // 닉네임 중복체크
-    @PostMapping("/nickname-check")
-//    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
-    public CommonResponse<?> nicknameCheck(@RequestBody CheckNicknameRequest checkNicknameRequest){
-        userService.checkDuplicatedNickname(checkNicknameRequest.getNickname());
-        return CommonResponse.OK(null);
-    }
-
-    // 이메일 중복체크
-    @PostMapping("/email-check")
-//    public CommonResponse<?> emailCheck(@RequestParam String email){
-    public CommonResponse<?> emailCheck(@RequestBody CheckEmailRequest checkEmailRequest){
-        userService.checkDuplicatedEmail(checkEmailRequest.getEmail());
-        return CommonResponse.OK(null);
-    }
-
-
-
-
 
 }
