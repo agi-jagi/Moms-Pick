@@ -173,10 +173,11 @@ export default function SignUp() {
       return;
     }
     axios
-      .get(`/api/users/id-check`, {
-        params: { loginId: userId },
+      .post(`/api/users/id-check`, {
+        data: { loginId: userId },
       })
       .then((res) => {
+        console.log(res);
         if (res.data.success) {
           Toast.fire({
             icon: "success",
@@ -207,8 +208,8 @@ export default function SignUp() {
       return;
     }
     axios
-      .get("/api/users/nickname-check", {
-        params: { nickname: userNickName },
+      .post("/api/users/nickname-check", {
+        data: { nickname: userNickName },
       })
       .then((res) => {
         if (res.data.success) {
@@ -241,8 +242,8 @@ export default function SignUp() {
       return;
     }
     await axios
-      .get("/api/users/email-check", {
-        params: { email: userEmail },
+      .post("/api/users/email-check", {
+        data: { email: userEmail },
       })
       .then((res) => {
         verifyEmail();
@@ -259,7 +260,12 @@ export default function SignUp() {
   const verifyEmail = async () => {
     await axios
       .post(`/api/emails/verification-requests?email=${userEmail}`)
-      .then(() => {})
+      .then(() => {
+        Toast.fire({
+          icon: "success",
+          title: "메일 전송 성공",
+        });
+      })
       .catch((err) => {
         Toast.fire({
           icon: "error",
