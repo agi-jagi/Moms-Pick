@@ -33,4 +33,10 @@ public class TradeDetailResponse {
     private Long viewCount;
 
     private String Address;
+
+    private String tradeBabyMonth;
+
+    private String mainCategory;
+
+    private String subCategory;
 }

@@ -20,6 +20,7 @@ import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,6 +69,8 @@ public class TradeService {
     private final CategoryRepository categoryRepository;
 
     private final WishRepository wishRepository;
+
+    private final TradeMonthQueryRepository tradeMonthQueryRepository;
 
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
@@ -122,21 +125,32 @@ public class TradeService {
         }
 
 
-        if (request.getStartMonths() != null) {
-            for (Integer startMonth : request.getStartMonths()) {
-                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth)
-                        .orElseThrow(() -> new NotFoundException("해당 월령 카테고리는 존재하지 않습니다."));
+//        if (request.getStartMonths() != null) {
+//            for (Integer startMonth : request.getStartMonths()) {
+//                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth)
+//                        .orElseThrow(() -> new NotFoundException("해당 월령 카테고리는 존재하지 않습니다."));
+//
+//                tradeMonthRepository.save(
+//                        TradeMonth.builder()
+//                                .trade(trade)
+//                                .babyMonth(babyMonth)
+//                                .build()
+//                );
+//            }
+//        }
+//        else {
+//            throw new IOException();
+//        }
 
-                tradeMonthRepository.save(
-                        TradeMonth.builder()
-                                .trade(trade)
-                                .babyMonth(babyMonth)
-                                .build()
-                );
-            }
-        }
-        else {
-            throw new IOException();
+        for (Integer babyMonthId : request.getBabyMonthIds()) {
+            BabyMonth babyMonth = babyMonthRepository.findById(babyMonthId).orElseThrow(() -> new NotFoundException("없는 월령입니다."));
+
+            tradeMonthRepository.save(
+                    TradeMonth.builder()
+                            .trade(trade)
+                            .babyMonth(babyMonth)
+                            .build()
+            );
         }
 
         return tradeId;
@@ -149,8 +163,20 @@ public class TradeService {
         Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("없는 판매글입니다."));
 
         User user = commonFunction.loadUser(loginId);
-        //RatingRepository 추가되면 바꿀 것
+
         List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(user.getId());
+
+        String subCategory = "";
+        String mainCategory;
+
+        if (trade.getCategory().getCategoryId2() == null) {
+            mainCategory = trade.getCategory().getCategoryName();
+        }
+        else {
+            subCategory = trade.getCategory().getCategoryName();
+
+            mainCategory = categoryQueryRepository.findMainCategoryNameById(trade.getCategory().getCategoryId2());
+        }
 
         BigDecimal userRating = BigDecimal.valueOf(0.0);
 
@@ -165,7 +191,42 @@ public class TradeService {
             userRating.divide(new BigDecimal(userRatings.size()));
         }
 
-        //주소 로직 추가 해야함
+        String tradeBabyMonth;
+
+        Integer startMonth = Integer.MAX_VALUE;
+
+        Integer endMonth = Integer.MIN_VALUE;
+
+        List<BabyMonth> babyMonthList = tradeMonthQueryRepository.findBabyMonthByTradeId(tradeId);
+
+        for (BabyMonth babyMonth : babyMonthList) {
+            Integer stMonth = babyMonth.getStartMonth();
+            Integer edMonth = babyMonth.getEndMonth();
+
+            if (stMonth < startMonth) {
+                startMonth = stMonth;
+            }
+
+            if (edMonth > endMonth) {
+                endMonth = edMonth;
+            }
+        }
+
+        if (startMonth == -1) {
+            tradeBabyMonth = "임산부";
+        }
+        else {
+            tradeBabyMonth = startMonth.toString();
+
+            if (endMonth == 37) {
+                tradeBabyMonth += "개월 이상";
+            }
+            else {
+                tradeBabyMonth += "~"+endMonth.toString() + " 개월";
+            }
+        }
+
+
         return TradeDetailResponse.builder()
                 .Address(trade.getAddress().getAddressString())
                 .nickname(commonFunction.loadUser(loginId).getNickname())
@@ -178,6 +239,9 @@ public class TradeService {
                 .viewCount(trade.getViewCount())
                 .wishCount(trade.getWishCount())
                 .tradeImages(imageUrls)
+                .mainCategory(mainCategory)
+                .subCategory(subCategory)
+                .tradeBabyMonth(tradeBabyMonth)
                 .build();
     }
 
