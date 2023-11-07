@@ -7,10 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 
 export default function NavBar() {
   return (
-    <div
-      className="w-full"
-      style={{ position: "fixed", bottom: "0", zIndex: "10", backgroundColor: "white" }}
-    >
+    <div className="w-full" style={{ position: "fixed", bottom: "0", backgroundColor: "white" }}>
       <Divider className="my-4" style={{ marginTop: "0" }} />
       <div className="columns-4" style={{ height: "60px" }}>
         <div style={{ alignItems: "center" }}>
