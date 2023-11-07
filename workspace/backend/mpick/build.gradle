@@ -41,6 +41,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//elasicsearch
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.2.2'
 	//mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
