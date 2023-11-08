@@ -30,16 +30,13 @@ export default function Search() {
   const handleOpen등록 = () => set등록Open(!등록open);
 
   const [ selectedMainCategory, setSelectedMainCategory ] = useState<string>('');
-  const [ selectedSubCategory,setSelectedSubCategory ] = useState<string>('');
+  const [ selectedSubCategory, setSelectedSubCategory ] = useState<string>('');
   const [ title, setTitle ] = useState("");
   const [ price, setPrice ] = useState("0");
   const [ tradeExplain, setTradeExplain ] = useState("");
-  // const [ startMonths, setStartMonths ] = useState<number[]>([]);
-
-  const [ tradeId, setTradeId ] = useState<number>(4);
+  const [ tradeId, setTradeId ] = useState<number>(1);
 
   const [ categoryList, setCategoryList ] = useState<any>({});
-
   const mainCategoryList = [
     "유모차",
     "수유용품",
@@ -53,6 +50,27 @@ export default function Search() {
     "기타"
   ]
 
+  const babyMonthList = [
+    "임산부",
+    "0~3개월",
+    "4~6개월",
+    "7~9개월",
+    "10~12개월",
+    "13~24개월",
+    "25~36개월",
+    "36개월 이상"
+  ]
+
+  const [ selectedMonthList, setSelectedMonthList ] = useState<number[]>([]);
+
+  const handleMonthSelect = (index: number) => {
+    // 이미 선택된 항목이라면 제거, 아니라면 추가
+    if (selectedMonthList.includes(index)) {
+      setSelectedMonthList((prevList) => prevList.filter((item) => item !== index));
+    } else {
+      setSelectedMonthList((prevList) => [...prevList, index]);
+    }
+  };
   
 
   const list = [
@@ -76,26 +94,6 @@ export default function Search() {
       img: "/nezko.jfif",
       price: "₩ 53,000",
     },
-    {
-      title: "유모차",
-      img: "/nezko.jfif",
-      price: "₩ 157,000",
-    },
-    {
-      title: "외출용품",
-      img: "/nezko.jfif",
-      price: "₩ 80,000",
-    },
-    {
-      title: "의류",
-      img: "/nezko.jfif",
-      price: "₩ 75,000",
-    },
-    {
-      title: "임산부",
-      img: "/nezko.jfif",
-      price: "₩ 122,000",
-    },
   ];
 
   //  판매글 등록 요청 함수
@@ -118,7 +116,7 @@ export default function Search() {
       title: title,
       price: newPrice,
       tradeExplain: tradeExplain,
-      babyMonthIds: [1],
+      babyMonthIds: selectedMonthList,
     };
 
     formData.append("data",new Blob([JSON.stringify(data)],{type:'application/json'}))
@@ -130,7 +128,7 @@ export default function Search() {
       },
     }); 
     console.log(res.data)
-
+    setSelectedMonthList([]);
 
   } catch(err) {
     console.log(err);
@@ -148,6 +146,7 @@ export default function Search() {
         },
       });
       console.log(res.data);
+      
     } catch(err) {
       console.log(err);
     }
@@ -162,7 +161,6 @@ export default function Search() {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(res.data.response.category);
         setCategoryList(res.data.response.category);
 
       } catch (err) {
@@ -171,7 +169,6 @@ export default function Search() {
     }
 
     getCategory(); // useEffect 내에서 getCategory 호출
-
   }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
 
   
@@ -181,9 +178,6 @@ export default function Search() {
       <div>
       <Button onClick={getDetail}>상세조회</Button>
       <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button>
-      <Button onClick={()=>console.log(selectedMainCategory)}>대분류 확인</Button>
-      <Button onClick={()=>console.log(selectedSubCategory)}>중분류 확인</Button>
-      <Button onClick={()=>console.log(typeof categoryList)}>확인</Button>
       <Image src="https://mpick-img-storage.s3.ap-northeast-2.amazonaws.com/static/3088fd38-eb9a-4bd4-85f8-243086e4ae15"></Image>
       <div className="flex gap-4 mt-4 justify-center">
       <Chip
@@ -275,10 +269,32 @@ export default function Search() {
                         <SelectItem key={item} onClick={() => setSelectedSubCategory(item)}>{item}</SelectItem>
                       ))}
                   </Select>
-                  
-                  {/* <Input 
-                  crossOrigin={true}
-                  label="개월 선택" value={startMonths} size="lg" onChange={(e) => setStartMonths(e.target.value)} /> */}
+                  <Typography className="font-semibold">
+                    개월 선택 (임산부 이외 중복 가능)
+                  </Typography>
+                  <div className="flex flex-wrap gap-3">
+                    
+                  {babyMonthList.map((month, index) => (
+                    <Checkbox
+                      key={index}
+                      value={month}
+                      checked={selectedMonthList.includes(index)}
+                      onChange={() => handleMonthSelect(index + 1)}
+                      // isDisabled={
+                      //   (selectedMonthList.includes(1) && index !== 0) || // "임산부" 선택 시 다른 개월 비활성화
+                      //   (index === 0 && selectedMonthList.length > 0) // 다른 개월 선택 시 "임산부" 비활성화
+                      // }
+                      isDisabled={
+                        (index !== 0 && selectedMonthList.includes(1)) ||
+                        (index === 0 && selectedMonthList.some((item) => item !== 1)) // "임산부"가 아닌 다른 개월 선택 시 "임산부" 비활성화
+                      }
+                    >
+                      {month}
+                    </Checkbox>
+                  ))}
+                  </div>
+
+                  <Button onClick={()=>console.log(selectedMonthList)}>담긴 개월 조회</Button>
                 
               </ModalBody>
               <ModalFooter>

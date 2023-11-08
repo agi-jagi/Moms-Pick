@@ -54,11 +54,8 @@ export default function Trade() {
       };
 
       const res = await axios.post(fastAPIURL + "/api/recommend", data); 
-      console.log(res.data)
-      console.log(res.data[0]);
-
+      // console.log(res.data)
       setRecommendList(res.data);
-      console.log(recommendList)
 
     } catch(err) {
       console.log(err);
