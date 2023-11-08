@@ -25,15 +25,11 @@ public class UserTradeService {
 
     private final UserRepository userRepository;
     public List<WishListResponse> getWishList(String loginId) {
-        System.out.println("여기있어요");
 
         User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
 
         List<WishListResponse> result = wishQueryRepository.findWishList(user.getId());
 
-        System.out.println("여기있어요");
-        System.out.println(result);
-        System.out.println("여기있어요");
         return result;
     }
 }

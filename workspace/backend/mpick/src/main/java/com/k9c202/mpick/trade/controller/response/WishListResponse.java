@@ -1,5 +1,6 @@
 package com.k9c202.mpick.trade.controller.response;
 
+import com.k9c202.mpick.trade.entity.TradeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,6 @@ public class WishListResponse {
     private String nickname;
 
     private Integer price;
+
+    private TradeStatus tradeStatus;
 }

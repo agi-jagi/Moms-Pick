@@ -53,7 +53,8 @@ public class WishQueryRepository {
                         wish.trade.thumbNailImage,
                         wish.trade.title,
                         wish.user.nickname,
-                        wish.trade.price
+                        wish.trade.price,
+                        wish.trade.tradeStatus
                         ))
                 .from(wish)
                 .where(wish.user.id.eq(userId))
