@@ -42,9 +42,9 @@ public class ChatRoomQueryRepository {
                 // fetchjoin을 할 경우 chatroom.trade.user로 사용 시 에러 발생
                 .innerJoin(chatRoom.trade,trade).fetchJoin()
                 .innerJoin(trade.user).fetchJoin()
-                // 채팅방에서 메세지가 없는 경우를 상정해서 leftjoin 사용
+                // 채팅방에서 메세지가 없는 경우를 상정해서 innerjoin이 아닌 leftjoin 사용
                 .leftJoin(chatRoom.lastChatMessage).fetchJoin()
-                // 특정 사용자가 구매자일 수도 있고 판매지일 수도 있음
+                // 특정 사용자가 구매자일 수도 있고 판매자일 수도 있음
                 // chatRoom.user.loginId : 구매자
                 // trade.user.loginId : 판매자 (chatroom.trade.user.loginId를 사용하면 join문이 하나 더 나감)
                 .where(chatRoom.user.loginId.eq(loginId)
@@ -54,13 +54,13 @@ public class ChatRoomQueryRepository {
         return result;
     }
 
-    // 로그인아이디에 해당하는 채팅방 리스트 반환하는 함수
+    // 로그인 아이디에 해당하는 채팅방 리스트 반환하는 함수
     // 반환 타입은 Long (select(chatRoom.id))
     public List<Long> findAllChatRoomIdByLoginId(String loginId) {
         List<Long> result = queryFactory
                 .select(chatRoom.id)
                 .from(chatRoom)
-                // join문을 명시해주지 않으면 cross join이 사용되기 때문에 아래와 같이 명시해줌
+                // join문을 명시해주지 않으면 cross join이 사용되기 때문에 아래와 같이 명시해줌 (innerjoin부분 없어도 작동은 됨)
                 .innerJoin(chatRoom.user)
                 .innerJoin(chatRoom.trade.user)
                 .where(chatRoom.user.loginId.eq(loginId)

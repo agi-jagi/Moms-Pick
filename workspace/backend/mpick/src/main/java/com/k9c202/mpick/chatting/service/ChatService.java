@@ -71,7 +71,7 @@ public class ChatService {
     // 특정 유저 아이디로 채팅방 목록 불러오는 함수
     public List<ChatRoomResponse> getChatRooms(String loginId) {
 //        chatRoomRepository.findAllByUserLoginId(loginId);
-        // ** 리스트타입.stream().map(함수).collcet(Collectors.toList())
+        // ** 리스트타입.stream().map(함수).collcet(Collectors.toList()) **
         return chatRoomQueryRepository.findAllByLoginId(loginId).stream()
                 .map(chatRoom -> convertChatRoomToChatRoomResponse(loginId, chatRoom))
                 .collect(Collectors.toList());
@@ -98,6 +98,7 @@ public class ChatService {
                 .build();
     }
 
+    // 특정 거래 & 특정 유저 정보로 채팅방 생성
     @Transactional
     public ChatRoomDto createChatRoom(String loginId, Long tradeId){
         ChatRoom chatRoom = chatRoomRepository.findByTradeIdAndUserLoginId(tradeId,loginId).orElse(null);

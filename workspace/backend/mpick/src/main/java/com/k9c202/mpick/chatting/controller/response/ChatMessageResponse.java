@@ -19,6 +19,7 @@ public class ChatMessageResponse {
         return ChatMessageResponse.builder()
                 .chatRoomId(getChatRoomId())
                 .chatMessageId(getChatMessageId())
+                // toMe값 true <-> false 전환
                 .toMe(!getToMe())
                 .message(getMessage())
                 .dateTime(getDateTime())

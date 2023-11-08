@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+// (참고) https://docs.spring.io/spring-framework/docs/5.3.30/reference/html/web.html#websocket
+// WebSocket 서버 생성 : implementing WebSocketHandler or, more likely, extending either TextWebSocketHandler or BinaryWebSocketHandler
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -31,7 +33,8 @@ public class ChatHandler extends TextWebSocketHandler {
     // Map<채팅방 아이디(key타입), 세션 리스트(value타입)> (Map: 파이썬에서의 딕셔너리, key-value)
     // TODO: 2023-11-07 List<WebSocketSession> -> Set<WebSocketSession>로 수정
     private Map<Long, List<WebSocketSession>> rooms = new ConcurrentHashMap<>();
-    // 접속한 사람들을 set으로(순서 없는 리스트) 저장
+    // 접속한 사람들을 set으로(순서 없는 리스트) 저장 (연결된 모든 session 저장)
+    // 클라이언트가 서버에 http 요청을 보냄 -> hand shaking 시작 -> webSocket session 생성 (클라이언트와 서버 연결(서버 입장에서는 클라이언트))
     private Set<WebSocketSession> sessions = Collections.newSetFromMap(new ConcurrentHashMap<WebSocketSession, Boolean>());
 
 
@@ -42,7 +45,7 @@ public class ChatHandler extends TextWebSocketHandler {
         String loginId = Objects.requireNonNull(session.getPrincipal()).getName();
         // 채팅메세지는 String으로 오는데, ChatMessageRequest 형식에 맞게 json format으로 변환
         ChatMessageRequest chatMessageRequest = objectMapper.readValue(message.getPayload(), ChatMessageRequest.class);
-        // 채팅방id가 없으면 거래id를 기반으로 채팅방을 생성하고, 채팅방id를 그에 맞게 설정
+        // 채팅방 id가 없으면 거래id를 기반으로 채팅방을 생성하고, 채팅방id를 그에 맞게 설정
         if (chatMessageRequest.getChatRoomId() == null) {
             ChatRoomDto chatRoomDto = chatService.createChatRoom(loginId, chatMessageRequest.getTradeId());
             Long chatRoomId = chatRoomDto.getChatRoomId();
@@ -83,8 +86,8 @@ public class ChatHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         // 인증 정보(header에 accessToekn)가 없으면 세션 종료
         if (session.getPrincipal() == null) {
-            log.info(session + " WebSocketSession 인증을 실패 했습니다");
-            session.sendMessage(new TextMessage("WebSocketSession 인증을 실패 했습니다"));
+            log.info(session + " WebSocketSession 인증에 실패했습니다");
+            session.sendMessage(new TextMessage("WebSocketSession 인증에 실패했습니다"));
             session.close();
             return;
         }
