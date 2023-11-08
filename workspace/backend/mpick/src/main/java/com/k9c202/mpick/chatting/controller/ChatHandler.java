@@ -33,7 +33,7 @@ public class ChatHandler extends TextWebSocketHandler {
     private Map<Long, List<WebSocketSession>> rooms = new ConcurrentHashMap<>();
     // 접속한 사람들을 set으로(순서 없는 리스트) 저장
     private Set<WebSocketSession> sessions = Collections.newSetFromMap(new ConcurrentHashMap<WebSocketSession, Boolean>());
-    ;
+
 
     // 서버 접속한 클라이언트, 클라이언트가 보낸 메세지를 매개변수로 받는 함수
     @Override
