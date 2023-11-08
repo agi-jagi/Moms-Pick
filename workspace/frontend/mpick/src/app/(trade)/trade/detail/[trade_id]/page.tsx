@@ -1,6 +1,8 @@
 'use client';
 
 import GoBack from '@/app/(auth)/auth/GoBack';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 // import { Image, Avatar, Button } from "@nextui-org/react";
 import {
   Card,
@@ -19,42 +21,48 @@ import { FaRegHeart } from "react-icons/fa";
 export default function Detail(props: any) {
 
   console.log(props);
+  const tradeId = props.params.trade_id
+
+  const [ detail, setDetail ] = useState<any>(null);
+
+  useEffect(() => {
+
+    async function getDetail() {
+      try {
+
+        const res = await axios.get(`/api/trades/item/${tradeId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        console.log(res.data);
+        setDetail(res.data.response);
+        
+      } catch(err) {
+        console.log(err);
+      }
+    }
+
+    getDetail();
+  }, []);
+
+  if (detail === null) {
+    // item 정보가 없을 경우 로딩 또는 오류 처리를 할 수 있습니다.
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <GoBack />
-      {/* <Image
-      isBlurred
-      width={240}
-      src="https://nextui-docs-v2.vercel.app/images/album-cover.png"
-      alt="NextUI Album Cover"
-      className="m-5"
-    />
-    <Avatar isBordered color="primary" src='/nezko.jfif' />
-    <span>카마도 네즈코</span>
-    <img src="/Star 3.svg" alt="별 이모티콘" />5.0
-    <p>실버크로스 발모랄</p>
-    <p>대분류 | 중분류 | 개월 | 조회수 411</p>
-    <br></br>
-    <p>판매글 내용</p>
-
-    <FaRegHeart size="24"/>
-
-    <p>₩ 2,000,000</p>
-
-    
-    <Button color="primary"
-    startContent={<PiWechatLogoBold size="24"/>}
-    className="font-semibold text-md">
-                  채팅하기
-                </Button> */}
     <Card className="w-full max-w-[26rem] shadow-lg">
+    <GoBack />
       <CardHeader floated={false} color="blue-gray">
         <img
           className="w-full object-cover rounded-t-lg"
           src="/유모차2.jpg"
-          alt="ui/ux review check"
+          // src={detail.tradeImages[0]}
+          alt="Card Image"
         />
+        
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
         <IconButton
           size="sm"
@@ -77,9 +85,8 @@ export default function Detail(props: any) {
           
           <Typography variant="h5" color="blue-gray" className="font-semibold text-md" >
           <Avatar size="sm" src='/nezko.jfif' className="mr-2" />
-            카마도 네즈코
+            {detail.nickname}
           </Typography>
-          
           <Typography
             color="blue-gray"
             className="flex items-center gap-1.5 font-semibold"
@@ -96,72 +103,49 @@ export default function Detail(props: any) {
                 clipRule="evenodd"
               />
             </svg>
-            5.0
+            { detail.rating === -1 ? "평가중" : detail.rating }
           </Typography>
           
         </div>
-        <Typography variant="h5" color="blue-gray" className="font-semibold mb-3">
-            판매글 제목
+        <div className="mb-3 flex items-center justify-between">
+        <Typography variant="h5" color="blue-gray" className="font-semibold">
+            {detail.title}
           </Typography>
+          <Tooltip content="가격">
+            <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+              ₩ {detail.price}
+            </span>
+          </Tooltip>
+        </div>
         <Typography color="gray">
-          Enter a freshly updated and thoughtfully furnished peaceful home
-          surrounded by ancient trees, stone walls, and open meadows.
+          {detail.mainCategory} | { detail.subCategory ? detail.subCategory : "없음" } | {detail.tradeBabyMonth} | {detail.tradeStatus}
         </Typography>
-        <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
-          <Tooltip content="$129 per night">
-            <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+        <Typography color="gray" className="mt-4">
+          {detail.tradeExplain} 이치노 카타 헤키레키 잇센
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Exercitationem sed maxime officiis soluta expedita cum. Dicta eos, modi distinctio velit explicabo cum sapiente vero earum hic dolore harum eveniet. Tempore.
+        </Typography>
+        <div className="group mt-8 inline-flex items-center gap-3">
+          <Tooltip content="동네">
+            <span className="flex items-center cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="h-5 w-5"
-              >
-                <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
-                <path
-                  fillRule="evenodd"
-                  d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z"
-                  clipRule="evenodd"
-                />
-                <path d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z" />
-              </svg>
-            </span>
-          </Tooltip>
-          <Tooltip content="Free wifi">
-            <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-5 w-5"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M1.371 8.143c5.858-5.857 15.356-5.857 21.213 0a.75.75 0 010 1.061l-.53.53a.75.75 0 01-1.06 0c-4.98-4.979-13.053-4.979-18.032 0a.75.75 0 01-1.06 0l-.53-.53a.75.75 0 010-1.06zm3.182 3.182c4.1-4.1 10.749-4.1 14.85 0a.75.75 0 010 1.061l-.53.53a.75.75 0 01-1.062 0 8.25 8.25 0 00-11.667 0 .75.75 0 01-1.06 0l-.53-.53a.75.75 0 010-1.06zm3.204 3.182a6 6 0 018.486 0 .75.75 0 010 1.061l-.53.53a.75.75 0 01-1.061 0 3.75 3.75 0 00-5.304 0 .75.75 0 01-1.06 0l-.53-.53a.75.75 0 010-1.06zm3.182 3.182a1.5 1.5 0 012.122 0 .75.75 0 010 1.061l-.53.53a.75.75 0 01-1.061 0l-.53-.53a.75.75 0 010-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-          </Tooltip>
-          <Tooltip content="2 bedrooms">
-            <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-5 w-5"
+                className="h-5 w-5 mr-1"
               >
                 <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
                 <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
               </svg>
+              <span>{detail.address}</span>
             </span>
           </Tooltip>
-          <Tooltip content="Fire alert">
-            <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+          <Tooltip content="찜">
+            <span className="flex items-center cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="h-5 w-5"
+                className="h-5 w-5 mr-1"
               >
                 <path
                   fillRule="evenodd"
@@ -169,24 +153,26 @@ export default function Detail(props: any) {
                   clipRule="evenodd"
                 />
               </svg>
+              <span>{detail.wishCount}</span>
             </span>
           </Tooltip>
-          <Tooltip content="And +20 more">
+          <Tooltip content="조회">
             <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-              +20
+              조회 {detail.viewCount}
             </span>
           </Tooltip>
         </div>
       </CardBody>
-      <CardFooter className="pt-3">
-        <Button className="bg-[#5E9FF2] text-white text-md" size="lg" fullWidth={true}>
-        <PiWechatLogoBold size="24"/>
-          채팅하기
+      <CardFooter className="pt-3 flex justify-center items-center">
+        <Button className="bg-[#5E9FF2] text-white text-md flex items-center" size="lg" fullWidth={true}>
+          <div className="flex items-center justify-center w-full">
+            <PiWechatLogoBold size="24" className="mr-2" />
+            채팅하기
+          </div>
         </Button>
       </CardFooter>
     </Card>
-    
-      
+    <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }

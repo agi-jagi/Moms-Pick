@@ -18,7 +18,6 @@ import axios from "axios";
 // 반경 설정 컴포넌트 분리 필요
 // 검색창 컴포넌트 분리 필요
 // 상단 배너 넣어야 함
-// SWIPE 적용해야 함
 // 목록 보여주는 건 컴포넌트로 분리할지 고민중
 // 
 
@@ -54,7 +53,7 @@ export default function Trade() {
       };
 
       const res = await axios.post(fastAPIURL + "/api/recommend", data); 
-      // console.log(res.data)
+      console.log(res.data)
       setRecommendList(res.data);
 
     } catch(err) {
@@ -290,7 +289,7 @@ export default function Trade() {
       </>
       ) : (
         <>
-        아직 서버
+        로딩중입니다.
         </>
       )
     }
