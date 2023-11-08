@@ -20,7 +20,7 @@ const InputField = (props: any) => {
   return (
     <div
       className="input-area"
-      style={{ display: "flex", position: "fixed", bottom: "80px", width: "100%" }}
+      style={{ display: "flex", position: "fixed", bottom: "80px", width: "100%", zIndex: "1" }}
     >
       <div
         className="plus-button"
