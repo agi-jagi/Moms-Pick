@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { Button, Input } from "@nextui-org/react";
 import { AiOutlineClose } from "react-icons/ai";
+import { Select, SelectItem } from "@nextui-org/react";
 
 const style = {
   position: "absolute",
@@ -19,46 +20,53 @@ const style = {
   p: 4,
 };
 
-interface EditBabyModalProps {
+interface UpdateBabyModalProps {
   open: boolean;
   onClose: () => void;
-  babyInfo: any;
+  selectedBaby: any;
   handleUpdate: (updatedBaby: any) => void;
   handleDelete: () => void;
 }
 
-const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
+const UpdateBabyInfo: React.FC<UpdateBabyModalProps> = ({
   open,
   onClose,
-  babyInfo,
+  selectedBaby,
   handleUpdate,
   handleDelete,
 }) => {
-  const [updateBaby, setUpdatedBaby] = useState<any>(babyInfo);
+  const [updateBaby, setUpdatedBaby] = useState<any>(selectedBaby);
+  const babyOrder = { "첫 째": 1, "둘 째": 2, "셋 째": 3, "넷 째": 4, "다섯 째": 5 };
 
   useEffect(() => {
-    setUpdatedBaby(babyInfo);
-  }, [babyInfo]);
+    setUpdatedBaby(selectedBaby);
+  }, [selectedBaby]);
 
-  const updateGender = (gender: string) => {
-    setUpdatedBaby({ ...updateBaby, gender });
+  const updateGender = (babyGender: string) => {
+    setUpdatedBaby({ ...updateBaby, babyGender });
   };
 
-  const updateName = (name: string) => {
-    setUpdatedBaby({ ...updateBaby, name });
+  const updateName = (babyName: string) => {
+    setUpdatedBaby({ ...updateBaby, babyName });
   };
 
-  const updateBirth = (birth: dayjs.Dayjs | null) => {
-    if (birth) {
-      const formattedBirth = birth.format("YYYY-MM-DD");
-      setUpdatedBaby({ ...updateBaby, birth: formattedBirth });
+  const updateBirth = (babyBirth: dayjs.Dayjs | null) => {
+    if (babyBirth) {
+      const formattedBirth = babyBirth.format("YYYY-MM-DD");
+      setUpdatedBaby({ ...updateBaby, babyBirth: formattedBirth });
     }
+  };
+
+  const updateOrder = (babyOrder: number) => {
+    setUpdatedBaby({ ...updateBaby, babyOrder });
   };
 
   const saveChanges = () => {
     handleUpdate(updateBaby);
     onClose();
   };
+
+  console.log("수정수정", updateBaby);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -69,7 +77,7 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
         <div style={{ textAlign: "center" }}>
           <p className="font-bold text-2xl mb-4">아이 정보 수정</p>
         </div>
-        <p className="ml-1 mb-3 font-bold">성별</p>
+        <p className="ml-1 mb-1 font-bold">성별</p>
         <div className="flex gap-8 justify-center items-center mb-5">
           <Button
             variant="bordered"
@@ -77,7 +85,7 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
               width: "30%",
               height: "100%",
               padding: "5%",
-              backgroundColor: updateBaby.gender === "M" ? "#D0F0FD" : "transparent",
+              backgroundColor: updateBaby.babyGender === "M" ? "#D0F0FD" : "transparent",
             }}
             onClick={() => updateGender("M")}
           >
@@ -89,15 +97,15 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
               width: "30%",
               height: "100%",
               padding: "5%",
-              backgroundColor: updateBaby.gender === "F" ? "#FDD0EF" : "transparent",
+              backgroundColor: updateBaby.babyGender === "F" ? "#FDD0EF" : "transparent",
             }}
             onClick={() => updateGender("F")}
           >
             <Image src="/girl.png" alt="여자 아기" width={80} height={80}></Image>
           </Button>
         </div>
-        <div className="mb-5">
-          <p className="ml-1 mb-3 font-bold">아이 별명</p>
+        <div className="mb-3">
+          <p className="ml-1 mb-1 font-bold">아이 별명</p>
           <div className="flex justify-center">
             <Input
               isRequired
@@ -106,13 +114,13 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
               variant="bordered"
               className="w-full"
               radius={"sm"}
-              onValueChange={(name) => updateName(name)}
-              value={updateBaby.name}
+              onValueChange={(babyName) => updateName(babyName)}
+              value={updateBaby.babyName}
             ></Input>
           </div>
         </div>
-        <div>
-          <p className="ml-1 mb-3 font-bold">태어난 날 (출산 예정일)</p>
+        <div className="mb-3">
+          <p className="ml-1 mb-1 font-bold">태어난 날 (출산 예정일)</p>
           <div className="flex justify-center">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -123,6 +131,16 @@ const UpdateBabyInfo: React.FC<EditBabyModalProps> = ({
               ></DatePicker>
             </LocalizationProvider>
           </div>
+        </div>
+        <p className="ml-1 mb-1 font-bold">아이 순서</p>
+        <div className="flex justify-center ">
+          <Select label="몇 째인가요?" variant="bordered" className="w-full">
+            {Object.entries(babyOrder).map(([label, order]) => (
+              <SelectItem key={order} onClick={() => updateOrder(order)}>
+                {label}
+              </SelectItem>
+            ))}
+          </Select>
         </div>
         <div className="flex justify-center mt-8">
           <Button onClick={handleDelete} className="mr-4 w-36 bg-[#F85D5D] text-white">
