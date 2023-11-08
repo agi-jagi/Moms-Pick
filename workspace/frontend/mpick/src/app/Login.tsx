@@ -8,7 +8,6 @@ import Image from "next/image";
 import logo from "../../public/MOM_s_PICK__2_-removebg-preview.png";
 import axios from "axios";
 import instance from "@/app/_config/axios";
-import CoverNavBar from "./_navbar/coverNavbar";
 
 export default function Login() {
   const [userId, setUserId] = useState<string>("");
@@ -111,7 +110,6 @@ export default function Login() {
           <p className="font-bold text-xl">회원가입</p>
         </Button>
       </div>
-      <CoverNavBar />
     </div>
   );
 }

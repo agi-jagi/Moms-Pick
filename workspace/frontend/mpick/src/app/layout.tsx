@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "./Provider";
-import NavBar from "./_navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,12 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#317EFB" />
       </Head>
       <body className={inter.className}>
-        <Provider>
-          {children}
-          <div style={{ zIndex: "10" }}>
-            <NavBar />
-          </div>
-        </Provider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
