@@ -47,6 +47,9 @@ public class Trade {
     private String tradeExplain;
 
     @Column
+    private String thumbNailImage;
+
+    @Column
     private Long wishCount;
 
     @Column

@@ -4,6 +4,7 @@ import com.k9c202.mpick.trade.controller.component.TradeDetailDto;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
+import com.k9c202.mpick.trade.controller.response.WishListResponse;
 import com.k9c202.mpick.trade.entity.QTrade;
 import com.k9c202.mpick.trade.entity.Trade;
 import com.k9c202.mpick.trade.entity.TradeImage;
@@ -68,4 +69,6 @@ public class TradeQueryRepository {
 //                .where(trade.id.eq(tradeId))
 //                .fetchOne().longValue();
     }
+
+
 }

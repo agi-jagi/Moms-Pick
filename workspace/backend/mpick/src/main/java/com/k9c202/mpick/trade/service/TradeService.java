@@ -90,6 +90,15 @@ public class TradeService {
         Address address = addressRepository.findByUserLoginIdAndIsSet(loginId, true)
                 .orElseThrow(() -> new NotFoundException("찾을 수 없는 주소입니다."));
 
+        List<String> imageSaveUrls = new ArrayList<>();
+
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            imageSaveUrls.add(
+                    s3Service.upload(multipartFile, "static")
+            );
+        }
+
         Trade trade = Trade.builder()
                 .category(category)
                 .price(request.getPrice())
@@ -100,17 +109,10 @@ public class TradeService {
                 .address(address)
                 .viewCount(0L)
                 .wishCount(0L)
+                .thumbNailImage(imageSaveUrls.get(0))
                 .build();
 
         Long tradeId = tradeRepository.save(trade).getId();
-
-        List<String> imageSaveUrls = new ArrayList<>();
-
-        for (MultipartFile multipartFile : multipartFiles) {
-            imageSaveUrls.add(
-                    s3Service.upload(multipartFile, "static")
-            );
-        }
 
         Integer seq = 1;
 
