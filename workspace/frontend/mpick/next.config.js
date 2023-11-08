@@ -21,7 +21,7 @@ module.exports = withPWA({
         destination: "http://localhost:5000/api/:path*",
       },
       {
-        source: "/ws/:path",
+        source: "/ws",
         destination: "http://localhost:5000/ws",
       },
     ];
