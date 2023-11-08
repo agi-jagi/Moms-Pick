@@ -66,7 +66,7 @@ const UpdateBabyInfo: React.FC<UpdateBabyModalProps> = ({
     onClose();
   };
 
-  console.log("수정수정", updateBaby);
+  console.log("updateBaby", updateBaby);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -120,11 +120,12 @@ const UpdateBabyInfo: React.FC<UpdateBabyModalProps> = ({
           </div>
         </div>
         <div className="mb-3">
-          <p className="ml-1 mb-1 font-bold">태어난 날 (출산 예정일)</p>
+          <p className="ml-1 mb-2 font-bold">태어난 날 (출산 예정일)</p>
           <div className="flex justify-center">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="생년월일"
+                value={updateBaby.babyBirth ? dayjs(updateBaby.babyBirth) : null}
                 onChange={(newDate: dayjs.Dayjs | null) => updateBirth(newDate)}
                 format="YYYY-MM-DD"
                 sx={{ width: "100%" }}
