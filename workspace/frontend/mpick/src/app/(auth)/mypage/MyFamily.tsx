@@ -90,7 +90,7 @@ export default function MyFamily() {
     }
   };
 
-  console.log("여기보세요", selectedBaby);
+  console.log("selectBaby", selectedBaby);
   const handleDelete = async () => {
     const babyId = selectedBaby.babyId;
     const babyData = {
