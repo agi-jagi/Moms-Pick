@@ -120,6 +120,11 @@ public class TokenProvider implements InitializingBean {
             return bearerToken.substring(7);
         }
 
+        String token = request.getParameter("jwt");
+        if (StringUtils.hasText(token)) {
+            return token;
+        }
+
         return null;
     }
 

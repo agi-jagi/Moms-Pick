@@ -29,9 +29,9 @@ export default function Chatting(props: any) {
 
   useEffect(() => {
     console.log("web", socket);
-    socket.on("connect", () => {
-      console.log("res", socket);
-    });
+    // socket.on("connect", () => {
+    //   console.log("res", socket);
+    // });
 
     instance
       .get(`/api/chattings/${props.params.chatroom_id}`)
