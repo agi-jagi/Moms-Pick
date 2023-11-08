@@ -39,4 +39,8 @@ public class TradeDetailResponse {
     private String mainCategory;
 
     private String subCategory;
+
+    private String isLiked;
+
+    private String profile;
 }

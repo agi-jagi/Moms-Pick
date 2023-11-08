@@ -168,6 +168,8 @@ public class TradeService {
 
         List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(user.getId());
 
+        Long isExistWish = wishQueryRepository.existWish(user.getId(), tradeId);
+
         String subCategory = "";
         String mainCategory;
 
@@ -244,6 +246,8 @@ public class TradeService {
                 .mainCategory(mainCategory)
                 .subCategory(subCategory)
                 .tradeBabyMonth(tradeBabyMonth)
+                .isLiked(isExistWish.toString())
+                .profile(user.getProfileImage())
                 .build();
     }
 

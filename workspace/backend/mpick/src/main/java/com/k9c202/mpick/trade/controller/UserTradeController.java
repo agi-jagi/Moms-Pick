@@ -28,7 +28,7 @@ public class UserTradeController {
 
         return CommonResponse.OK(userTradeService.getWishList(authentication.getName()));
     }
-//
+
 //    @Operation(summary = "판매 내역 조회 기능", description = "판매 내역 조회 기능")
 //    @GetMapping(value = "/sale-list")
 //    public CommonResponse<?> saleList(

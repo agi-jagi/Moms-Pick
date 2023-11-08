@@ -1,6 +1,7 @@
 package com.k9c202.mpick.trade.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.k9c202.mpick.trade.controller.response.SellListReponse;
 import com.k9c202.mpick.trade.controller.response.WishListResponse;
 import com.k9c202.mpick.trade.repository.WishQueryRepository;
 import com.k9c202.mpick.trade.repository.WishRepository;
@@ -32,4 +33,11 @@ public class UserTradeService {
 
         return result;
     }
+
+//    public List<SellListReponse> getSellList(String loginId) {
+//        User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+//
+//        List<SellListReponse> result = wishQueryRepository.
+//    }
+
 }

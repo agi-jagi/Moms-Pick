@@ -62,4 +62,19 @@ public class WishQueryRepository {
 
         return result;
     }
+
+    public Long existWish(Long userId, Long tradeId) {
+        Long result = queryFactory
+                .select(wish.count())
+                .from(wish)
+                .where(
+                        wish.trade.id.eq(tradeId),
+                        wish.user.id.eq(userId)
+                )
+                .fetchFirst();
+
+        return result;
+    }
+
+//    public
 }
