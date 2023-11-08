@@ -3,6 +3,7 @@ package com.k9c202.mpick.trade.repository;
 import com.k9c202.mpick.trade.controller.component.TradeDetailDto;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
+import com.k9c202.mpick.trade.controller.response.SellListResponse;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.controller.response.WishListResponse;
 import com.k9c202.mpick.trade.entity.QTrade;
@@ -71,4 +72,19 @@ public class TradeQueryRepository {
     }
 
 
+    public List<SellListResponse> findSellList(Long userId) {
+        List<SellListResponse> result = queryFactory
+                .select(Projections.constructor(SellListResponse.class,
+                        trade.id,
+                        trade.thumbNailImage,
+                        trade.title,
+                        trade.user.nickname,
+                        trade.price,
+                        trade.tradeStatus))
+                .from(trade)
+                .where(trade.user.id.eq(userId))
+                .fetch();
+
+        return result;
+    }
 }

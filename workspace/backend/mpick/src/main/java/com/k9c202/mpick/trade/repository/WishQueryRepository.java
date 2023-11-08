@@ -12,8 +12,6 @@ import java.util.List;
 
 import static com.k9c202.mpick.user.entity.QRating.rating;
 import static com.k9c202.mpick.trade.entity.QWish.wish;
-import static com.k9c202.mpick.trade.entity.QTrade.trade;
-import static com.k9c202.mpick.user.entity.QUser.user;
 
 @Slf4j
 @Repository
@@ -75,6 +73,4 @@ public class WishQueryRepository {
 
         return result;
     }
-
-//    public
 }

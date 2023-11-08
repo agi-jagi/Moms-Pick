@@ -1,8 +1,9 @@
 package com.k9c202.mpick.trade.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.k9c202.mpick.trade.controller.response.SellListReponse;
+import com.k9c202.mpick.trade.controller.response.SellListResponse;
 import com.k9c202.mpick.trade.controller.response.WishListResponse;
+import com.k9c202.mpick.trade.repository.TradeQueryRepository;
 import com.k9c202.mpick.trade.repository.WishQueryRepository;
 import com.k9c202.mpick.trade.repository.WishRepository;
 import com.k9c202.mpick.user.entity.User;
@@ -25,6 +26,8 @@ public class UserTradeService {
     private final WishQueryRepository wishQueryRepository;
 
     private final UserRepository userRepository;
+
+    private final TradeQueryRepository tradeQueryRepository;
     public List<WishListResponse> getWishList(String loginId) {
 
         User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
@@ -34,10 +37,12 @@ public class UserTradeService {
         return result;
     }
 
-//    public List<SellListReponse> getSellList(String loginId) {
-//        User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
-//
-//        List<SellListReponse> result = wishQueryRepository.
-//    }
+    public List<SellListResponse> getSellList(String loginId) {
+        User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("존재하지 않는 유저입니다."));
+
+        List<SellListResponse> result = tradeQueryRepository.findSellList(user.getId());
+
+        return result;
+    }
 
 }

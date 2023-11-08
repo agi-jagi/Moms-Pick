@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SellListReponse {
+public class SellListResponse {
 
     private Long tradeId;
 
