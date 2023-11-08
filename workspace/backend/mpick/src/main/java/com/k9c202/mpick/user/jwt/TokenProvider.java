@@ -120,6 +120,7 @@ public class TokenProvider implements InitializingBean {
             return bearerToken.substring(7);
         }
 
+        // WebSocket은 Header를 사용하지 않아서 파라미터로 jwt 전달
         String token = request.getParameter("jwt");
         if (StringUtils.hasText(token)) {
             return token;
