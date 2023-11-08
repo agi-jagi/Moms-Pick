@@ -36,6 +36,9 @@ export default function Chatting(props: any) {
       });
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [messageList]);
   // return (
   //   <div>
   //     <div
@@ -118,8 +121,8 @@ export default function Chatting(props: any) {
                       style={{
                         borderRadius: "100px",
                         overflow: "hidden",
-                        width: "50px",
-                        height: "50px",
+                        width: "45px",
+                        height: "45px",
                       }}
                     >
                       <Image src={profile} alt="profile" objectFit="cover" />
@@ -149,6 +152,7 @@ export default function Chatting(props: any) {
           chattingReload={chattingReload}
         />
       </div>
+      <div style={{ height: "117px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }
