@@ -111,7 +111,7 @@ export default function SignUp() {
       setUserAddress();
     } else {
       axios
-        .post("/api/auth/join", {
+        .post("/api/auth/signup", {
           loginId: userId,
           nickname: userNickName,
           password: userPw,
@@ -173,7 +173,7 @@ export default function SignUp() {
       return;
     }
     axios
-      .post(`/api/auth/check/id`, {
+      .post(`/api/auth/checks/id`, {
         loginId: userId,
       })
       .then((res) => {
@@ -208,7 +208,7 @@ export default function SignUp() {
       return;
     }
     axios
-      .post("/api/auth/check/nickname", {
+      .post("/api/auth/checks/nickname", {
         nickname: userNickName,
       })
       .then((res) => {
@@ -243,7 +243,7 @@ export default function SignUp() {
       return;
     }
     await axios
-      .post("/api/auth/check/email", {
+      .post("/api/auth/checks/email", {
         email: userEmail,
       })
       .then((res) => {
@@ -260,7 +260,9 @@ export default function SignUp() {
 
   const verifyEmail = async () => {
     await axios
-      .post(`/api/emails/verification-requests?email=${userEmail}`)
+      .post("/api/auth/emails/code-request", {
+        email: userEmail,
+      })
       .then(() => {
         Toast.fire({
           icon: "success",

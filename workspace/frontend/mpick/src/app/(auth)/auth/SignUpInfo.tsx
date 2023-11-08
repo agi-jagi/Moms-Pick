@@ -4,10 +4,23 @@ import React, { useState, useMemo } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function SignUpInfo(props: any) {
   const [userPwCheck, setUserPwCheck] = useState<boolean>(false);
   const [certifyPharse, setCertifyPharse] = useState<string>("");
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
   const validateEmail = (userEmail: string) =>
     userEmail.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
@@ -35,15 +48,22 @@ export default function SignUpInfo(props: any) {
 
   const certifyEmail = () => {
     axios
-      .get("/api/emails/verifications", {
-        params: { email: props.userEmail, code: certifyPharse },
+      .post("/api/auth/emails/code-verification", {
+        email: props.userEmail,
+        authCode: certifyPharse,
       })
       .then((res) => {
-        alert("이메일 인증 성공");
+        Toast.fire({
+          icon: "success",
+          title: "이메일 인증 성공",
+        });
         props.setUserEmailVerify(res.data.success);
       })
-      .catch((err) => {
-        alert("다시 입력해주세요");
+      .catch(() => {
+        Toast.fire({
+          icon: "error",
+          title: "다시 입력해주세요",
+        });
       });
   };
 
