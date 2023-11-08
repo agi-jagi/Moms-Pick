@@ -19,7 +19,10 @@ spring:
         localhost
       port:
         ${redis.port}
-
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 # Spring 포트번호 5000으로 설정
 server:
