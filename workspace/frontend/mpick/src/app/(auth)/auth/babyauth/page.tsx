@@ -23,48 +23,51 @@ import Link from "next/link";
 
 interface BabyInfo {
   babyName: string;
-  birth: string;
-  gender: "M" | "F" | "";
+  babyBirth: string;
+  babyGender: "M" | "F" | "";
   isFolded: boolean;
-  order: number;
+  babyOrder: number;
 }
 
 export default function BabyAuth() {
   const [babyList, setBabyList] = useState<BabyInfo[]>([
-    { babyName: "", birth: "", gender: "", order: 0, isFolded: false },
+    { babyName: "", babyBirth: "", babyGender: "", babyOrder: 0, isFolded: false },
   ]);
   const router = useRouter();
   const babyOrder = { "첫 째": 1, "둘 째": 2, "셋 째": 3, "넷 째": 4, "다섯 째": 5 };
   console.log(babyList);
 
-  const babyNameInput = (index: number, name: string) => {
+  const babyNameInput = (index: number, babyName: string) => {
     const newBaby = [...babyList];
-    newBaby[index].babyName = name;
+    newBaby[index].babyName = babyName;
     setBabyList(newBaby);
   };
 
-  const babyBirthInput = (index: number, date: dayjs.Dayjs | null) => {
+  const babyBirthInput = (index: number, babyBirth: dayjs.Dayjs | null) => {
     const newBaby = [...babyList];
-    if (date) {
-      newBaby[index].birth = date.format("YYYY-MM-DD");
+    if (babyBirth) {
+      newBaby[index].babyBirth = babyBirth.format("YYYY-MM-DD");
       setBabyList(newBaby);
     }
   };
 
-  const genderSelected = (index: number, gender: "M" | "F") => {
+  const genderSelected = (index: number, babyGender: "M" | "F") => {
     const newBaby = [...babyList];
-    newBaby[index].gender = gender;
+    newBaby[index].babyGender = babyGender;
     setBabyList(newBaby);
   };
 
-  const babyOrderSelected = (index: number, order: number) => {
+  const babyOrderSelected = (index: number, babyOrder: number) => {
     const newBaby = [...babyList];
-    newBaby[index].order = order;
+    newBaby[index].babyOrder = babyOrder;
     setBabyList(newBaby);
   };
 
   const addBabyInfo = () => {
-    setBabyList([...babyList, { babyName: "", birth: "", gender: "", order: 0, isFolded: false }]);
+    setBabyList([
+      ...babyList,
+      { babyName: "", babyBirth: "", babyGender: "", babyOrder: 0, isFolded: false },
+    ]);
   };
 
   const deleteInfo = (index: number) => {
@@ -95,12 +98,12 @@ export default function BabyAuth() {
     for (let i = 0; i < babyList.length; i++) {
       const baby = babyList[i];
 
-      if (baby.babyName && baby.birth && baby.gender) {
+      if (baby.babyName && baby.babyBirth && baby.babyGender && baby.babyOrder) {
         const data = {
           babyName: baby.babyName,
-          babyBirth: baby.birth,
-          babyGender: baby.gender,
-          babyOrder: i + 1,
+          babyBirth: baby.babyBirth,
+          babyGender: baby.babyGender,
+          babyOrder: baby.babyOrder,
         };
         try {
           const response = await axios.post("/api/profiles/child", data);
@@ -148,7 +151,7 @@ export default function BabyAuth() {
                     width: "30%",
                     height: "100%",
                     padding: "5%",
-                    backgroundColor: baby.gender === "M" ? "#D0F0FD" : "transparent",
+                    backgroundColor: baby.babyGender === "M" ? "#D0F0FD" : "transparent",
                   }}
                   onClick={() => genderSelected(index, "M")}
                 >
@@ -160,7 +163,7 @@ export default function BabyAuth() {
                     width: "30%",
                     height: "100%",
                     padding: "5%",
-                    backgroundColor: baby.gender === "F" ? "#FDD0EF" : "transparent",
+                    backgroundColor: baby.babyGender === "F" ? "#FDD0EF" : "transparent",
                   }}
                   onClick={() => genderSelected(index, "F")}
                 >
