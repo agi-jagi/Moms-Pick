@@ -23,7 +23,7 @@ export default function NavBar() {
           </Link>
         </div>
         <div style={{ alignItems: "center" }}>
-          <Link href="/month">
+          <Link href="/parenting">
             <div>
               <div className="flex justify-center">
                 <LuBaby size="24" />
