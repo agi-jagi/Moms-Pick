@@ -30,6 +30,7 @@ export default function chat() {
       .get("/api/chattings")
       .then((res) => {
         console.log("chat", res.data.response);
+        setChatList(res.data.response);
       })
       .catch((err) => {
         console.log(err);
@@ -109,7 +110,7 @@ export default function chat() {
                       <p className="font-light">{info.time}</p>
                     </div>
                     <div>
-                      <p>{info.recentChat}</p>
+                      <p>{info.lastMessage}</p>
                     </div>
                   </div>
                 </div>

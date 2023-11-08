@@ -11,12 +11,8 @@ const MessageContainer = (props: any) => {
     <div>
       {props.messageList.map((message: any, index: number) => {
         return (
-          <Container key={message._id} className="message-container">
-            {message.user.name === "system" ? (
-              <div className="system-message-container">
-                <p className="system-message">{message.chat}</p>
-              </div>
-            ) : message.user.name === props.user ? (
+          <Container key={message.chatMessageId} className="message-container">
+            {message.toMe ? (
               <div
                 className="my-message-container"
                 style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}
@@ -30,7 +26,7 @@ const MessageContainer = (props: any) => {
                     borderRadius: "8px",
                   }}
                 >
-                  {message.chat}
+                  {message.message}
                 </div>
               </div>
             ) : (
@@ -70,7 +66,7 @@ const MessageContainer = (props: any) => {
                     marginLeft: "5px",
                   }}
                 >
-                  {message.chat}
+                  {message.message}
                 </div>
               </div>
             )}
