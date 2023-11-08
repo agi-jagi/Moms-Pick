@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     // localhost:5000/ws 경로로 접속하면 chatHandler 실행 (WebSocket 서버가 열리는 것)
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(chatHandler, "/ws");
+        registry.addHandler(chatHandler, "/ws").setAllowedOrigins("*");
     }
 
 }
