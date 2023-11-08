@@ -1,5 +1,7 @@
 package com.k9c202.mpick.trade.repository;
 
+import com.k9c202.mpick.trade.controller.response.WishListResponse;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -38,6 +40,36 @@ public class WishQueryRepository {
                 .where(wish.trade.id.eq(tradeId))
                 .fetchOne();
 
+
+        return result;
+    }
+
+    public List<WishListResponse> findWishList(Long userId) {
+        List<WishListResponse> result = queryFactory
+                .select(Projections.constructor(WishListResponse.class,
+                        wish.trade.id,
+                        wish.trade.thumbNailImage,
+                        wish.trade.title,
+                        wish.user.nickname,
+                        wish.trade.price,
+                        wish.trade.tradeStatus
+                        ))
+                .from(wish)
+                .where(wish.user.id.eq(userId))
+                .fetch();
+
+        return result;
+    }
+
+    public Long existWish(Long userId, Long tradeId) {
+        Long result = queryFactory
+                .select(wish.count())
+                .from(wish)
+                .where(
+                        wish.trade.id.eq(tradeId),
+                        wish.user.id.eq(userId)
+                )
+                .fetchFirst();
 
         return result;
     }
