@@ -30,6 +30,10 @@ public class Trade {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -45,6 +49,9 @@ public class Trade {
 
     @Column
     private String tradeExplain;
+
+    @Column
+    private String thumbNailImage;
 
     @Column
     private Long wishCount;

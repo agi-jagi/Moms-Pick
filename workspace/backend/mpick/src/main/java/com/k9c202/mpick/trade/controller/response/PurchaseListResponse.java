@@ -6,13 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.sql.Timestamp;
-
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WishListResponse {
+public class PurchaseListResponse {
 
     private Long tradeId;
 
