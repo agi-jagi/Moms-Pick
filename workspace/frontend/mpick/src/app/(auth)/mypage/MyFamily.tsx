@@ -18,6 +18,7 @@ import Modal from "@mui/material/Modal";
 import BabyForm from "./(component)/BabyForm";
 import UpdateBabyInfo from "./(component)/UpdateBabyInfo";
 import instance from "@/app/_config/axios";
+import Swal from "sweetalert2";
 
 const style = {
   position: "absolute" as "absolute",
@@ -34,9 +35,7 @@ const style = {
 export default function MyFamily() {
   const [userNickName, setUserNickName] = useState<string>("");
   const [userAddress, setUserAddress] = useState<string>("");
-
   const [babyList, setBabyList] = useState<any[]>([]);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newBaby, setNewBaby] = useState<any>({
     babyName: "",
@@ -44,7 +43,6 @@ export default function MyFamily() {
     babyBirth: "",
     babyOrder: 0,
   });
-
   const [updateModal, setUpdateModal] = useState<boolean>(false);
   const [selectedBaby, setSelectedBaby] = useState<any>({});
 
@@ -129,7 +127,13 @@ export default function MyFamily() {
       registerBaby();
       closeModal();
     } else {
-      alert("아이 정보를 모두 입력해 주세요.");
+      Swal.fire({
+        icon: "warning",
+        title: "<div style='font-size:20px'>아이 정보를 모두 입력해 주세요.</div>",
+        confirmButtonColor: "#5E9FF2",
+      });
+
+      return;
     }
   };
 
@@ -272,7 +276,7 @@ export default function MyFamily() {
           </div>
         </div>
       </div>
-      <Modal open={isModalOpen} onClose={closeModal}>
+      <Modal open={isModalOpen} onClose={closeModal} className="z-0">
         <Box sx={style}>
           <div>
             <BabyForm

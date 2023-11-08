@@ -10,7 +10,6 @@ import dayjs from "dayjs";
 import axios from "../../../_config/axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-
 import {
   AiFillCaretDown,
   AiFillCaretUp,
@@ -117,7 +116,11 @@ export default function BabyAuth() {
           console.log(error);
         }
       } else {
-        alert("아이 정보를 모두 입력해 주세요.");
+        Swal.fire({
+          icon: "warning",
+          title: "<div style='font-size:20px'>아이 정보를 모두 입력해 주세요.</div>",
+          confirmButtonColor: "#5E9FF2",
+        });
       }
     }
   };
