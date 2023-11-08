@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
+import socket from "./Server";
 // import "./InputField.css";
 
 const InputField = (props: any) => {
@@ -28,6 +29,11 @@ const InputField = (props: any) => {
         <Button
           onClick={() => {
             console.log(props.message);
+            const data = {
+              chatRoomId : 1,
+              message : props.message
+            }
+            socket.send(JSON.stringify(data))
           }}
           disabled={props.message === ""}
           className="send-button"
