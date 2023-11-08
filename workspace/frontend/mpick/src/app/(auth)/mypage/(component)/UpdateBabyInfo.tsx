@@ -144,10 +144,10 @@ const UpdateBabyInfo: React.FC<UpdateBabyModalProps> = ({
           </Select>
         </div>
         <div className="flex justify-center mt-8">
-          <Button onClick={handleDelete} className="mr-4 w-36 bg-[#F85D5D] text-white">
+          <Button onClick={handleDelete} className="mr-4 w-1/2 bg-[#F85D5D] text-white">
             삭제
           </Button>
-          <Button onClick={saveChanges} className="w-36 bg-[#5E9FF2] text-white">
+          <Button onClick={saveChanges} className="w-1/2 bg-[#5E9FF2] text-white">
             저장
           </Button>
         </div>

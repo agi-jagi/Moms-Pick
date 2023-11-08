@@ -19,10 +19,6 @@ export default function BabyAuthLayout({ children }: { children: React.ReactNode
       </div>
 
       {children}
-
-      <div style={{ zIndex: "12" }}>
-        <NavBar></NavBar>
-      </div>
     </>
   );
 }
