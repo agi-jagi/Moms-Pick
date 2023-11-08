@@ -35,15 +35,20 @@ export default function MyFamily() {
   const [userNickName, setUserNickName] = useState<string>("");
   const [userAddress, setUserAddress] = useState<string>("");
 
-  const [baby, setBaby] = useState<any>([{ name: "", gender: "", birth: "" }]);
+  const [babyList, setBabyList] = useState<any[]>([]);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [newBaby, setNewBaby] = useState<any>({ name: "", gender: "", birth: "" });
+  const [newBaby, setNewBaby] = useState<any>({
+    babyName: "",
+    babyGender: "",
+    babyBirth: "",
+    babyOrder: 0,
+  });
 
   const [updateModal, setUpdateModal] = useState<boolean>(false);
   const [selectedBaby, setSelectedBaby] = useState<any>({});
 
-  console.log(baby);
+  console.log("babyList", babyList);
   const showModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -52,53 +57,89 @@ export default function MyFamily() {
     setUpdateModal(true);
   };
 
-  const handleUpdateBaby = (updateBaby: any) => {
-    setBaby(baby.map((b: any) => (b === selectedBaby ? updateBaby : b)));
+  const genderSelected = (babyGender: string) => {
+    setNewBaby({ ...newBaby, babyGender });
   };
 
-  const handleDelete = () => {
-    console.log("삭제 완료");
+  const nameInput = (babyName: string) => {
+    setNewBaby({ ...newBaby, babyName });
   };
 
-  const genderSelected = (gender: string) => {
-    setNewBaby({ ...newBaby, gender });
+  const birthInput = (babyBirth: dayjs.Dayjs | null) => {
+    if (babyBirth) {
+      const formattedBirth = babyBirth.format("YYYY-MM-DD");
+      setNewBaby({ ...newBaby, babyBirth: formattedBirth });
+    }
   };
 
-  const nameInput = (name: string) => {
-    setNewBaby({ ...newBaby, name });
+  const orderSelected = (babyOrder: number) => {
+    setNewBaby({ ...newBaby, babyOrder });
   };
 
-  const birthInput = (birth: dayjs.Dayjs | null) => {
-    if (birth) {
-      const formattedBirth = birth.format("YYYY-MM-DD");
-      setNewBaby({ ...newBaby, birth: formattedBirth });
+  const handleUpdateBaby = async (updateBaby: any) => {
+    try {
+      const response = await instance.patch("/api/profiles/child", updateBaby);
+      setBabyList(
+        babyList.map((baby) => {
+          return baby.babyId === updateBaby.babyId ? updateBaby : baby;
+        })
+      );
+      console.log(response.data.response, "아이 정보 업데이트 성공");
+    } catch (error) {
+      console.log("아이 정보 업데이트 실패", error);
+    }
+  };
+
+  console.log("여기보세요", selectedBaby);
+  const handleDelete = async () => {
+    const babyId = selectedBaby.babyId;
+    const babyData = {
+      babyId: selectedBaby.babyId,
+    };
+    try {
+      const response = await instance.delete("/api/profiles/child", { data: babyData });
+      const deleteBabyInfo = babyList.filter((baby) => baby.babyId !== babyId);
+      setBabyList(deleteBabyInfo);
+      console.log(response.data.response, "아이 정보 삭제 성공");
+      setUpdateModal(false);
+    } catch (error) {
+      console.log("아이 정보 삭제 실패", error);
     }
   };
 
   const registerBaby = async () => {
     const babyData = {
-      babyName: newBaby.name,
-      babyGender: newBaby.gender,
-      babyBirth: newBaby.birth,
-      babyOrder: baby.length,
+      babyName: newBaby.babyName,
+      babyGender: newBaby.babyGender,
+      babyBirth: newBaby.babyBirth,
+      babyOrder: newBaby.babyOrder,
     };
     try {
-      const response = await instance.post(`/api/profiles/child`, babyData);
-      setBaby([...baby, newBaby]);
-      setNewBaby({ name: "", gender: "", birth: "" });
+      const response = await instance.post("/api/profiles/child", babyData);
+      getBabyInfo();
+      setNewBaby({ babyName: "", babyGender: "", babyBirth: "", babyOrder: 0 });
       console.log(response.data, "아이 정보 추가 성공");
     } catch (error) {
       console.log(error, "아이 정보 추가 실패");
     }
   };
 
-  // 빈 값이면 추가 안 되도록 하기
   const addNewBaby = () => {
-    if (newBaby.name && newBaby.gender && newBaby.birth) {
+    if (newBaby.babyName && newBaby.babyGender && newBaby.babyBirth && newBaby.babyOrder) {
       registerBaby();
       closeModal();
     } else {
       alert("아이 정보를 모두 입력해 주세요.");
+    }
+  };
+
+  const getBabyInfo = async () => {
+    try {
+      const response = await instance.get("/api/profiles/child");
+      setBabyList(response.data.response);
+      console.log("아이 정보 가져오기 성공", response.data.response);
+    } catch (error) {
+      console.log("아이 정보 가져오기 실패", error);
     }
   };
 
@@ -129,6 +170,8 @@ export default function MyFamily() {
       .catch((err) => {
         console.log(err);
       });
+
+    getBabyInfo();
   }, []);
 
   return (
@@ -160,7 +203,7 @@ export default function MyFamily() {
           <IoIosArrowForward size="30" />
         </div>
       </div>
-      {baby.map((info: any, index: number) => {
+      {babyList.map((baby: any, index: number) => {
         return (
           <div
             key={index}
@@ -171,10 +214,10 @@ export default function MyFamily() {
               marginTop: "20px",
               paddingTop: "20px",
             }}
-            onClick={() => showUpdateModal(info)}
+            onClick={() => showUpdateModal(baby)}
           >
             <div className="flex justify-between">
-              {info.gender === "M" ? (
+              {baby.babyGender === "M" ? (
                 <Image
                   src={boy}
                   alt="boy"
@@ -182,7 +225,7 @@ export default function MyFamily() {
                   height={70}
                   style={{ borderRadius: "100%" }}
                 />
-              ) : info.gender === "F" ? (
+              ) : baby.babyGender === "F" ? (
                 <Image
                   src={girl}
                   alt="girl"
@@ -195,8 +238,8 @@ export default function MyFamily() {
               )}
               <div className="flex items-center ml-8">
                 <div>
-                  <p className="font-bold text-xl">{info.name}</p>
-                  <p className="text-lg">{info.birth}</p>
+                  <p className="font-bold text-xl">{baby.babyName}</p>
+                  <p className="text-lg">{baby.babyBirth}</p>
                 </div>
               </div>
             </div>
@@ -209,7 +252,7 @@ export default function MyFamily() {
       <UpdateBabyInfo
         open={updateModal}
         onClose={() => setUpdateModal(false)}
-        babyInfo={selectedBaby}
+        selectedBaby={selectedBaby}
         handleUpdate={handleUpdateBaby}
         handleDelete={handleDelete}
       ></UpdateBabyInfo>
@@ -236,6 +279,7 @@ export default function MyFamily() {
               genderSelected={genderSelected}
               nameInput={nameInput}
               birthInput={birthInput}
+              orderSelected={orderSelected}
               newBaby={newBaby}
               closeModal={closeModal}
             ></BabyForm>
