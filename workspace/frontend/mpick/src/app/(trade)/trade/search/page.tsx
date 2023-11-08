@@ -134,23 +134,6 @@ export default function Search() {
     console.log(err);
   };
   };
-
-
-  // 판매글 상세 조회 요청 함수
-  async function getDetail() {
-    try {
-
-      const res = await axios.get(`/api/trades/item/${tradeId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      console.log(res.data);
-      
-    } catch(err) {
-      console.log(err);
-    }
-  }
   
   // getCategory 함수를 useEffect 내에서 호출
   useEffect(() => {
@@ -176,7 +159,6 @@ export default function Search() {
   return (
     <>
       <div>
-      <Button onClick={getDetail}>상세조회</Button>
       <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button>
       <Image src="https://mpick-img-storage.s3.ap-northeast-2.amazonaws.com/static/3088fd38-eb9a-4bd4-85f8-243086e4ae15"></Image>
       <div className="flex gap-4 mt-4 justify-center">
@@ -244,7 +226,8 @@ export default function Search() {
                       </Typography>
                     </CardHeader>
                   <input type="file"
-                    name="image_files" />
+                    name="image_files"
+                    accept="image/*" />
                   <Input 
                   crossOrigin={true}
                   label="글 제목" value={title} size="lg" onChange={(e) => setTitle(e.target.value)} />
