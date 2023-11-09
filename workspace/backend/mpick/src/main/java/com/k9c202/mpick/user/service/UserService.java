@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -98,7 +100,8 @@ public class UserService {
     public void checkDuplicatedNickname(String nickname) {
         boolean isExistNickname = userQueryRepository.existNickname(nickname);
         if (isExistNickname) {
-            throw new IllegalArgumentException("닉네임 중복");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "닉네임 중복");
+//            throw new IllegalArgumentException("닉네임 중복");
         }
     }
 
@@ -162,6 +165,7 @@ public class UserService {
 
     // TODO: 2023-11-05 UpdateUserInfoRequest 수정
     // 이메일 수정
+    public void updateEmail (String loginId, String email) {}
 
     // 닉네임 수정
 

@@ -153,4 +153,20 @@ public class ChatService {
         }
         return convertChatMessageToChatMessageResponse(isBuyer,save);
     }
+
+    // 채팅방 접속 시 읽지 않은 메세지 수 0으로 초기화
+    @Transactional
+    public void resetUnreadCount(String loginId, ChatMessageRequest chatMessageRequest) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequest.getChatRoomId()).orElseThrow();
+        // 구매자/판매자 여부 체크
+        boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
+        // 구매자인 경우 구매자가 읽지 않은 메세지 수 초기화
+        if(isBuyer) {
+            chatRoom.resetBuyerUnreadCount();
+        // 판매자인 경우 판매자가 읽지 않은 메세지 수 초기화
+        } else {
+            chatRoom.resetSellerUnreadCount();
+        }
+    }
+
 }

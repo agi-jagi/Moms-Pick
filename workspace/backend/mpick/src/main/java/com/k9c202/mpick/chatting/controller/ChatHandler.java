@@ -57,6 +57,16 @@ public class ChatHandler extends TextWebSocketHandler {
                         addSessionToRoom(chatRoomId, s);
                         s.sendMessage(new TextMessage(objectMapper.writeValueAsString(ChatRoomResponse.of(s.getPrincipal().getName(), chatRoomDto))));
                     }
+                    if (chatMessageRequest.getMessage() == null) {
+                        // 해당 채팅방 count reset
+                        chatService.resetUnreadCount(loginId, chatMessageRequest);
+                    } else {
+                        // 해당 채팅방에 메세지 보내기
+                        // 데이터베이스에 채팅메세지 등록
+                        ChatMessageResponse chatMessageResponse = chatService.addChatMessage(loginId, chatMessageRequest);
+                        // 웹소켓에 데이터 전송 (발신자, 수신자 모두 공유)
+                        sendChatMessage(loginId, chatMessageRequest, chatMessageResponse);
+                    }
                 }
             }
         }
@@ -110,7 +120,7 @@ public class ChatHandler extends TextWebSocketHandler {
         rooms.get(chatRoomId).add(session);
     }
 
-    // client가 접속해제시 호출되는 메서드
+    // client가 접속 해제시 호출되는 메서드
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         String loginId = session.getPrincipal() == null ? "" : session.getPrincipal().getName();
