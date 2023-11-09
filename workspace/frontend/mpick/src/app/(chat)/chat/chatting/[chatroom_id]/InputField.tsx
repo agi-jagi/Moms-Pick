@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
@@ -7,15 +9,18 @@ let socket: any;
 const InputField = (props: any) => {
   useEffect(() => {
     const jwt = localStorage.getItem("accessToken");
-    socket = new WebSocket("ws://localhost:3000/ws?jwt=" + jwt);
-    socket.onopen = (e: any) => {
+    let newSocket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
+
+    newSocket.onopen = (e: any) => {
       console.log("connected", e);
     };
-    socket.onmessage = (e: any) => {
-      props.chattingReload();
-      console.log("message", e.data.message);
-    };
-  }, []);
+
+    if (!newSocket.onmessage) {
+      newSocket.onmessage = async (e: any) => {
+        await props.chattingReload(e.data);
+      };
+    }
+  }, []); // 빈 배열은 한 번만 실행되도록 합니다.
 
   return (
     <div
@@ -45,7 +50,9 @@ const InputField = (props: any) => {
               chatRoomId: props.chatRoomId,
               message: props.message,
             };
-            socket.send(JSON.stringify(data));
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              socket.send(JSON.stringify(data));
+            }
           }}
           disabled={props.message === ""}
           className="send-button"
