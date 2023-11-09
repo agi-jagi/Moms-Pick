@@ -116,6 +116,14 @@ public class UserController {
         return CommonResponse.OK(null);
     }
 
+    // TODO: 2023-11-09 이메일, 닉네임, 소개글, 프로필 이미지 변경 컨트롤러
+    // 이메일 변경
+
+    // 닉네임 변경
+
+    // 소개글 변경
+
+    // 프로필 이미지 변경
 
 
 }
