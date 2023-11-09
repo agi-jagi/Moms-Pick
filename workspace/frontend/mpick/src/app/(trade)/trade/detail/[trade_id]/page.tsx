@@ -54,15 +54,19 @@ export default function Detail(props: any) {
   }, [tradeId]);
 
   async function addWish() {
+
+    const data = {
+      tradeId: tradeId,
+    }
+
     try {
-      const res = await axios.post(`/api/trades/wish/${tradeId}`, {
+      const res = await axios.post(`/api/trades/wish`, data ,{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
 
       console.log(res.data);
-      setIsLiked("1");
 
     } catch(err) {
       console.log(err);
@@ -82,8 +86,8 @@ export default function Detail(props: any) {
       <CardHeader floated={false} color="blue-gray">
         <img
           className="w-full object-cover rounded-t-lg"
-          src="/유모차2.jpg"
-          // src={detail.tradeImages[0]}
+          // src="/유모차2.jpg"
+          src={detail.tradeImages[0]}
           alt="Card Image"
         />
         
