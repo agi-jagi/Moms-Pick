@@ -233,7 +233,7 @@ public class TradeService {
 
         return TradeDetailResponse.builder()
                 .Address(trade.getAddress().getAddressString())
-                .nickname(commonFunction.loadUser(loginId).getNickname())
+                .nickname(trade.getUser().getNickname())
                 .tradeStatus(trade.getTradeStatus())
                 .price(trade.getPrice())
                 .tradeExplain(trade.getTradeExplain())
