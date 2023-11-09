@@ -10,18 +10,30 @@ import profile from "../../../../../../public/profile.png";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useState<any>([]);
 
-  const chattingReload = () => {
-    instance
-      .get(`/api/chattings/${props.params.chatroom_id}`)
-      .then((res) => {
-        console.log(res);
-        setMessageList(res.data.response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const chattingReload = (data: any) => {
+    // instance
+    //   .get(`/api/chattings/${props.params.chatroom_id}`)
+    //   .then((res) => {
+    //     console.log(res);
+    //     setMessageList(res.data.response);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+    // console.log("list", messageList);
+    // console.log("data", JSON.parse(data));
+    // let dummy = [...messageList, JSON.parse(data)];
+    // setMessageList(dummy);
+
+    console.log("Before update:", messageList);
+    setMessageList((prevMessageList: any) => {
+      const updatedList = [...prevMessageList, JSON.parse(data)];
+      console.log("Updated list:", updatedList);
+      return updatedList;
+    });
   };
 
   useEffect(() => {
@@ -39,25 +51,6 @@ export default function Chatting(props: any) {
   useEffect(() => {
     window.scrollTo(0, document.body.scrollHeight);
   }, [messageList]);
-  // return (
-  //   <div>
-  //     <div
-  //       style={{
-  //         margin: "20px 30px",
-  //       }}
-  //     >
-  //       <GoBack />
-  //       <div className="flex justify-center">
-  //         <p className="font-bold text-3xl">채팅</p>
-  //       </div>
-  //       <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
-  //     </div>
-  //     <div>
-  //       <MessageContainer messageList={messageList} user={user} />
-  //       <InputField message={message} setMessage={setMessage} />
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <div>
@@ -78,13 +71,13 @@ export default function Chatting(props: any) {
             <p className="font-bold text-3xl">채팅</p>
           </div>
         </div>
-        <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
+        <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
       <div>
         <div>
           {messageList.map((message: any, index: number) => {
             return (
-              <Container key={message.chatMessageId} className="message-container">
+              <Container key={index} className="message-container">
                 {message.toMe === false ? (
                   <div
                     className="my-message-container"
@@ -150,6 +143,7 @@ export default function Chatting(props: any) {
           setMessage={setMessage}
           chatRoomId={props.params.chatroom_id}
           chattingReload={chattingReload}
+          messageList={messageList}
         />
       </div>
       <div style={{ height: "117px", position: "sticky", bottom: "0" }}></div>
