@@ -5,11 +5,11 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'user'
-    user_id = Column(BINARY(16), primary_key=True)  
+    user_id = Column(BigInteger, primary_key=True)  
     login_id = Column(String(20))
     nickname = Column(String(20))
     password = Column(String(60))
-    user_status = Column(Integer)
+    status = Column(String)
     profile_image = Column(String(255))
     email = Column(String(100))
     created_date = Column(TIMESTAMP)

@@ -2,21 +2,21 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from decouple import config
 
-# db_info = {
-#     "user": config('SQL_USER'),
-#     "password": config('SQL_PASSWORD'),
-#     "host": config('DB_HOST'),
-#     "port": config('DB_PORT'),
-#     "database": config('DB_NAME')
-# }
-
 db_info = {
-    "user": "root",
-    "password": "ssafy",
-    "host": "k9c202.p.ssafy.io",
-    "port": 3306,
-    "database": "mpick"
+    "user": config('SQL_USER'),
+    "password": config('SQL_PASSWORD'),
+    "host": config('DB_HOST'),
+    "port": config('DB_PORT'),
+    "database": config('DB_NAME')
 }
+
+# db_info = {
+#     "user": "root",
+#     "password": "ssafy",
+#     "host": "k9c202.p.ssafy.io",
+#     "port": 3306,
+#     "database": "mpick"
+# }
 
 conn_string = f'mysql+pymysql://{db_info["user"]}:{db_info["password"]}@{db_info["host"]}:{db_info["port"]}/{db_info["database"]}'
 
