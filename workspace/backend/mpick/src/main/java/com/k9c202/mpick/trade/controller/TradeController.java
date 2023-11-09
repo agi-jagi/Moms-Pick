@@ -91,13 +91,13 @@ public class TradeController {
 
     @Operation(summary = "판매글 찜 기능", description = "판매글 찜 기능")
     @PostMapping(value = "/wish")
-    public CommonResponse<Boolean> tradeWish(
+    public CommonResponse<String> tradeWish(
             @RequestBody WishRequest wishRequest,
             Authentication authentication) {
 
-        tradeService.tradeWish(wishRequest.getTradeId(), authentication.getName());
+        String message = tradeService.tradeWish(wishRequest.getTradeId(), authentication.getName());
 
-        return CommonResponse.OK(true);
+        return CommonResponse.OK(message);
     }
 
     @Operation(summary = "판매글 삭제 기능", description = "판매글 삭제 기능")

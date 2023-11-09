@@ -308,7 +308,7 @@ public class TradeService {
         return tradeAddCategoryForm;
     }
 
-    public void tradeWish(Long tradeId, String loginId) {
+    public String tradeWish(Long tradeId, String loginId) {
         User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("없는 유저입니다."));
 
         Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
@@ -316,7 +316,7 @@ public class TradeService {
         Wish wish = wishRepository.findByUserIdAndTradeId(user.getId(), trade.getId()).orElse(null);
 
         if (user.equals(trade.getUser())) {
-            return;
+            return "내 게시물입니다.";
         }
 
         if (wish == null) {
@@ -330,12 +330,16 @@ public class TradeService {
             trade.increaseWishCount();
 
             tradeRepository.save(trade);
+
+            return "찜 등록";
         } else {
             wishRepository.delete(wish);
 
             trade.decreaseWishCount();
 
             tradeRepository.save(trade);
+
+            return "찜 해제";
         }
     }
 
