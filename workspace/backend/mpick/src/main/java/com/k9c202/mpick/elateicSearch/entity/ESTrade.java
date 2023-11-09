@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import javax.persistence.Id;
 import java.awt.*;
 
-@Document(indexName = "noritest5")
+@Document(indexName = "mpick")
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
