@@ -7,7 +7,7 @@ import car from "../../../../public/유모차.png";
 import instance from "@/app/_config/axios";
 import { useRouter } from "next/navigation";
 
-export default function chat() {
+export default function Chat() {
   const router = useRouter();
   const dummy = [
     {
