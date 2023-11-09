@@ -91,7 +91,7 @@ public class TradeController {
     @Operation(summary = "판매글 찜 기능", description = "판매글 찜 기능")
     @PostMapping(value = "/wish/{tradeId}")
     public CommonResponse<Boolean> tradeWish(
-            @PathVariable Long tradeId,
+            @PathVariable("tradeId") Long tradeId,
             Authentication authentication) {
 
         tradeService.tradeWish(tradeId, authentication.getName());
