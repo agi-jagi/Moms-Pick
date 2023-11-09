@@ -7,22 +7,45 @@ import instance from "@/app/_config/axios";
 import { Container } from "@mui/system";
 import Image from "next/image";
 import profile from "../../../../../../public/profile.png";
+import { useChattingStore } from "@/store/ChattingStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useState<any>([]);
 
-  const chattingReload = () => {
-    instance
-      .get(`/api/chattings/${props.params.chatroom_id}`)
-      .then((res) => {
-        console.log(res);
-        setMessageList(res.data.response);
-      })
-      .catch((err) => {
-        console.log(err);
+  const { messageStore, setMessageStore } = useChattingStore();
+
+  // const chattingReload = async (data: any) => {
+  //   setMessageList((prevMessageList: any) => {
+  //     const updatedList = [...prevMessageList, JSON.parse(data)];
+  //     console.log("Updated list:", updatedList);
+  //     return updatedList;
+  //   });
+  //   setMessageStore(messageList)
+  // };
+
+  const chattingReload = async (data: any) => {
+    // setMessageList를 비동기적으로 호출
+    await new Promise((resolve) => {
+      setMessageList((prevMessageList: any) => {
+        const updatedList = [...prevMessageList, JSON.parse(data)];
+        console.log("Updated list:", updatedList);
+        resolve(updatedList);
+        return updatedList;
       });
+    });
+
+    // setMessageStore를 비동기적으로 호출
+    await new Promise((resolve) => {
+      setMessageStore(messageList);
+    });
+
+    // 이후 추가적인 작업 수행 가능
   };
+
+  useEffect(() => {
+    console.log("????", messageStore);
+  }, [messageStore]);
 
   useEffect(() => {
     instance
@@ -39,25 +62,6 @@ export default function Chatting(props: any) {
   useEffect(() => {
     window.scrollTo(0, document.body.scrollHeight);
   }, [messageList]);
-  // return (
-  //   <div>
-  //     <div
-  //       style={{
-  //         margin: "20px 30px",
-  //       }}
-  //     >
-  //       <GoBack />
-  //       <div className="flex justify-center">
-  //         <p className="font-bold text-3xl">채팅</p>
-  //       </div>
-  //       <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
-  //     </div>
-  //     <div>
-  //       <MessageContainer messageList={messageList} user={user} />
-  //       <InputField message={message} setMessage={setMessage} />
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <div>
@@ -78,13 +82,13 @@ export default function Chatting(props: any) {
             <p className="font-bold text-3xl">채팅</p>
           </div>
         </div>
-        <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
+        <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
       <div>
         <div>
           {messageList.map((message: any, index: number) => {
             return (
-              <Container key={message.chatMessageId} className="message-container">
+              <Container key={index} className="message-container">
                 {message.toMe === false ? (
                   <div
                     className="my-message-container"
@@ -150,6 +154,7 @@ export default function Chatting(props: any) {
           setMessage={setMessage}
           chatRoomId={props.params.chatroom_id}
           chattingReload={chattingReload}
+          messageList={messageList}
         />
       </div>
       <div style={{ height: "117px", position: "sticky", bottom: "0" }}></div>

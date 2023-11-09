@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
@@ -7,13 +9,21 @@ let socket: any;
 const InputField = (props: any) => {
   useEffect(() => {
     const jwt = localStorage.getItem("accessToken");
-    socket = new WebSocket("ws://localhost:3000/ws?jwt=" + jwt);
+    socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
+
     socket.onopen = (e: any) => {
       console.log("connected", e);
     };
-    socket.onmessage = (e: any) => {
-      props.chattingReload();
-      console.log("message", e.data.message);
+
+    if (!socket.onmessage) {
+      socket.onmessage = async (e: any) => {
+        console.log("Socket readyState:", socket.readyState);
+        await props.chattingReload(e.data);
+      };
+    }
+
+    return () => {
+      socket.close();
     };
   }, []);
 
@@ -45,7 +55,10 @@ const InputField = (props: any) => {
               chatRoomId: props.chatRoomId,
               message: props.message,
             };
-            socket.send(JSON.stringify(data));
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              console.log(1);
+              socket.send(JSON.stringify(data));
+            }
           }}
           disabled={props.message === ""}
           className="send-button"
