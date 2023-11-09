@@ -7,7 +7,6 @@ from db.connection import engineconnection
 
 from model.trade import Trade
 from model.user import User
-from model.trade_image import TradeImage
 
 from schema.RecommendRequest import RecommendRequest
 from schema.RecommendResponse import RecommendResponse, serialize_recommend_response
@@ -46,7 +45,12 @@ async def get_recommend_list(RecommendRequest: RecommendRequest):
     #         trade_image = session.query(TradeImage).filter(TradeImage.trade_id == result[i].trade_id).first()
     #         result[i] = serialize_recommend_response(result[i], user, trade_image)
 
-        response = JSONResponse(content=dummy_result, status_code=200)
+        result = session.query(Trade).limit(10).all()
+
+        for i in range(len(result)):
+            user = session.query(User).filter(User.user_id == result[i].user_id).first()
+            result[i] = serialize_recommend_response(result[i], user)
+        response = JSONResponse(content=result, status_code=200)
 
         return response
     except Exception as e:
