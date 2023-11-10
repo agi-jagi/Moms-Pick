@@ -46,10 +46,8 @@ public class UserService {
 
     // object에 종속된 변수
     private final UserRepository userRepository;
-    private final UserQueryRepository userQueryRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisService redisService;
     private final S3Service s3Service;
     private final MailService mailService;
@@ -67,69 +65,6 @@ public class UserService {
     // builder 형식으로 생성자 대신 사용
     // 생성자 형식 -> User a = new User(nickname,password,status,....)
     // 아래는 builder 형식
-
-    // 회원가입
-    public JoinUserResponse signup(UserDto userDto) {
-        
-        checkDuplicatedLoginId(userDto.getLoginId());
-        checkDuplicatedEmail(userDto.getEmail());
-        checkDuplicatedNickname(userDto.getNickname());
-
-        User user = User.builder()
-                .loginId(userDto.getLoginId())
-                .password(passwordEncoder.encode(userDto.getPassword())) // 패스워드 암호화
-                .nickname(userDto.getNickname())
-                .email(userDto.getEmail())
-                .build();
-        // build가 return하는 타입이 User (.build 이후 User)
-
-        // save -> JpaRepository에 정의돼있음
-        User savedUser = userRepository.save(user);
-
-        return JoinUserResponse.of(savedUser);
-    }
-
-    // 로그인 아이디 중복체크
-    public void checkDuplicatedLoginId(String loginId) {
-        boolean isExistLoginId = userQueryRepository.existLoginId(loginId);
-        if (isExistLoginId) {
-            throw new IllegalArgumentException("로그인 아이디 중복");
-        }
-    }
-
-    // 닉네임 중복체크
-    public void checkDuplicatedNickname(String nickname) {
-        boolean isExistNickname = userQueryRepository.existNickname(nickname);
-        if (isExistNickname) {
-            // TODO: 2023-11-10 ResponseStatusException 
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "닉네임 중복");
-//            throw new IllegalArgumentException("닉네임 중복");
-        }
-    }
-
-    // 이메일 중복체크
-    public void checkDuplicatedEmail(String email) {
-        boolean isExistEmail = userQueryRepository.existEmail(email);
-        if (isExistEmail) {
-            throw new IllegalArgumentException("이메일 중복");
-        }
-    }
-
-    // 로그인
-    public String login(LoginDto loginDto) {
-        // 인증에 필요한 정보 authenticationToken에 저장
-        UsernamePasswordAuthenticationToken authenticationToken =
-                // 입력받은 id, password 정보 사용
-                // loadUserByUsername의 반환값과 비교하여 일치여부 체크
-                new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
-
-        // SecurityContext에 인증 여부(authentication) 저장
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        // 인증여부(authentication)를 context에 저장
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return tokenProvider.createToken(authentication);
-    }
 
     // 정보 조회
     public UserInfoResponse getUserInfo() {
@@ -165,7 +100,6 @@ public class UserService {
         user.editStatus(WITHDRAW);
     }
 
-    // TODO: 2023-11-05 UpdateUserInfoRequest 수정
     // 이메일 수정
     public void changeEmail (String loginId, String newEmail, String authCode) {
         User user = getUserEntity(loginId);
@@ -197,7 +131,7 @@ public class UserService {
             user.editProfileImage(profileUrl);
     }
 
-//    // 회원 정보 수정
+//    // 회원 정보 수정 --> (각각 분리)
 //    public UserInfoResponse updateUserInfo(String loginId, UpdateUserInfoRequest updateUserInfoRequest, MultipartFile profileImg) throws IOException {
 ////            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 ////            String loginId = authentication.getName();

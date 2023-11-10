@@ -154,13 +154,6 @@ public class UserController {
             userService.changeProfileImage(SecurityUtils.getCurrentLoginId(), profileImg);
         return CommonResponse.OK(null);
     }
-//    public CommonResponse<UserInfoResponse> updateUserInfo(
-////            @AuthenticationPrincipal UserDetails userDetails,
-//            // 프로필 이미지가 포함되어 있기 때문에 multipart
-//            @RequestPart(name = "data", required = false) UpdateUserInfoRequest updateUserInfoRequest,
-//            @RequestPart(name = "file", required = false) MultipartFile profileImg
-//            ) throws IOException {
-////        return CommonResponse.OK(userService.updateUserInfo(userDetails.getUsername(), updateUserInfoRequest, profileImg));
-//        return CommonResponse.OK(userService.updateUserInfo(currentLoginId, updateUserInfoRequest, profileImg));
-//    }
+
+
 }
