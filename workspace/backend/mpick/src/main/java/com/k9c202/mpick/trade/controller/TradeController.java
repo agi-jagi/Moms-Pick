@@ -6,6 +6,7 @@ import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
+import com.k9c202.mpick.trade.controller.request.WishRequest;
 import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.entity.Trade;
@@ -89,14 +90,14 @@ public class TradeController {
     }
 
     @Operation(summary = "판매글 찜 기능", description = "판매글 찜 기능")
-    @PostMapping(value = "/wish/{tradeId}")
-    public CommonResponse<Boolean> tradeWish(
-            @PathVariable Long tradeId,
+    @PostMapping(value = "/wish")
+    public CommonResponse<String> tradeWish(
+            @RequestBody WishRequest wishRequest,
             Authentication authentication) {
 
-        tradeService.tradeWish(tradeId, authentication.getName());
+        String message = tradeService.tradeWish(wishRequest.getTradeId(), authentication.getName());
 
-        return CommonResponse.OK(true);
+        return CommonResponse.OK(message);
     }
 
     @Operation(summary = "판매글 삭제 기능", description = "판매글 삭제 기능")

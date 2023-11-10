@@ -17,13 +17,13 @@ module.exports = withPWA({
     return [
       {
         source: "/api/:path*",
-        // destination: "https://k9c202.p.ssafy.io/api/:path*",
-        destination: "http://localhost:5000/api/:path*",
+        destination: "https://k9c202.p.ssafy.io/api/:path*",
+        // destination: "http://localhost:5000/api/:path*",
       },
-      {
-        source: "/ws",
-        destination: "http://localhost:5000/ws",
-      },
+      // {
+      //   source: "/ws",
+      //   destination: "http://localhost:5000/ws",
+      // },
     ];
   },
 });

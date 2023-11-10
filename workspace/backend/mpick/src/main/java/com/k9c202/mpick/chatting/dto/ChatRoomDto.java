@@ -8,6 +8,7 @@ package com.k9c202.mpick.chatting.dto;
 
         import java.time.LocalDateTime;
 
+// fetch join을 사용해서 쿼리로 한번에 불러오는 정보들 (fetch join을 사용하지 않으면 n+1 문제 발생)
 // querydsl에서 내보내기 쉬운 형태의 dto로 먼저 변환 후 chat room response dto 사용
 // chat room response dto는 판매자인 경우와 구매자인 경우가 나눠져 있음
 // chat room dto는 판매자와 구매자의 정보가 모두 담겨있음

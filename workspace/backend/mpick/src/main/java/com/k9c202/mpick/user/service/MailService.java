@@ -93,9 +93,9 @@ public class MailService {
         this.checkDuplicatedEmail(email);
         String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
         boolean authResult = redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode);
-        System.out.println("redisAuthCode = " + redisAuthCode);
-        System.out.println("authCode = " + authCode);
-        System.out.println("authResult = " + authResult);
+//        System.out.println("redisAuthCode = " + redisAuthCode);
+//        System.out.println("authCode = " + authCode);
+//        System.out.println("authResult = " + authResult);
 
         return EmailVerificationResponse.of(authResult);
     }

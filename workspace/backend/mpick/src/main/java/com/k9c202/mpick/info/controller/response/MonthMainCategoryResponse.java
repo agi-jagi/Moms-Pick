@@ -1,4 +1,4 @@
-package com.k9c202.mpick.month.controller.response;
+package com.k9c202.mpick.info.controller.response;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;

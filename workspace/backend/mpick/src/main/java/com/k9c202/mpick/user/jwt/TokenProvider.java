@@ -111,16 +111,22 @@ public class TokenProvider implements InitializingBean {
     }
 
 
-    // Header에서 token 부분 문자열 가져오기
     public String resolveToken(HttpServletRequest request) {
+        // Header에서 token 부분 문자열 가져오기
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-
         // 빈 문자열이 아니고 Bearer로 시작하면, 8번째 값부터("Bearer "가 7자리) 가져오기
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
 
-        // WebSocket은 Header를 사용하지 않아서 파라미터로 jwt 전달
+        // TODO: 2023-11-09 토큰 받는 방식 변경하기
+        // WebSocket 연결 시 jwt 토큰 가져오는 설정
+        // WebSocket은 Header를 사용하지 않음 (서브 프로토콜 정보 제외)
+        // 일단 WebSocket은 Header를 사용하지 않아서 파라미터로 jwt 전달하는 방법 사용
+        // 클라이언트의 http 요청이 spring security를 거칠 때의 인증 정보가 웹소켓 세션에 저장됨
+        // 방법1) 세션 쿠키
+        // 방법2) Sec-Websocket-Protocol header 이용
+        // 방법3) Websocket 연결 뒤 jwt 토큰을 메세지로 받아서 인증
         String token = request.getParameter("jwt");
         if (StringUtils.hasText(token)) {
             return token;

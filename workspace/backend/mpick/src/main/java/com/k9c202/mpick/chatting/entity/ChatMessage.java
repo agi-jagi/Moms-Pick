@@ -28,13 +28,13 @@ public class ChatMessage {
     @Column(length = 500)
     private String message;
 
-    // TODO: 2023-11-07 CreateDate, UpdatedDate 파일 따로 분리 
+    // TODO: 2023-11-07 CreatedDate, UpdatedDate 파일 따로 분리
     @CreatedDate
     private LocalDateTime createdDate;
 
-    private Boolean hideForSeller;
+    private Boolean hideForSeller;  // 판매자 메세지 숨김 (삭제 시 본인에게만 보이지 않도록 처리)
 
-    private Boolean hideForBuyer;
+    private Boolean hideForBuyer;   // 구매자 메세지 숨김 (삭제 시 본인에게만 보이지 않도록 처리)
 
     @Builder
     private ChatMessage(Long id, ChatRoom chatRoom, Boolean toSeller, String message, LocalDateTime createdDate, Boolean hideForSeller, Boolean hideForBuyer) {

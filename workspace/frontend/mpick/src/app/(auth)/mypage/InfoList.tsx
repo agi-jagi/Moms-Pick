@@ -1,4 +1,5 @@
 import { IoIosArrowForward } from "react-icons/io";
+import Logout from "./Logout";
 
 export default function InfoList() {
   return (
@@ -58,6 +59,7 @@ export default function InfoList() {
         </div>
         <IoIosArrowForward size="30" />
       </div>
+      <Logout />
     </div>
   );
 }

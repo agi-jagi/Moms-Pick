@@ -26,14 +26,14 @@ public class ChatRoom {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Integer buyerUnreadCount;
+    private Integer buyerUnreadCount;   // 구매자가 읽지 않은 메세지 수
 
-    private Integer sellerUnreadCount;
+    private Integer sellerUnreadCount;  // 판매자가 읽지 않은 메세지 수
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "last_chat_message_id")
     @Setter
-    private ChatMessage lastChatMessage;
+    private ChatMessage lastChatMessage;    // 가장 최근 메세지
 
     @Builder
     private ChatRoom(Long id, Trade trade, User user, Integer buyerUnreadCount, Integer sellerUnreadCount, ChatMessage lastChatMessage) {
