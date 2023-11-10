@@ -12,7 +12,7 @@ from decouple import config
 
 db_info = {
     "user": "root",
-    "password": "ssafy",
+    "password": "ssafy_mpick_c202",
     "host": "k9c202.p.ssafy.io",
     "port": 3306,
     "database": "mpick"
