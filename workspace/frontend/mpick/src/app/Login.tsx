@@ -88,26 +88,26 @@ export default function Login() {
           onClick={() => {
             login();
           }}
-          color="primary"
           style={{
             width: "100%",
             height: "100%",
             marginBottom: "15px",
+            backgroundColor: "#5E9FF2",
           }}
         >
-          <p className="font-bold text-xl">로그인</p>
+          <p className="font-bold text-xl text-white">로그인</p>
         </Button>
         <Button
           onClick={() => {
             router.push("/auth");
           }}
-          color="default"
           style={{
             width: "100%",
             height: "100%",
+            backgroundColor: "#bbc0c7",
           }}
         >
-          <p className="font-bold text-xl">회원가입</p>
+          <p className="font-bold text-xl text-white ">회원가입</p>
         </Button>
       </div>
     </div>

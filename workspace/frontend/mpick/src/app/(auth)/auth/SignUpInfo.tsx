@@ -53,11 +53,18 @@ export default function SignUpInfo(props: any) {
         authCode: certifyPharse,
       })
       .then((res) => {
-        Toast.fire({
-          icon: "success",
-          title: "이메일 인증 성공",
-        });
-        props.setUserEmailVerify(res.data.success);
+        if (res.data.response.succeeded) {
+          Toast.fire({
+            icon: "success",
+            title: "이메일 인증 성공",
+          });
+          props.setUserEmailVerify(res.data.success);
+        } else {
+          Toast.fire({
+            icon: "error",
+            title: "다시 입력해주세요",
+          });
+        }
       })
       .catch(() => {
         Toast.fire({
@@ -82,10 +89,9 @@ export default function SignUpInfo(props: any) {
           onClick={() => {
             props.idCheck();
           }}
-          color="primary"
-          style={{ height: "56px" }}
+          style={{ height: "56px", backgroundColor: "#5E9FF2" }}
         >
-          <p className="font-bold text-base">중복확인</p>
+          <p className="font-bold text-base text-white">중복확인</p>
         </Button>
       </div>
       <div className="flex justify-center" style={{ width: "100%", marginTop: "20px" }}>
@@ -101,10 +107,9 @@ export default function SignUpInfo(props: any) {
           onClick={() => {
             props.nickNameCheck();
           }}
-          color="primary"
-          style={{ height: "56px" }}
+          style={{ height: "56px", backgroundColor: "#5E9FF2" }}
         >
-          <p className="font-bold text-base">중복확인</p>
+          <p className="font-bold text-base text-white">중복확인</p>
         </Button>
       </div>
       <div style={{ width: "100%", marginTop: "20px" }}>
@@ -151,10 +156,9 @@ export default function SignUpInfo(props: any) {
           onClick={() => {
             props.emailCheck();
           }}
-          color="primary"
-          style={{ height: "56px" }}
+          style={{ height: "56px", backgroundColor: "#5E9FF2" }}
         >
-          <p className="font-bold text-base">본인인증</p>
+          <p className="font-bold text-base text-white">본인인증</p>
         </Button>
       </div>
       {props.certifyInput ? (
@@ -172,10 +176,9 @@ export default function SignUpInfo(props: any) {
             onClick={() => {
               certifyEmail();
             }}
-            color="primary"
-            style={{ height: "56px" }}
+            style={{ height: "56px", backgroundColor: "#5E9FF2" }}
           >
-            <p className="font-bold text-base">인증</p>
+            <p className="font-bold text-base text-white">인증</p>
           </Button>
         </div>
       ) : (
@@ -190,8 +193,8 @@ export default function SignUpInfo(props: any) {
             onValueChange={setCertifyPharse}
             defaultValue={certifyPharse}
           />
-          <Button isDisabled color="primary" style={{ height: "56px" }}>
-            <p className="font-bold text-base">인증</p>
+          <Button isDisabled style={{ height: "56px", backgroundColor: "#5E9FF2" }}>
+            <p className="font-bold text-base text-white">인증</p>
           </Button>
         </div>
       )}

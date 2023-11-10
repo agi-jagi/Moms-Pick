@@ -29,6 +29,13 @@ export default function ParentingInfo() {
   const { parenting, setParenting } = useParentingStore();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
+  const imageSize = {
+    display: "block",
+    width: isMobile ? "100%" : "768px",
+    height: isMobile ? "auto" : "1024px",
+    marginTop: "20px",
+  };
+
   return (
     <div>
       <Carousel
@@ -95,33 +102,39 @@ export default function ParentingInfo() {
           ></Image>
         </a>
       </Carousel>
-      <Link href="/parenting/detail" passHref onClick={() => setParenting("수유")}>
-        <Image
-          src={nursing1}
-          alt="수유"
-          layout="responsive"
-          width={isMobile ? 512 : 768}
-          height={isMobile ? 767 : 1024}
-        ></Image>
-      </Link>
-      <Link href="/parenting/detail" passHref onClick={() => setParenting("식단")}>
-        <Image
-          src={meal1}
-          alt="식단"
-          layout="responsive"
-          width={isMobile ? 512 : 768}
-          height={isMobile ? 767 : 1024}
-        ></Image>
-      </Link>
-      <Link href="/parenting/detail" passHref onClick={() => setParenting("교육기관")}>
-        <Image
-          src={education1}
-          alt="교육기관"
-          layout="responsive"
-          width={isMobile ? 512 : 768}
-          height={isMobile ? 767 : 1024}
-        ></Image>
-      </Link>
+
+      <div style={{ marginLeft: "20px", marginRight: "20px" }}>
+        <Link href="/parenting/detail" passHref onClick={() => setParenting("수유")}>
+          <Image
+            src={nursing1}
+            alt="수유"
+            layout="responsive"
+            // width={isMobile ? 512 : 768}
+            // height={isMobile ? 767 : 1024}
+            style={imageSize}
+          ></Image>
+        </Link>
+        <Link href="/parenting/detail" passHref onClick={() => setParenting("식단")}>
+          <Image
+            src={meal1}
+            alt="식단"
+            layout="responsive"
+            // width={isMobile ? 512 : 768}
+            // height={isMobile ? 767 : 1024}
+            style={imageSize}
+          ></Image>
+        </Link>
+        <Link href="/parenting/detail" passHref onClick={() => setParenting("교육기관")}>
+          <Image
+            src={education1}
+            alt="교육기관"
+            layout="responsive"
+            // width={isMobile ? 512 : 768}
+            // height={isMobile ? 767 : 1024}
+            style={imageSize}
+          ></Image>
+        </Link>
+      </div>
       {/* <Link href="/parenting/detail" passHref onClick={() => setParenting("교육기관")}>
         <Image
           src={education22}
