@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class UpdateEmailRequest {
     private String email;
+    private String authCode;
 }
