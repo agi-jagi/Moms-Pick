@@ -3,7 +3,7 @@
 import GoBack from '@/app/(auth)/auth/GoBack';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-// import { Image, Avatar, Button } from "@nextui-org/react";
+
 import {
   Card,
   CardHeader,
@@ -86,9 +86,8 @@ export default function Detail(props: any) {
       <CardHeader floated={false} color="blue-gray">
         <img
           className="w-full object-cover rounded-t-lg"
-          // src="/유모차2.jpg"
           src={detail.tradeImages[0]}
-          alt="Card Image"
+          alt="detail Item Image"
         />
         
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
