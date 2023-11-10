@@ -370,7 +370,7 @@ export default function SignUp() {
                 backgroundColor: "#5E9FF2",
               }}
             >
-              <p className="font-bold text-xl">회원가입</p>
+              <p className="font-bold text-xl text-white">회원가입</p>
             </Button>
           </div>
         )}

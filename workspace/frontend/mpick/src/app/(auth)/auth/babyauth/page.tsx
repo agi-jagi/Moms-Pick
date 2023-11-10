@@ -231,10 +231,10 @@ export default function BabyAuth() {
       <div className="flex justify-center mt-8 mb-4 gap-4">
         <div className="w-1/2 ml-4">
           <Link href="/trade">
-            <Button className="text-white bg-[#bbc0c7] w-full">건너뛰기</Button>
+            <Button className="text-white font-bold bg-[#bbc0c7] w-full">건너뛰기</Button>
           </Link>
         </div>
-        <Button className=" text-white bg-[#5E9FF2] w-1/2 mr-4" onClick={registerBaby}>
+        <Button className=" text-white font-bold bg-[#5E9FF2] w-1/2 mr-4" onClick={registerBaby}>
           등록하기
         </Button>
       </div>
