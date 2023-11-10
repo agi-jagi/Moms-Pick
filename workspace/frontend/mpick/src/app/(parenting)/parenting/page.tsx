@@ -144,6 +144,7 @@ export default function ParentingInfo() {
           height={isMobile ? 767 : 1024}
         ></Image>
       </Link> */}
+      <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }
