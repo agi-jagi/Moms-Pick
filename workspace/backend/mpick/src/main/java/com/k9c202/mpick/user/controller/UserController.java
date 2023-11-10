@@ -117,13 +117,28 @@ public class UserController {
     }
 
     // TODO: 2023-11-09 이메일, 닉네임, 소개글, 프로필 이미지 변경 컨트롤러
+//    이메일 변경 [PUT] /api/users/change-email
+//    닉네임 변경 [PUT] /api/users/change-nickname
+//    소개글 변경 [PUT] /api/users/change-intro
+//    프로필 이미지 변경 [PUT] /api/users/change-img
     // 이메일 변경
+    @PutMapping("/change-email")
+    public CommonResponse<?> changeEmail(@RequestBody UpdateEmailRequest updateEmailRequest) {
+        userService.changeEmail(
+                SecurityUtils.getCurrentLoginId(),
+                updateEmailRequest.getNewEmail(),
+                updateEmailRequest.getAuthCode()
+        );
+        return CommonResponse.OK(null);
+    }
 
     // 닉네임 변경
+//    @PutMapping("/change-nickname")
 
     // 소개글 변경
+//    @PutMapping("/change-intro")
 
     // 프로필 이미지 변경
-
+//    @PutMapping("/change-img")
 
 }

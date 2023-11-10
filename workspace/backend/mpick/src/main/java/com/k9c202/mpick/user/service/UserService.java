@@ -101,6 +101,7 @@ public class UserService {
     public void checkDuplicatedNickname(String nickname) {
         boolean isExistNickname = userQueryRepository.existNickname(nickname);
         if (isExistNickname) {
+            // TODO: 2023-11-10 ResponseStatusException 
             throw new ResponseStatusException(HttpStatus.CONFLICT, "닉네임 중복");
 //            throw new IllegalArgumentException("닉네임 중복");
         }
@@ -166,29 +167,31 @@ public class UserService {
 
     // TODO: 2023-11-05 UpdateUserInfoRequest 수정
     // 이메일 수정
-    public void updateEmail (String loginId, String newEmail, String authCode) {
+    public void changeEmail (String loginId, String newEmail, String authCode) {
         User user = getUserEntity(loginId);
         EmailVerificationResponse emailVerificationResponse = mailService.verifiedCode(newEmail, authCode);
         if (emailVerificationResponse.isSucceeded()) {
             user.editEmail(newEmail);
+        } else {
+            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
         }
     }
 
     // 닉네임 수정
-    public void updateNickname (String loginId, String newNickname) {
+    public void changeNickname (String loginId, String newNickname) {
         User user = getUserEntity(loginId);
         checkDuplicatedNickname(newNickname);
         user.editNickname(newNickname);
     }
 
     // 소개글 수정
-    public void updateUserIntro (String loginId, String newUserIntro) {
+    public void changeUserIntro (String loginId, String newUserIntro) {
         User user = getUserEntity(loginId);
         user.editUserIntro(newUserIntro);
     }
 
     // 프로필 이미지 수정
-    public void updateProfileImage (String loginId, MultipartFile profileImg) throws IOException {
+    public void changeProfileImage (String loginId, MultipartFile profileImg) throws IOException {
         User user = getUserEntity(loginId);
             String profileUrl = s3Service.upload(profileImg, "profiles/");
             user.editProfileImage(profileUrl);
