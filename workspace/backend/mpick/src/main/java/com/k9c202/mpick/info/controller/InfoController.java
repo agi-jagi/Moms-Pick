@@ -4,6 +4,7 @@ import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.info.controller.request.LactationRoomRequest;
 import com.k9c202.mpick.info.service.InfoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,10 +25,10 @@ public class InfoController {
     @GetMapping("/lactation")
     public CommonResponse<?> searchLactation(
             Authentication authentication,
-            @RequestParam LactationRoomRequest request) {
+            @Parameter LactationRoomRequest request) {
 
 
 
-        return CommonResponse.OK(true);
+        return CommonResponse.OK(infoService.lactationList(request));
     }
 }
