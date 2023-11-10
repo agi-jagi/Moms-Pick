@@ -4,6 +4,7 @@ import { useTradeStore } from "@/store/TradeStore";
 import { Button, Card, CardFooter, CardBody, Image, Avatar } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -43,7 +44,7 @@ export default function Trade() {
 
   
 
-  const fastAPIURL = "http://localhost:8000";
+  const fastAPIURL = "https://k9c202.p.ssafy.io";
 
   async function getRecommend() {
 
@@ -266,17 +267,21 @@ export default function Trade() {
       className="max-w-full mt-6">
       {recommendList.map((item, index) => (
         <SwiperSlide key={index}>
-          <Card shadow="md" isPressable onPress={() => setTradeId(item.trade_id)}>
-            <CardBody className="overflow-visible p-0">
+          <Card className="" shadow="md" isPressable onPress={() => setTradeId(item.trade_id)}>
+          <Link href={'/trade/detail/' + tradeId}>
+            <CardBody className="overflow-visible p-0 h-[13rem]">
+              
+
               <Image
                 shadow="sm"
                 radius="lg"
-                width="100%"
+                className="object-cover h-[13rem] w-full"
+                
                 alt={item.title}
-                className=""
                 src={item.save_file_name}
               />
             </CardBody>
+            </Link>
             <CardFooter className="text-small justify-between">
               <b>{item.title}</b>
               <p className="text-default-500">{item.price}</p>
