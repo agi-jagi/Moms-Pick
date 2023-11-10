@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Chip, Card, CardFooter, Image, CardBody, Button,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
   CheckboxGroup, Checkbox, Select, SelectItem } from "@nextui-org/react";
-import { Input, Textarea, CardHeader, Typography, Dialog } from "@material-tailwind/react";
+// import { Input, Textarea, CardHeader, Typography, Dialog } from "@material-tailwind/react";
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
@@ -216,7 +216,7 @@ export default function Search() {
               
                 <form onSubmit={(e) => registerTrade(e)}>
                 <ModalBody>
-                  <CardHeader
+                  {/* <CardHeader
                       variant="gradient"
                       color="blue"
                       className="grid mb-4 h-28 place-items-center"
@@ -224,18 +224,18 @@ export default function Search() {
                       <Typography variant="h3" color="white">
                         판매글 등록
                       </Typography>
-                    </CardHeader>
+                    </CardHeader> */}
                   <input type="file"
                     name="image_files"
                     accept="image/*" />
-                  <Input 
+                  {/* <Input 
                   crossOrigin={true}
                   label="글 제목" value={title} size="lg" onChange={(e) => setTitle(e.target.value)} />
                   <Input 
                   crossOrigin={true}
                   label="가격" value={price} size="lg" onChange={(e) => setPrice(e.target.value)} />
                   <Textarea
-                  label="글 내용" value={tradeExplain} onChange={(e) => setTradeExplain(e.target.value)} />
+                  label="글 내용" value={tradeExplain} onChange={(e) => setTradeExplain(e.target.value)} /> */}
                   <Select
                   label="대분류 선택" 
                   >
@@ -252,9 +252,9 @@ export default function Search() {
                         <SelectItem key={item} onClick={() => setSelectedSubCategory(item)}>{item}</SelectItem>
                       ))}
                   </Select>
-                  <Typography className="font-semibold">
+                  {/* <Typography className="font-semibold">
                     개월 선택 (임산부 이외 중복 가능)
-                  </Typography>
+                  </Typography> */}
                   <div className="flex flex-wrap gap-3">
                     
                   {babyMonthList.map((month, index) => (
