@@ -4,17 +4,17 @@ import GoBack from '@/app/(auth)/auth/GoBack';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-  Tooltip,
-  IconButton,
-  Avatar,
-} from "@material-tailwind/react";
+// import {
+//   Card,
+//   CardHeader,
+//   CardBody,
+//   CardFooter,
+//   Typography,
+//   Button,
+//   Tooltip,
+//   IconButton,
+//   Avatar,
+// } from "@material-tailwind/react";
 import { PiWechatLogoBold } from "react-icons/pi";
 import { RiHeartsFill } from "react-icons/ri"; 
 import { FaRegEye } from "react-icons/fa";
@@ -81,9 +81,9 @@ export default function Detail(props: any) {
 
   return (
     <div>
-    <Card className="w-full max-w-[26rem] shadow-lg">
+    {/* <Card className="w-full max-w-[26rem] shadow-lg"> */}
     <GoBack />
-      <CardHeader floated={false} color="blue-gray">
+      {/* <CardHeader floated={false} color="blue-gray"> */}
         <img
           className="w-full object-cover rounded-t-lg"
           src={detail.tradeImages[0]}
@@ -91,7 +91,7 @@ export default function Detail(props: any) {
         />
         
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
-        <IconButton
+        {/* <IconButton
           size="sm"
           color={isLiked === "1" ? 'red' : 'gray'}
           variant="text"
@@ -107,11 +107,11 @@ export default function Detail(props: any) {
             <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
           </svg>
         </IconButton>
-      </CardHeader>
-      <CardBody>
+      </CardHeader> */}
+      {/* <CardBody> */}
         <div className="mb-3 flex items-center justify-between">
           
-          <Typography variant="h5" color="blue-gray" className="font-semibold text-md" >
+          {/* <Typography variant="h5" color="blue-gray" className="font-semibold text-md" >
           <Avatar size="sm" src='/nezko.jfif' className="mr-2" />
             {detail.nickname}
           </Typography>
@@ -132,10 +132,10 @@ export default function Detail(props: any) {
               />
             </svg>
             { detail.rating === -1 ? "평가중" : detail.rating }
-          </Typography>
+          </Typography> */}
         </div>
         <div className="mb-3 flex items-center justify-between">
-        <Typography variant="h5" color="blue-gray" className="font-semibold">
+        {/* <Typography variant="h5" color="blue-gray" className="font-semibold">
             {detail.title}
           </Typography>
           <Tooltip content="가격">
@@ -150,9 +150,9 @@ export default function Detail(props: any) {
         <Typography color="gray" className="mt-4">
           {detail.tradeExplain} 이치노 카타 헤키레키 잇센
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Exercitationem sed maxime officiis soluta expedita cum. Dicta eos, modi distinctio velit explicabo cum sapiente vero earum hic dolore harum eveniet. Tempore.
-        </Typography>
+        </Typography> */}
         <div className="group mt-8 inline-flex items-center gap-3">
-          <Tooltip content="동네">
+          {/* <Tooltip content="동네">
             <span className="flex items-center cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,10 +177,10 @@ export default function Detail(props: any) {
             < FaRegEye className="h-5 w-5 mr-1" />
               <span>{detail.viewCount}</span>
             </span>
-          </Tooltip>
+          </Tooltip> */}
         </div>
-      </CardBody>
-      <CardFooter className="pt-3 flex justify-center items-center">
+      {/* </CardBody> */}
+      {/* <CardFooter className="pt-3 flex justify-center items-center">
         <Button className="bg-[#5E9FF2] text-white text-md flex items-center" size="lg" fullWidth={true}>
           <div className="flex items-center justify-center w-full">
             <PiWechatLogoBold size="24" className="mr-2" />
@@ -188,8 +188,9 @@ export default function Detail(props: any) {
           </div>
         </Button>
       </CardFooter>
-    </Card>
+    </Card> */}
     <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
+    </div>
     </div>
   );
 }
