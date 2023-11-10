@@ -5,7 +5,6 @@ export default function ParentingLayout({ children }: { children: React.ReactNod
     <>
       {children}
       <NavBar />
-      <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </>
   );
 }
