@@ -133,7 +133,14 @@ public class UserController {
     }
 
     // 닉네임 변경
-//    @PutMapping("/change-nickname")
+    @PutMapping("/change-nickname")
+    public CommonResponse<?> changeNickname(@RequestBody UpdateNicknameRequest updateNicknameRequest) {
+        userService.changeNickname(
+                SecurityUtils.getCurrentLoginId(),
+                updateNicknameRequest.getNewNickname()
+        );
+        return CommonResponse.OK(null);
+    }
 
     // 소개글 변경
 //    @PutMapping("/change-intro")

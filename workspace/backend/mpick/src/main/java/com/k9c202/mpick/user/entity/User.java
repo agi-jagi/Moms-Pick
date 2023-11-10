@@ -34,7 +34,7 @@ public class User {
     private String nickname;
 
 //    @Setter
-    @Column(unique = true, nullable = false, updatable = false, length = 100)
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
 
 //    @Setter

@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class UpdateNicknameRequest {
-    private String nickname;
+    private String newNickname;
 }
