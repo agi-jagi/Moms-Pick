@@ -117,16 +117,12 @@ public class UserController {
     }
 
     // TODO: 2023-11-09 이메일, 닉네임, 소개글, 프로필 이미지 변경 컨트롤러
-//    이메일 변경 [PUT] /api/users/change-email
-//    닉네임 변경 [PUT] /api/users/change-nickname
-//    소개글 변경 [PUT] /api/users/change-intro
-//    프로필 이미지 변경 [PUT] /api/users/change-img
     // 이메일 변경
     @PutMapping("/change-email")
     public CommonResponse<?> changeEmail(@RequestBody UpdateEmailRequest updateEmailRequest) {
         userService.changeEmail(
                 SecurityUtils.getCurrentLoginId(),
-                updateEmailRequest.getNewEmail(),
+                updateEmailRequest.getEmail(),
                 updateEmailRequest.getAuthCode()
         );
         return CommonResponse.OK(null);
@@ -137,15 +133,34 @@ public class UserController {
     public CommonResponse<?> changeNickname(@RequestBody UpdateNicknameRequest updateNicknameRequest) {
         userService.changeNickname(
                 SecurityUtils.getCurrentLoginId(),
-                updateNicknameRequest.getNewNickname()
+                updateNicknameRequest.getNickname()
         );
         return CommonResponse.OK(null);
     }
 
     // 소개글 변경
-//    @PutMapping("/change-intro")
+    @PutMapping("/change-intro")
+    public CommonResponse<?> changeUserIntro(@RequestBody UpdateUserIntroRequest updateUserIntroRequest) {
+        userService.changeUserIntro(
+                SecurityUtils.getCurrentLoginId(),
+                updateUserIntroRequest.getUserIntro()
+        );
+        return CommonResponse.OK(null);
+    }
 
     // 프로필 이미지 변경
-//    @PutMapping("/change-img")
-
+    @PutMapping("/change-img")
+    public CommonResponse<?> changeUserImage(@RequestPart(name = "file", required = false) MultipartFile profileImg) throws IOException {
+            userService.changeProfileImage(SecurityUtils.getCurrentLoginId(), profileImg);
+        return CommonResponse.OK(null);
+    }
+//    public CommonResponse<UserInfoResponse> updateUserInfo(
+////            @AuthenticationPrincipal UserDetails userDetails,
+//            // 프로필 이미지가 포함되어 있기 때문에 multipart
+//            @RequestPart(name = "data", required = false) UpdateUserInfoRequest updateUserInfoRequest,
+//            @RequestPart(name = "file", required = false) MultipartFile profileImg
+//            ) throws IOException {
+////        return CommonResponse.OK(userService.updateUserInfo(userDetails.getUsername(), updateUserInfoRequest, profileImg));
+//        return CommonResponse.OK(userService.updateUserInfo(currentLoginId, updateUserInfoRequest, profileImg));
+//    }
 }
