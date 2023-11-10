@@ -12,7 +12,8 @@ const Server = () => {
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
       const jwt = localStorage.getItem("accessToken");
-      socket = new WebSocket("wss://localhost:5000/ws?jwt=" + jwt);
+      // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
+      socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
       console.log("socket", socket);
       socket.onopen = (e: any) => {
         console.log("connected", e);
