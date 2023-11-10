@@ -149,6 +149,16 @@ export default function MyFamily() {
     getBabyInfo();
   }, []);
 
+  const babyMonths = (birthDate: string) => {
+    const inputDate: any = new Date(birthDate);
+    const currentDate: any = new Date();
+    const monthsDifference =
+      currentDate.getMonth() -
+      inputDate.getMonth() +
+      12 * (currentDate.getFullYear() - inputDate.getFullYear());
+    return monthsDifference;
+  };
+
   return (
     <div
       style={{
@@ -160,6 +170,7 @@ export default function MyFamily() {
     >
       <MyInfo />
       {babyList.map((baby: any, index: number) => {
+        const birth = babyMonths(baby.babyBirth);
         return (
           <div
             key={index}
@@ -196,6 +207,7 @@ export default function MyFamily() {
                 <div>
                   <p className="font-bold text-xl">{baby.babyName}</p>
                   <p className="text-lg">{baby.babyBirth}</p>
+                  <p className="text-lg">{birth}개월</p>
                 </div>
               </div>
             </div>

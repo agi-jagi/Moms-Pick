@@ -75,7 +75,6 @@ const BabyForm: React.FC<BabyFormProps> = ({
         <p className="ml-1 mb-1 font-bold">아이 별명</p>
         <div className="flex justify-center">
           <Input
-            isRequired
             isClearable
             label="아이 별명"
             variant="bordered"

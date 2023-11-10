@@ -177,7 +177,6 @@ export default function BabyAuth() {
                 <p className="ml-5 mb-3 font-bold">아이 별명</p>
                 <div className="flex justify-center">
                   <Input
-                    isRequired
                     isClearable
                     label="아이 별명"
                     variant="bordered"
