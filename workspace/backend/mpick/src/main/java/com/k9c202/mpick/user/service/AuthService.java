@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-// TODO: 2023-11-09 AuthService 분리하기
 @RequiredArgsConstructor
 @Service
 @Transactional

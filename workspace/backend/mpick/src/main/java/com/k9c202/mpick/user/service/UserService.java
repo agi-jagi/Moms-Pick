@@ -51,6 +51,7 @@ public class UserService {
     private final RedisService redisService;
     private final S3Service s3Service;
     private final MailService mailService;
+    private final AuthService authService;
 
     // 생성자, 같은 이름으로 정의, 실제 객체를 만들 때 사용
     // UserService userService = new UserService(userRepository)에서 UserService에 대한 정의
@@ -114,7 +115,7 @@ public class UserService {
     // 닉네임 수정
     public void changeNickname (String loginId, String newNickname) {
         User user = getUserEntity(loginId);
-        checkDuplicatedNickname(newNickname);
+        authService.checkDuplicatedNickname(newNickname);
         user.editNickname(newNickname);
     }
 
