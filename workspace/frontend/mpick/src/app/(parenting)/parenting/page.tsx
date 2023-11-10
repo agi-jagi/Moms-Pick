@@ -44,6 +44,16 @@ export default function ParentingInfo() {
           <Image src={education1} alt="교육기관" layout="responsive" style={imageSize}></Image>
         </Link>
       </div>
+      {/* <Link href="/parenting/detail" passHref onClick={() => setParenting("교육기관")}>
+        <Image
+          src={education22}
+          alt="교육"
+          layout="responsive"
+          width={isMobile ? 512 : 768}
+          height={isMobile ? 767 : 1024}
+        ></Image>
+      </Link> */}
+      <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }

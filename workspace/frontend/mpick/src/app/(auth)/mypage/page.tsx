@@ -20,6 +20,7 @@ export default function mypage() {
         <Myfamily />
         <InfoList />
       </div>
+      <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }
