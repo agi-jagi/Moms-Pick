@@ -75,7 +75,7 @@ public class TradeService {
     private final WishRepository wishRepository;
 
     private final TradeMonthQueryRepository tradeMonthQueryRepository;
-
+    //프론트: 여기 밑에 한줄 주석처리 (밑에 한 군데 더있음)
     private final ESService esService;
 
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
@@ -188,6 +188,7 @@ public class TradeService {
             subCategory = request.getSubCategory();
         }
 
+        //프론트: 여기부터
         esService.save(
                 ESTradeDto.builder()
                         .id(tradeId)
@@ -201,6 +202,8 @@ public class TradeService {
                         .location(new GeoPoint(address.getLatitude().doubleValue(), address.getLongitude().doubleValue()))
                         .build()
         );
+        //여기까지 주석처리
+
 
         return tradeId;
     }
