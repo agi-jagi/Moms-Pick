@@ -161,28 +161,28 @@ export default function Search() {
     
     // const ElasticURL = "http://k9c202.p.ssafy.io:9200/mpick/_search";
 
-    const data = {
+    const query = {
       query: {
         bool: {
           must: [
-            { match: { status: "판매중" }},
-            { match: { tradeMonth: "3" }},
-            { match: { mainCategory: "유모차" }}
+            { match: { status: '판매중' } },
+            { match: { tradeMonth: '3' } },
+            { match: { tradeMonth: '4' } },
           ],
           filter: {
-            get_distance: {
-              distance: "100000km",
+            geo_distance: {
+              distance: '100000km',
               location: {
                 lat: 35.2026038557392,
-                lon: 126.815091346254
-              }
-            }
-          }
-        }
+                lon: 126.815091346254,
+              },
+            },
+          },
+        },
       },
       size: 10,
-      from: 0
-    }
+      from: 0,
+    };
 
     try {
 
@@ -190,7 +190,9 @@ export default function Search() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        data
+        params: {
+          source: JSON.stringify(query),
+        }
       });
       console.log(res.data);
     } catch (err) {
