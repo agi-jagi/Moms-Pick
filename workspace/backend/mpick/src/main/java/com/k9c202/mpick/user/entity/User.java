@@ -1,7 +1,6 @@
 package com.k9c202.mpick.user.entity;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -35,7 +34,7 @@ public class User {
     private String nickname;
 
 //    @Setter
-    @Column(unique = true, nullable = false, updatable = false, length = 100)
+    @Column(unique = true, nullable = false, length = 100)
     private String email;
 
 //    @Setter
@@ -82,9 +81,8 @@ public class User {
     }
 
     // 이메일 변경
-    public User editEmail(String email) {
+    public void editEmail(String email) {
         this.email = email;
-        return this;
     }
 
     // 회원 상태 변경

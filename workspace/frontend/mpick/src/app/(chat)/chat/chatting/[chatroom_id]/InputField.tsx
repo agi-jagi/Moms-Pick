@@ -9,18 +9,24 @@ let socket: any;
 const InputField = (props: any) => {
   useEffect(() => {
     const jwt = localStorage.getItem("accessToken");
-    let newSocket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
+    // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
+    socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
 
-    newSocket.onopen = (e: any) => {
+    socket.onopen = (e: any) => {
       console.log("connected", e);
     };
 
-    if (!newSocket.onmessage) {
-      newSocket.onmessage = async (e: any) => {
+    if (!socket.onmessage) {
+      socket.onmessage = async (e: any) => {
+        console.log("Socket readyState:", socket.readyState);
         await props.chattingReload(e.data);
       };
     }
-  }, []); // 빈 배열은 한 번만 실행되도록 합니다.
+
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   return (
     <div
@@ -51,6 +57,7 @@ const InputField = (props: any) => {
               message: props.message,
             };
             if (socket && socket.readyState === WebSocket.OPEN) {
+              console.log(1);
               socket.send(JSON.stringify(data));
             }
           }}

@@ -116,6 +116,44 @@ public class UserController {
         return CommonResponse.OK(null);
     }
 
+    // TODO: 2023-11-09 이메일, 닉네임, 소개글, 프로필 이미지 변경 컨트롤러
+    // 이메일 변경
+    @PutMapping("/change-email")
+    public CommonResponse<?> changeEmail(@RequestBody UpdateEmailRequest updateEmailRequest) {
+        userService.changeEmail(
+                SecurityUtils.getCurrentLoginId(),
+                updateEmailRequest.getEmail(),
+                updateEmailRequest.getAuthCode()
+        );
+        return CommonResponse.OK(null);
+    }
+
+    // 닉네임 변경
+    @PutMapping("/change-nickname")
+    public CommonResponse<?> changeNickname(@RequestBody UpdateNicknameRequest updateNicknameRequest) {
+        userService.changeNickname(
+                SecurityUtils.getCurrentLoginId(),
+                updateNicknameRequest.getNickname()
+        );
+        return CommonResponse.OK(null);
+    }
+
+    // 소개글 변경
+    @PutMapping("/change-intro")
+    public CommonResponse<?> changeUserIntro(@RequestBody UpdateUserIntroRequest updateUserIntroRequest) {
+        userService.changeUserIntro(
+                SecurityUtils.getCurrentLoginId(),
+                updateUserIntroRequest.getUserIntro()
+        );
+        return CommonResponse.OK(null);
+    }
+
+    // 프로필 이미지 변경
+    @PutMapping("/change-img")
+    public CommonResponse<?> changeUserImage(@RequestPart(name = "file", required = false) MultipartFile profileImg) throws IOException {
+            userService.changeProfileImage(SecurityUtils.getCurrentLoginId(), profileImg);
+        return CommonResponse.OK(null);
+    }
 
 
 }

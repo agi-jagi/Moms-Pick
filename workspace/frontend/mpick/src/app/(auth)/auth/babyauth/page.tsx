@@ -177,7 +177,6 @@ export default function BabyAuth() {
                 <p className="ml-5 mb-3 font-bold">아이 별명</p>
                 <div className="flex justify-center">
                   <Input
-                    isRequired
                     isClearable
                     label="아이 별명"
                     variant="bordered"
@@ -231,10 +230,10 @@ export default function BabyAuth() {
       <div className="flex justify-center mt-8 mb-4 gap-4">
         <div className="w-1/2 ml-4">
           <Link href="/trade">
-            <Button className="text-white bg-[#bbc0c7] w-full">건너뛰기</Button>
+            <Button className="text-white font-bold bg-[#bbc0c7] w-full">건너뛰기</Button>
           </Link>
         </div>
-        <Button className=" text-white bg-[#5E9FF2] w-1/2 mr-4" onClick={registerBaby}>
+        <Button className=" text-white font-bold bg-[#5E9FF2] w-1/2 mr-4" onClick={registerBaby}>
           등록하기
         </Button>
       </div>

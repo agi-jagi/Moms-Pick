@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Image from "next/image";
 import marker from "../../../../public/marker.png";
+import search from "../../../../public/search.png";
 
 declare global {
   interface Window {
@@ -153,13 +154,14 @@ export default function AddressSearch(props: any) {
     <div>
       <div style={{ padding: "0 10px" }}>
         <div id="map" style={{ width: "auto", height: "60vh", marginTop: "10px" }}></div>
-        <div className="flex" style={{ marginTop: "20px" }}>
-          <button type="button" onClick={handleClick} style={{ width: "40px" }}>
-            <Image src={marker} alt="marker" width={20} height={20} />
+        <div
+          className="flex mt-5"
+          style={{ border: "1px solid black", padding: "10px", width: "100%" }}
+        >
+          <button type="button" onClick={handleClick}>
+            <Image src={search} alt="marker" width={30} height={30} />
           </button>
-          <div>
-            <p className="font-bold text-base">지번주소 : {props.address}</p>
-          </div>
+          <p className="font-bold text-base">지번주소 : {props.address}</p>
         </div>
       </div>
     </div>

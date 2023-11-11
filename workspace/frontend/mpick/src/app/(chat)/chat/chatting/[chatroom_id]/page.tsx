@@ -7,34 +7,45 @@ import instance from "@/app/_config/axios";
 import { Container } from "@mui/system";
 import Image from "next/image";
 import profile from "../../../../../../public/profile.png";
+import { useChattingStore } from "@/store/ChattingStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any>([]);
 
-  const chattingReload = (data: any) => {
-    // instance
-    //   .get(`/api/chattings/${props.params.chatroom_id}`)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setMessageList(res.data.response);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+  const { messageStore, setMessageStore } = useChattingStore();
 
-    // console.log("list", messageList);
-    // console.log("data", JSON.parse(data));
-    // let dummy = [...messageList, JSON.parse(data)];
-    // setMessageList(dummy);
+  // const chattingReload = async (data: any) => {
+  //   setMessageList((prevMessageList: any) => {
+  //     const updatedList = [...prevMessageList, JSON.parse(data)];
+  //     console.log("Updated list:", updatedList);
+  //     return updatedList;
+  //   });
+  //   setMessageStore(messageList)
+  // };
 
-    console.log("Before update:", messageList);
-    setMessageList((prevMessageList: any) => {
-      const updatedList = [...prevMessageList, JSON.parse(data)];
-      console.log("Updated list:", updatedList);
-      return updatedList;
+  const chattingReload = async (data: any) => {
+    // setMessageList를 비동기적으로 호출
+    await new Promise((resolve) => {
+      setMessageList((prevMessageList: any) => {
+        const updatedList = [...prevMessageList, JSON.parse(data)];
+        console.log("Updated list:", updatedList);
+        resolve(updatedList);
+        return updatedList;
+      });
     });
+
+    // setMessageStore를 비동기적으로 호출
+    await new Promise((resolve) => {
+      setMessageStore(messageList);
+    });
+
+    // 이후 추가적인 작업 수행 가능
   };
+
+  useEffect(() => {
+    console.log("????", messageStore);
+  }, [messageStore]);
 
   useEffect(() => {
     instance
