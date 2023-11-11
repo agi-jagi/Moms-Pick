@@ -159,7 +159,7 @@ export default function Search() {
   // ElasticSearch 검색 요청 함수
   async function searchTrade() {
     
-    const ElasticURL = "http://k9c202.p.ssafy.io:9200/mpick/_search";
+    // const ElasticURL = "http://k9c202.p.ssafy.io:9200/mpick/_search";
 
     const data = {
       query: {
@@ -186,10 +186,11 @@ export default function Search() {
 
     try {
 
-      const res = await axios.get(ElasticURL, {
+      const res = await axios.get("/mpick/_search", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
+        data
       });
       console.log(res.data);
     } catch (err) {
@@ -222,7 +223,7 @@ export default function Search() {
   return (
     <>
       <div>
-      <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button>
+      {/* <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button> */}
       <Button onClick={searchTrade}>ES 서치 확인</Button>
       <div className="flex gap-4 mt-4 justify-center">
       <Chip
@@ -278,13 +279,14 @@ export default function Search() {
           {() => (
             <>
                 <form onSubmit={(e) => registerTrade(e)}>
+                <ModalHeader className="flex flex-col gap-1">판매글 등록</ModalHeader>
                 <ModalBody>
                   <input type="file"
                     name="image_files"
                     accept="image/*" />
                   <Input
                   variant="faded"
-                  label="글 제목" value={title} size="lg" onChange={(e) => setTitle(e.target.value)} />
+                  label="글 제목" value={title} size="md" onChange={(e) => setTitle(e.target.value)} />
                   <Input
                   variant="faded"
                   type="number"
@@ -293,7 +295,7 @@ export default function Search() {
                       <span className="text-default-400 text-small">₩</span>
                     </div>
                   }
-                  label="가격" value={price} size="lg" onChange={(e) => setPrice(e.target.value)} />
+                  label="가격" value={price} size="md" onChange={(e) => setPrice(e.target.value)} />
                   <Textarea
                   variant="faded"
                   label="글 내용"
@@ -380,11 +382,12 @@ export default function Search() {
 
 
     {/* 필터링 카테고리 모달 */}
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal isOpen={isOpen} onOpenChange={()=>{onOpenChange(); setFilter개월([]);}}>
     <ModalContent>
     {() => (
             <>
                 {/* <form onSubmit={(e) => registerTrade(e)}> */}
+                <ModalHeader className="flex flex-col gap-1">카테고리 필터링</ModalHeader>
                 <ModalBody>
                   <Select
                   label="대분류 선택"
@@ -401,7 +404,7 @@ export default function Search() {
                   >
                     {filter대분류 &&
                       categoryList[filter대분류]?.map((item :string) => (
-                        <SelectItem key={item} onClick={() => setSelectedSubCategory(item)}>{item}</SelectItem>
+                        <SelectItem key={item} onClick={() => setFilter중분류(item)}>{item}</SelectItem>
                       ))}
                   </Select>
                   <p className="font-semibold">
@@ -425,12 +428,12 @@ export default function Search() {
                   ))}
                   </div>
 
-                  <Button onClick={()=>console.log(filter개월)}>담긴 개월 조회</Button>
+                  {/* <Button onClick={()=>console.log(filter개월)}>담긴 개월 조회</Button> */}
                 
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" type="submit" 
-                onClick={onOpenChange}
+                onClick={()=>{onOpenChange(); setFilter개월([]);}}
                 >
                   적용하기
                 </Button>
@@ -441,69 +444,6 @@ export default function Search() {
         </ModalContent>
 
     </Modal>
-
-    {/* 중분류 카테고리 모달 */}
-    {/* <Modal isOpen={중분류open} onOpenChange={handleOpen중분류} >
-    <ModalContent>
-          {() => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">카테고리</ModalHeader>
-              <ModalBody>
-              <div className="flex flex-col gap-3">
-      <CheckboxGroup
-        label="중분류"
-        color="primary"
-        value={selected중분류}
-        onValueChange={setSelected중분류}
-      >
-        <Checkbox value="디럭스형">디럭스형</Checkbox>
-        <Checkbox value="절충형">절충형</Checkbox>
-        <Checkbox value="일반">일반</Checkbox>
-      </CheckboxGroup>
-      <p className="text-default-500 text-small">선택됨: {selected중분류.join(", ")}</p>
-    </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen중분류}>
-                  적용하기
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-
-    </Modal> */}
-    {/* 개월 카테고리 모달 */}
-    {/* <Modal isOpen={개월수open} onOpenChange={handleOpen개월수} >
-    <ModalContent>
-          {() => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">카테고리</ModalHeader>
-              <ModalBody>
-              <div className="flex flex-col gap-3">
-      <CheckboxGroup
-        label="개월 분류"
-        color="primary"
-        value={selected개월}
-        onValueChange={setSelected개월}
-      >
-        <Checkbox value="1~3개월">1~3개월</Checkbox>
-        <Checkbox value="4~6개월">4~6개월</Checkbox>
-        <Checkbox value="7~9개월">7~9개월</Checkbox>
-      </CheckboxGroup>
-      <p className="text-default-500 text-small">선택됨: {selected개월.join(", ")}</p>
-    </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button className="bg-[#5E9FF2] text-white" onClick={handleOpen개월수}>
-                  적용하기
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-
-    </Modal> */}
     </>
   )
 }
