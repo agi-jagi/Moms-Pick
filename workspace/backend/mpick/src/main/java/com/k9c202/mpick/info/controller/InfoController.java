@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -22,10 +19,10 @@ public class InfoController {
     private final InfoService infoService;
 
     @Operation(summary = "수유실 검색 기능", description = "수유실 검색 기능")
-    @GetMapping("/lactation")
+    @PostMapping("/lactation")
     public CommonResponse<?> searchLactation(
             Authentication authentication,
-            @Parameter LactationRoomRequest request) {
+            @RequestBody LactationRoomRequest request) {
 
 
 
