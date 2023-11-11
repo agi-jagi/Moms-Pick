@@ -62,15 +62,22 @@ public class JwtFilter extends GenericFilterBean {
             // 다음 필터 실행
             filterChain.doFilter(servletRequest, servletResponse);
         // 유효하지 않은 토큰일 때 예외처리 (http status)
+        // validateToken 함수에서 throw new ResponseStatusException((1)상태코드, (2)"메세지");로 예외 던짐 (TokenProvider.java 파일 확인하기)
         } catch (ResponseStatusException exception) {
             HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+            // (1) 넘겨준 상태코드 적용
             httpServletResponse.setStatus(exception.getStatus().value());
+
+            // (2) 넘겨준 에러 내용 적용
             // httpServletResponse.setContentType("application/json") 사용 시 한글 깨짐 현상 발생
                 // 방법1) httpServletResponse.addHeader("Content-Type","application/json; charset=UTF-8");
                 // 방법2) .setContentType("application/json") & .setCharacterEncoding("UTF-8")
-            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE); // application/json
-            httpServletResponse.setCharacterEncoding("UTF-8");
-            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(new CommonResponse<>(false, null, new ErrorResponse(exception, exception.getStatus()))));
+            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE); // application/json 형식
+            httpServletResponse.setCharacterEncoding("UTF-8"); // 인코딩
+            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
+                    CommonResponse.ERROR(exception, exception.getStatus())
+                    // new CommonResponse<>(false, null, new ErrorResponse(exception, exception.getStatus()))));
+            ));
         }
     }
 
