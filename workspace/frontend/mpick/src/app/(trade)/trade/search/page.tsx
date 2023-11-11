@@ -4,7 +4,8 @@ import { useTradeStore } from "@/store/TradeStore";
 import { useEffect, useState } from "react";
 import { Chip, Card, CardFooter, Image, CardBody, Button,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
-  CheckboxGroup, Checkbox, Select, SelectItem } from "@nextui-org/react";
+  CheckboxGroup, Checkbox, Select, SelectItem,
+  CardHeader, Input, Textarea } from "@nextui-org/react";
 // import { Input, Textarea, CardHeader, Typography, Dialog } from "@material-tailwind/react";
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
@@ -94,6 +95,16 @@ export default function Search() {
       img: "/nezko.jfif",
       price: "₩ 53,000",
     },
+    {
+      title: "이유용품",
+      img: "/nezko.jfif",
+      price: "₩ 100,000",
+    },
+    {
+      title: "기저귀",
+      img: "/nezko.jfif",
+      price: "₩ 53,000",
+    },
   ];
 
   //  판매글 등록 요청 함수
@@ -160,7 +171,6 @@ export default function Search() {
     <>
       <div>
       <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button>
-      <Image src="https://mpick-img-storage.s3.ap-northeast-2.amazonaws.com/static/3088fd38-eb9a-4bd4-85f8-243086e4ae15"></Image>
       <div className="flex gap-4 mt-4 justify-center">
       <Chip
         startContent={<FilterIcon />}
@@ -213,29 +223,29 @@ export default function Search() {
     <ModalContent>
           {() => (
             <>
-              
                 <form onSubmit={(e) => registerTrade(e)}>
                 <ModalBody>
-                  {/* <CardHeader
-                      variant="gradient"
-                      color="blue"
-                      className="grid mb-4 h-28 place-items-center"
-                    >
-                      <Typography variant="h3" color="white">
-                        판매글 등록
-                      </Typography>
-                    </CardHeader> */}
                   <input type="file"
                     name="image_files"
                     accept="image/*" />
-                  {/* <Input 
-                  crossOrigin={true}
+                  <Input
+                  variant="faded"
                   label="글 제목" value={title} size="lg" onChange={(e) => setTitle(e.target.value)} />
-                  <Input 
-                  crossOrigin={true}
+                  <Input
+                  variant="faded"
+                  type="number"
+                  startContent={
+                    <div className="pointer-events-none flex items-center">
+                      <span className="text-default-400 text-small">₩</span>
+                    </div>
+                  }
                   label="가격" value={price} size="lg" onChange={(e) => setPrice(e.target.value)} />
                   <Textarea
-                  label="글 내용" value={tradeExplain} onChange={(e) => setTradeExplain(e.target.value)} /> */}
+                  variant="faded"
+                  label="글 내용"
+                  placeholder="글 내용을 입력해주세요."
+                  value={tradeExplain} 
+                  onChange={(e) => setTradeExplain(e.target.value)} />
                   <Select
                   label="대분류 선택" 
                   >
@@ -252,9 +262,9 @@ export default function Search() {
                         <SelectItem key={item} onClick={() => setSelectedSubCategory(item)}>{item}</SelectItem>
                       ))}
                   </Select>
-                  {/* <Typography className="font-semibold">
+                  <p className="font-semibold">
                     개월 선택 (임산부 이외 중복 가능)
-                  </Typography> */}
+                  </p>
                   <div className="flex flex-wrap gap-3">
                     
                   {babyMonthList.map((month, index) => (
@@ -263,10 +273,6 @@ export default function Search() {
                       value={month}
                       checked={selectedMonthList.includes(index)}
                       onChange={() => handleMonthSelect(index + 1)}
-                      // isDisabled={
-                      //   (selectedMonthList.includes(1) && index !== 0) || // "임산부" 선택 시 다른 개월 비활성화
-                      //   (index === 0 && selectedMonthList.length > 0) // 다른 개월 선택 시 "임산부" 비활성화
-                      // }
                       isDisabled={
                         (index !== 0 && selectedMonthList.includes(1)) ||
                         (index === 0 && selectedMonthList.some((item) => item !== 1)) // "임산부"가 아닌 다른 개월 선택 시 "임산부" 비활성화
@@ -277,7 +283,7 @@ export default function Search() {
                   ))}
                   </div>
 
-                  <Button onClick={()=>console.log(selectedMonthList)}>담긴 개월 조회</Button>
+                  {/* <Button onClick={()=>console.log(selectedMonthList)}>담긴 개월 조회</Button> */}
                 
               </ModalBody>
               <ModalFooter>
