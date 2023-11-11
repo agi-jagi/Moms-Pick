@@ -4,18 +4,6 @@ import GoBack from '@/app/(auth)/auth/GoBack';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
-// import {
-//   Card,
-//   CardHeader,
-//   CardBody,
-//   CardFooter,
-//   Typography,
-//   Button,
-//   Tooltip,
-//   IconButton,
-//   Avatar,
-// } from "@material-tailwind/react";
-
 import { Card, CardHeader, CardBody, Image, Avatar, Button } from "@nextui-org/react";
 
 import { PiWechatLogoBold } from "react-icons/pi";
