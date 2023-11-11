@@ -24,7 +24,6 @@ import javax.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserService userService;
     private final AuthService authService;
 
     // 회원가입
