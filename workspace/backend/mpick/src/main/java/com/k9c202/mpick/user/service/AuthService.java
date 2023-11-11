@@ -67,7 +67,6 @@ public class AuthService {
     public void checkDuplicatedNickname(String nickname) {
         boolean isExistNickname = userQueryRepository.existNickname(nickname);
         if (isExistNickname) {
-            // TODO: 2023-11-10 ResponseStatusException
             throw new ResponseStatusException(HttpStatus.CONFLICT, "닉네임 중복");
 //            throw new IllegalArgumentException("닉네임 중복");
         }
@@ -97,7 +96,7 @@ public class AuthService {
         // SecurityContext에 인증 여부(authentication) 저장
         try {
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-            // 인증여부(authentication)를 context에 저장
+            // 인증 여부(authentication)를 context에 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return tokenProvider.createToken(authentication);
         } catch (AuthenticationException exception) {
