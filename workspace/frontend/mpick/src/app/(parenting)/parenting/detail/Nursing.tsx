@@ -5,6 +5,7 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import Image from "next/image";
 import marker from "../../../../../public/marker.png";
 import search from "../../../../../public/search.png";
+import instance from "@/app/_config/axios";
 
 declare global {
   interface Window {
@@ -97,6 +98,8 @@ export default function Nursing() {
     window.kakao.maps.load(() => {
       navigator.geolocation.getCurrentPosition((position) => {
         const mapContainer = document.getElementById("map");
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
         const coord = new window.kakao.maps.LatLng(
           position.coords.latitude,
           position.coords.longitude
@@ -150,6 +153,23 @@ export default function Nursing() {
     }
   }, []);
 
+  console.log("위도", latitude);
+  console.log("경도", longitude);
+
+  const nursingRoom = async () => {
+    const data = {
+      latitude: latitude,
+      longitude: longitude,
+    };
+
+    try {
+      const response = await instance.get("/api/info/lactation", { data });
+      console.log("수유실 조회 성공", response.data);
+    } catch (error) {
+      console.log("수유실 조회 실패", error);
+    }
+  };
+
   return (
     <div>
       <div style={{ padding: "0 10px" }}>
@@ -163,6 +183,7 @@ export default function Nursing() {
           </button>
           <p className="font-bold text-base ml-3">지번주소 : {address}</p>
         </div>
+        <button onClick={nursingRoom}>수유실</button>
       </div>
     </div>
   );
