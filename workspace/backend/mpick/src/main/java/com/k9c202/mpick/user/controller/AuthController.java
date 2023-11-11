@@ -7,6 +7,7 @@ import com.k9c202.mpick.user.controller.request.CheckNicknameRequest;
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
+import com.k9c202.mpick.user.service.AuthService;
 import com.k9c202.mpick.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
+    private final AuthService authService;
 
     // 회원가입
     @PostMapping("/signup")
@@ -36,7 +38,7 @@ public class AuthController {
 
         // JoinUserRequest 에서 정의한 toUserDto (id, password, nickname, email)
         // 반환한 UserDto를 signup에 넣음
-        JoinUserResponse response = userService.signup(request.toUserDto());
+        JoinUserResponse response = authService.signup(request.toUserDto());
         log.debug("JoinUserResponse={}", response);
 
         // 200일 경우, return ResponseEntity.status(200).body(null);과 동일
@@ -51,7 +53,7 @@ public class AuthController {
 //        userService.login(loginDto);
 //        return ResponseEntity.ok(null);
         // login 요청시 jwt 토큰을 반환하도록 변경
-        return CommonResponse.OK(userService.login(loginDto));
+        return CommonResponse.OK(authService.login(loginDto));
     }
 
     // 민감한 정보 체크는 GET이 아닌 POST 요청
@@ -59,7 +61,7 @@ public class AuthController {
     @PostMapping("/checks/id")
 //    public CommonResponse<?> idCheck(@RequestParam String loginId){
     public CommonResponse<?> idCheck(@RequestBody CheckLoginIdRequest checkLoginIdRequest){
-        userService.checkDuplicatedLoginId(checkLoginIdRequest.getLoginId());
+        authService.checkDuplicatedLoginId(checkLoginIdRequest.getLoginId());
         return CommonResponse.OK(null);
     }
 
@@ -67,7 +69,7 @@ public class AuthController {
     @PostMapping("/checks/nickname")
 //    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
     public CommonResponse<?> nicknameCheck(@RequestBody CheckNicknameRequest checkNicknameRequest){
-        userService.checkDuplicatedNickname(checkNicknameRequest.getNickname());
+        authService.checkDuplicatedNickname(checkNicknameRequest.getNickname());
         return CommonResponse.OK(null);
     }
 
@@ -75,7 +77,7 @@ public class AuthController {
     @PostMapping("/checks/email")
 //    public CommonResponse<?> emailCheck(@RequestParam String email){
     public CommonResponse<?> emailCheck(@RequestBody CheckEmailRequest checkEmailRequest){
-        userService.checkDuplicatedEmail(checkEmailRequest.getEmail());
+        authService.checkDuplicatedEmail(checkEmailRequest.getEmail());
         return CommonResponse.OK(null);
     }
 
