@@ -84,7 +84,7 @@ public class AuthService {
     // 로그인
     public String login(LoginDto loginDto) {
         if(!userQueryRepository.existLoginId(loginDto.getLoginId())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "해당 아이디가 존재하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "해당 아이디가 존재하지 않습니다.");
         }
 
         // 인증에 필요한 정보 authenticationToken에 저장
@@ -100,7 +100,7 @@ public class AuthService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return tokenProvider.createToken(authentication);
         } catch (AuthenticationException exception) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "비밀번호가 일치하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
     }
 }

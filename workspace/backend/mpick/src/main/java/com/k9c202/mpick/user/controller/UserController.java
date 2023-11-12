@@ -77,7 +77,6 @@ public class UserController {
         return CommonResponse.OK("회원탈퇴 성공");
     }
 
-    // TODO(지현): 2023-11-05 정보 수정 각각 나누기 (이메일, 닉네임, 소개글)
  //    // 회원 정보 수정
 //    @PatchMapping
 //    public CommonResponse<UserInfoResponse> updateUserInfo(
@@ -116,7 +115,6 @@ public class UserController {
         return CommonResponse.OK(null);
     }
 
-    // TODO: 2023-11-09 이메일, 닉네임, 소개글, 프로필 이미지 변경 컨트롤러
     // 이메일 변경
     @PutMapping("/change-email")
     public CommonResponse<?> changeEmail(@RequestBody UpdateEmailRequest updateEmailRequest) {
