@@ -95,6 +95,13 @@ export default function ChangePw(props:any) {
       });
       return
     }
+    if (userPwCheck) {
+      Toast.fire({
+        icon: "error",
+        title: "비밀번호가 일치하지 않습니다",
+      });
+      return
+    }
 
     instance.put('/api/users/change-password', {
       password:prevUserPw,
