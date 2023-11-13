@@ -6,13 +6,11 @@ import { Chip, Card, CardFooter, Image, CardBody, Button,
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
   CheckboxGroup, Checkbox, Select, SelectItem,
   CardHeader, Input, Textarea } from "@nextui-org/react";
-// import { Input, Textarea, CardHeader, Typography, Dialog } from "@material-tailwind/react";
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import axios from "axios";
-import { on } from "events";
 
 
 export default function Search() {
@@ -84,40 +82,6 @@ export default function Search() {
       setFilter개월((prevList) => [...prevList, index]);
     }
   }
-  
-
-  const list = [
-    {
-      title: "목욕용품",
-      img: "/nezko.jfif",
-      price: "₩ 20,000",
-    },
-    {
-      title: "수유용품",
-      img: "/nezko.jfif",
-      price: "₩ 300,000",
-    },
-    {
-      title: "이유용품",
-      img: "/nezko.jfif",
-      price: "₩ 100,000",
-    },
-    {
-      title: "기저귀",
-      img: "/nezko.jfif",
-      price: "₩ 53,000",
-    },
-    {
-      title: "이유용품",
-      img: "/nezko.jfif",
-      price: "₩ 100,000",
-    },
-    {
-      title: "기저귀",
-      img: "/nezko.jfif",
-      price: "₩ 53,000",
-    },
-  ];
 
   //  판매글 등록 요청 함수
   async function registerTrade(e: any) {
