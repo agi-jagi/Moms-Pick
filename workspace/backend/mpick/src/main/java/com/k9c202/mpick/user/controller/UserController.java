@@ -24,8 +24,8 @@ import java.io.IOException;
 @Slf4j
 @RequestMapping("/api/users")
 public class UserController {
-    // TODO(지현): 2023-11-05 url 동사 사용X, POST -> PATCH
-    // TODO(지현): 2023-11-07 테스트코드 작성
+    // TODO: 2023-11-07 테스트코드
+    // TODO: 2023-11-11 관리자 페이지
 
     // 로그인 아이디는 자주 활용되기 때문에 jwt/SecurityUtils에서 getCurrentLoginId() 정의하여 사용 -> SecurityUtils.getCurrentLoginId();
     // 여러 방법 가능
@@ -77,7 +77,6 @@ public class UserController {
         return CommonResponse.OK("회원탈퇴 성공");
     }
 
-    // TODO(지현): 2023-11-05 정보 수정 각각 나누기 (이메일, 닉네임, 소개글)
  //    // 회원 정보 수정
 //    @PatchMapping
 //    public CommonResponse<UserInfoResponse> updateUserInfo(
@@ -116,7 +115,6 @@ public class UserController {
         return CommonResponse.OK(null);
     }
 
-    // TODO: 2023-11-09 이메일, 닉네임, 소개글, 프로필 이미지 변경 컨트롤러
     // 이메일 변경
     @PutMapping("/change-email")
     public CommonResponse<?> changeEmail(@RequestBody UpdateEmailRequest updateEmailRequest) {
