@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState, useEffect, useMemo } from "react";
 import GoBack from "../../auth/GoBack";
@@ -10,7 +10,7 @@ import instance from "@/app/_config/axios";
 import Swal from "sweetalert2";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import ChangePw from './changepw'
+import ChangePw from "./changepw";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,10 +29,7 @@ export default function EditMyInfo() {
   const [userNickName, setUserNickName] = useState<string>("");
   const [userAddress, setUserAddress] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
-  const [prevUserPw, setPrevUserPw] = useState<string>("");
-  const [userPw, setUserPw] = useState<string>("");
-  const [userPwCheck, setUserPwCheck] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
 
   const Toast = Swal.mixin({
@@ -55,40 +52,84 @@ export default function EditMyInfo() {
   }, [userEmail]);
 
   const changeInfo = () => {
-    if (userNickName != '') {
-      instance.put('/api/users/change-nickname', {nickname:userNickName})
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-        Toast.fire({
-          icon: "error",
-          title: "닉네임 변경 실패",
+    if (userNickName != "") {
+      instance
+        .put("/api/users/change-nickname", { nickname: userNickName })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+          Toast.fire({
+            icon: "error",
+            title: "닉네임 변경 실패",
+          });
+          return;
         });
-        return;
-      })
     }
-    // if (userEmail != '') {
-    //   instance.put('/api/users/change-email', {email:'userNickName'})
-    //   .then((res) => {
-    //     console.log(res)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //     Toast.fire({
-    //       icon: "error",
-    //       title: "닉네임 변경 실패",
-    //     });
-    //     return;
-    //   })
-    // }
-    Toast.fire({
-      icon: "success",
-      title: "변경이 완료되었습니다",
-    });
-    router.push('/mypage')
-  }
+    let count = 0;
+    if (userEmail != "") {
+      count++;
+      instance
+        .post("/api/auth/emails/code-request", { email: userEmail })
+        .then((res) => {
+          console.log(res);
+          Swal.fire({
+            title: "이메일 인증코드를 입력하세요",
+            input: "text",
+            inputAttributes: {
+              autocapitalize: "off",
+            },
+            showCancelButton: true,
+            confirmButtonText: "확인",
+            cancelButtonText: "취소",
+            showLoaderOnConfirm: true,
+            preConfirm: async (code) => {
+              try {
+                instance
+                  .put("/api/users/change-email", { email: userEmail, authCode: code })
+                  .then((res) => {
+                    console.log(res);
+                    Toast.fire({
+                      icon: "success",
+                      title: "변경이 완료되었습니다",
+                    });
+                    router.push("/mypage");
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    Toast.fire({
+                      icon: "error",
+                      title: "이메일 변경 실패",
+                    });
+                    return;
+                  });
+              } catch (error) {
+                Swal.showValidationMessage(`
+                Request failed: ${error}
+              `);
+              }
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          Toast.fire({
+            icon: "error",
+            title: "이메일 전송 실패",
+          });
+          return;
+        });
+    }
+    if (count === 0) {
+      Toast.fire({
+        icon: "success",
+        title: "변경이 완료되었습니다",
+      });
+      router.push("/mypage");
+    }
+  };
 
   useEffect(() => {
     instance
@@ -129,8 +170,8 @@ export default function EditMyInfo() {
       >
         <div
           style={{
-            display:'flex',
-            justifyContent: 'space-between',
+            display: "flex",
+            justifyContent: "space-between",
             padding: "20px 20px 0 30px",
           }}
         >
@@ -140,7 +181,7 @@ export default function EditMyInfo() {
           </div>
           <Button
             onClick={() => {
-              changeInfo()
+              changeInfo();
             }}
             color="primary"
           >
@@ -150,102 +191,101 @@ export default function EditMyInfo() {
         <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
       </div>
       <hr style={{ borderTopWidth: "2px" }} />
-      <div style={{ height: '100vh', padding: "20px 0", backgroundColor: "rgb(247, 247, 247)" }}>
-      <div
-      style={{
-        margin: "10px 20px 20px 20px",
-        padding: "20px",
-        borderRadius: "15px",
-        backgroundColor: "white",
-      }}
-    >
-      <div className="flex justify-between">
-        <div className="flex justify-between">
-          <Image src={profile} alt="profile" width={70} style={{ borderRadius: "100%" }} />
-          <div className="flex items-center ml-8">
-              <Input
-                label="닉네임 변경"
-                labelPlacement='outside'
-                variant="bordered"
-                className="w-full"
-                onValueChange={setUserNickName}
-                placeholder={prevNickName}
-              />
-          </div>
-        </div>
-        
-      </div>
-      <div>
-          <div>
-            <div
-              style={{
-                borderTop: "1px solid",
-                marginTop: "20px",
-                paddingTop: "20px",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <p className="font-bold text-lg mr-1">위치 설정</p>
-                <p className="text-base mr-1">기본 위치 : {userAddress}</p>
+      <div style={{ height: "100vh", padding: "20px 0", backgroundColor: "rgb(247, 247, 247)" }}>
+        <div
+          style={{
+            margin: "10px 20px 20px 20px",
+            padding: "20px",
+            borderRadius: "15px",
+            backgroundColor: "white",
+          }}
+        >
+          <div className="flex justify-between">
+            <div className="flex justify-between">
+              <Image src={profile} alt="profile" width={70} style={{ borderRadius: "100%" }} />
+              <div className="flex items-center ml-8">
+                <Input
+                  label="닉네임 변경"
+                  labelPlacement="outside"
+                  variant="bordered"
+                  className="w-full"
+                  onValueChange={setUserNickName}
+                  placeholder={prevNickName}
+                />
               </div>
-              <div style={{ display: "flex", alignItems: "bottom" }}>
+            </div>
+          </div>
+          <div>
+            <div>
+              <div
+                style={{
+                  borderTop: "1px solid",
+                  marginTop: "20px",
+                  paddingTop: "20px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  <p className="font-bold text-lg mr-1">위치 설정</p>
+                  <p className="text-base mr-1">기본 위치 : {userAddress}</p>
+                </div>
+                <div style={{ display: "flex", alignItems: "bottom" }}>
+                  <Button
+                    onClick={() => {
+                      router.push("/mypage/changeloc");
+                    }}
+                    color="primary"
+                  >
+                    <p className="text-base">위치변경</p>
+                  </Button>
+                </div>
+              </div>
+              <div
+                style={{
+                  borderTop: "1px solid",
+                  marginTop: "20px",
+                  paddingTop: "20px",
+                }}
+              >
+                <Input
+                  type="email"
+                  label="이메일 변경"
+                  labelPlacement="outside"
+                  variant="bordered"
+                  className="w-full"
+                  isInvalid={isEmailInvalid}
+                  color={isEmailInvalid ? "danger" : "default"}
+                  errorMessage={isEmailInvalid && "유효한 이메일이 아닙니다"}
+                  onValueChange={setUserEmail}
+                  placeholder={prevEmail}
+                />
+              </div>
+              <div
+                style={{
+                  borderTop: "1px solid",
+                  marginTop: "20px",
+                  paddingTop: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
                 <Button
                   onClick={() => {
-                    router.push("/mypage/changeloc");
+                    setOpen(true);
                   }}
                   color="primary"
                 >
-                  <p className="text-base">위치변경</p>
+                  <p className="text-base">비밀번호 변경</p>
                 </Button>
               </div>
             </div>
-            <div
-              style={{
-                borderTop: "1px solid",
-                marginTop: "20px",
-                paddingTop: "20px",
-              }}
-            >
-              <Input
-                type='email'
-                label="이메일 변경"
-                labelPlacement='outside'
-                variant="bordered"
-                className="w-full"
-                isInvalid={isEmailInvalid}
-                color={isEmailInvalid ? "danger" : "default"}
-                errorMessage={isEmailInvalid && "유효한 이메일이 아닙니다"}
-                onValueChange={setUserEmail}
-                placeholder={prevEmail}
-              />
-            </div>
-            <div
-              style={{
-                borderTop: "1px solid",
-                marginTop: "20px",
-                paddingTop: "20px",
-                display:'flex',
-                justifyContent:'center'
-              }}
-            >
-              <Button
-                onClick={() => {
-                  setOpen(true)
-                }}
-                color="primary"
-              >
-                <p className="text-base">비밀번호 변경</p>
-              </Button>
-            </div>
           </div>
-      </div>
-      </div>
+        </div>
       </div>
       <Modal open={open} className="z-0">
         <Box sx={style}>
-          <ChangePw setOpen={setOpen}/>
+          <ChangePw setOpen={setOpen} />
         </Box>
       </Modal>
     </div>
