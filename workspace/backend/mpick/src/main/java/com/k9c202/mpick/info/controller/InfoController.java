@@ -1,10 +1,10 @@
 package com.k9c202.mpick.info.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
-import com.k9c202.mpick.info.controller.request.LactationRoomRequest;
+import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
+import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
 import com.k9c202.mpick.info.service.InfoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -22,10 +22,19 @@ public class InfoController {
     @PostMapping("/lactation")
     public CommonResponse<?> searchLactation(
             Authentication authentication,
-            @RequestBody LactationRoomRequest request) {
+            @RequestBody LactationRoomInfoRequest request) {
 
 
 
         return CommonResponse.OK(infoService.lactationList(request));
+    }
+
+    @Operation(summary = "유치원 검색 기능", description = "유치원 검색 기능")
+    @PostMapping("/kinder")
+    public CommonResponse<?> searchKinder(
+            Authentication authentication,
+            @RequestBody KindergartenInfoRequest request) {
+
+        return CommonResponse.OK(infoService.kinderList(request));
     }
 }

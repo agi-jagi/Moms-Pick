@@ -11,17 +11,19 @@ import java.math.BigDecimal;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LactationRoomResponse {
+public class KindergartenInfoResponse {
 
     private Long id;
 
-    private String facilityName;
-
     private String address;
-
-    private String buildingName;
 
     private BigDecimal latitude;
 
     private BigDecimal longitude;
+
+    private String establish;
+
+    private String kinderName;
+
+    private String hpAddress;
 }
