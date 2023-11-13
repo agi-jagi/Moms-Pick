@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,8 @@ public class AuthService {
     public void checkDuplicatedLoginId(String loginId) {
         boolean isExistLoginId = userQueryRepository.existLoginId(loginId);
         if (isExistLoginId) {
-            throw new IllegalArgumentException("로그인 아이디 중복");
+//            throw new IllegalArgumentException("로그인 아이디 중복");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "로그인 아이디 중복");
         }
     }
 
@@ -65,7 +67,6 @@ public class AuthService {
     public void checkDuplicatedNickname(String nickname) {
         boolean isExistNickname = userQueryRepository.existNickname(nickname);
         if (isExistNickname) {
-            // TODO: 2023-11-10 ResponseStatusException
             throw new ResponseStatusException(HttpStatus.CONFLICT, "닉네임 중복");
 //            throw new IllegalArgumentException("닉네임 중복");
         }
@@ -75,12 +76,17 @@ public class AuthService {
     public void checkDuplicatedEmail(String email) {
         boolean isExistEmail = userQueryRepository.existEmail(email);
         if (isExistEmail) {
-            throw new IllegalArgumentException("이메일 중복");
+//            throw new IllegalArgumentException("이메일 중복");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이메일 중복");
         }
     }
 
     // 로그인
     public String login(LoginDto loginDto) {
+        if(!userQueryRepository.existLoginId(loginDto.getLoginId())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "해당 아이디가 존재하지 않습니다.");
+        }
+
         // 인증에 필요한 정보 authenticationToken에 저장
         UsernamePasswordAuthenticationToken authenticationToken =
                 // 입력받은 id, password 정보 사용
@@ -88,10 +94,13 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
 
         // SecurityContext에 인증 여부(authentication) 저장
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        // 인증여부(authentication)를 context에 저장
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return tokenProvider.createToken(authentication);
+        try {
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            // 인증 여부(authentication)를 context에 저장
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return tokenProvider.createToken(authentication);
+        } catch (AuthenticationException exception) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+        }
     }
 }
