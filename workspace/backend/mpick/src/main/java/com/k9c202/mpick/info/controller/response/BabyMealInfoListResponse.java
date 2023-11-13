@@ -1,9 +1,12 @@
 package com.k9c202.mpick.info.controller.response;
 
+import com.k9c202.mpick.info.controller.component.BabyMealInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Data
 @SuperBuilder
@@ -11,7 +14,13 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class BabyMealInfoListResponse {
 
-    private Long id;
+    private Long maxPage;
 
-    private String mealName;
+    private Long maxCount;
+
+    private List<BabyMealInfoDto> babyMealInfoDtoList;
+
+    public void setBabyMealInfoDtoList(List<BabyMealInfoDto> babyMealInfoDtoList) {
+        this.babyMealInfoDtoList = babyMealInfoDtoList;
+    }
 }

@@ -57,7 +57,7 @@ public class InfoController {
 
     @Operation(summary = "유아 음식 이름 리스트 조회", description = "유아 음식 이름 리스트 조회")
     @PostMapping("/babymeal")
-    public CommonResponse<List<BabyMealInfoListResponse>> searchBabyMealList(
+    public CommonResponse<BabyMealInfoListResponse> searchBabyMealList(
             Authentication authentication,
             @RequestBody BabyMealInfoRequest request) {
 
