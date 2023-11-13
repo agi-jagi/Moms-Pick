@@ -9,6 +9,7 @@ import { Card, CardHeader, CardBody, Image, Avatar, Button } from "@nextui-org/r
 import { PiWechatLogoBold } from "react-icons/pi";
 import { RiHeartsFill } from "react-icons/ri"; 
 import { FaRegEye } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Detail(props: any) {
 
@@ -128,10 +129,12 @@ export default function Detail(props: any) {
           </span>
       </CardHeader>
       <Button className="bg-[#5E9FF2] text-white text-md flex items-center" size="lg" fullWidth={true}>
+        <Link href={"/chat/start/" + tradeId}>
           <div className="flex items-center justify-center w-full">
             <PiWechatLogoBold size="24" className="mr-2" />
             채팅하기
           </div>
+          </Link>
         </Button>
     </Card>
         {/* <IconButton
