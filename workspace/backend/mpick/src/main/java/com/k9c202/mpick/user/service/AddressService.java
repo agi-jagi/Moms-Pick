@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -46,9 +47,7 @@ public class AddressService {
         // TODO: 2023-11-13 getUserEntity 함수 따로 정의
         //      User user = userRepository.findOneByLoginId(loginId)
         //                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        // TODO: 2023-11-13 createAddree로 따로 함수 정의하기
-        User user = userRepository.findOneByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        /* createAddress로 따로 함수 정의
         Address address = Address.builder()
                 .latitude((addressDto.getLatitude()))
                 .longitude(addressDto.getLongitude())
@@ -57,9 +56,15 @@ public class AddressService {
                 .isSet(addressDto.getIsSet())
                 .user(user)
                 .build();
+         */
+        User user = userRepository.findOneByLoginId(loginId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Address address = createAddress(addressDto, user);
+        // TODO: 2023-11-13 save -> edit로 수정
         Address savedAddress = addressRepository.save(address);
         return AddressResponse.of(savedAddress);
     }
+
 
     // 주소 삭제
     public void deleteAddress(Long addressId) {
@@ -72,12 +77,20 @@ public class AddressService {
 
     // 주소 수정
     public AddressResponse updateAddress(Long addressId, AddressDto addressDto) {
-        // TODO: 2023-11-13 Address oldAddress = getMyAddressEntity(addressId);
+        /* getMyAddressEntity 함수 따로 정의하기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
         Address oldAddress = addressRepository.findByIdAndUserLoginId(addressId, loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User address not found"));
-        // TODO: 2023-11-13 따로 정의한 createAddress 함수 사용하기
+         */
+        Address oldAddress = getMyAddressEntity(addressId);
+
+        // addressRepository.save(address) 대신 edit 함수 사용하기 (Address 엔티티 파일에 따로 정의)
+        // Address savedAddress = addressRepository.save(address);
+        Address editedAddress = oldAddress.editAddress(addressDto.getLatitude(), addressDto.getLongitude(), addressDto.getAddressName(), addressDto.getAddressString(), addressDto.getIsSet());
+
+
+        /*
         Address address = Address.builder()
                 .id(oldAddress.getId())
                 .latitude((addressDto.getLatitude()))
@@ -86,10 +99,42 @@ public class AddressService {
                 .addressString(addressDto.getAddressString())
                 .isSet(addressDto.getIsSet())
                 .user(oldAddress.getUser())
-                .build();
-        // TODO: 2023-11-13 addressRepository.save(address) 대신 edit 함수 사용하기 (Address 엔티티 파일에 따로 정의)
-        Address savedAddress = addressRepository.save(address);
-        return AddressResponse.of(savedAddress);
+                .build(); */
+
+//        return AddressResponse.of(savedAddress);
+        return AddressResponse.of(editedAddress);
     }
+
+
+
+
+
+    private static Address createAddress(AddressDto addressDto, User user) {
+        return Address.builder()
+                .latitude((addressDto.getLatitude()))
+                .longitude(addressDto.getLongitude())
+                .addressName(addressDto.getAddressName())
+                .addressString(addressDto.getAddressString())
+                .isSet(addressDto.getIsSet())
+                .user(user)
+                .build();
+    }
+
+    private Address getMyAddressEntity(Long addressId) {
+        String loginId = getLoginId();
+
+        Optional<Address> findAddress = addressRepository.findByIdAndUserLoginId(addressId, loginId);
+        if (findAddress.isEmpty()) {
+            throw new UsernameNotFoundException("User address not found");
+        }
+        return findAddress.get();
+    }
+
+    private String getLoginId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+
 }
 

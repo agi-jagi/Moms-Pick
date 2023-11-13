@@ -45,4 +45,14 @@ public class Address {
         this.addressString = addressString;
         this.isSet = isSet;
     }
+
+    public Address editAddress(BigDecimal latitude, BigDecimal longitude, String addressName, String addressString, Boolean isSet) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.addressName = addressName;
+        this.addressString = addressString;
+        this.isSet = isSet;
+        return this;
+    }
+
 }

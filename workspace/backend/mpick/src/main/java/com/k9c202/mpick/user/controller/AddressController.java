@@ -37,27 +37,27 @@ public class AddressController {
         return CommonResponse.OK(addressService.addressList());
     }
 
-    // TODO: 2023-11-13 물음표는 사용하지 말 것 -> 컴파일 시점에 오류를 잡을 수 없음
-    // TODO: 2023-11-13 PathVariable은 자세히 작성 -> "/{addressId}"
     // 내 위치 추가
     @PostMapping
     public CommonResponse<AddressResponse> addAddress(@RequestBody AddAddressRequest addressRequest){
         return CommonResponse.OK(addressService.addAddress(addressRequest.toAddressDto()));
     }
 
+    // TODO: 2023-11-13 물음표는 사용하지 말 것 -> 컴파일 시점에 오류를 잡을 수 없음
+    // PathVariable은 자세히 작성 : "/{id}" -> "/{addressId}"
     // 내 위치 삭제
-    @DeleteMapping("/{id}")
-    public CommonResponse<?> deleteAddress(@PathVariable("id") Long addressId) {
+    @DeleteMapping("/{addressId}")
+    public CommonResponse<?> deleteAddress(@PathVariable("addressId") Long addressId) {
         addressService.deleteAddress(addressId);
         return CommonResponse.OK(null);
     }
 
     // 내 위치 수정
-    @PatchMapping("/{id}")
+    @PatchMapping("/{addressId}")
     public CommonResponse<AddressResponse> updateAddress(
-            @PathVariable("id") Long addressId,
-            @RequestBody UpdateAddressRequest addressRequest){
-        return CommonResponse.OK(addressService.updateAddress(addressId,addressRequest.toAddressDto()));
+            @PathVariable("addressId") Long addressId,
+            @RequestBody UpdateAddressRequest updateAddressRequest){
+        return CommonResponse.OK(addressService.updateAddress(addressId, updateAddressRequest.toAddressDto()));
     }
 
 
