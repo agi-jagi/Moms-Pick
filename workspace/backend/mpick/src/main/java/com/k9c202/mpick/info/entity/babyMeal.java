@@ -59,7 +59,7 @@ public class babyMeal {
     @Column(precision = 5, scale = 1)
     private BigDecimal potassium;
 
-    @Column(precision = 5, scale = 1)
+    @Column(precision = 5, scale = 1, name = "vitamin_a")
     private BigDecimal vitaminA;
 
     @Column(precision = 5, scale = 1)
@@ -71,10 +71,10 @@ public class babyMeal {
     @Column(precision = 5, scale = 1)
     private BigDecimal niacin;
 
-    @Column(precision = 5, scale = 1)
+    @Column(precision = 5, scale = 1, name = "vitamin_c")
     private BigDecimal vitaminC;
 
     @Column
     @Enumerated(value = EnumType.STRING)
-    private subMealCategory subMealCategory;
+    private SubMealCategory subMealCategory;
 }

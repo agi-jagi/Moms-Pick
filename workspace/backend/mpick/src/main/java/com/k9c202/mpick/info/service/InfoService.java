@@ -1,11 +1,14 @@
 package com.k9c202.mpick.info.service;
 
+import com.k9c202.mpick.info.controller.request.BabyMealInfoRequest;
 import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
 import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
+import com.k9c202.mpick.info.controller.response.BabyMealInfoListResponse;
 import com.k9c202.mpick.info.controller.response.DayCareCenterInfoResponse;
 import com.k9c202.mpick.info.controller.response.KindergartenInfoResponse;
 import com.k9c202.mpick.info.controller.response.LactationRoomInfoResponse;
+import com.k9c202.mpick.info.repository.BabyMealQueryRepository;
 import com.k9c202.mpick.info.repository.DayCareCenterQueryRepository;
 import com.k9c202.mpick.info.repository.KindergartenQueryRepository;
 import com.k9c202.mpick.info.repository.LactationRoomQueryRepository;
@@ -28,6 +31,8 @@ public class InfoService {
 
     private final DayCareCenterQueryRepository dayCareCenterQueryRepository;
 
+    private final BabyMealQueryRepository babyMealQueryRepository;
+
     public List<LactationRoomInfoResponse> lactationList(LactationRoomInfoRequest request) {
         return lactationRoomQueryRepository.findLactationByLocation(request.getLatitude(), request.getLongitude());
     }
@@ -40,5 +45,10 @@ public class InfoService {
     public List<DayCareCenterInfoResponse> dayCareList(DayCareCenterInfoRequest request) {
 
         return dayCareCenterQueryRepository.findDayCareCenterByLocation(request.getLatitude(), request.getLongitude());
+    }
+
+    public List<BabyMealInfoListResponse> babyMealList(BabyMealInfoRequest request) {
+
+        return babyMealQueryRepository.findBabyMealBySubCategory(request.getSubMealCategory(), request.getPage());
     }
 }

@@ -1,9 +1,11 @@
 package com.k9c202.mpick.info.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
+import com.k9c202.mpick.info.controller.request.BabyMealInfoRequest;
 import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
 import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
+import com.k9c202.mpick.info.controller.response.BabyMealInfoListResponse;
 import com.k9c202.mpick.info.controller.response.DayCareCenterInfoResponse;
 import com.k9c202.mpick.info.controller.response.KindergartenInfoResponse;
 import com.k9c202.mpick.info.controller.response.LactationRoomInfoResponse;
@@ -51,5 +53,14 @@ public class InfoController {
             @RequestBody DayCareCenterInfoRequest request) {
 
         return CommonResponse.OK(infoService.dayCareList(request));
+    }
+
+    @Operation(summary = "유아 음식 이름 리스트 조회", description = "유아 음식 이름 리스트 조회")
+    @PostMapping("/babymeal")
+    public CommonResponse<List<BabyMealInfoListResponse>> searchBabyMealList(
+            Authentication authentication,
+            @RequestBody BabyMealInfoRequest request) {
+
+        return CommonResponse.OK(infoService.babyMealList(request));
     }
 }
