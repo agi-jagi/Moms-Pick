@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import GoBack from "../../auth/GoBack";
 import Image from "next/image";
 import profile from "../../../../../public/profile.png";
+import imageicon from "../../../../../public/image-icon.png";
 import { Button, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import instance from "@/app/_config/axios";
@@ -29,8 +30,11 @@ export default function EditMyInfo() {
   const [userNickName, setUserNickName] = useState<string>("");
   const [userAddress, setUserAddress] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
+  const [userProfile, setUserProfile] = useState<string>("");
+  const [profileData, setProfileData] = useState<any>();
   const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
+  const fileInput = useRef<HTMLInputElement | null>(null);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -51,9 +55,24 @@ export default function EditMyInfo() {
     return validateEmail(userEmail) ? false : true;
   }, [userEmail]);
 
-  const changeInfo = () => {
+  const uploadProfileImage = async (e: any) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e: any) => {
+      if (reader.readyState === 2) {
+        setUserProfile(e.target.result);
+      }
+    };
+    let formData = new FormData();
+    formData.append("file", file);
+    setProfileData(formData);
+  };
+
+  const changeInfo = async () => {
     if (userNickName != "") {
-      instance
+      await instance
         .put("/api/users/change-nickname", { nickname: userNickName })
         .then((res) => {
           console.log(res);
@@ -67,10 +86,29 @@ export default function EditMyInfo() {
           return;
         });
     }
+    if (userProfile != "") {
+      await instance
+        .put("/api/users/change-img", profileData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+          Toast.fire({
+            icon: "error",
+            title: "프로필 이미지 변경 실패",
+          });
+          return;
+        });
+    }
     let count = 0;
     if (userEmail != "") {
       count++;
-      instance
+      await instance
         .post("/api/auth/emails/code-request", { email: userEmail })
         .then((res) => {
           console.log(res);
@@ -127,7 +165,7 @@ export default function EditMyInfo() {
         icon: "success",
         title: "변경이 완료되었습니다",
       });
-      router.push("/mypage");
+      // router.push("/mypage");
     }
   };
 
@@ -137,6 +175,9 @@ export default function EditMyInfo() {
       .then((res) => {
         setPrevNickName(res.data.response.nickname);
         setPrevEmail(res.data.response.email);
+        if (res.data.response.profileImage) {
+          setUserProfile(res.data.response.profileImage);
+        }
       })
       .catch((err) => {});
     instance
@@ -202,7 +243,47 @@ export default function EditMyInfo() {
         >
           <div className="flex justify-between">
             <div className="flex justify-between">
-              <Image src={profile} alt="profile" width={70} style={{ borderRadius: "100%" }} />
+              <a
+                href="#"
+                onClick={() => {
+                  if (fileInput.current) {
+                    fileInput.current.click();
+                  }
+                }}
+              >
+                <div>
+                  <div style={{ position: "relative" }}>
+                    {userProfile === "" ? (
+                      <Image
+                        src={profile}
+                        alt="profile"
+                        width={70}
+                        style={{ borderRadius: "100%" }}
+                      />
+                    ) : (
+                      <Image
+                        src={userProfile}
+                        alt="profile"
+                        width={70}
+                        height={70}
+                        style={{ borderRadius: "100%" }}
+                      />
+                    )}
+                    <div style={{ position: "absolute", bottom: "2px", right: "2px" }}>
+                      <Image src={imageicon} alt="image-icon" width={20} />
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <input
+                type="file"
+                name="image_URL"
+                id="input-file"
+                accept="image/*"
+                style={{ display: "none" }}
+                ref={fileInput}
+                onChange={uploadProfileImage}
+              />
               <div className="flex items-center ml-8">
                 <Input
                   label="닉네임 변경"

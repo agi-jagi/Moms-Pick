@@ -87,13 +87,13 @@ export default function SignUp() {
       });
       return;
     }
-    if (!userEmailVerify) {
-      Toast.fire({
-        icon: "error",
-        title: "이메일 인증이 필요합니다",
-      });
-      return;
-    }
+    // if (!userEmailVerify) {
+    //   Toast.fire({
+    //     icon: "error",
+    //     title: "이메일 인증이 필요합니다",
+    //   });
+    //   return;
+    // }
 
     nextStep();
   };
