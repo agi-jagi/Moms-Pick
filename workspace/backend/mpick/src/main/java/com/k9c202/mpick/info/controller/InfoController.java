@@ -5,12 +5,10 @@ import com.k9c202.mpick.info.controller.request.BabyMealInfoRequest;
 import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
 import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
-import com.k9c202.mpick.info.controller.response.BabyMealInfoListResponse;
-import com.k9c202.mpick.info.controller.response.DayCareCenterInfoResponse;
-import com.k9c202.mpick.info.controller.response.KindergartenInfoResponse;
-import com.k9c202.mpick.info.controller.response.LactationRoomInfoResponse;
+import com.k9c202.mpick.info.controller.response.*;
 import com.k9c202.mpick.info.service.InfoService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -62,5 +60,14 @@ public class InfoController {
             @RequestBody BabyMealInfoRequest request) {
 
         return CommonResponse.OK(infoService.babyMealList(request));
+    }
+
+    @Operation(summary = "유아 음식 상세 조회", description = "유아 음식 상세 조회")
+    @GetMapping("/babymeal/{id}")
+    public CommonResponse<BabyMealDetailInfoResponse> searchBabyMealDetail(
+            Authentication authentication,
+            @PathVariable Long id) {
+
+        return CommonResponse.OK(infoService.babyMealDetail(id));
     }
 }

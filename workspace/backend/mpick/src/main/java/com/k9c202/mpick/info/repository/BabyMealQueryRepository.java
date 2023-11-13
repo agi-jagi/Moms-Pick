@@ -2,6 +2,7 @@ package com.k9c202.mpick.info.repository;
 
 import com.k9c202.mpick.info.controller.component.BabyMealInfoDto;
 import com.k9c202.mpick.info.controller.component.PageCountDto;
+import com.k9c202.mpick.info.controller.response.BabyMealDetailInfoResponse;
 import com.k9c202.mpick.info.controller.response.BabyMealInfoListResponse;
 import com.k9c202.mpick.info.entity.SubMealCategory;
 import com.querydsl.core.types.Projections;
@@ -42,5 +43,24 @@ public class BabyMealQueryRepository {
                 .offset((page.longValue() - 1L)*10)
                 .limit(10)
                 .fetch();
+    }
+
+    public BabyMealDetailInfoResponse findOneById(Long id) {
+
+        return queryFactory
+                .select(Projections.constructor(BabyMealDetailInfoResponse.class,
+                        babyMeal.mealName,
+                        babyMeal.cookMethod,
+                        babyMeal.materialName,
+                        babyMeal.carbohydrates,
+                        babyMeal.protein,
+                        babyMeal.fat,
+                        babyMeal.sodium,
+                        babyMeal.calcium,
+                        babyMeal.fe,
+                        babyMeal.calorie))
+                .from(babyMeal)
+                .where(babyMeal.id.eq(id))
+                .fetchOne();
     }
 }
