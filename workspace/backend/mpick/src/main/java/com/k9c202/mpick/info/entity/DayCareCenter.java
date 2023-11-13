@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-public class Kindergarten {
+public class DayCareCenter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +30,12 @@ public class Kindergarten {
     private String establish;
 
     @Column
-    private String kinderName;
-
-    @Column
-    private String opertime;
+    private String dayCareCenterName;
 
     @Column
     private String hpAddress;
 
     @Column
     private String telephoneNo;
+
 }
