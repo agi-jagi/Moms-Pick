@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 @Service
 public class AddressService {
     // 등록 조회 수정 삭제
+    // TODO: 2023-11-13 서비스 CUD, R 분리하기 / @Transactional(readOnly = true)
+    // TODO: 2023-11-13 CQRS 공부하기
+    // TODO: 2023-11-13 추가 공부 목록 - MSA, CQRS, Messagequeue(kafka, rabbitMQ), CI/CD
 
     // 주소 조회
     private final AddressRepository addressRepository;
@@ -40,6 +43,10 @@ public class AddressService {
     public AddressResponse addAddress(AddressDto addressDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
+        // TODO: 2023-11-13 getUserEntity 함수 따로 정의
+        //      User user = userRepository.findOneByLoginId(loginId)
+        //                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // TODO: 2023-11-13 createAddree로 따로 함수 정의하기
         User user = userRepository.findOneByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Address address = Address.builder()
@@ -58,17 +65,19 @@ public class AddressService {
     public void deleteAddress(Long addressId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
-        // 문제 미해결 //
+        // TODO: 2023-11-13 문제 해결하기
 //        addressRepository.deleteByIdAndUserLoginId(addressId,loginId);
         addressRepository.deleteById(addressId);
     }
 
     // 주소 수정
     public AddressResponse updateAddress(Long addressId, AddressDto addressDto) {
+        // TODO: 2023-11-13 Address oldAddress = getMyAddressEntity(addressId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
         Address oldAddress = addressRepository.findByIdAndUserLoginId(addressId, loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User address not found"));
+        // TODO: 2023-11-13 따로 정의한 createAddress 함수 사용하기
         Address address = Address.builder()
                 .id(oldAddress.getId())
                 .latitude((addressDto.getLatitude()))
@@ -78,6 +87,7 @@ public class AddressService {
                 .isSet(addressDto.getIsSet())
                 .user(oldAddress.getUser())
                 .build();
+        // TODO: 2023-11-13 addressRepository.save(address) 대신 edit 함수 사용하기 (Address 엔티티 파일에 따로 정의)
         Address savedAddress = addressRepository.save(address);
         return AddressResponse.of(savedAddress);
     }

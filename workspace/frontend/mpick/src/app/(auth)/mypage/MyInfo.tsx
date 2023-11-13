@@ -13,6 +13,7 @@ export default function MyInfo() {
   const [userNickName, setUserNickName] = useState<string>("");
   const [userAddress, setUserAddress] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
+  const [userProfileImage, setUserProfileImage] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
 
@@ -22,33 +23,45 @@ export default function MyInfo() {
       .then((res) => {
         setUserNickName(res.data.response.nickname);
         setUserEmail(res.data.response.email);
+        if (res.data.response.profileImage) {
+          setUserProfileImage(res.data.response.profileImage);
+        }
+        console.log(res.data.response);
       })
       .catch((err) => {});
-    instance
-      .get("/api/users/addresses")
-      .then((res) => {
-        for (let i = 0; res.data.response.length; i++) {
-          if (res.data.response[i].isSet) {
-            const address = res.data.response[i].addressString;
-            const addressSplit = address.split(" ");
-            for (let j = 0; addressSplit.length; j++) {
-              if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
-                setUserAddress(addressSplit[j]);
-              }
+    instance.get("/api/users/addresses").then((res) => {
+      for (let i = 0; res.data.response.length; i++) {
+        if (res.data.response[i].isSet) {
+          const address = res.data.response[i].addressString;
+          const addressSplit = address.split(" ");
+          for (let j = 0; addressSplit.length; j++) {
+            if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
+              setUserAddress(addressSplit[j]);
             }
           }
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+    });
+    // .catch((err) => {
+    //   console.log(err);
+    // });
   }, []);
 
   return (
     <div>
       <div className="flex justify-between">
         <div className="flex justify-between">
-          <Image src={profile} alt="profile" width={70} style={{ borderRadius: "100%" }} />
+          {userProfileImage === "" ? (
+            <Image src={profile} alt="profile" width={70} style={{ borderRadius: "100%" }} />
+          ) : (
+            <Image
+              src={userProfileImage}
+              alt="profile"
+              width={70}
+              height={70}
+              style={{ borderRadius: "100%" }}
+            />
+          )}
           <div className="flex items-center ml-8">
             <div>
               <p className="font-bold text-base">{userNickName}</p>

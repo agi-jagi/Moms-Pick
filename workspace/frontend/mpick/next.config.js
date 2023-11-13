@@ -9,6 +9,16 @@ const withPWA = require("next-pwa")({
 
 module.exports = withPWA({
   // next.js config
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "mpick-img-storage.s3.ap-northeast-2.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
   reactStrictMode: true,
   env: {
     KAKAOMAP_APPKEY: "a7d4463b676b95709da00fcec2cdfbc1",

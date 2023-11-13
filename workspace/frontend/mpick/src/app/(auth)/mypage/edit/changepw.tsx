@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
 import { useState, useMemo } from "react";
 import { Button, Input } from "@nextui-org/react";
 import instance from "@/app/_config/axios";
 import Swal from "sweetalert2";
 
-export default function ChangePw(props:any) {
+export default function ChangePw(props: any) {
   const [prevUserPw, setPrevUserPw] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
   const [userPwCheck, setUserPwCheck] = useState<boolean>(false);
-  const [isPwValid, setIsPwValid] = useState<boolean>(false)
-  const [changePwReady, setChangePwReady] = useState<boolean>(false)
+  const [isPwValid, setIsPwValid] = useState<boolean>(false);
+  const [changePwReady, setChangePwReady] = useState<boolean>(false);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -35,10 +35,10 @@ export default function ChangePw(props:any) {
 
   const isPwInvalid = useMemo(() => {
     if (userPw === "") return false;
-    const flag = validatePw(userPw)
+    const flag = validatePw(userPw);
     if (flag) {
-      setIsPwValid(true)
-      return false
+      setIsPwValid(true);
+      return false;
     }
     return true;
   }, [userPw]);
@@ -46,39 +46,40 @@ export default function ChangePw(props:any) {
   const checkPw = (pw: string) => {
     if (pw === userPw) {
       setUserPwCheck(false);
-      setChangePwReady(true)
+      setChangePwReady(true);
     } else {
       setUserPwCheck(true);
     }
   };
 
   const checkPrevPw = () => {
-    instance.post('/api/users/check-password', {password: prevUserPw})
-    .then((res) => {
-      changePw()
-    })
-    .catch((err) => {
-      Toast.fire({
-        icon: "error",
-        title: "이전 비밀번호를 확인해주세요",
+    instance
+      .post("/api/users/check-password", { password: prevUserPw })
+      .then((res) => {
+        changePw();
+      })
+      .catch((err) => {
+        Toast.fire({
+          icon: "error",
+          title: "이전 비밀번호를 확인해주세요",
+        });
       });
-    })
-  }
+  };
 
   const changePw = () => {
-    if (userPw === '') {
+    if (userPw === "") {
       Toast.fire({
         icon: "error",
         title: "새 비밀번호를 입력해주세요",
       });
-      return
+      return;
     }
     if (changePwReady === false) {
       Toast.fire({
         icon: "error",
         title: "새 비밀번호를 확인해주세요",
       });
-      return
+      return;
     }
 
     if (isPwValid === false) {
@@ -86,42 +87,43 @@ export default function ChangePw(props:any) {
         icon: "error",
         title: "새 비밀번호를 확인해주세요",
       });
-      return
+      return;
     }
     if (prevUserPw === userPw) {
       Toast.fire({
         icon: "error",
         title: "다른 비밀번호를 입력해주세요",
       });
-      return
+      return;
     }
     if (userPwCheck) {
       Toast.fire({
         icon: "error",
         title: "비밀번호가 일치하지 않습니다",
       });
-      return
+      return;
     }
 
-    instance.put('/api/users/change-password', {
-      password:prevUserPw,
-      newPassword:userPw,
-    })
-    .then((res) => {
-      props.setOpen(false)
-      Toast.fire({
-        icon: "success",
-        title: "비밀번호 변경 완료",
+    instance
+      .put("/api/users/change-password", {
+        password: prevUserPw,
+        newPassword: userPw,
+      })
+      .then((res) => {
+        props.setOpen(false);
+        Toast.fire({
+          icon: "success",
+          title: "비밀번호 변경 완료",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        Toast.fire({
+          icon: "error",
+          title: "에러",
+        });
       });
-    })
-    .catch((err) => {
-      console.log(err)
-      Toast.fire({
-        icon: "error",
-        title: "에러",
-      });
-    })
-  }
+  };
 
   return (
     <div>
@@ -162,10 +164,10 @@ export default function ChangePw(props:any) {
           onValueChange={checkPw}
         />
       </div>
-      <div style={{display:'flex', justifyContent:'space-between', marginTop:'20px'}}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
         <Button
           onClick={() => {
-            props.setOpen(false)
+            props.setOpen(false);
           }}
           color="default"
         >
@@ -173,7 +175,7 @@ export default function ChangePw(props:any) {
         </Button>
         <Button
           onClick={() => {
-            checkPrevPw()
+            checkPrevPw();
           }}
           color="primary"
         >
@@ -181,5 +183,5 @@ export default function ChangePw(props:any) {
         </Button>
       </div>
     </div>
-  )
+  );
 }

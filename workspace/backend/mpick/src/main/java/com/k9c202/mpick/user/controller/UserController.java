@@ -26,6 +26,7 @@ import java.io.IOException;
 public class UserController {
     // TODO: 2023-11-07 테스트코드
     // TODO: 2023-11-11 관리자 페이지
+    // TODO: 2023-11-13 에러 처리 
 
     // 로그인 아이디는 자주 활용되기 때문에 jwt/SecurityUtils에서 getCurrentLoginId() 정의하여 사용 -> SecurityUtils.getCurrentLoginId();
     // 여러 방법 가능
@@ -93,10 +94,9 @@ public class UserController {
     @PostMapping("/check-password")
     public CommonResponse<?> checkPassword(
 //            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody CheckPasswordRequest checkPasswordRequest
-            ) {
+            @RequestBody String password) {
 //        userService.checkPassword(userDetails.getUsername(), checkPasswordRequest.getPassword());
-        userService.checkPassword(SecurityUtils.getCurrentLoginId(), checkPasswordRequest.getPassword());
+        userService.checkPassword(SecurityUtils.getCurrentLoginId(), password);
         return CommonResponse.OK(null);
     }
 
@@ -128,21 +128,15 @@ public class UserController {
 
     // 닉네임 변경
     @PutMapping("/change-nickname")
-    public CommonResponse<?> changeNickname(@RequestBody UpdateNicknameRequest updateNicknameRequest) {
-        userService.changeNickname(
-                SecurityUtils.getCurrentLoginId(),
-                updateNicknameRequest.getNickname()
-        );
+    public CommonResponse<?> changeNickname(@RequestBody String nickname) {
+        userService.changeNickname(SecurityUtils.getCurrentLoginId(), nickname);
         return CommonResponse.OK(null);
     }
 
     // 소개글 변경
     @PutMapping("/change-intro")
-    public CommonResponse<?> changeUserIntro(@RequestBody UpdateUserIntroRequest updateUserIntroRequest) {
-        userService.changeUserIntro(
-                SecurityUtils.getCurrentLoginId(),
-                updateUserIntroRequest.getUserIntro()
-        );
+    public CommonResponse<?> changeUserIntro(@RequestBody String userIntro) {
+        userService.changeUserIntro(SecurityUtils.getCurrentLoginId(), userIntro);
         return CommonResponse.OK(null);
     }
 

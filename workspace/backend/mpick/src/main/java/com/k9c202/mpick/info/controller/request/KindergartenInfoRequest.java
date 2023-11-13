@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class LactationRoomRequest {
+public class KindergartenInfoRequest {
 
     @NotEmpty
     private BigDecimal latitude;
