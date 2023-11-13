@@ -11,6 +11,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import axios from "axios";
+import Link from "next/link";
 
 
 export default function Search() {
@@ -34,7 +35,7 @@ export default function Search() {
   const [ title, setTitle ] = useState("");
   const [ price, setPrice ] = useState("0");
   const [ tradeExplain, setTradeExplain ] = useState("");
-  const [ tradeId, setTradeId ] = useState<number>(1);
+  const [ tradeId, setTradeId ] = useState<number>(0);
 
   const [ searchList, setSearchList ] = useState<any>([]);
 
@@ -122,18 +123,22 @@ export default function Search() {
   };
   };
 
+
+
+  // 판매글 검색 요청 함수
   async function searchTrade() {
     try {
       const data: any = {
         query: {
           bool: {
             must: [
-              { match: { status: '판매중' } },
-              // { match: { mainCategory: '수유용품' } },
-              // { match: { subCategory: '젖병' } },
-              // { match: { title: '' } },
+              { match: { mainCategory: '유모차' } },
               null,
-              { match: { tradeMonth: '2 4' } },
+              // { match: { subCategory: '젖병' } },
+              { match: { status: '판매중' } },
+              
+              // { match: { title: '' } },
+              // { match: { tradeMonth: '' } },
           
             ],
             filter:
@@ -148,7 +153,7 @@ export default function Search() {
             },
           },
         },
-        size: 10,
+        size: 8,
         from: 0,
       };
 
@@ -192,7 +197,7 @@ export default function Search() {
   return (
     <>
       <div>
-      {/* <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button> */}
+      <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button>
       <Button onClick={searchTrade}>ES 발사 확인</Button>
       <Button onClick={()=>console.log(searchList)}>ES 리스트 확인</Button>
       <div className="flex gap-4 mt-4 justify-center">
@@ -330,23 +335,29 @@ export default function Search() {
     </div>
     <div className="mt-5 gap-2 grid grid-cols-2 sm:grid-cols-4">
       {searchList.map((item :any, index :number) => (
-        <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
+        <Card shadow="sm" key={index} isPressable onPress={() => setTradeId(item._source.id)}>
+          
           <CardBody className="overflow-visible p-0">
+          <Link href={"/trade/detail/" + tradeId}
+          onClick={()=>console.log(tradeId)}>
             <Image
               shadow="sm"
               radius="lg"
               width="100%"
               alt={item._source.title}
               className="w-full object-cover h-[140px]"
-              // src={item._source.img}
-              src="/nezko.jfif"
+              src={item._source.img}
+              // src="/nezko.jfif"
             />
+            </Link>
           </CardBody>
+          
           <CardFooter className="text-small justify-between">
             <b>{item._source.title}</b>
             <p className="text-default-500">₩ {item._source.price}</p>
           </CardFooter>
         </Card>
+        
       ))}
       
     </div>
