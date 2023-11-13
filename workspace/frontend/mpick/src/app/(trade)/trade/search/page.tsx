@@ -2,10 +2,27 @@
 
 import { useTradeStore } from "@/store/TradeStore";
 import { useEffect, useState } from "react";
-import { Chip, Card, CardFooter, Image, CardBody, Button,
-  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
-  CheckboxGroup, Checkbox, Select, SelectItem,
-  CardHeader, Input, Textarea } from "@nextui-org/react";
+import {
+  Chip,
+  Card,
+  CardFooter,
+  Image,
+  CardBody,
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  CheckboxGroup,
+  Checkbox,
+  Select,
+  SelectItem,
+  CardHeader,
+  Input,
+  Textarea,
+} from "@nextui-org/react";
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
@@ -28,16 +45,16 @@ export default function Search() {
   const [등록open, set등록Open] = useState(false);
   const handleOpen등록 = () => set등록Open(!등록open);
 
-  const [ selectedMainCategory, setSelectedMainCategory ] = useState<string>('');
-  const [ selectedSubCategory, setSelectedSubCategory ] = useState<string>('');
-  const [ title, setTitle ] = useState("");
-  const [ price, setPrice ] = useState("0");
-  const [ tradeExplain, setTradeExplain ] = useState("");
-  const [ tradeId, setTradeId ] = useState<number>(0);
+  const [selectedMainCategory, setSelectedMainCategory] = useState<string>("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("0");
+  const [tradeExplain, setTradeExplain] = useState("");
+  const [tradeId, setTradeId] = useState<number>(0);
 
-  const [ searchList, setSearchList ] = useState<any>([]);
+  const [searchList, setSearchList] = useState<any>([]);
 
-  const [ categoryList, setCategoryList ] = useState<any>({});
+  const [categoryList, setCategoryList] = useState<any>({});
   const mainCategoryList = [
     "유모차",
     "수유용품",
@@ -80,7 +97,7 @@ export default function Search() {
     } else {
       setFilter개월((prevList) => [...prevList, index]);
     }
-  }
+  };
 
   //  판매글 등록 요청 함수
   async function registerTrade(e: any) {
@@ -119,8 +136,6 @@ export default function Search() {
     }
   }
 
-
-
   // 판매글 검색 요청 함수
   async function searchTrade() {
     try {
@@ -128,19 +143,17 @@ export default function Search() {
         query: {
           bool: {
             must: [
-              { match: { mainCategory: '유모차' } },
+              { match: { mainCategory: "유모차" } },
               null,
               // { match: { subCategory: '젖병' } },
-              { match: { status: '판매중' } },
-              
+              { match: { status: "판매중" } },
+
               // { match: { title: '' } },
               // { match: { tradeMonth: '' } },
-          
             ],
-            filter:
-              {
+            filter: {
               geo_distance: {
-                distance: '100000km',
+                distance: "100000km",
                 location: {
                   lat: 35.2026038557392,
                   lon: 126.815091346254,
@@ -157,12 +170,10 @@ export default function Search() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-      
       });
-      
+
       console.log(res.data);
       setSearchList(res.data.hits.hits);
-      
     } catch (err) {
       console.log(err);
     }
@@ -189,47 +200,40 @@ export default function Search() {
   return (
     <>
       <div>
-      <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button>
-      <Button onClick={searchTrade}>ES 발사 확인</Button>
-      <Button onClick={()=>console.log(searchList)}>ES 리스트 확인</Button>
-      <div className="flex gap-4 mt-4 justify-center">
-      <Chip
-        startContent={<FilterIcon />}
-        variant="faded"
-        color="default"
-        endContent={<BsChevronDown className="mr-1"/>}
-        className="shadow-md"
-        onClick={() => onOpen()}
-        
-      >
-        대분류
-      </Chip>
-      <Chip
-        startContent={<FilterIcon />}
-        variant="faded"
-        color="default"
-        endContent={<BsChevronDown className="mr-1"/>}
-        className="shadow-md"
-        onClick={() => onOpen()}
-      >
-        중분류
-      </Chip>
-      <Chip
-        startContent={<FilterIcon />}
-        variant="faded"
-        color="default"
-        endContent={<BsChevronDown className="mr-1"/>}
-        className="shadow-md"
-        onClick={() => onOpen()}
-      >
-        개월수
-      </Chip>
-      </div>
-      <div className="flex justify-between items-center w-full mt-2">
-        <div className="relative w-[172px] h-[40px]">
-          <div className="absolute w-[161px] h-[21px] mt-1 top-5 left-5 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold text-[#1f1f1f] text-[18px] tracking-[-0.60px] leading-[24px] whitespace-nowrap">
-            검색 결과
-          </div>
+        <Button onClick={() => console.log(categoryList)}>리스트 확인</Button>
+        <Button onClick={searchTrade}>ES 발사 확인</Button>
+        <Button onClick={() => console.log(searchList)}>ES 리스트 확인</Button>
+        <div className="flex gap-4 mt-4 justify-center">
+          <Chip
+            startContent={<FilterIcon />}
+            variant="faded"
+            color="default"
+            endContent={<BsChevronDown className="mr-1" />}
+            className="shadow-md"
+            onClick={() => onOpen()}
+          >
+            대분류
+          </Chip>
+          <Chip
+            startContent={<FilterIcon />}
+            variant="faded"
+            color="default"
+            endContent={<BsChevronDown className="mr-1" />}
+            className="shadow-md"
+            onClick={() => onOpen()}
+          >
+            중분류
+          </Chip>
+          <Chip
+            startContent={<FilterIcon />}
+            variant="faded"
+            color="default"
+            endContent={<BsChevronDown className="mr-1" />}
+            className="shadow-md"
+            onClick={() => onOpen()}
+          >
+            개월수
+          </Chip>
         </div>
         <div className="flex justify-between items-center w-full mt-2">
           <div className="relative w-[172px] h-[40px]">
@@ -316,19 +320,20 @@ export default function Search() {
                         ))}
                       </div>
 
-                  {/* <Button onClick={()=>console.log(selectedMonthList)}>담긴 개월 조회</Button> */}
-                
-              </ModalBody>
-              <ModalFooter>
-                <Button className="bg-[#5E9FF2] text-white" type="submit" 
-                onClick={handleOpen등록}
-                >
-                  등록하기
-                </Button>
-              </ModalFooter>
-              </form>
-            </>
-            )}
+                      {/* <Button onClick={()=>console.log(selectedMonthList)}>담긴 개월 조회</Button> */}
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        className="bg-[#5E9FF2] text-white"
+                        type="submit"
+                        onClick={handleOpen등록}
+                      >
+                        등록하기
+                      </Button>
+                    </ModalFooter>
+                  </form>
+                </>
+              )}
             </ModalContent>
           </Modal>
 
@@ -336,54 +341,29 @@ export default function Search() {
         </div>
       </div>
       <div className="mt-5 gap-2 grid grid-cols-2 sm:grid-cols-4">
-        {list.map((item, index) => (
-          <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
+        {searchList.map((item: any, index: number) => (
+          <Card shadow="sm" key={index} isPressable onPress={() => setTradeId(item._source.id)}>
             <CardBody className="overflow-visible p-0">
-              <Image
-                shadow="sm"
-                radius="lg"
-                width="100%"
-                alt={item.title}
-                className="w-full object-cover h-[140px]"
-                src={item.img}
-              />
+              <Link href={"/trade/detail/" + tradeId} onClick={() => console.log(tradeId)}>
+                <Image
+                  shadow="sm"
+                  radius="lg"
+                  width="100%"
+                  alt={item._source.title}
+                  className="w-full object-cover h-[140px]"
+                  src={item._source.img}
+                  // src="/nezko.jfif"
+                />
+              </Link>
             </CardBody>
+
             <CardFooter className="text-small justify-between">
-              <b>{item.title}</b>
-              <p className="text-default-500">{item.price}</p>
+              <b>{item._source.title}</b>
+              <p className="text-default-500">₩ {item._source.price}</p>
             </CardFooter>
           </Card>
         ))}
       </div>
-    </div>
-    <div className="mt-5 gap-2 grid grid-cols-2 sm:grid-cols-4">
-      {searchList.map((item :any, index :number) => (
-        <Card shadow="sm" key={index} isPressable onPress={() => setTradeId(item._source.id)}>
-          
-          <CardBody className="overflow-visible p-0">
-          <Link href={"/trade/detail/" + tradeId}
-          onClick={()=>console.log(tradeId)}>
-            <Image
-              shadow="sm"
-              radius="lg"
-              width="100%"
-              alt={item._source.title}
-              className="w-full object-cover h-[140px]"
-              src={item._source.img}
-              // src="/nezko.jfif"
-            />
-            </Link>
-          </CardBody>
-          
-          <CardFooter className="text-small justify-between">
-            <b>{item._source.title}</b>
-            <p className="text-default-500">₩ {item._source.price}</p>
-          </CardFooter>
-        </Card>
-        
-      ))}
-      
-    </div>
 
       {/* 필터링 카테고리 모달 */}
       <Modal
@@ -436,8 +416,13 @@ export default function Search() {
                 {/* <Button onClick={()=>console.log(filter개월)}>담긴 개월 조회</Button> */}
               </ModalBody>
               <ModalFooter>
-                <Button className="bg-[#5E9FF2] text-white" type="submit" 
-                onClick={()=>{onOpenChange(); setFilter개월([]);}}
+                <Button
+                  className="bg-[#5E9FF2] text-white"
+                  type="submit"
+                  onClick={() => {
+                    onOpenChange();
+                    setFilter개월([]);
+                  }}
                 >
                   적용하기
                 </Button>
