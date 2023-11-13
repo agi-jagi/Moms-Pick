@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: 2023-11-13 서비스 CUD, R 분리하기 / @Transactional(readOnly = true) / CQRS 공부하기
+// 서비스 CUD, R 분리 / @Transactional(readOnly = true) / CQRS
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

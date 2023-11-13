@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class AddressService {
     // 등록 조회 수정 삭제
-    // TODO: 2023-11-13 추가 공부 목록 - MSA, CQRS, Messagequeue(kafka, rabbitMQ), CI/CD
 
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
@@ -31,7 +30,7 @@ public class AddressService {
     public AddressResponse addAddress(AddressDto addressDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
-        // TODO: 2023-11-13 getUserEntity 함수 따로 정의
+        // TODO: 2023-11-13 getUserEntity 함수 따로 정의 ✔
         //      User user = userRepository.findOneByLoginId(loginId)
         //                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         /* createAddress로 따로 함수 정의
@@ -47,7 +46,7 @@ public class AddressService {
         User user = userRepository.findOneByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Address address = createAddress(addressDto, user);
-        // TODO: 2023-11-13 save -> edit로 수정
+        // TODO: 2023-11-13 save -> edit로 수정 ✔
         Address savedAddress = addressRepository.save(address);
         return AddressResponse.of(savedAddress);
     }

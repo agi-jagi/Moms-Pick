@@ -79,7 +79,7 @@ public class ChatService {
     }
 
     // 로그인 아이디, 채팅방id로 채팅메세지 불러오는 함수
-    // TODO: 2023-11-13 checkBuyer 함수로 대체. boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
+    // TODO: 2023-11-13 checkBuyer 함수로 대체. boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId); ✔
     public List<ChatMessageResponse> getChatMessages(String loginId, Long chatRoomId){
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
         // 판매자인지 구매자인지 판단
@@ -153,7 +153,7 @@ public class ChatService {
                 .build();
         ChatMessage save = chatMessageRepository.save(chatMessage);
         chatRoom.setLastChatMessage(save);
-        // TODO: 2023-11-13 if-else문 지양하기
+        // TODO: 2023-11-13 if-else문 지양하기 ✔
         if(isBuyer){
             chatRoom.increaseSellerUnreadCount();
             chatRoom.resetBuyerUnreadCount();
@@ -170,7 +170,7 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequest.getChatRoomId()).orElseThrow();
         // 구매자/판매자 여부 체크
         boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
-        // TODO: 2023-11-13 checkBuyer 함수 따로 사용하기
+        // TODO: 2023-11-13 checkBuyer 함수 따로 사용하기 ✔
         // 구매자인 경우 구매자가 읽지 않은 메세지 수 초기화
         if(isBuyer) {
             chatRoom.resetBuyerUnreadCount();

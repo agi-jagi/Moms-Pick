@@ -15,8 +15,7 @@ import java.math.BigDecimal;
 @Data
 public class AddAddressRequest {
 
-    // TODO: 2023-11-13 예외 메세지 작성
-    // TODO: 2023-11-13 decimal(19,16) 나중에 추가
+    // TODO: 2023-11-13 예외 메세지 작성 (message = "입력값이 없습니다.") ✔
     @NotEmpty
     private BigDecimal latitude;
 
