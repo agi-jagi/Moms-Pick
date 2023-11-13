@@ -38,6 +38,8 @@ export default function Search() {
   const [ tradeExplain, setTradeExplain ] = useState("");
   const [ tradeId, setTradeId ] = useState<number>(1);
 
+  const [ searchList, setSearchList ] = useState<any>([]);
+
   const [ categoryList, setCategoryList ] = useState<any>({});
   const mainCategoryList = [
     "유모차",
@@ -156,45 +158,46 @@ export default function Search() {
   };
   };
 
-  // ElasticSearch 검색 요청 함수
   async function searchTrade() {
-    
-    // const ElasticURL = "http://k9c202.p.ssafy.io:9200/mpick/_search";
-
-    const query = {
-      query: {
-        bool: {
-          must: [
-            { match: { status: '판매중' } },
-            { match: { tradeMonth: '3' } },
-            { match: { tradeMonth: '4' } },
-          ],
-          filter: {
-            geo_distance: {
-              distance: '100000km',
-              location: {
-                lat: 35.2026038557392,
-                lon: 126.815091346254,
+    try {
+      const data: any = {
+        query: {
+          bool: {
+            must: [
+              { match: { status: '판매중' } },
+              // { match: { mainCategory: '수유용품' } },
+              // { match: { subCategory: '젖병' } },
+              // { match: { title: '' } },
+              null,
+              { match: { tradeMonth: '2 4' } },
+          
+            ],
+            filter:
+              {
+              geo_distance: {
+                distance: '100000km',
+                location: {
+                  lat: 35.2026038557392,
+                  lon: 126.815091346254,
+                },
               },
             },
           },
         },
-      },
-      size: 10,
-      from: 0,
-    };
+        size: 10,
+        from: 0,
+      };
 
-    try {
-
-      const res = await axios.get("/mpick/_search", {
+      const res = await axios.post("/mpick/_search", data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        params: {
-          source: JSON.stringify(query),
-        }
+      
       });
+      
       console.log(res.data);
+      setSearchList(res.data.hits.hits);
+      
     } catch (err) {
       console.log(err);
     }
@@ -226,7 +229,8 @@ export default function Search() {
     <>
       <div>
       {/* <Button onClick={()=>console.log(categoryList)}>리스트 확인</Button> */}
-      <Button onClick={searchTrade}>ES 서치 확인</Button>
+      <Button onClick={searchTrade}>ES 발사 확인</Button>
+      <Button onClick={()=>console.log(searchList)}>ES 리스트 확인</Button>
       <div className="flex gap-4 mt-4 justify-center">
       <Chip
         startContent={<FilterIcon />}
@@ -345,7 +349,7 @@ export default function Search() {
                 
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" type="submit" 
+                <Button className="bg-[#5E9FF2] text-white" type="submit" 
                 onClick={handleOpen등록}
                 >
                   등록하기
@@ -361,21 +365,22 @@ export default function Search() {
       </div>
     </div>
     <div className="mt-5 gap-2 grid grid-cols-2 sm:grid-cols-4">
-      {list.map((item, index) => (
+      {searchList.map((item :any, index :number) => (
         <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
           <CardBody className="overflow-visible p-0">
             <Image
               shadow="sm"
               radius="lg"
               width="100%"
-              alt={item.title}
+              alt={item._source.title}
               className="w-full object-cover h-[140px]"
-              src={item.img}
+              // src={item._source.img}
+              src="/nezko.jfif"
             />
           </CardBody>
           <CardFooter className="text-small justify-between">
-            <b>{item.title}</b>
-            <p className="text-default-500">{item.price}</p>
+            <b>{item._source.title}</b>
+            <p className="text-default-500">₩ {item._source.price}</p>
           </CardFooter>
         </Card>
       ))}
@@ -434,7 +439,7 @@ export default function Search() {
                 
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" type="submit" 
+                <Button className="bg-[#5E9FF2] text-white" type="submit" 
                 onClick={()=>{onOpenChange(); setFilter개월([]);}}
                 >
                   적용하기
