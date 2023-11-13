@@ -5,16 +5,11 @@ spring:
     username: ${database.username}
     password: ${database.password}
 
-    
-  sql:
-    init:
-      encoding: UTF-8
-
 
   jpa:
     hibernate:
 #      ddl-auto: none 나중에 적용할 값
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
