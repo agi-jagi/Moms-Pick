@@ -6,10 +6,7 @@ import com.k9c202.mpick.info.controller.request.BabyMealInfoRequest;
 import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
 import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
-import com.k9c202.mpick.info.controller.response.BabyMealInfoListResponse;
-import com.k9c202.mpick.info.controller.response.DayCareCenterInfoResponse;
-import com.k9c202.mpick.info.controller.response.KindergartenInfoResponse;
-import com.k9c202.mpick.info.controller.response.LactationRoomInfoResponse;
+import com.k9c202.mpick.info.controller.response.*;
 import com.k9c202.mpick.info.repository.BabyMealQueryRepository;
 import com.k9c202.mpick.info.repository.DayCareCenterQueryRepository;
 import com.k9c202.mpick.info.repository.KindergartenQueryRepository;
@@ -62,4 +59,10 @@ public class InfoService {
                 .build();
         return result;
     }
+
+    public BabyMealDetailInfoResponse babyMealDetail(Long id) {
+
+        return babyMealQueryRepository.findOneById(id);
+    }
+
 }
