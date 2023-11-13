@@ -252,11 +252,7 @@ export default function MyFamily() {
               closeModal={closeModal}
             ></BabyForm>
             <div className="flex justify-center mt-8">
-              <Button
-                onClick={addNewBaby}
-                className="w-full"
-                style={{ backgroundColor: "#5E9FF2", color: "white" }}
-              >
+              <Button onClick={addNewBaby} className="w-full bg-[#5E9FF2] text-white">
                 추가
               </Button>
             </div>

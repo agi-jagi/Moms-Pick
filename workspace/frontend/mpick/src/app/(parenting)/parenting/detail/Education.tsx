@@ -6,6 +6,11 @@ import Image from "next/image";
 import marker from "../../../../../public/marker.png";
 import search from "../../../../../public/search.png";
 import instance from "@/app/_config/axios";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import { ScrollShadow } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 
 declare global {
   interface Window {
@@ -19,6 +24,7 @@ export default function Education() {
   const [address, setAddress] = useState<string>("");
   const [latitude, setLatitude] = useState<any>("");
   const [longitude, setLongitude] = useState<any>("");
+  const [education, setEducation] = useState<number>(0);
 
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -153,12 +159,18 @@ export default function Education() {
     }
   }, []);
 
+  const selectedEducation = (event: React.SyntheticEvent, tabName: number) => {
+    setEducation(tabName);
+  };
+
   console.log("위도", latitude);
   console.log("경도", longitude);
+
+  console.log("교육", education);
   return (
     <div>
       <div style={{ padding: "0 10px" }}>
-        <div id="map" style={{ width: "auto", height: "60vh", marginTop: "10px" }}></div>
+        <div id="map" style={{ width: "auto", height: "40vh", marginTop: "10px" }}></div>
         <div
           className="flex mt-5"
           style={{ border: "1px solid black", padding: "10px", width: "100%" }}
@@ -168,6 +180,41 @@ export default function Education() {
           </button>
           <p className="font-bold text-base ml-3">지번주소 : {address}</p>
         </div>
+        <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <Tabs value={education} onChange={selectedEducation} centered>
+            <Tab label="어린이집"></Tab>
+            <Tab label="유치원"></Tab>
+          </Tabs>
+        </Box>
+      </div>
+      {/* <ScrollShadow> */}
+      <div style={{ height: "calc(100vh - 60vh)", overflow: "scroll", padding: "0 10px" }}>
+        <Table isStriped aria-label="Example static collection table" className="mt-3">
+          <TableHeader>
+            <TableColumn className="text-center text-bold text-sm">기관명</TableColumn>
+            <TableColumn className="text-center text-bold text-sm">구분</TableColumn>
+            <TableColumn className="text-center text-bold text-sm">주소</TableColumn>
+            <TableColumn className="text-center text-bold text-sm">사이트</TableColumn>
+          </TableHeader>
+          <TableBody>
+            {education === 0 ? (
+              <TableRow>
+                <TableCell>어린이집</TableCell>
+                <TableCell>국립</TableCell>
+                <TableCell>주소</TableCell>
+                <TableCell>바로가기</TableCell>
+              </TableRow>
+            ) : (
+              <TableRow>
+                <TableCell>유치원</TableCell>
+                <TableCell>국립</TableCell>
+                <TableCell>주소</TableCell>
+                <TableCell>바로가기</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        {/* </ScrollShadow> */}
       </div>
     </div>
   );
