@@ -12,38 +12,16 @@ declare global {
   }
 }
 
-export default function AddressSearch() {
+export default function AddressSearch(props:any) {
   const [maps, setMaps] = useState<any>();
   const [markers, setMarkers] = useState<any>([]);
 
-  const open = useDaumPostcodePopup(
-    "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
-  );
-
-  const handleClick = () => {
-    open({ onComplete: handleComplete });
-  };
-
   let map: any = null;
 
-  const handleComplete = (data: any) => {
-    let fullAddress = data.address;
-    let extraAddress = "";
-
-    const { addressType, bname, buildingName } = data;
-    if (addressType === "R") {
-      if (bname !== "") {
-        extraAddress += bname;
-      }
-      if (buildingName !== "") {
-        extraAddress += `${extraAddress !== "" && ", "}${buildingName}`;
-      }
-      fullAddress += `${extraAddress !== "" ? ` ${extraAddress}` : ""}`;
-    }
-
+  const search = (data: any) => {
     window.kakao.maps.load(() => {
       const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(fullAddress, function (result: any, status: any) {
+      geocoder.addressSearch(data, function (result: any, status: any) {
         // 정상적으로 검색이 완료됐으면
         if (status === window.kakao.maps.services.Status.OK) {
           for (let i = 0; i < markers.length; i++) {
@@ -56,8 +34,9 @@ export default function AddressSearch() {
           });
           markers.push(marker);
           marker.setMap(maps);
-          // props.setLatitude(result[0].y);
-          // props.setLongitude(result[0].x);
+
+          props.setLatitude(result[0].y);
+          props.setLongitude(result[0].x);
 
           const bounds = new window.kakao.maps.LatLngBounds();
           bounds.extend(markerPosition);
@@ -70,25 +49,60 @@ export default function AddressSearch() {
           };
           const geocoder = new window.kakao.maps.services.Geocoder();
           geocoder.coord2Address(result[0].x, result[0].y, callback);
-
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          // var marker = new window.kakao.maps.Marker({
-          //   map: map,
-          //   position: coords
-          // });
-
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          // var infowindow = new window.kakao.maps.InfoWindow({
-          //   content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-          // });
-          // infowindow.open(map, marker);
-
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          // map.setCenter(coords);
+          props.setIsAddressSearch(true)
         }
       });
     });
   };
+
+  const markerReload = (data:any) => {
+    window.kakao.maps.load(() => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(data, function (result: any, status: any) {
+        // 정상적으로 검색이 완료됐으면
+        if (status === window.kakao.maps.services.Status.OK) {
+          for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+          }
+
+          const markerPosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+          const marker = new window.kakao.maps.Marker({
+            position: markerPosition,
+          });
+          markers.push(marker);
+          marker.setMap(maps);
+
+          props.setLatitude(result[0].y);
+          props.setLongitude(result[0].x);
+
+          const bounds = new window.kakao.maps.LatLngBounds();
+          bounds.extend(markerPosition);
+          maps.setBounds(bounds);
+
+          const callback = function (result: any, status: any) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              // props.setAddress(result[0].address.address_name);
+            }
+          };
+          const geocoder = new window.kakao.maps.services.Geocoder();
+          geocoder.coord2Address(result[0].x, result[0].y, callback);
+          props.setIsAddressSearch(true)
+        }
+      });
+    });
+  }
+
+  useEffect(() => {
+    if (props.searchingAddress) {
+      search(props.searchingAddress)
+    }
+  }, [props.searchingAddress])
+  
+  useEffect(() => {
+    if (props.chooseAddress) {
+      markerReload(props.chooseAddress)
+    }
+  }, [props.chooseAddress])
 
   // script가 완전히 load 된 이후, 실행될 함수
   const onLoadKakaoMap = () => {
@@ -96,8 +110,10 @@ export default function AddressSearch() {
       navigator.geolocation.getCurrentPosition((position) => {
         const mapContainer = document.getElementById("map");
         const coord = new window.kakao.maps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude
+          // position.coords.latitude,
+          // position.coords.longitude
+          props.latitude,
+          props.longitude
         );
         // props.setLatitude(position.coords.latitude);
         // props.setLongitude(position.coords.longitude);
@@ -154,16 +170,6 @@ export default function AddressSearch() {
     <div>
       <div style={{ padding: "0 10px" }}>
         <div id="map" style={{ width: "auto", height: "60vh", marginTop: "10px" }}></div>
-        <div
-          className="flex mt-5"
-          style={{ border: "1px solid black", padding: "10px", width: "100%" }}
-        >
-          <button type="button" onClick={handleClick}>
-            <Image src={search} alt="marker" width={30} height={30} />
-          </button>
-          {/* <p className="font-bold text-base">지번주소 : {props.address}</p> */}
-          <p className="font-bold text-base">지번주소 : </p>
-        </div>
       </div>
     </div>
   );
