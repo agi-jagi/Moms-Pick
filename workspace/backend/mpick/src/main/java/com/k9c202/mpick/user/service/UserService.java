@@ -1,5 +1,6 @@
 package com.k9c202.mpick.user.service;
 
+import com.amazonaws.SdkClientException;
 import com.k9c202.mpick.trade.service.S3Service;
 import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
 import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
@@ -15,6 +16,7 @@ import com.k9c202.mpick.user.repository.UserQueryRepository;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.client.ResponseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -108,7 +110,8 @@ public class UserService {
         if (emailVerificationResponse.isSucceeded()) {
             user.editEmail(newEmail);
         } else {
-            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
+//            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "인증코드가 일치하지 않습니다.");
         }
     }
 
@@ -128,10 +131,17 @@ public class UserService {
     // 프로필 이미지 수정
     public void changeProfileImage (String loginId, MultipartFile profileImg) throws IOException {
         User user = getUserEntity(loginId);
+        try {
             String profileUrl = s3Service.upload(profileImg, "profiles/");
             user.editProfileImage(profileUrl);
+            // TODO: 현재는 2023-11-11 ec2서버에 저장 후 s3서버로 전송하는 방식 -> s3서버에 바로 저장하는 방식으로 변경 + 에러 내용 수정
+            // s3 서버에 저장하기 전 ec2 서버에 임시 파일 만들 때 발생하는 에러
+        } catch (IOException | IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "임시 파일 생성에 실패했습니다.");
+        } catch (SdkClientException exception) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3 서버 업로드에 실패했습니다.");
+        }
     }
-
 //    // 회원 정보 수정 --> (각각 분리)
 //    public UserInfoResponse updateUserInfo(String loginId, UpdateUserInfoRequest updateUserInfoRequest, MultipartFile profileImg) throws IOException {
 ////            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -172,7 +182,8 @@ public class UserService {
         // 사용자가 입력한 password를 암호화한 값과 같은지 비교
         boolean isPasswordCorrect = passwordEncoder.matches(password, user.getPassword());
         if (!isPasswordCorrect) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
     }
@@ -192,6 +203,7 @@ public class UserService {
     private User getUserEntity(String loginId) {
         Optional<User> findUser = userRepository.findOneByLoginId(loginId);
         if (findUser.isEmpty()) {
+            // TODO: 2023-11-13 메세지 하드코딩 하지 말기  
             throw new UsernameNotFoundException("유저를 찾을 수 없습니다.");
         }
         return findUser.get();

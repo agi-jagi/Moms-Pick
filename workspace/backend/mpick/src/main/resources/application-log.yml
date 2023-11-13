@@ -3,7 +3,7 @@ logging:
     name: ./logs/mpick.log
   level:
     root: info
-    com.k9c202.mpick: debug
+    com.k9c202.mpick: debug  # error - warning - info - debug - trace
     org:
       hibernate:
         type:

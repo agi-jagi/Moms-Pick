@@ -9,6 +9,7 @@
     "location": {
       "type" : "geo_point"
     }
+
   }
 
 }

@@ -3,14 +3,21 @@
 import { useState, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Image from "next/image";
-import marker from "../../../../../public/marker.png";
 import search from "../../../../../public/search.png";
 import instance from "@/app/_config/axios";
+import { ScrollShadow } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 
 declare global {
   interface Window {
     kakao: any;
   }
+}
+
+interface Lactation {
+  facilityName: string;
+  buildingName: string;
+  address: string;
 }
 
 export default function Nursing() {
@@ -19,6 +26,9 @@ export default function Nursing() {
   const [address, setAddress] = useState<string>("");
   const [latitude, setLatitude] = useState<any>("");
   const [longitude, setLongitude] = useState<any>("");
+  const [lactations, setLactations] = useState<Lactation[]>([
+    { facilityName: "", buildingName: "", address: "" },
+  ]);
 
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -163,17 +173,30 @@ export default function Nursing() {
     };
 
     try {
-      const response = await instance.get("/api/info/lactation", { data });
-      console.log("수유실 조회 성공", response.data);
+      const response = await instance.post("/api/info/lactation", data);
+      console.log("수유실 조회 성공", response.data.response);
+      const lactationData: Lactation[] = response.data.response.map((item: Lactation) => ({
+        facilityName: item.facilityName,
+        buildingName: item.buildingName,
+        address: item.address,
+      }));
+      setLactations(lactationData);
     } catch (error) {
       console.log("수유실 조회 실패", error);
     }
   };
 
+  useEffect(() => {
+    if (latitude && longitude) {
+      nursingRoom();
+    }
+  }, [latitude, longitude]);
+  console.log("수유실 정보", lactations);
+
   return (
     <div>
       <div style={{ padding: "0 10px" }}>
-        <div id="map" style={{ width: "auto", height: "60vh", marginTop: "10px" }}></div>
+        <div id="map" style={{ width: "auto", height: "40vh", marginTop: "10px" }}></div>
         <div
           className="flex mt-5"
           style={{ border: "1px solid black", padding: "10px", width: "100%" }}
@@ -183,7 +206,45 @@ export default function Nursing() {
           </button>
           <p className="font-bold text-base ml-3">지번주소 : {address}</p>
         </div>
-        <button onClick={nursingRoom}>수유실</button>
+        {/* <div className="flex justify-around mt-3">
+          <p>시설명</p>
+          <p>주소</p>
+        </div> */}
+        {/* <div className="border-b-medium border-gray-200"></div> */}
+        {/* <div style={{ height: "calc(100vh - 60vh)", overflowY: "auto" }}>
+          {lactations.map((lactation: Lactation, index: number) => (
+            <div key={index} className="flex justify-around p-2 border-b border-gray-200">
+              <p className="flex-1 text-center">{lactation.facilityName}</p>
+              <div className="absolute left-1/2 transform -translate-x-1/2 border-r h-full border-gray-300"></div>
+              <p className="flex-1 text-center">{lactation.address}</p>
+            </div>
+          ))}
+          <p>나는야</p>
+            <p>주스 될거야</p>
+            <p>나는야</p>
+            <p>케첩 될거야</p>
+            <p>나는야</p>
+            <p>춤을 출거야</p>
+            <p>멋쟁이 토마토</p>
+            <p>토마토 !</p>
+        </div> */}
+
+        <div style={{ height: "calc(100vh - 60vh)", overflowY: "auto" }}>
+          <Table isStriped aria-label="Example static collection table" className="mt-3">
+            <TableHeader>
+              <TableColumn className="text-center text-bold text-sm">시설명</TableColumn>
+              <TableColumn className="text-center text-bold text-sm">주소</TableColumn>
+            </TableHeader>
+            <TableBody>
+              {lactations.map((lactation: Lactation, index: number) => (
+                <TableRow key={index}>
+                  <TableCell>{lactation.facilityName}</TableCell>
+                  <TableCell>{lactation.address}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );
