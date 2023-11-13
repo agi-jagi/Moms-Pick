@@ -204,31 +204,8 @@ export default function Nursing() {
           <button type="button" onClick={handleClick}>
             <Image src={search} alt="marker" width={30} height={30} />
           </button>
-          <p className="font-bold text-base ml-3">지번주소 : {address}</p>
+          <p className="font-bold text-base ml-3">주소 : {address}</p>
         </div>
-        {/* <div className="flex justify-around mt-3">
-          <p>시설명</p>
-          <p>주소</p>
-        </div> */}
-        {/* <div className="border-b-medium border-gray-200"></div> */}
-        {/* <div style={{ height: "calc(100vh - 60vh)", overflowY: "auto" }}>
-          {lactations.map((lactation: Lactation, index: number) => (
-            <div key={index} className="flex justify-around p-2 border-b border-gray-200">
-              <p className="flex-1 text-center">{lactation.facilityName}</p>
-              <div className="absolute left-1/2 transform -translate-x-1/2 border-r h-full border-gray-300"></div>
-              <p className="flex-1 text-center">{lactation.address}</p>
-            </div>
-          ))}
-          <p>나는야</p>
-            <p>주스 될거야</p>
-            <p>나는야</p>
-            <p>케첩 될거야</p>
-            <p>나는야</p>
-            <p>춤을 출거야</p>
-            <p>멋쟁이 토마토</p>
-            <p>토마토 !</p>
-        </div> */}
-
         <div style={{ height: "calc(100vh - 60vh)", overflowY: "auto" }}>
           <Table isStriped aria-label="Example static collection table" className="mt-3">
             <TableHeader>
@@ -238,8 +215,8 @@ export default function Nursing() {
             <TableBody>
               {lactations.map((lactation: Lactation, index: number) => (
                 <TableRow key={index}>
-                  <TableCell>{lactation.facilityName}</TableCell>
-                  <TableCell>{lactation.address}</TableCell>
+                  <TableCell className="text-center">{lactation.facilityName}</TableCell>
+                  <TableCell className="text-center">{lactation.address}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

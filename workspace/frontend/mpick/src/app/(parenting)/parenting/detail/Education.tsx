@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Image from "next/image";
-import marker from "../../../../../public/marker.png";
 import search from "../../../../../public/search.png";
 import instance from "@/app/_config/axios";
 import Box from "@mui/material/Box";
@@ -18,6 +17,20 @@ declare global {
   }
 }
 
+interface Kindergarten {
+  kinderName: string;
+  establish: string;
+  address: string;
+  hpAddress: string;
+}
+
+interface Daycare {
+  dayCareCenterName: string;
+  establish: string;
+  address: string;
+  hpAddress: string;
+}
+
 export default function Education() {
   const [markers, setMarkers] = useState<any>([]);
   const [maps, setMaps] = useState<any>();
@@ -25,6 +38,12 @@ export default function Education() {
   const [latitude, setLatitude] = useState<any>("");
   const [longitude, setLongitude] = useState<any>("");
   const [education, setEducation] = useState<number>(0);
+  const [kindergartens, setKindergartens] = useState<Kindergarten[]>([
+    { kinderName: "", establish: "", address: "", hpAddress: "" },
+  ]);
+  const [daycares, setDaycares] = useState<Daycare[]>([
+    { dayCareCenterName: "", establish: "", address: "", hpAddress: "" },
+  ]);
 
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -163,13 +182,64 @@ export default function Education() {
     setEducation(tabName);
   };
 
+  const getKindergarten = async () => {
+    const data = {
+      latitude: latitude,
+      longitude: longitude,
+    };
+
+    try {
+      const response = await instance.post("/api/info/kinder", data);
+      console.log("유치원 정보 조회 성공", response.data.response);
+      const kindergartenData: Kindergarten[] = response.data.response.map((item: Kindergarten) => ({
+        kinderName: item.kinderName,
+        establish: item.establish,
+        address: item.address,
+        hpAddress: item.hpAddress,
+      }));
+      setKindergartens(kindergartenData);
+    } catch (error) {
+      console.log("유치원 정보 조회 실패", error);
+    }
+  };
+
+  console.log("유치원 정보", kindergartens);
+
+  const getDaycare = async () => {
+    const data = {
+      latitude: latitude,
+      longitude: longitude,
+    };
+
+    try {
+      const response = await instance.post("/api/info/daycare", data);
+      console.log("어린이집 정보 조회 성공", response.data.response);
+      const daycareData: Daycare[] = response.data.response.map((item: Daycare) => ({
+        dayCareCenterName: item.dayCareCenterName,
+        establish: item.establish,
+        address: item.address,
+        hpAddress: item.hpAddress,
+      }));
+      setDaycares(daycareData);
+    } catch (error) {
+      console.log("어린이집 정보 조회 실패", error);
+    }
+  };
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      getKindergarten();
+      getDaycare();
+    }
+  }, [latitude, longitude]);
+
   console.log("위도", latitude);
   console.log("경도", longitude);
 
   console.log("교육", education);
   return (
     <div>
-      <div style={{ padding: "0 10px" }}>
+      <div style={{ padding: "0 1px" }}>
         <div id="map" style={{ width: "auto", height: "40vh", marginTop: "10px" }}></div>
         <div
           className="flex mt-5"
@@ -178,7 +248,7 @@ export default function Education() {
           <button type="button" onClick={handleClick}>
             <Image src={search} alt="marker" width={30} height={30} />
           </button>
-          <p className="font-bold text-base ml-3">지번주소 : {address}</p>
+          <p className="font-bold text-base ml-3">주소 : {address}</p>
         </div>
         <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
           <Tabs value={education} onChange={selectedEducation} centered>
@@ -187,8 +257,7 @@ export default function Education() {
           </Tabs>
         </Box>
       </div>
-      {/* <ScrollShadow> */}
-      <div style={{ height: "calc(100vh - 60vh)", overflow: "scroll", padding: "0 10px" }}>
+      <div style={{ height: "calc(100vh - 60vh)", overflow: "auto", padding: "0 1px" }}>
         <Table isStriped aria-label="Example static collection table" className="mt-3">
           <TableHeader>
             <TableColumn className="text-center text-bold text-sm">기관명</TableColumn>
@@ -197,24 +266,33 @@ export default function Education() {
             <TableColumn className="text-center text-bold text-sm">사이트</TableColumn>
           </TableHeader>
           <TableBody>
-            {education === 0 ? (
-              <TableRow>
-                <TableCell>어린이집</TableCell>
-                <TableCell>국립</TableCell>
-                <TableCell>주소</TableCell>
-                <TableCell>바로가기</TableCell>
-              </TableRow>
-            ) : (
-              <TableRow>
-                <TableCell>유치원</TableCell>
-                <TableCell>국립</TableCell>
-                <TableCell>주소</TableCell>
-                <TableCell>바로가기</TableCell>
-              </TableRow>
-            )}
+            {education === 0
+              ? daycares.map((daycare, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="text-center">{daycare.dayCareCenterName}</TableCell>
+                    <TableCell className="text-center">{daycare.establish}</TableCell>
+                    <TableCell className="text-center">{daycare.address}</TableCell>
+                    <TableCell className="text-center">
+                      <a href={daycare.hpAddress} target="_blank" rel="noopener noreferrer">
+                        이동
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : kindergartens.map((kindergarten, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="text-center">{kindergarten.kinderName}</TableCell>
+                    <TableCell className="text-center">{kindergarten.establish}</TableCell>
+                    <TableCell>{kindergarten.address}</TableCell>
+                    <TableCell className="text-center">
+                      <a href={kindergarten.hpAddress} target="_blank" rel="noopener noreferrer">
+                        이동
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
-        {/* </ScrollShadow> */}
       </div>
     </div>
   );
