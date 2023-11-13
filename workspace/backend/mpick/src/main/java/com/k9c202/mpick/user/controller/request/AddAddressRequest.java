@@ -10,12 +10,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
+// TODO: 2023-11-09 request 입력값 형식 체크하는 코드 전반적으로 추가하기
 @Data
 public class AddAddressRequest {
 
     // TODO: 2023-11-13 예외 메세지 작성
+    // TODO: 2023-11-13   decimal(19,16) 나중에 추가
     @NotEmpty
-    // decimal(19,16) 나중에 추가
     private BigDecimal latitude;
 
     // TODO: 2023-11-13 String은 반드시 NotBlank 사용
