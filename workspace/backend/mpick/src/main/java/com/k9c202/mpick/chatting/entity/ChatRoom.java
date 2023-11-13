@@ -43,6 +43,7 @@ public class ChatRoom {
         this.buyerUnreadCount = buyerUnreadCount;
         this.sellerUnreadCount = sellerUnreadCount;
         this.lastChatMessage = lastChatMessage;
+        // TODO: 2023-11-13 초기 값은 이곳에 정의하기
     }
 
     public void increaseBuyerUnreadCount(){

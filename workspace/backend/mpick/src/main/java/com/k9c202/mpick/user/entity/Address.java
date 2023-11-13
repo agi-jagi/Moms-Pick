@@ -19,6 +19,7 @@ public class Address {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    // TODO: 2023-11-13 BigDecimal -> Double로 수정 
     @Column(precision = 19, scale = 16, nullable = false)
     private BigDecimal latitude;
 

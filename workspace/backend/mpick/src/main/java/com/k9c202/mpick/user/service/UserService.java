@@ -203,6 +203,7 @@ public class UserService {
     private User getUserEntity(String loginId) {
         Optional<User> findUser = userRepository.findOneByLoginId(loginId);
         if (findUser.isEmpty()) {
+            // TODO: 2023-11-13 메세지 하드코딩 하지 말기  
             throw new UsernameNotFoundException("유저를 찾을 수 없습니다.");
         }
         return findUser.get();

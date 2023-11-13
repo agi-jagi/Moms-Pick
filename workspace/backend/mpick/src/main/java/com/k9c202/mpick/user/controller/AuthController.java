@@ -57,6 +57,7 @@ public class AuthController {
 
     // 민감한 정보 체크는 GET이 아닌 POST 요청
     // 아이디 중복체크
+    // TODO: 2023-11-13 Response<?> 사용하지 않기 
     @PostMapping("/checks/id")
 //    public CommonResponse<?> idCheck(@RequestParam String loginId){
     public CommonResponse<?> idCheck(@RequestBody CheckLoginIdRequest checkLoginIdRequest){

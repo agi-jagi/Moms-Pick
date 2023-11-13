@@ -69,6 +69,7 @@ public class ChatService {
     }
 
     // 특정 유저 아이디로 채팅방 목록 불러오는 함수
+    // TODO: 2023-11-13 ?? chatRoomRepository.findAllByUserLoginId(loginId);
     public List<ChatRoomResponse> getChatRooms(String loginId) {
 //        chatRoomRepository.findAllByUserLoginId(loginId);
         // ** 리스트타입.stream().map(함수).collcet(Collectors.toList()) **
@@ -78,6 +79,7 @@ public class ChatService {
     }
 
     // 로그인 아이디, 채팅방id로 채팅메세지 불러오는 함수
+    // TODO: 2023-11-13 checkBuyer 함수로 대체. boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
     public List<ChatMessageResponse> getChatMessages(String loginId, Long chatRoomId){
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
         // 판매자인지 구매자인지 판단
@@ -102,6 +104,7 @@ public class ChatService {
     @Transactional
     public ChatRoomDto createChatRoom(String loginId, Long tradeId){
         ChatRoom chatRoom = chatRoomRepository.findByTradeIdAndUserLoginId(tradeId,loginId).orElse(null);
+        // TODO: 2023-11-13 .buyerUnreadCount(0)은 ChatRoomEntity에서 설정하기
         if (chatRoom == null) {
             chatRoom = chatRoomRepository.save(ChatRoom.builder()
                     .trade(tradeRepository.getReferenceById(tradeId))
@@ -110,9 +113,11 @@ public class ChatService {
                     .sellerUnreadCount(0)
                     .build());
         }
+        // TODO: 2023-11-13 ?? 체크 필요. return convertChatRoomToChatRoomDto(chatRoom);
         return convertChatRoomToChatRoomDto(chatRoom);
     }
 
+    // TODO: 2023-11-13 수정 체크
     public ChatRoomDto convertChatRoomToChatRoomDto(ChatRoom chatRoom) {
         return ChatRoomDto.builder()
                 .chatRoomId(chatRoom.getId())
@@ -133,7 +138,11 @@ public class ChatService {
 
     @Transactional
     public ChatMessageResponse addChatMessage(String loginId, ChatMessageRequest chatMessageRequest) {
+        // TODO: 2023-11-13 findById -> findByIdWithUser 커스텀
         ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequest.getChatRoomId()).orElseThrow();
+        // TODO: 2023-11-13 checkBuyer 함수 따로 정의하기. chatRoom.getUser().getLoginId().equals(loginId)는 알아보기 어려운 형태
+        //         .getLoginId() 부터는 n+1 문제 발생
+        //         boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
         boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoom(chatRoom)
@@ -144,6 +153,7 @@ public class ChatService {
                 .build();
         ChatMessage save = chatMessageRepository.save(chatMessage);
         chatRoom.setLastChatMessage(save);
+        // TODO: 2023-11-13 if-else문 지양하기
         if(isBuyer){
             chatRoom.increaseSellerUnreadCount();
             chatRoom.resetBuyerUnreadCount();
@@ -160,6 +170,7 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequest.getChatRoomId()).orElseThrow();
         // 구매자/판매자 여부 체크
         boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
+        // TODO: 2023-11-13 checkBuyer 함수 따로 사용하기
         // 구매자인 경우 구매자가 읽지 않은 메세지 수 초기화
         if(isBuyer) {
             chatRoom.resetBuyerUnreadCount();

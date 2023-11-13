@@ -26,6 +26,7 @@ import java.io.IOException;
 public class UserController {
     // TODO: 2023-11-07 테스트코드
     // TODO: 2023-11-11 관리자 페이지
+    // TODO: 2023-11-13 에러 처리 
 
     // 로그인 아이디는 자주 활용되기 때문에 jwt/SecurityUtils에서 getCurrentLoginId() 정의하여 사용 -> SecurityUtils.getCurrentLoginId();
     // 여러 방법 가능
