@@ -1,5 +1,7 @@
 package com.k9c202.mpick.info.service;
 
+import com.k9c202.mpick.info.controller.component.BabyMealInfoDto;
+import com.k9c202.mpick.info.controller.component.PageCountDto;
 import com.k9c202.mpick.info.controller.request.BabyMealInfoRequest;
 import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
@@ -47,8 +49,17 @@ public class InfoService {
         return dayCareCenterQueryRepository.findDayCareCenterByLocation(request.getLatitude(), request.getLongitude());
     }
 
-    public List<BabyMealInfoListResponse> babyMealList(BabyMealInfoRequest request) {
+    public BabyMealInfoListResponse babyMealList(BabyMealInfoRequest request) {
 
-        return babyMealQueryRepository.findBabyMealBySubCategory(request.getSubMealCategory(), request.getPage());
+        PageCountDto pageCount = babyMealQueryRepository.babyMealMaxPage(request.getSubMealCategory());
+
+        List<BabyMealInfoDto> babyMealInfoDtos = babyMealQueryRepository.findBabyMealBySubCategory(request.getSubMealCategory(), request.getPage());
+
+        BabyMealInfoListResponse result = BabyMealInfoListResponse.builder()
+                .maxCount(pageCount.getMaxCount())
+                .maxPage(pageCount.getMaxPage())
+                .babyMealInfoDtoList(babyMealInfoDtos)
+                .build();
+        return result;
     }
 }

@@ -1,9 +1,12 @@
 package com.k9c202.mpick.info.repository;
 
+import com.k9c202.mpick.info.controller.component.BabyMealInfoDto;
+import com.k9c202.mpick.info.controller.component.PageCountDto;
 import com.k9c202.mpick.info.controller.response.BabyMealInfoListResponse;
 import com.k9c202.mpick.info.entity.SubMealCategory;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.apache.lucene.index.DocIDMerger;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,10 +21,20 @@ public class BabyMealQueryRepository {
 
     public BabyMealQueryRepository(EntityManager em) { this.queryFactory = new JPAQueryFactory(em); }
 
-    public List<BabyMealInfoListResponse> findBabyMealBySubCategory(SubMealCategory subMealCategory, Integer page) {
+    public PageCountDto babyMealMaxPage(SubMealCategory subMealCategory) {
+        return queryFactory
+                .select(Projections.constructor(PageCountDto.class,
+                        babyMeal.count().divide(10).add(1).longValue(),
+                        babyMeal.count()))
+                .from(babyMeal)
+                .where(babyMeal.subMealCategory.eq(subMealCategory))
+                .fetchOne();
+    }
+
+    public List<BabyMealInfoDto> findBabyMealBySubCategory(SubMealCategory subMealCategory, Integer page) {
 
         return queryFactory
-                .select(Projections.constructor(BabyMealInfoListResponse.class,
+                .select(Projections.constructor(BabyMealInfoDto.class,
                         babyMeal.id,
                         babyMeal.mealName))
                 .from(babyMeal)
