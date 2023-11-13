@@ -33,10 +33,10 @@ public class ESTrade {
     @Field(type = FieldType.Keyword)
     private String price;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String mainCategory;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String subCategory;
 
     @Field(type = FieldType.Keyword)
