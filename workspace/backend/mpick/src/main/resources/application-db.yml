@@ -8,7 +8,7 @@ spring:
   jpa:
     hibernate:
 #      ddl-auto: none 나중에 적용할 값
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
