@@ -1,6 +1,7 @@
 package com.k9c202.mpick.info.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
+import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
 import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
 import com.k9c202.mpick.info.service.InfoService;
@@ -36,5 +37,14 @@ public class InfoController {
             @RequestBody KindergartenInfoRequest request) {
 
         return CommonResponse.OK(infoService.kinderList(request));
+    }
+
+    @Operation(summary = "어린이집 검색 기능", description = "어린이집 검색 기능")
+    @PostMapping("/daycare")
+    public CommonResponse<?> searchDayCare(
+            Authentication authentication,
+            @RequestBody DayCareCenterInfoRequest request) {
+
+        return CommonResponse.OK(infoService.dayCareList(request));
     }
 }
