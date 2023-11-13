@@ -1,14 +1,10 @@
 package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
-import com.k9c202.mpick.user.controller.request.CheckEmailRequest;
-import com.k9c202.mpick.user.controller.request.CheckLoginIdRequest;
-import com.k9c202.mpick.user.controller.request.CheckNicknameRequest;
 import com.k9c202.mpick.user.controller.request.JoinUserRequest;
 import com.k9c202.mpick.user.controller.response.JoinUserResponse;
 import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.service.AuthService;
-import com.k9c202.mpick.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,26 +53,27 @@ public class AuthController {
 
     // 민감한 정보 체크는 GET이 아닌 POST 요청
     // 아이디 중복체크
+    // TODO: 2023-11-13 Response<?> 사용하지 않기 
     @PostMapping("/checks/id")
 //    public CommonResponse<?> idCheck(@RequestParam String loginId){
-    public CommonResponse<?> idCheck(@RequestBody CheckLoginIdRequest checkLoginIdRequest){
-        authService.checkDuplicatedLoginId(checkLoginIdRequest.getLoginId());
+    public CommonResponse<?> idCheck(@RequestBody String loginId){
+        authService.checkDuplicatedLoginId(loginId);
         return CommonResponse.OK(null);
     }
 
     // 닉네임 중복체크
     @PostMapping("/checks/nickname")
 //    public CommonResponse<?> nicknameCheck(@RequestParam String nickname){
-    public CommonResponse<?> nicknameCheck(@RequestBody CheckNicknameRequest checkNicknameRequest){
-        authService.checkDuplicatedNickname(checkNicknameRequest.getNickname());
+    public CommonResponse<?> nicknameCheck(@RequestBody String nickname){
+        authService.checkDuplicatedNickname(nickname);
         return CommonResponse.OK(null);
     }
 
     // 이메일 중복체크
     @PostMapping("/checks/email")
 //    public CommonResponse<?> emailCheck(@RequestParam String email){
-    public CommonResponse<?> emailCheck(@RequestBody CheckEmailRequest checkEmailRequest){
-        authService.checkDuplicatedEmail(checkEmailRequest.getEmail());
+    public CommonResponse<?> emailCheck(@RequestBody String email){
+        authService.checkDuplicatedEmail(email);
         return CommonResponse.OK(null);
     }
 

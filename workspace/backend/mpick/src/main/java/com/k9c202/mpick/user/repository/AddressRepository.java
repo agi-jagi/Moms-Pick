@@ -18,7 +18,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Optional<Address> findByUserLoginIdAndIsSet(String loginId, boolean isSet);
 
-    //// 미해결 ////
+    // TODO: 2023-11-13 미해결
     void deleteByIdAndUserLoginId(Long id, String loginId);
 
 }

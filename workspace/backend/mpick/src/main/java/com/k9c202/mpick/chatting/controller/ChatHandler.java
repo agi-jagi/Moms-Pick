@@ -38,7 +38,6 @@ public class ChatHandler extends TextWebSocketHandler {
             //      }
     // Map<채팅방 아이디(key타입), 세션 리스트(value타입)> (Map: 파이썬에서의 딕셔너리, key-value)
     // ConcurrentHashMap을 사용하여 동시성 문제 해결
-    // TODO: 2023-11-07 List<WebSocketSession> -> Set<WebSocketSession>로 수정
     private Map<Long, Set<WebSocketSession>> rooms = new ConcurrentHashMap<>();
 
     // (2) sessions : 접속한 모든 웹소켓 클라이언트 모음 (Set)

@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.Random;
 
+// TODO: 2023-11-13 메일 템플릿 사용 
 @Slf4j
 @Service
 @Transactional
