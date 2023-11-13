@@ -4,20 +4,24 @@ import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.AddAddressRequest;
 import com.k9c202.mpick.user.controller.request.UpdateAddressRequest;
 import com.k9c202.mpick.user.controller.response.AddressResponse;
+import com.k9c202.mpick.user.service.AddressQueryService;
 import com.k9c202.mpick.user.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/users/addresses")
 public class AddressController {
 
     private final AddressService addressService;
+    private final AddressQueryService addressQueryService;
+
     // TODO: 2023-11-13 JWT는 반드시 컨트롤러에서 꺼내서 나가기
     //      서비스단 들어가기 전에는 반드시 검증이 된 정보들만 들어가야 함
 
@@ -34,7 +38,7 @@ public class AddressController {
     // 내 위치 목록 조회
     @GetMapping
     public CommonResponse<List<AddressResponse>> addressList(){
-        return CommonResponse.OK(addressService.addressList());
+        return CommonResponse.OK(addressQueryService.addressList());
     }
 
     // 내 위치 추가

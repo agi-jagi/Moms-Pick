@@ -3,6 +3,7 @@ package com.k9c202.mpick.user.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.global.response.ErrorResponse;
+import com.k9c202.mpick.user.service.RedisQueryService;
 import com.k9c202.mpick.user.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ public class JwtFilter extends GenericFilterBean {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private final TokenProvider tokenProvider;
     private final RedisService redisService;
+    private final RedisQueryService redisQueryService;
     private final ObjectMapper objectMapper;
 
 //    public JwtFilter(TokenProvider tokenProvider) {
@@ -84,7 +86,7 @@ public class JwtFilter extends GenericFilterBean {
     // 로그아웃하면 redis에 accessToken 등록하여 사용하지 않을 것이라는 정보 저장
     // redis에 accesstoken이 있으면 로그아웃 됐다는 의미
     private boolean isLogout(String accessToken) {
-        String value = redisService.getValues(accessToken);
+        String value = redisQueryService.getValues(accessToken);
         return redisService.checkExistsValue(value);
     }
 

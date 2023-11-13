@@ -15,7 +15,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class RedisService {
+
     private final RedisTemplate<String, Object> redisTemplate;
 
     public void setValues(String key, String data) {
@@ -26,15 +28,6 @@ public class RedisService {
     public void setValues(String key, String data, Duration duration) {
         ValueOperations<String, Object> values = redisTemplate.opsForValue();
         values.set(key, data, duration);
-    }
-
-    @Transactional(readOnly = true)
-    public String getValues(String key) {
-        ValueOperations<String, Object> values = redisTemplate.opsForValue();
-        if (values.get(key) == null) {
-            return "false";
-        }
-        return (String) values.get(key);
     }
 
     public void deleteValues(String key) {
@@ -48,12 +41,6 @@ public class RedisService {
     public void setHashOps(String key, Map<String, String> data) {
         HashOperations<String, Object, Object> values = redisTemplate.opsForHash();
         values.putAll(key, data);
-    }
-
-    @Transactional(readOnly = true)
-    public String getHashOps(String key, String hashKey) {
-        HashOperations<String, Object, Object> values = redisTemplate.opsForHash();
-        return Boolean.TRUE.equals(values.hasKey(key, hashKey)) ? (String) redisTemplate.opsForHash().get(key, hashKey) : "";
     }
 
     public void deleteHashOps(String key, String hashKey) {

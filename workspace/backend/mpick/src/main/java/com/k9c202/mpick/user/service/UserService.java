@@ -40,6 +40,7 @@ import java.util.Random;
 
 import static com.k9c202.mpick.user.entity.UserStatus.*;
 
+// TODO: 2023-11-13 질문) getUserInfo를 UserQueryService로 따로 분리하면 getUserEntity 함수는?
 @RequiredArgsConstructor
 @Service
 @Transactional

@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 @Transactional
-//@Component("userDetailsService")
+// @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -33,7 +33,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     // UserRepository에서 정보를 찾도록 Security에서 정의한 loadUserByname함수 재정의
     // loadUserByUsername의 반환값과 로그인 시 입력받은 id, password 정보를 비교하여 로그인
     @Override
-//    @Transactional
     public UserDetails loadUserByUsername(final String loginId) {
         return userRepository.findOneByLoginId(loginId)
                 // entity 클래스를 security의 UserDetails로 변환

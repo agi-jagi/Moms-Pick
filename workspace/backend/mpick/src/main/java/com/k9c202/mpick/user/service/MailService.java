@@ -27,6 +27,7 @@ public class MailService {
     private final UserRepository userRepository;
     private final JavaMailSender emailSender;
     private final RedisService redisService;
+    private final RedisQueryService redisQueryService;
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
@@ -92,7 +93,7 @@ public class MailService {
     // 인증코드 검증
     public EmailVerificationResponse verifiedCode(String email, String authCode) {
         this.checkDuplicatedEmail(email);
-        String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
+        String redisAuthCode = redisQueryService.getValues(AUTH_CODE_PREFIX + email);
         boolean authResult = redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode);
 //        System.out.println("redisAuthCode = " + redisAuthCode);
 //        System.out.println("authCode = " + authCode);
