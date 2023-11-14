@@ -14,13 +14,9 @@ import "swiper/css/pagination";
 
 import axios from "axios";
 
-// 대분류 카테고리 클릭 시 해당 대분류 id를 가지고 필터링 페이지로 !
-// 대분류 카테고리 컴포넌트 분리 필요
+// 대분류 카테고리 클릭 시 해당 대분류를 가지고 필터링 페이지로 !
 // 반경 설정 컴포넌트 분리 필요
-// 검색창 컴포넌트 분리 필요
 // 상단 배너 넣어야 함
-// 목록 보여주는 건 컴포넌트로 분리할지 고민중
-//
 
 export default function Trade() {
   const [isClient, setIsClient] = useState(false);
@@ -267,8 +263,9 @@ export default function Trade() {
                   isPressable
                   onPress={() => setTradeId(item.trade_id)}
                 >
-                  <Link href={"/trade/detail/" + tradeId}>
+                  
                     <CardBody className="overflow-visible p-0 h-[13rem]">
+                    <Link href={"/trade/detail/" + tradeId}>
                       <Image
                         shadow="sm"
                         radius="lg"
@@ -276,8 +273,8 @@ export default function Trade() {
                         alt={item.title}
                         src={item.save_file_name}
                       />
+                      </Link>
                     </CardBody>
-                  </Link>
                   <CardFooter className="text-small justify-between">
                     <b>{item.title}</b>
                     <p className="text-default-500">{item.price}</p>

@@ -2,21 +2,15 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface TradeState {
-  postItemList: any[] 
-  postId: number | null
-  postTitle: string | null
-  setPostId: (postId: number) => void
-  setPostTitle: (postTitle: string) => void
+  searchWord: string | null
+  setSearchWord: (searchWord: string) => void
 }
 
 export const useTradeStore = create<TradeState>()(
   persist(
     (set) => ({
-      postItemList: [],
-      postId: null,
-      postTitle: "기본 제목",
-      setPostId: (postId: number) => set({ postId }),
-      setPostTitle: (postTitle: string) => set({ postTitle }),
+      searchWord: null,
+      setSearchWord: (searchWord: string) => set({ searchWord }),
     }),
     {
       name: "trade-storage",
