@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @SuperBuilder
@@ -15,7 +16,7 @@ public class BabyMealDetailInfoResponse {
 
     private String mealName;
 
-    private String cookMethod;
+    private List<String> cookMethod;
 
     private String materialName;
 

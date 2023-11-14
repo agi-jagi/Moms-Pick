@@ -1,5 +1,6 @@
 package com.k9c202.mpick.info.repository;
 
+import com.k9c202.mpick.info.controller.component.BabyMealDetailDto;
 import com.k9c202.mpick.info.controller.component.BabyMealInfoDto;
 import com.k9c202.mpick.info.controller.component.PageCountDto;
 import com.k9c202.mpick.info.controller.response.BabyMealDetailInfoResponse;
@@ -48,10 +49,10 @@ public class BabyMealQueryRepository {
                 .fetch();
     }
 
-    public BabyMealDetailInfoResponse findOneById(Long id) {
+    public BabyMealDetailDto findOneById(Long id) {
 
         return queryFactory
-                .select(Projections.constructor(BabyMealDetailInfoResponse.class,
+                .select(Projections.constructor(BabyMealDetailDto.class,
                         babyMeal.mealName,
                         babyMeal.cookMethod,
                         babyMeal.materialName,
