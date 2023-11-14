@@ -7,7 +7,7 @@ import Education from "./Education";
 
 export default function Detail() {
   const { parenting } = useParentingStore();
-  console.log("뭐게", parenting);
+
   return (
     <div>
       {parenting === "수유" && <Nursing />}
