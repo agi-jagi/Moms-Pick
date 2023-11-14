@@ -53,10 +53,14 @@ public class User {
     @CreatedDate
     private LocalDateTime createdDate;
 
+    @Enumerated(value = EnumType.STRING)
+    private UserAuthority userAuthority;
+
     protected User() {
         this.status = UserStatus.ACTIVE;
         this.profileImage = null;
         this.userIntro = null;
+        this.userAuthority = UserAuthority.ROLE_USER; // 기본값은 ROLE_USER
     }
 
     @Builder
