@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import profile from "../../../../public/profile.png";
 import { IoIosArrowForward } from "react-icons/io";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import boy from "../../../../public/boy.png";
@@ -18,6 +17,8 @@ import Modal from "@mui/material/Modal";
 import BabyForm from "./(component)/BabyForm";
 import UpdateBabyInfo from "./(component)/UpdateBabyInfo";
 import instance from "@/app/_config/axios";
+import Swal from "sweetalert2";
+import MyInfo from "./MyInfo";
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,11 +33,7 @@ const style = {
 };
 
 export default function MyFamily() {
-  const [userNickName, setUserNickName] = useState<string>("");
-  const [userAddress, setUserAddress] = useState<string>("");
-
   const [babyList, setBabyList] = useState<any[]>([]);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newBaby, setNewBaby] = useState<any>({
     babyName: "",
@@ -44,7 +41,6 @@ export default function MyFamily() {
     babyBirth: "",
     babyOrder: 0,
   });
-
   const [updateModal, setUpdateModal] = useState<boolean>(false);
   const [selectedBaby, setSelectedBaby] = useState<any>({});
 
@@ -129,7 +125,13 @@ export default function MyFamily() {
       registerBaby();
       closeModal();
     } else {
-      alert("아이 정보를 모두 입력해 주세요.");
+      Swal.fire({
+        icon: "warning",
+        title: "<div style='font-size:20px'>아이 정보를 모두 입력해 주세요.</div>",
+        confirmButtonColor: "#5E9FF2",
+      });
+
+      return;
     }
   };
 
@@ -144,35 +146,18 @@ export default function MyFamily() {
   };
 
   useEffect(() => {
-    const date = new Date();
-    const today = date.toLocaleDateString("ko-kr");
-    instance
-      .get("/api/users")
-      .then((res) => {
-        setUserNickName(res.data.response.nickname);
-      })
-      .catch((err) => {});
-    instance
-      .get("/api/users/addresses")
-      .then((res) => {
-        for (let i = 0; res.data.response.length; i++) {
-          if (res.data.response[i].isSet) {
-            const address = res.data.response[i].addressString;
-            const addressSplit = address.split(" ");
-            for (let j = 0; addressSplit.length; j++) {
-              if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
-                setUserAddress(addressSplit[j]);
-              }
-            }
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     getBabyInfo();
   }, []);
+
+  const babyMonths = (birthDate: string) => {
+    const inputDate: any = new Date(birthDate);
+    const currentDate: any = new Date();
+    const monthsDifference =
+      currentDate.getMonth() -
+      inputDate.getMonth() +
+      12 * (currentDate.getFullYear() - inputDate.getFullYear());
+    return monthsDifference;
+  };
 
   return (
     <div
@@ -183,27 +168,9 @@ export default function MyFamily() {
         backgroundColor: "white",
       }}
     >
-      <div className="flex justify-between">
-        <div className="flex justify-between">
-          <Image
-            src={profile}
-            alt="profile"
-            width={70}
-            height={70}
-            style={{ borderRadius: "100%" }}
-          />
-          <div className="flex items-center ml-8">
-            <div>
-              <p className="font-bold text-base">{userNickName}</p>
-              <p>최근 위치 : {userAddress}</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center">
-          <IoIosArrowForward size="30" />
-        </div>
-      </div>
+      <MyInfo />
       {babyList.map((baby: any, index: number) => {
+        const birth = babyMonths(baby.babyBirth);
         return (
           <div
             key={index}
@@ -240,6 +207,7 @@ export default function MyFamily() {
                 <div>
                   <p className="font-bold text-xl">{baby.babyName}</p>
                   <p className="text-lg">{baby.babyBirth}</p>
+                  <p className="text-lg">{birth}개월</p>
                 </div>
               </div>
             </div>
@@ -272,7 +240,7 @@ export default function MyFamily() {
           </div>
         </div>
       </div>
-      <Modal open={isModalOpen} onClose={closeModal}>
+      <Modal open={isModalOpen} onClose={closeModal} className="z-0">
         <Box sx={style}>
           <div>
             <BabyForm
@@ -284,11 +252,7 @@ export default function MyFamily() {
               closeModal={closeModal}
             ></BabyForm>
             <div className="flex justify-center mt-8">
-              <Button
-                onClick={addNewBaby}
-                className="w-full"
-                style={{ backgroundColor: "#5E9FF2", color: "white" }}
-              >
+              <Button onClick={addNewBaby} className="w-full bg-[#5E9FF2] text-white">
                 추가
               </Button>
             </div>

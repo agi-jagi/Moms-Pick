@@ -1,5 +1,6 @@
 package com.k9c202.mpick.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.k9c202.mpick.user.jwt.JwtFilter;
 import com.k9c202.mpick.user.jwt.TokenProvider;
 import com.k9c202.mpick.user.service.RedisService;
@@ -24,7 +25,7 @@ public class SecurityConfig {
     @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 // tokenProvider를 매개변수로 받을 수 있도록 수정
-        public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider, RedisService redisService) throws Exception {
+        public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider, RedisService redisService, ObjectMapper objectMapper) throws Exception {
         http
                 .csrf().disable()
                 .sessionManagement(sessionManagement ->
@@ -38,8 +39,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 //  JwtFilter 필터 설정
-                .addFilterBefore(new JwtFilter(tokenProvider, redisService), UsernamePasswordAuthenticationFilter.class)
-                ;
+                .addFilterBefore(new JwtFilter(tokenProvider, redisService, objectMapper), UsernamePasswordAuthenticationFilter.class);
         // HttpSecurity 안에 builder 有
         return http.build();
 

@@ -1,5 +1,6 @@
 package com.k9c202.mpick.user.service;
 
+import com.amazonaws.SdkClientException;
 import com.k9c202.mpick.trade.service.S3Service;
 import com.k9c202.mpick.user.controller.request.UpdateUserInfoRequest;
 import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
@@ -15,6 +16,7 @@ import com.k9c202.mpick.user.repository.UserQueryRepository;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.client.ResponseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,7 @@ import java.util.Random;
 
 import static com.k9c202.mpick.user.entity.UserStatus.*;
 
+// TODO: 2023-11-13 ❓) getUserInfo를 UserQueryService로 따로 분리하면 getUserEntity 함수는?
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -46,12 +49,12 @@ public class UserService {
 
     // object에 종속된 변수
     private final UserRepository userRepository;
-    private final UserQueryRepository userQueryRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisService redisService;
     private final S3Service s3Service;
+    private final MailService mailService;
+    private final AuthService authService;
 
     // 생성자, 같은 이름으로 정의, 실제 객체를 만들 때 사용
     // UserService userService = new UserService(userRepository)에서 UserService에 대한 정의
@@ -66,68 +69,6 @@ public class UserService {
     // builder 형식으로 생성자 대신 사용
     // 생성자 형식 -> User a = new User(nickname,password,status,....)
     // 아래는 builder 형식
-
-    // 회원가입
-    public JoinUserResponse signup(UserDto userDto) {
-        
-        checkDuplicatedLoginId(userDto.getLoginId());
-        checkDuplicatedEmail(userDto.getEmail());
-        checkDuplicatedNickname(userDto.getNickname());
-
-        User user = User.builder()
-                .loginId(userDto.getLoginId())
-                .password(passwordEncoder.encode(userDto.getPassword())) // 패스워드 암호화
-                .nickname(userDto.getNickname())
-                .email(userDto.getEmail())
-                .build();
-        // build가 return하는 타입이 User (.build 이후 User)
-
-        // save -> JpaRepository에 정의돼있음
-        User savedUser = userRepository.save(user);
-
-        return JoinUserResponse.of(savedUser);
-    }
-
-    // 로그인 아이디 중복체크
-    public void checkDuplicatedLoginId(String loginId) {
-        boolean isExistLoginId = userQueryRepository.existLoginId(loginId);
-        if (isExistLoginId) {
-            throw new IllegalArgumentException("로그인 아이디 중복");
-        }
-    }
-
-    // 닉네임 중복체크
-    public void checkDuplicatedNickname(String nickname) {
-        boolean isExistNickname = userQueryRepository.existNickname(nickname);
-        if (isExistNickname) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "닉네임 중복");
-//            throw new IllegalArgumentException("닉네임 중복");
-        }
-    }
-
-    // 이메일 중복체크
-    public void checkDuplicatedEmail(String email) {
-        boolean isExistEmail = userQueryRepository.existEmail(email);
-        if (isExistEmail) {
-            throw new IllegalArgumentException("이메일 중복");
-        }
-    }
-
-    // 로그인
-    public String login(LoginDto loginDto) {
-        // 인증에 필요한 정보 authenticationToken에 저장
-        UsernamePasswordAuthenticationToken authenticationToken =
-                // 입력받은 id, password 정보 사용
-                // loadUserByUsername의 반환값과 비교하여 일치여부 체크
-                new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
-
-        // SecurityContext에 인증 여부(authentication) 저장
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        // 인증여부(authentication)를 context에 저장
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return tokenProvider.createToken(authentication);
-    }
 
     // 정보 조회
     public UserInfoResponse getUserInfo() {
@@ -163,16 +104,46 @@ public class UserService {
         user.editStatus(WITHDRAW);
     }
 
-    // TODO: 2023-11-05 UpdateUserInfoRequest 수정
     // 이메일 수정
-    public void updateEmail (String loginId, String email) {}
+    public void changeEmail (String loginId, String newEmail, String authCode) {
+        User user = getUserEntity(loginId);
+        EmailVerificationResponse emailVerificationResponse = mailService.verifiedCode(newEmail, authCode);
+        if (emailVerificationResponse.isSucceeded()) {
+            user.editEmail(newEmail);
+        } else {
+//            throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "인증코드가 일치하지 않습니다.");
+        }
+    }
 
     // 닉네임 수정
+    public void changeNickname (String loginId, String newNickname) {
+        User user = getUserEntity(loginId);
+        authService.checkDuplicatedNickname(newNickname);
+        user.editNickname(newNickname);
+    }
 
     // 소개글 수정
+    public void changeUserIntro (String loginId, String newUserIntro) {
+        User user = getUserEntity(loginId);
+        user.editUserIntro(newUserIntro);
+    }
 
-
-//    // 회원 정보 수정
+    // 프로필 이미지 수정
+    public void changeProfileImage (String loginId, MultipartFile profileImg) throws IOException {
+        User user = getUserEntity(loginId);
+        try {
+            String profileUrl = s3Service.upload(profileImg, "profiles/");
+            user.editProfileImage(profileUrl);
+            // TODO: 현재는 2023-11-11 ec2서버에 저장 후 s3서버로 전송하는 방식 -> s3서버에 바로 저장하는 방식으로 변경 + 에러 내용 수정
+            // s3 서버에 저장하기 전 ec2 서버에 임시 파일 만들 때 발생하는 에러
+        } catch (IOException | IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "임시 파일 생성에 실패했습니다.");
+        } catch (SdkClientException exception) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "S3 서버 업로드에 실패했습니다.");
+        }
+    }
+//    // 회원 정보 수정 --> (각각 분리)
 //    public UserInfoResponse updateUserInfo(String loginId, UpdateUserInfoRequest updateUserInfoRequest, MultipartFile profileImg) throws IOException {
 ////            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 ////            String loginId = authentication.getName();
@@ -187,6 +158,7 @@ public class UserService {
 //        /* 아래 조건은 Service가 아닌 request에서 처리
 //        if (updateUserInfoRequest != null) {
 //            if (updateUserInfoRequest.getNickname() != null) {
+//  setNickname -> editNickname (엔티티에서 수정하지 않기. 엔티티에서 setter 사용하지 않기)
 //                user.setNickname(updateUserInfoRequest.getNickname());
 //            }
 //            if (updateUserInfoRequest.getEmail() != null) {
@@ -211,7 +183,8 @@ public class UserService {
         // 사용자가 입력한 password를 암호화한 값과 같은지 비교
         boolean isPasswordCorrect = passwordEncoder.matches(password, user.getPassword());
         if (!isPasswordCorrect) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
     }
@@ -231,6 +204,7 @@ public class UserService {
     private User getUserEntity(String loginId) {
         Optional<User> findUser = userRepository.findOneByLoginId(loginId);
         if (findUser.isEmpty()) {
+            // TODO: 2023-11-13 메세지 하드코딩 하지 말기 ✔
             throw new UsernameNotFoundException("유저를 찾을 수 없습니다.");
         }
         return findUser.get();

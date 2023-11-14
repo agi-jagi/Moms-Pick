@@ -1,11 +1,17 @@
 package com.k9c202.mpick.trade.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.k9c202.mpick.chatting.entity.ChatRoom;
+import com.k9c202.mpick.chatting.repository.ChatRoomRepository;
+import com.k9c202.mpick.elateicSearch.dto.ESTradeDto;
+import com.k9c202.mpick.elateicSearch.repository.ESRepository;
+import com.k9c202.mpick.elateicSearch.service.ESService;
 import com.k9c202.mpick.global.function.CommonFunction;
 import com.k9c202.mpick.trade.controller.component.ImageSaveForm;
 import com.k9c202.mpick.trade.controller.component.MainCategoryDto;
 import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
+import com.k9c202.mpick.trade.controller.request.TradeCompleteRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
 import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
@@ -19,6 +25,7 @@ import com.k9c202.mpick.user.repository.AddressRepository;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -71,16 +78,10 @@ public class TradeService {
     private final WishRepository wishRepository;
 
     private final TradeMonthQueryRepository tradeMonthQueryRepository;
+    //프론트: 여기 밑에 한줄 주석처리 (밑에 한 군데 더있음)
+    private final ESService esService;
 
-    public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
-
-        TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
-
-        List<TradeSearchResponse> result = tradeQueryRepository.tradeFilterContainer(queryRequest, page);
-
-        return result;
-    }
-
+    private final ChatRoomRepository chatRoomRepository;
 
     // 주소 로직 추가해야함
     public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles, String loginId) throws IOException {
@@ -98,6 +99,8 @@ public class TradeService {
                     s3Service.upload(multipartFile, "static")
             );
         }
+
+
 
         Trade trade = Trade.builder()
                 .category(category)
@@ -144,6 +147,9 @@ public class TradeService {
 //            throw new IOException();
 //        }
 
+        Integer maxMonthId = Integer.MIN_VALUE;
+        Integer minMonthId = Integer.MAX_VALUE;
+
         for (Integer babyMonthId : request.getBabyMonthIds()) {
             BabyMonth babyMonth = babyMonthRepository.findById(babyMonthId).orElseThrow(() -> new NotFoundException("없는 월령입니다."));
 
@@ -153,7 +159,46 @@ public class TradeService {
                             .babyMonth(babyMonth)
                             .build()
             );
+
+            if (babyMonthId > maxMonthId) {
+                maxMonthId = babyMonthId;
+            }
+            if (babyMonthId < minMonthId) {
+                minMonthId = babyMonthId;
+            }
         }
+
+        StringBuilder tMonth = new StringBuilder();
+
+        for (Integer i = minMonthId; i <= maxMonthId; i++) {
+            tMonth.append(i.toString());
+            if (!i.equals(maxMonthId)) {
+                tMonth.append(" ");
+            }
+        }
+
+        String subCategory = "";
+
+        if (request.getSubCategory() != null) {
+            subCategory = request.getSubCategory();
+        }
+
+        //프론트: 여기부터
+        esService.save(
+                ESTradeDto.builder()
+                        .id(tradeId)
+                        .title(trade.getTitle())
+                        .img(trade.getThumbNailImage())
+                        .price(trade.getPrice().toString())
+                        .mainCategory(request.getMainCategory())
+                        .subCategory(subCategory)
+                        .tradeMonth(tMonth.toString())
+                        .status(String.valueOf(trade.getTradeStatus()))
+                        .location(new GeoPoint(address.getLatitude().doubleValue(), address.getLongitude().doubleValue()))
+                        .build()
+        );
+        //여기까지 주석처리
+
 
         return tradeId;
     }
@@ -232,8 +277,8 @@ public class TradeService {
 
 
         return TradeDetailResponse.builder()
-                .Address(trade.getAddress().getAddressString())
-                .nickname(commonFunction.loadUser(loginId).getNickname())
+                .Address(trade.getAddress().getAddressName())
+                .nickname(trade.getUser().getNickname())
                 .tradeStatus(trade.getTradeStatus())
                 .price(trade.getPrice())
                 .tradeExplain(trade.getTradeExplain())
@@ -308,7 +353,7 @@ public class TradeService {
         return tradeAddCategoryForm;
     }
 
-    public void tradeWish(Long tradeId, String loginId) {
+    public String tradeWish(Long tradeId, String loginId) {
         User user = userRepository.findOneByLoginId(loginId).orElseThrow(() -> new NotFoundException("없는 유저입니다."));
 
         Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("존재하지 않는 게시글입니다."));
@@ -316,7 +361,7 @@ public class TradeService {
         Wish wish = wishRepository.findByUserIdAndTradeId(user.getId(), trade.getId()).orElse(null);
 
         if (user.equals(trade.getUser())) {
-            return;
+            return "내 게시물입니다.";
         }
 
         if (wish == null) {
@@ -330,12 +375,16 @@ public class TradeService {
             trade.increaseWishCount();
 
             tradeRepository.save(trade);
+
+            return "찜 등록";
         } else {
             wishRepository.delete(wish);
 
             trade.decreaseWishCount();
 
             tradeRepository.save(trade);
+
+            return "찜 해제";
         }
     }
 
@@ -349,5 +398,16 @@ public class TradeService {
             trade.tradeStatusDelete();
             tradeRepository.save(trade);
         }
+    }
+
+    public void completeTrade(TradeCompleteRequest request) {
+
+        ChatRoom chatRoom = chatRoomRepository.findById(request.getChatRoomId()).orElseThrow(() -> new NotFoundException("존재하지 않는 채팅방입니다."));
+
+        Trade trade = tradeRepository.findById(chatRoom.getTrade().getId()).orElseThrow(() -> new NotFoundException("존재하지 않는 판매글입니다."));
+
+        trade.completeTrade(chatRoom.getUser());
+
+        tradeRepository.save(trade);
     }
 }

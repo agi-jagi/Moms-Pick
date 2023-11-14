@@ -2,16 +2,12 @@ package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.CheckEmailCodeRequest;
-import com.k9c202.mpick.user.controller.request.CheckEmailRequest;
 import com.k9c202.mpick.user.controller.request.SendEmailCodeRequest;
 import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
 import com.k9c202.mpick.user.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,7 +25,7 @@ public class EmailController {
         mailService.sendCodeToEmail(sendEmailCodeRequest.getEmail());
 //        return new ResponseEntity<>(HttpStatus.OK);
 //        return ResponseEntity.ok(response);
-        return CommonResponse.OK(null);
+        return CommonResponse.OK("요청이 성공하였습니다.");
     }
 
     // 이메일 인증 코드 확인
