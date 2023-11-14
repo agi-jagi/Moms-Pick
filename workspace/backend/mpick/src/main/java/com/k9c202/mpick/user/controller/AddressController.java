@@ -4,6 +4,7 @@ import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.AddAddressRequest;
 import com.k9c202.mpick.user.controller.request.UpdateAddressRequest;
 import com.k9c202.mpick.user.controller.response.AddressResponse;
+import com.k9c202.mpick.user.jwt.SecurityUtils;
 import com.k9c202.mpick.user.service.AddressQueryService;
 import com.k9c202.mpick.user.service.AddressService;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,21 @@ public class AddressController {
         return CommonResponse.OK(addressService.updateAddress(addressId, updateAddressRequest.toAddressDto()));
     }
 
+    // 기본 주소 설정
+    @PostMapping("/{addressId}")
+    public CommonResponse<?> setDefaultAddress(@PathVariable("addressId") Long addressId) {
+        addressService.setDefaultAddress(SecurityUtils.getCurrentLoginId(), addressId);
+        return CommonResponse.OK(null);
+    }
 
 
 }
+
+
+
+
+
+
+
+
+

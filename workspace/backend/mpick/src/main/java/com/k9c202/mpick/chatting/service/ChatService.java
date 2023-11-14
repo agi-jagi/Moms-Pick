@@ -151,6 +151,7 @@ public class ChatService {
                 .chatRoom(chatRoom)
                 .toSeller(chatRoom.getUser().getLoginId().equals(loginId))
                 .message(chatMessageRequest.getMessage())
+                // TODO: 2023-11-14 초기값 entity에서 정의하기
                 .hideForBuyer(false)
                 .hideForSeller(false)
                 .build();

@@ -43,7 +43,7 @@ public class Address {
         this.longitude = longitude;
         this.addressName = addressName;
         this.addressString = addressString;
-        this.isSet = isSet;
+        this.isSet = false;
     }
 
     public Address editAddress(BigDecimal latitude, BigDecimal longitude, String addressName, String addressString, Boolean isSet) {
@@ -54,5 +54,12 @@ public class Address {
         this.isSet = isSet;
         return this;
     }
+
+    // 기본 주소 설정 여부
+    public Address editIsSet(Boolean isSet) {
+        this.isSet = isSet;
+        return this;
+    }
+
 
 }
