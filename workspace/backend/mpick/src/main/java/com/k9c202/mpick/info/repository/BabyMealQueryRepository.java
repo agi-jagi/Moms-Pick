@@ -25,7 +25,7 @@ public class BabyMealQueryRepository {
     public PageCountDto babyMealMaxPage(SubMealCategory subMealCategory) {
         return queryFactory
                 .select(Projections.constructor(PageCountDto.class,
-                        babyMeal.count().divide(10).add(1).longValue(),
+                        babyMeal.count().divide(12).longValue(),
                         babyMeal.count()))
                 .from(babyMeal)
                 .where(babyMeal.subMealCategory.eq(subMealCategory))
@@ -40,8 +40,8 @@ public class BabyMealQueryRepository {
                         babyMeal.mealName))
                 .from(babyMeal)
                 .where(babyMeal.subMealCategory.eq(subMealCategory))
-                .offset((page.longValue() - 1L)*10)
-                .limit(10)
+                .offset((page.longValue() - 1L)*12)
+                .limit(12)
                 .fetch();
     }
 
