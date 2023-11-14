@@ -3,15 +3,12 @@
 import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import GoBack from "../../../../(auth)/auth/GoBack";
-import instance from "@/app/_config/axios";
-import { Container } from "@mui/system";
-import Image from "next/image";
-import profile from "../../../../../../public/profile.png";
-import { useChattingStore } from "@/store/ChattingStore";
 import TradeInfo from "./tradeinfo";
+import { useOpponent } from "@/store/ChattingStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
+  const { nickName } = useOpponent()
 
   return (
     <div>
@@ -29,7 +26,7 @@ export default function Chatting(props: any) {
         >
           <GoBack />
           <div className="flex justify-center">
-            <p className="font-bold text-3xl">채팅</p>
+            <p className="font-bold text-2xl">{nickName}</p>
           </div>
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />

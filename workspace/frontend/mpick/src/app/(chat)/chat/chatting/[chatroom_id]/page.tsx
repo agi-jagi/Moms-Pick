@@ -7,15 +7,17 @@ import instance from "@/app/_config/axios";
 import { Container } from "@mui/system";
 import Image from "next/image";
 import profile from "../../../../../../public/profile.png";
-import { useChattingStore } from "@/store/ChattingStore";
+import { useChattingStore, useOpponent } from "@/store/ChattingStore";
 import TradeInfo from "../../start/[trade_id]/tradeinfo";
 import { useUnReadStore } from "@/store/UnReadStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any>([]);
+  const [tradeId, setTradeId] = useState<number>()
 
   const { messageStore, setMessageStore } = useChattingStore();
+  const { nickName } = useOpponent()
   const { decrement } = useUnReadStore();
 
   const chattingReload = async (data: any) => {
@@ -39,15 +41,11 @@ export default function Chatting(props: any) {
   };
 
   useEffect(() => {
-    console.log("????", messageStore);
-  }, [messageStore]);
-
-  useEffect(() => {
     instance
       .get(`/api/chattings/${props.params.chatroom_id}`)
       .then((res) => {
-        console.log("???", res);
         setMessageList(res.data.response);
+        setTradeId(res.data.response[0].tradeId)
       })
       .catch((err) => {
         console.log(err);
@@ -74,12 +72,12 @@ export default function Chatting(props: any) {
         >
           <GoBack />
           <div className="flex justify-center">
-            <p className="font-bold text-3xl">채팅</p>
+            <p className="font-bold text-2xl">{nickName}</p>
           </div>
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
-      {/* <TradeInfo /> */}
+      <TradeInfo trade_id={tradeId}/>
       <div>
         <div>
           {messageList.map((message: any, index: number) => {
@@ -127,6 +125,10 @@ export default function Chatting(props: any) {
                     >
                       <Image src={profile} alt="profile" objectFit="cover" />
                     </div>
+                    <div>
+                      <div>
+                        <p>{nickName}</p>
+                      </div>
                     <div
                       className="your-message"
                       style={{
@@ -138,6 +140,7 @@ export default function Chatting(props: any) {
                       }}
                     >
                       {message.message}
+                    </div>
                     </div>
                   </div>
                 )}

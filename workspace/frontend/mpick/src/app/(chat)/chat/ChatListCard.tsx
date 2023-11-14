@@ -7,11 +7,13 @@ import car from "../../../../public/유모차.png";
 import instance from "@/app/_config/axios";
 import { useRouter } from "next/navigation";
 import { useUnReadStore } from "@/store/UnReadStore";
+import { useOpponent } from "@/store/ChattingStore";
 
 export default function Chat() {
   const router = useRouter();
   const [chatList, setChatList] = useState<any>([]);
   const { decrement } = useUnReadStore();
+  const {setNickName} = useOpponent()
 
   const timeCheck = (time: string) => {
     const dateString = time;
@@ -59,6 +61,7 @@ export default function Chat() {
               style={{ margin: "20px 20px 0 20px" }}
               onClick={() => {
                 router.push(`/chat/chatting/${info.chatRoomId}`);
+                setNickName(info.nickname)
                 decrement(info.unreadCount);
               }}
             >

@@ -21,3 +21,14 @@ export const useChattingStore = create<MessageListState>((set) => ({
   setSocket: (socket: any) => set((state) => ({ ...state, socket })),
   setMessageStore: (messageStore: MessageDataState[]) => set({ messageStore }),
 }));
+
+
+interface OpponentState {
+  nickName: string;
+  setNickName: (value: string) => void;
+}
+
+export const useOpponent = create<OpponentState>((set) => ({
+  nickName: '',
+  setNickName: (value) => set(() => ({nickName: value}))
+}))

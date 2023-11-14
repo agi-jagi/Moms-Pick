@@ -3,26 +3,27 @@
 import { useState, useEffect } from "react";
 import instance from "@/app/_config/axios";
 import { Image } from "@nextui-org/react";
+import { useOpponent } from "@/store/ChattingStore";
 
 export default function TradeInfo(props: any) {
   const [tradeImage, setTradeImage] = useState<string>("");
-  const [tradeTitle, setTradeTitle] = useState<string>("");
-  const [tradeNickName, setTradeNickName] = useState<string>("");
-
+  const [tradeData, setTradeData] = useState<any>({})
+  const { setNickName } = useOpponent()
+  
   useEffect(() => {
     instance
       .get(`/api/trades/item/${props.trade_id}`)
       .then((res) => {
-        const tradeData = res.data.response;
-        console.log(tradeData);
-        setTradeImage(tradeData.tradeImages[0]);
-        setTradeTitle(tradeData.title);
-        setTradeNickName(tradeData.nickname);
+        console.log(res.data.response);
+        setTradeData(res.data.response)
+        setNickName(res.data.response.nickname);
+
+        setTradeImage(res.data.response.tradeImages[0]);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [props.trade_id]);
 
   return (
     <div>
@@ -34,11 +35,14 @@ export default function TradeInfo(props: any) {
           width={100}
         />
         <div>
-          <p>{tradeTitle}</p>
-          <p>{tradeNickName}</p>
+          <p>{tradeData.title}</p>
+          <p>{tradeData.tradeBabyMonth}</p>
+          <p>{tradeData.subCategory}</p>
+          <p>{tradeData.price}원</p>
+          <p>{tradeData.tradeStatus}</p>
         </div>
       </div>
-      <hr />
+      <hr style={{ borderTopWidth: "2px", margin: "10px 0" }}/>
     </div>
   );
 }
