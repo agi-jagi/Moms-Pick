@@ -83,16 +83,6 @@ public class TradeService {
 
     private final ChatRoomRepository chatRoomRepository;
 
-    public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
-
-        TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
-
-        List<TradeSearchResponse> result = tradeQueryRepository.tradeFilterContainer(queryRequest, page);
-
-        return result;
-    }
-
-
     // 주소 로직 추가해야함
     public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles, String loginId) throws IOException {
 
@@ -287,7 +277,7 @@ public class TradeService {
 
 
         return TradeDetailResponse.builder()
-                .Address(trade.getAddress().getAddressString())
+                .Address(trade.getAddress().getAddressName())
                 .nickname(trade.getUser().getNickname())
                 .tradeStatus(trade.getTradeStatus())
                 .price(trade.getPrice())
