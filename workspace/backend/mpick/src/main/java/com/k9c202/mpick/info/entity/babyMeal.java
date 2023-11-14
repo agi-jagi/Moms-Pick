@@ -23,7 +23,7 @@ public class babyMeal {
     @Column
     private String mealName;
 
-    @Column
+    @Column(length = 500)
     private String cookMethod;
 
     @Column
