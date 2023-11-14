@@ -8,6 +8,7 @@ import { Container } from "@mui/system";
 import Image from "next/image";
 import profile from "../../../../../../public/profile.png";
 import { useChattingStore } from "@/store/ChattingStore";
+import TradeInfo from "../../start/[trade_id]/tradeinfo";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
@@ -84,6 +85,7 @@ export default function Chatting(props: any) {
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
+      <TradeInfo />
       <div>
         <div>
           {messageList.map((message: any, index: number) => {
