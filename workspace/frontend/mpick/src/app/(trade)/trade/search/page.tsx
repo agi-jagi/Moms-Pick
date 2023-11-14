@@ -1,7 +1,6 @@
 "use client";
 
 import { useTradeStore } from "@/store/TradeStore";
-import { SearchIcon } from "../searchIcon";
 import { useEffect, useState } from "react";
 import {
   Chip,
@@ -30,7 +29,9 @@ import { BiSolidMessageSquareAdd } from "react-icons/bi";
 import axios from "axios";
 import Link from "next/link";
 
-export default function Search() {
+
+export default function Search(props: any) {
+  
 
   const { searchWord, setSearchWord } = useTradeStore();
 
@@ -228,9 +229,17 @@ export default function Search() {
         console.log(err);
       }
     }
+    setFilter대분류(props.searchParams.filter대분류);
     setSearchWord("");
     getAddress();
   }, []);
+
+  useEffect(() => {
+    if (longitude) {
+      searchTrade();
+    }
+  }, [longitude]);
+
 
   return (
     <>
@@ -273,9 +282,7 @@ export default function Search() {
               "!cursor-text",
             ],
           }}
-          // searchWord ? placeholder={searchWord} : placeholder="검색어 입력"
           placeholder={searchWord ? searchWord : "검색어 입력"}
-          // placeholder="검색어 입력"
         ></Input>
         <svg
     aria-hidden="true"
