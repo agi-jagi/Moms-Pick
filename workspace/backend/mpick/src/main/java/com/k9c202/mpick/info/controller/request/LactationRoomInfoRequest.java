@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -12,9 +13,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class LactationRoomInfoRequest {
 
-    @NotEmpty
+    @NotNull
     private BigDecimal latitude;
 
-    @NotEmpty
+    @NotNull
     private BigDecimal longitude;
 }

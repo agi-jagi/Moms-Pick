@@ -11,6 +11,9 @@ import org.apache.lucene.index.DocIDMerger;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static com.k9c202.mpick.info.entity.QbabyMeal.babyMeal;
@@ -25,7 +28,7 @@ public class BabyMealQueryRepository {
     public PageCountDto babyMealMaxPage(SubMealCategory subMealCategory) {
         return queryFactory
                 .select(Projections.constructor(PageCountDto.class,
-                        babyMeal.count().divide(12).longValue(),
+                        babyMeal.count().divide(10).ceil().longValue(),
                         babyMeal.count()))
                 .from(babyMeal)
                 .where(babyMeal.subMealCategory.eq(subMealCategory))
@@ -40,8 +43,8 @@ public class BabyMealQueryRepository {
                         babyMeal.mealName))
                 .from(babyMeal)
                 .where(babyMeal.subMealCategory.eq(subMealCategory))
-                .offset((page.longValue() - 1L)*12)
-                .limit(12)
+                .offset((page.longValue() - 1L)*10)
+                .limit(10)
                 .fetch();
     }
 
