@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.k9c202.mpick.user.jwt.JwtFilter;
 import com.k9c202.mpick.user.jwt.TokenProvider;
 import com.k9c202.mpick.user.service.RedisService;
+import org.springframework.boot.jta.atomikos.AtomikosDependsOnBeanFactoryPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,7 @@ public class SecurityConfig {
     @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 // tokenProvider를 매개변수로 받을 수 있도록 수정
+    // TODO: 2023-11-15 security
         public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider, RedisService redisService, ObjectMapper objectMapper) throws Exception {
         http
                 .csrf().disable()
@@ -34,6 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
                         // 아래 url은 권한 필요X
                         // .antMatchers("/api/login","/api/join","/api/emails/*").permitAll()
+                        .antMatchers("/api/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있어야 접근 가능
                         .antMatchers("/**").permitAll()
                         // 나머지 경로는 권한(인증) 필요
                         .anyRequest().authenticated()

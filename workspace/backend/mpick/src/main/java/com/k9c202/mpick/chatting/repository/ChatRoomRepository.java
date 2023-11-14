@@ -14,7 +14,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     // chatroom.trade.id와 chatroom.user.loginid를 매개변수로 받아서 해당하는 엔티티 반환
     Optional<ChatRoom> findByTradeIdAndUserLoginId(Long tradeId, String loginId);
 
-    // TODO: 2023-11-13 JPQL or querydsl로 findByIdWithUser 커스텀
+    // TODO: 2023-11-13 JPQL or querydsl로 findByIdWithUser 커스텀 🔎
     // JPQL
     // SQL : select * from chat_room join on chat_room.user_id = user.id where chat_room_id = ?
     @Query("select cr from ChatRoom cr join fetch cr.user u where cr.id = :chatRoomId")
