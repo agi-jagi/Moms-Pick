@@ -42,22 +42,6 @@ public class TradeController {
 //    final private int size = 9;
     private final TradeService tradeService;
 
-    @Operation(summary = "판매글 검색 및 필터링(미완성)", description = "판매글 검색 및 필터링(미완성)")
-    @PostMapping
-    public CommonResponse<List<TradeSearchResponse>> search(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Integer page,
-            @RequestBody TradeSearchRequest request) {
-
-        if (page == null) {
-            page = 0;
-        }
-
-        List<TradeSearchResponse> result = tradeService.tradeFilter(request, page, keyword);
-
-        return CommonResponse.OK(result);
-    }
-
     @Operation(summary = "판매글 작성", description = "판매글 작성")
     @PostMapping(value = "/item", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public CommonResponse<Long> tradeAdd(
