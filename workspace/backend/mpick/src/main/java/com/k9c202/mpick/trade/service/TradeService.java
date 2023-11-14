@@ -1,6 +1,8 @@
 package com.k9c202.mpick.trade.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.k9c202.mpick.chatting.entity.ChatRoom;
+import com.k9c202.mpick.chatting.repository.ChatRoomRepository;
 import com.k9c202.mpick.elateicSearch.dto.ESTradeDto;
 import com.k9c202.mpick.elateicSearch.repository.ESRepository;
 import com.k9c202.mpick.elateicSearch.service.ESService;
@@ -78,6 +80,8 @@ public class TradeService {
     private final TradeMonthQueryRepository tradeMonthQueryRepository;
     //프론트: 여기 밑에 한줄 주석처리 (밑에 한 군데 더있음)
     private final ESService esService;
+
+    private final ChatRoomRepository chatRoomRepository;
 
     public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
 
@@ -408,5 +412,12 @@ public class TradeService {
 
     public void completeTrade(TradeCompleteRequest request) {
 
+        ChatRoom chatRoom = chatRoomRepository.findById(request.getChatRoomId()).orElseThrow(() -> new NotFoundException("존재하지 않는 채팅방입니다."));
+
+        Trade trade = tradeRepository.findById(chatRoom.getTrade().getId()).orElseThrow(() -> new NotFoundException("존재하지 않는 판매글입니다."));
+
+        trade.completeTrade(chatRoom.getUser());
+
+        tradeRepository.save(trade);
     }
 }

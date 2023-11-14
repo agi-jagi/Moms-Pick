@@ -91,8 +91,8 @@ public class Trade {
         this.tradeStatus = TradeStatus.삭제됨;
     }
 
-//    public void completeTrade(User buyer) {
-//        this.buyer = buyer;
-//        this.tradeStatus = TradeStatus.
-//    }
+    public void completeTrade(User buyer) {
+        this.buyer = buyer;
+        this.tradeStatus = TradeStatus.판매완료;
+    }
 }

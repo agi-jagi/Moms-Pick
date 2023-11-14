@@ -114,7 +114,7 @@ public class TradeController {
             Authentication authentication,
             @RequestBody TradeCompleteRequest request) {
 
-
+        tradeService.completeTrade(request);
 
         return CommonResponse.OK("판매 완료 처리되었습니다.");
     }
