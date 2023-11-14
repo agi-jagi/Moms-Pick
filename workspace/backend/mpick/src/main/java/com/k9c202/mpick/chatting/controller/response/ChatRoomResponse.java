@@ -15,7 +15,7 @@ public class ChatRoomResponse {
     private String profileImage;    // 상대방 프로필 이미지
     private Long tradeId;   // 거래 관련 정보
     private String tradeTitle;
-    private String tradeImage;
+    private String tradeThumbnailImage;
     private String lastMessage; // 마지막 메세지
     private LocalDateTime lastDateTime; // 마지막 메세지 시간
     private Integer unreadCount;    // 내가 안읽은 숫자
@@ -29,7 +29,7 @@ public class ChatRoomResponse {
                     .profileImage(chatRoomDto.getBuyerProfileImage())   // 구매자 프로필 이미지 (상대방 정보 필요)
                     .tradeId(chatRoomDto.getTradeId())
                     .tradeTitle(chatRoomDto.getTradeTitle())
-                    .tradeImage(chatRoomDto.getTradeImage())
+                    .tradeThumbnailImage(chatRoomDto.getTradeThumbnailImage())
                     .lastMessage(chatRoomDto.getLastMessage())
                     .lastDateTime(chatRoomDto.getLastDateTime())
                     .unreadCount(chatRoomDto.getSellerUnreadCount())    // 판매자가 안 읽은 메세지 수 (내가 안 읽은 메세지)
@@ -42,7 +42,7 @@ public class ChatRoomResponse {
                     .profileImage(chatRoomDto.getSellerProfileImage())  // 판매자 프로필 이미지 (상대방 정보 필요)
                     .tradeId(chatRoomDto.getTradeId())
                     .tradeTitle(chatRoomDto.getTradeTitle())
-                    .tradeImage(chatRoomDto.getTradeImage())
+                    .tradeThumbnailImage(chatRoomDto.getTradeThumbnailImage())
                     .lastMessage(chatRoomDto.getLastMessage())
                     .lastDateTime(chatRoomDto.getLastDateTime())
                     .unreadCount(chatRoomDto.getBuyerUnreadCount()) // 구매자가 안 읽은 메세지 수 (내가 안 읽은 메세지)

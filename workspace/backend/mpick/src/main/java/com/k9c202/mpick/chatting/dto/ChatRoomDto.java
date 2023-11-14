@@ -25,14 +25,14 @@ public class ChatRoomDto {
     private String buyerProfileImage;
     private Long tradeId;
     private String tradeTitle;
-    private String tradeImage;
+    private String tradeThumbnailImage;
     private String lastMessage;
     private LocalDateTime lastDateTime;
     private Integer sellerUnreadCount;
     private Integer buyerUnreadCount;
 
     @Builder
-    private ChatRoomDto(Long chatRoomId, String sellerLoginId, String sellerNickname, String sellerProfileImage, String buyerLoginId, String buyerNickname, String buyerProfileImage, Long tradeId, String tradeTitle, String tradeImage, String lastMessage, LocalDateTime lastDateTime, Integer sellerUnreadCount, Integer buyerUnreadCount) {
+    private ChatRoomDto(Long chatRoomId, String sellerLoginId, String sellerNickname, String sellerProfileImage, String buyerLoginId, String buyerNickname, String buyerProfileImage, Long tradeId, String tradeTitle, String tradeThumbnailImage, String lastMessage, LocalDateTime lastDateTime, Integer sellerUnreadCount, Integer buyerUnreadCount) {
         this.chatRoomId = chatRoomId;
         this.sellerLoginId = sellerLoginId;
         this.sellerNickname = sellerNickname;
@@ -42,7 +42,7 @@ public class ChatRoomDto {
         this.buyerProfileImage = buyerProfileImage;
         this.tradeId = tradeId;
         this.tradeTitle = tradeTitle;
-        this.tradeImage = tradeImage;
+        this.tradeThumbnailImage = tradeThumbnailImage;
         this.lastMessage = lastMessage;
         this.lastDateTime = lastDateTime;
         this.sellerUnreadCount = sellerUnreadCount;

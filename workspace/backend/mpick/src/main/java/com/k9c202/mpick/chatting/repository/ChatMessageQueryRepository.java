@@ -13,8 +13,7 @@ import static com.k9c202.mpick.chatting.entity.QChatMessage.chatMessage;
 import static com.k9c202.mpick.chatting.entity.QChatRoom.chatRoom;
 import static com.k9c202.mpick.trade.entity.QTrade.trade;
 
-// 채팅메세지에서 거래id에 접근하려면,
-// 채팅 메세지 -> 채팅방 -> 거래
+// 채팅메세지에서 거래id에 접근하려면, 채팅 메세지 -> 채팅방 -> 거래
 // n+1문제 때문에 fetch join으로 미리 정보 불러오기
 @Slf4j
 @Repository

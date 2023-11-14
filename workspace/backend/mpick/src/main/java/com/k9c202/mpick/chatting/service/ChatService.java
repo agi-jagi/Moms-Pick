@@ -50,6 +50,7 @@ public class ChatService {
                     .profileImage(chatRoom.getTrade().getUser().getProfileImage())
                     .tradeId(chatRoom.getTrade().getId())
                     .tradeTitle(chatRoom.getTrade().getTitle())
+                    .tradeThumbnailImage(chatRoom.getTrade().getThumbNailImage())
                     // 구매자의 읽지 않은 메세지 개수 정보
                     .unreadCount(chatRoom.getBuyerUnreadCount())
                     // Optional.ofNullable : LastChatMessage가 null일 수도 있기 때문에 Optional로 만듦
@@ -69,6 +70,7 @@ public class ChatService {
                     .profileImage(chatRoom.getUser().getProfileImage())
                     .tradeId(chatRoom.getTrade().getId())
                     .tradeTitle(chatRoom.getTrade().getTitle())
+                    .tradeThumbnailImage(chatRoom.getTrade().getThumbNailImage())
                     // 판매자가 읽지 않은 메세지 개수
                     .unreadCount(chatRoom.getSellerUnreadCount())
                     .lastMessage(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getMessage).orElse(null))
@@ -144,6 +146,7 @@ public class ChatService {
                 .buyerUnreadCount(chatRoom.getBuyerUnreadCount())
                 .tradeId(chatRoom.getTrade().getId())
                 .tradeTitle(chatRoom.getTrade().getTitle())
+                .tradeThumbnailImage(chatRoom.getTrade().getThumbNailImage())
                 .lastMessage(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getMessage).orElse(null))
                 .lastDateTime(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getCreatedDate).orElse(null))
                 .build();
