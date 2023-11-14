@@ -5,6 +5,7 @@ import com.k9c202.mpick.chatting.controller.request.ChatMessageRequest;
 import com.k9c202.mpick.chatting.dto.ChatRoomDto;
 import com.k9c202.mpick.chatting.entity.ChatMessage;
 import com.k9c202.mpick.chatting.entity.ChatRoom;
+import com.k9c202.mpick.chatting.repository.ChatMessageQueryRepository;
 import com.k9c202.mpick.chatting.repository.ChatMessageRepository;
 import com.k9c202.mpick.chatting.repository.ChatRoomQueryRepository;
 import com.k9c202.mpick.chatting.repository.ChatRoomRepository;
@@ -34,6 +35,7 @@ public class ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final TradeRepository tradeRepository;
     private final UserRepository userRepository;
+    private ChatMessageQueryRepository chatMessageQueryRepository;
 
     // chatRoom entity를 response로 변환
     private ChatRoomResponse convertChatRoomToChatRoomResponse(String loginId, ChatRoom chatRoom) {
@@ -84,7 +86,7 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
         // 판매자인지 구매자인지 판단
         boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
-        return chatMessageRepository.findAllByChatRoomId(chatRoomId).stream()
+        return chatMessageQueryRepository.findAllByChatRoomId(chatRoomId).stream()
                 .map(chatMessage->convertChatMessageToChatMessageResponse(isBuyer,chatMessage))
                 .collect(Collectors.toList());
     }
@@ -94,6 +96,7 @@ public class ChatService {
         return ChatMessageResponse.builder()
                 .chatRoomId(chatMessage.getChatRoom().getId())
                 .chatMessageId(chatMessage.getId())
+                .tradeId(chatMessage.getChatRoom().getTrade().getId())  // tradeId 추가
                 .toMe(chatMessage.getToSeller().equals(!isBuyer))
                 .message(chatMessage.getMessage())
                 .dateTime(chatMessage.getCreatedDate())
