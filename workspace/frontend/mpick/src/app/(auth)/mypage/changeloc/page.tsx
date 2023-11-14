@@ -11,6 +11,7 @@ import marker from "../../../../../public/marker.png";
 
 export default function EditMyInfo() {
   const [searchingAddress, setSearchingAddress] = useState<string>("");
+  const [addressBname, setAddressBname] = useState<string>("");
   const [addressList, setAddressList] = useState<any>([]);
   const [latitude, setLatitude] = useState<number>();
   const [longitude, setLongitude] = useState<number>();
@@ -28,6 +29,7 @@ export default function EditMyInfo() {
   const handleComplete = (data: any) => {
     let fullAddress = data.address;
     let extraAddress = "";
+    setAddressBname(data.bname);
 
     const { addressType, bname, buildingName } = data;
     if (addressType === "R") {
@@ -39,7 +41,7 @@ export default function EditMyInfo() {
       }
       fullAddress += `${extraAddress !== "" ? ` ${extraAddress}` : ""}`;
     }
-    setSearchingAddress(fullAddress);
+    setSearchingAddress(data.address);
   };
 
   const selectAddress = (address: any) => {
@@ -83,7 +85,7 @@ export default function EditMyInfo() {
     const addressData = {
       latitude: latitude,
       longitude: longitude,
-      addressName: searchingAddress,
+      addressName: addressBname,
       addressString: searchingAddress,
       isSet: true,
     };

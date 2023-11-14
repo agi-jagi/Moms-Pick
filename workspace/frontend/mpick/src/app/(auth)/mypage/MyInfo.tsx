@@ -30,15 +30,17 @@ export default function MyInfo() {
       })
       .catch((err) => {});
     instance.get("/api/users/addresses").then((res) => {
+      console.log(res);
       for (let i = 0; res.data.response.length; i++) {
         if (res.data.response[i].isSet) {
-          const address = res.data.response[i].addressString;
-          const addressSplit = address.split(" ");
-          for (let j = 0; addressSplit.length; j++) {
-            if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
-              setUserAddress(addressSplit[j]);
-            }
-          }
+          const address = res.data.response[i].addressName;
+          setUserAddress(address);
+          // const addressSplit = address.split(" ");
+          // for (let j = 0; addressSplit.length; j++) {
+          //   if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
+          //     setUserAddress(addressSplit[j]);
+          //   }
+          // }
         }
       }
     });
