@@ -1,42 +1,63 @@
 "use client";
-import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import nursing from "../../../../public/nursing.png";
+import nursing1 from "../../../../public/nursing1.png";
+import nursing2 from "../../../../public/nursing2.png";
+import nursing3 from "../../../../public/nursing3.png";
 import meal from "../../../../public/meal.png";
+import meal1 from "../../../../public/meal1.png";
+import meal2 from "../../../../public/meal2.png";
+import meal3 from "../../../../public/meal3.png";
+import education from "../../../../public/education.png";
 import education1 from "../../../../public/education1.png";
 import education2 from "../../../../public/education2.png";
-import Carousel from "react-material-ui-carousel";
+import education3 from "../../../../public/education3.png";
+import education22 from "../../../../public/education22.png";
 import Link from "next/link";
+import { useParentingStore } from "@/store/ParentingStore";
+import { useMediaQuery } from "react-responsive";
+import CarouselLink from "./Carousel";
 
 export default function ParentingInfo() {
+  const { parenting, setParenting } = useParentingStore();
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  const imageSize = {
+    display: "block",
+    width: isMobile ? "100%" : "768px",
+    height: isMobile ? "auto" : "1024px",
+    marginTop: "20px",
+    transform: "scale(1.05)",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)", // 강화된 그림자 효과
+    borderRadius: "15px", // 라운드 코너
+    transition: "transform 0.3s ease-in-out,, boxShadow 0.3s ease-in-out", // 부드러운 전환 효과
+  };
+
   return (
     <div>
-      <Carousel
-        cycleNavigation={true}
-        navButtonsAlwaysInvisible={true}
-        autoPlay={true}
-        className="rounded-xl"
-        animation={"slide"}
-        interval={5000}
-      >
-        <a target="_blank" href="https://www.childcare.go.kr/cpin/main1.jsp" rel="noreferrer">
-          <img src="/month/banner1.png" alt="아이사랑" className="w-full h-full"></img>
-        </a>
-        <a target="_blank" href="https://central.childcare.go.kr/ccef/main.jsp" rel="noreferrer">
-          <img src="/month/banner2.png" alt="중앙종합육아지원센터" className="w-full h-full"></img>
-        </a>
-      </Carousel>
+      <CarouselLink></CarouselLink>
 
-      <Link href="/parenting/detail" passHref className="flex flex-col justify-center items-center">
-        <Image src={nursing} alt="수유" className="mb-6 mt-6 w-4/5"></Image>
-      </Link>
-      <Link href="/parenting/detail" passHref className="flex flex-col justify-center items-center">
-        <Image src={meal} alt="식단" className="mb-6 w-4/5"></Image>
-      </Link>
-      <Link href="/parenting/detail" passHref className="flex flex-col justify-center items-center">
-        <Image src={education2} alt="교육기관" className="mb-6 w-4/5"></Image>
-      </Link>
-      <Image src={education1} alt="교육" className="mb-6"></Image>
+      <div style={{ marginLeft: "20px", marginRight: "20px" }}>
+        <Link href="/parenting/detail" passHref onClick={() => setParenting("수유")}>
+          <Image src={nursing1} alt="수유" layout="responsive" style={imageSize}></Image>
+        </Link>
+        <Link href="/parenting/detail" passHref onClick={() => setParenting("식단")}>
+          <Image src={meal1} alt="식단" layout="responsive" style={imageSize}></Image>
+        </Link>
+        <Link href="/parenting/detail" passHref onClick={() => setParenting("교육기관")}>
+          <Image src={education1} alt="교육기관" layout="responsive" style={imageSize}></Image>
+        </Link>
+      </div>
+      {/* <Link href="/parenting/detail" passHref onClick={() => setParenting("교육기관")}>
+        <Image
+          src={education22}
+          alt="교육"
+          layout="responsive"
+          width={isMobile ? 512 : 768}
+          height={isMobile ? 767 : 1024}
+        ></Image>
+      </Link> */}
+      <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }

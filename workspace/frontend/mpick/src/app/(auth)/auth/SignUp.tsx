@@ -89,9 +89,9 @@ export default function SignUp() {
     }
     // if (!userEmailVerify) {
     //   Toast.fire({
-    //     icon: 'error',
-    //     title: '이메일 인증이 필요합니다'
-    //   })
+    //     icon: "error",
+    //     title: "이메일 인증이 필요합니다",
+    //   });
     //   return;
     // }
 
@@ -326,13 +326,13 @@ export default function SignUp() {
               onClick={() => {
                 isWriteAll();
               }}
-              color="primary"
               style={{
                 width: "100%",
                 height: "100%",
+                backgroundColor: "#5E9FF2",
               }}
             >
-              <p className="font-bold text-xl">다음</p>
+              <p className="font-bold text-xl text-white">다음</p>
             </Button>
           </div>
         ) : (
@@ -352,25 +352,25 @@ export default function SignUp() {
               onClick={() => {
                 prevStep();
               }}
-              color="default"
               style={{
                 width: "45%",
                 height: "100%",
+                backgroundColor: "#bbc0c7",
               }}
             >
-              <p className="font-bold text-xl">이전</p>
+              <p className="font-bold text-xl text-white">이전</p>
             </Button>
             <Button
               onClick={() => {
                 signup();
               }}
-              color="primary"
               style={{
                 width: "45%",
                 height: "100%",
+                backgroundColor: "#5E9FF2",
               }}
             >
-              <p className="font-bold text-xl">회원가입</p>
+              <p className="font-bold text-xl text-white">회원가입</p>
             </Button>
           </div>
         )}
