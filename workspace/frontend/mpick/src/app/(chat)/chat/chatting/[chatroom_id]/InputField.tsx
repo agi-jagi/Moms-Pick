@@ -57,7 +57,6 @@ const InputField = (props: any) => {
               message: props.message,
             };
             if (socket && socket.readyState === WebSocket.OPEN) {
-              console.log(1);
               socket.send(JSON.stringify(data));
             }
           }}
