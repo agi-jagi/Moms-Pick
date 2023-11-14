@@ -4,9 +4,11 @@ import com.k9c202.mpick.user.controller.response.AddressResponse;
 import com.k9c202.mpick.user.dto.AddressDto;
 import com.k9c202.mpick.user.entity.Address;
 import com.k9c202.mpick.user.entity.User;
+import com.k9c202.mpick.user.jwt.SecurityUtils;
 import com.k9c202.mpick.user.repository.AddressRepository;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.cluster.metadata.AliasAction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,7 +49,11 @@ public class AddressService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Address address = createAddress(addressDto, user);
         // TODO: 2023-11-13 save -> edit로 수정 ✔
+        // TODO: 2023-11-14 isSet false로 변경하는 방식 수정하기
         Address savedAddress = addressRepository.save(address);
+        List<Address> addresses = addressRepository.findAllByUserLoginId(loginId);
+        makeStatusFalse(addresses);
+        savedAddress.editIsSet(true);
         return AddressResponse.of(savedAddress);
     }
 
@@ -90,8 +96,21 @@ public class AddressService {
         return AddressResponse.of(editedAddress);
     }
 
+    // 기본 주소 설정
+    public AddressResponse setDefaultAddress(String loginId, Long addressId) {
+        List<Address> addresses = addressRepository.findAllByUserLoginId(loginId);
+        makeStatusFalse(addresses);
+        Address address = getMyAddressEntity(addressId);
+        address.editIsSet(true);
+        return AddressResponse.of(address);
+    }
 
-
+    // 기존 주소 목록 설정 여부 false로 만들기
+    private void makeStatusFalse(List<Address> addresses) {
+        for (Address address : addresses) {
+            address.editIsSet(false);
+        }
+    }
 
 
     private static Address createAddress(AddressDto addressDto, User user) {
