@@ -9,6 +9,7 @@ import com.k9c202.mpick.trade.controller.component.ImageSaveForm;
 import com.k9c202.mpick.trade.controller.component.MainCategoryDto;
 import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
+import com.k9c202.mpick.trade.controller.request.TradeCompleteRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
 import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
@@ -403,5 +404,9 @@ public class TradeService {
             trade.tradeStatusDelete();
             tradeRepository.save(trade);
         }
+    }
+
+    public void completeTrade(TradeCompleteRequest request) {
+
     }
 }
