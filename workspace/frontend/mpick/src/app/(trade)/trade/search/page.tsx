@@ -1,6 +1,7 @@
 "use client";
 
 import { useTradeStore } from "@/store/TradeStore";
+import { SearchIcon } from "../searchIcon";
 import { useEffect, useState } from "react";
 import {
   Chip,
@@ -26,7 +27,6 @@ import {
 import FilterIcon from "./FilterIcon";
 import { BsChevronDown } from "react-icons/bs";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
-import { Swiper, SwiperSlide } from "swiper/react";
 import axios from "axios";
 import Link from "next/link";
 
@@ -38,7 +38,6 @@ export default function Search() {
   const [filter대분류, setFilter대분류] = useState<string>("");
   const [filter중분류, setFilter중분류] = useState<string>("");
   const [filter개월, setFilter개월] = useState<number[]>([]);
-  const [ search제목, setSearch제목 ] = useState<string>("");
 
   const [등록open, set등록Open] = useState(false);
   const handleOpen등록 = () => set등록Open(!등록open);
@@ -54,6 +53,8 @@ export default function Search() {
   
   const [longitude, setLongitude] = useState<string>("");
   const [latitude, setLatitude] = useState<string>("");
+
+  const [ nowAddress, setNowAddress ] = useState<string>("");
 
   const [categoryList, setCategoryList] = useState<any>({});
   const mainCategoryList = [
@@ -201,6 +202,7 @@ export default function Search() {
     }
 
     getCategory(); // useEffect 내에서 getCategory 호출
+     // 검색어 초기화
   }, []); // 빈 배열을 전달하여 이펙트가 한 번만 실행되도록 함
 
   useEffect(() => {
@@ -212,11 +214,13 @@ export default function Search() {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(res.data.response[0].latitude);
+        console.log(res.data.response)
+        // console.log(res.data.response[0].latitude);
         for (let i = 0; res.data.response.length; i++) {
           if (res.data.response[i].isSet) {
             setLatitude(res.data.response[i].latitude);
             setLongitude(res.data.response[i].longitude);
+            setNowAddress(res.data.response[i].addressName);
           }
         }
       }
@@ -224,17 +228,98 @@ export default function Search() {
         console.log(err);
       }
     }
+    setSearchWord("");
     getAddress();
   }, []);
 
   return (
     <>
+    {/* 상단 내비바 */}
+    <div className="flex items-center gap-4 ml-4 mt-4">
+      <div className="w-[84px] h-[42px]">
+        <div className="relative w-[94px] h-[94px] top-[-20px] left-[-10px]">
+          <div className="absolute h-[19px] top-[33px] left-[46px] [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#212124] text-[14px] tracking-[0] leading-[18.9px] whitespace-nowrap">
+            {nowAddress}
+          </div>
+          <img className="absolute w-[79px] h-[94px] top-0 left-0" alt="Pin" src="/pin.svg" />
+          <div className="absolute w-[84px] h-[42px] top-[20px] left-[10px]" />
+        </div>
+      </div>
+      <div className="w-[260px] h-[50px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-blue-200 via-green-100 to-cyan-200 text-black shadow-lg">
+        <Input
+          label=""
+          isClearable
+          radius="lg"
+          onValueChange={setSearchWord}
+          className="mr-1.5 ml-1.5"
+          classNames={{
+            label: "text-black/50 dark:text-white/90",
+            input: [
+              "bg-transparent",
+              "text-black/90 dark:text-white/90",
+              "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+            ],
+            innerWrapper: "bg-transparent",
+            inputWrapper: [
+              "shadow-xl",
+              "bg-default-200/50",
+              "dark:bg-default/60",
+              "backdrop-blur-xl",
+              "backdrop-saturate-200",
+              "hover:bg-default-200/70",
+              "dark:hover:bg-default/70",
+              "group-data-[focused=true]:bg-default-200/50",
+              "dark:group-data-[focused=true]:bg-default/60",
+              "!cursor-text",
+            ],
+          }}
+          // searchWord ? placeholder={searchWord} : placeholder="검색어 입력"
+          placeholder={searchWord ? searchWord : "검색어 입력"}
+          // placeholder="검색어 입력"
+        ></Input>
+        <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height="1.5em"
+    role="presentation"
+    viewBox="0 0 24 24"
+    width="1.5em"
+    className="mr-2"
+    onClick={() => {
+      searchTrade();
+      setFilter개월([]);
+      let filter개월String = "";
+    }}
+  >
+    <path
+      d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    />
+    <path
+      d="M22 22L20 20"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    />
+  </svg>
+      </div>
+    </div>
+
+    {/* 검색 페이지 바디 */}
       <div>
         {/* <Button onClick={() => console.log(categoryList)}>리스트 확인</Button> */}
         {/* <Button onClick={searchTrade}>ES 발사 확인</Button> */}
         {/* <Button onClick={() => console.log(searchList)}>ES 리스트 확인</Button> */}
         {/* <Button onClick={() => console.log(filter개월)}>filter개월</Button> */}
         {/* <Button onClick={() => console.log(filter개월String)}>후후</Button> */}
+        {/* <Button onClick={() => console.log(longitude)}>경도</Button> */}
+        {/* <Button onClick={() => console.log(latitude)}>위도</Button> */}
+        
         <div className="flex gap-4 mt-4 justify-center">
           <Chip
             startContent={<FilterIcon />}
@@ -244,7 +329,7 @@ export default function Search() {
             className="shadow-md"
             onClick={() => onOpen()}
           >
-            대분류
+            {filter대분류 ? filter대분류 : "대분류"}
           </Chip>
           <Chip
             startContent={<FilterIcon />}
@@ -254,7 +339,7 @@ export default function Search() {
             className="shadow-md"
             onClick={() => onOpen()}
           >
-            중분류
+            {filter중분류 ? filter중분류 : "중분류"}
           </Chip>
           <Chip
             startContent={<FilterIcon />}
@@ -264,7 +349,7 @@ export default function Search() {
             className="shadow-md"
             onClick={() => onOpen()}
           >
-            개월수
+            {filter개월.length > 0 ? filter개월.join(", ") + "개월" : "개월"}
           </Chip>
         </div>
         <div className="flex justify-between items-center w-full mt-2">
