@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -35,7 +36,7 @@ public class ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final TradeRepository tradeRepository;
     private final UserRepository userRepository;
-    private ChatMessageQueryRepository chatMessageQueryRepository;
+    private final ChatMessageQueryRepository chatMessageQueryRepository;
 
     // chatRoom entity를 response로 변환
     private ChatRoomResponse convertChatRoomToChatRoomResponse(String loginId, ChatRoom chatRoom) {
@@ -43,10 +44,13 @@ public class ChatService {
         if (chatRoom.getUser().getLoginId().equals(loginId)) {
             return ChatRoomResponse.builder()
                     .chatRoomId(chatRoom.getId())
+                    // 판매자 닉네임을 보내줘야 함. 판매자 정보는 trade를 통해서 접근
                     .nickname(chatRoom.getTrade().getUser().getNickname())
+                    // 판매자 프로필 이미지를 보내줘야 함. 판매자 이미지 정보는 trade를 통해서 접근
                     .profileImage(chatRoom.getTrade().getUser().getProfileImage())
                     .tradeId(chatRoom.getTrade().getId())
                     .tradeTitle(chatRoom.getTrade().getTitle())
+                    // 구매자의 읽지 않은 메세지 개수 정보
                     .unreadCount(chatRoom.getBuyerUnreadCount())
                     // Optional.ofNullable : LastChatMessage가 null일 수도 있기 때문에 Optional로 만듦
                     // null이 아니면 map함수가 실행됨. null이면 null
@@ -59,10 +63,13 @@ public class ChatService {
         } else {
             return ChatRoomResponse.builder()
                     .chatRoomId(chatRoom.getId())
+                    // 구매자 닉네임
                     .nickname(chatRoom.getUser().getNickname())
+                    // 구매자 프로필 이미지
                     .profileImage(chatRoom.getUser().getProfileImage())
                     .tradeId(chatRoom.getTrade().getId())
                     .tradeTitle(chatRoom.getTrade().getTitle())
+                    // 판매자가 읽지 않은 메세지 개수
                     .unreadCount(chatRoom.getSellerUnreadCount())
                     .lastMessage(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getMessage).orElse(null))
                     .lastDateTime(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getCreatedDate).orElse(null))
@@ -75,6 +82,7 @@ public class ChatService {
     public List<ChatRoomResponse> getChatRooms(String loginId) {
 //        chatRoomRepository.findAllByUserLoginId(loginId);
         // ** 리스트타입.stream().map(함수).collcet(Collectors.toList()) **
+        // 특정 로그인 아이디에 해당하는 채팅방 정보를 모두 불러오고, chatRoomResponse로 변환하여 return
         return chatRoomQueryRepository.findAllByLoginId(loginId).stream()
                 .map(chatRoom -> convertChatRoomToChatRoomResponse(loginId, chatRoom))
                 .collect(Collectors.toList());
@@ -86,7 +94,8 @@ public class ChatService {
         // 판매자인지 구매자인지 판단
         // boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
         boolean isBuyer = checkBuyer(chatRoom, loginId);
-        return chatMessageRepository.findAllByChatRoomId(chatRoomId).stream()
+        // 특정 채팅방에 해당하는 채팅메세지 정보를 모두 불러오고, chatMessageResponse로 변환하여 return
+        return chatMessageQueryRepository.findAllByChatRoomId(chatRoomId).stream()
                 .map(chatMessage->convertChatMessageToChatMessageResponse(isBuyer,chatMessage))
                 .collect(Collectors.toList());
     }
@@ -97,7 +106,8 @@ public class ChatService {
                 .chatRoomId(chatMessage.getChatRoom().getId())
                 .chatMessageId(chatMessage.getId())
                 .tradeId(chatMessage.getChatRoom().getTrade().getId())  // tradeId 추가
-                .toMe(chatMessage.getToSeller().equals(!isBuyer))
+                // toSeller를 toMe로 가공
+                .toMe(chatMessage.getToSeller().equals(!isBuyer)) // ToSeller:메세지 수신자 정보(DB), isBuyer: 응답 받는 유저 정보
                 .message(chatMessage.getMessage())
                 .dateTime(chatMessage.getCreatedDate())
                 .build();
