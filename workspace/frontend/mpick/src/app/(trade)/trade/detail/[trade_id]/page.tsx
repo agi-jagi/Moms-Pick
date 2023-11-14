@@ -3,6 +3,7 @@
 import GoBack from '@/app/(auth)/auth/GoBack';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { Spinner } from '@nextui-org/react';
 
 import { Card, CardHeader, CardBody, Image, Avatar, Button } from "@nextui-org/react";
 
@@ -68,7 +69,11 @@ export default function Detail(props: any) {
 
   if (detail === null) {
     // item 정보가 없을 경우 로딩 또는 오류 처리를 할 수 있습니다.
-    return <div>Loading...</div>;
+    return <>
+    <div className="absolute top-[40%] left-[40%]">
+    <Spinner label="로딩중입니다" color="primary"/>
+    </div>
+    </>
   }
 
   return (

@@ -1,5 +1,6 @@
 package com.k9c202.mpick.info.service;
 
+import com.k9c202.mpick.info.controller.component.BabyMealDetailDto;
 import com.k9c202.mpick.info.controller.component.BabyMealInfoDto;
 import com.k9c202.mpick.info.controller.component.PageCountDto;
 import com.k9c202.mpick.info.controller.request.BabyMealInfoRequest;
@@ -62,7 +63,9 @@ public class InfoService {
 
     public BabyMealDetailInfoResponse babyMealDetail(Long id) {
 
-        return babyMealQueryRepository.findOneById(id);
+        BabyMealDetailDto babyMealDetailDto =  babyMealQueryRepository.findOneById(id);
+
+        return babyMealDetailDto.toBabyMealDeatailInfoResponse();
     }
 
 }

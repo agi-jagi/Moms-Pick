@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+import TopNavBar from "./TopNavBar";
+import {Spinner} from "@nextui-org/react";
+
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -65,13 +68,7 @@ export default function Trade() {
     <>
       {isClient === true ? (
         <>
-          {/* <div>
-      {postId}
-      <br />
-      {postTitle}
-      <br />
-      <Button onClick={() => setPostId(30)}>postId 변경</Button>
-      </div> */}
+        <TopNavBar />
           {/* 프로필  */}
           <div>
             {/* <div className="flex gap-4 ml-4 items-center mb-4 mt-4">
@@ -83,8 +80,6 @@ export default function Trade() {
       <Avatar isBordered color="danger" src="/nezko.jfif" />
       
     </div> */}
-            {/* <Button className="bg-[#5E9FF2] text-white" onClick={()=>{ router.push('/trade/search')}}>검색페이지</Button>
-    <Button className="bg-[#5E9FF2] text-white" onClick={()=>{ router.push('/trade/detail/1')}}>디테일페이지</Button> */}
 
             {/* <div className="w-[240px] h-[60px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg">
              */}
@@ -93,11 +88,13 @@ export default function Trade() {
             {/* 대분류 카테고리 */}
             <div className="w-[390px] h-[128px] mt-4">
               <div className="relative h-[128px]">
+              <Link href={{ pathname: "/trade/search", query: { filter대분류 : "이유용품" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[6px] left-[178px] object-cover"
                   alt="Image"
                   src="/이유용품.png"
                 />
+                </Link>
                 <div className="absolute w-[390px] h-[128px] top-0 left-0">
                   <div className="top-[6px] left-[10px] absolute w-[62px] h-[54px]">
                     <div className="absolute w-[34px] h-[34px] top-0 left-[14px] bg-white">
@@ -174,11 +171,13 @@ export default function Trade() {
                   </div>
                   <div className="top-[68px] left-[318px] absolute w-[62px] h-[54px]">
                     <div className="absolute w-[34px] h-[34px] top-0 left-[14px] bg-white">
+                    <Link href={{ pathname: "/trade/search", query: { filter대분류 : "기타" } }}>
                       <img
                         className="absolute w-[34px] h-[34px] top-0 left-0"
                         alt="Picture shortcut"
                         src="/기타.png"
                       />
+                      </Link>
                     </div>
                     <div className="absolute w-[38px] h-[14px] top-[40px] left-[14px]">
                       <div className="absolute w-[29px] h-[14px] top-0 left-[3px]" />
@@ -188,46 +187,62 @@ export default function Trade() {
                     </div>
                   </div>
                 </div>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "수유용품" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[6px] left-[101px] object-cover"
                   alt="Image"
                   src="/수유용품.png"
                 />
+                </Link>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "의류" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[68px] left-[101px] object-cover"
                   alt="Image"
                   src="/의류.png"
                 />
+                </Link>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "목욕용품" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[6px] left-[255px] object-cover"
                   alt="Image"
                   src="/목욕용품.png"
                 />
+                </Link>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "유모차" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[6px] left-[24px] object-cover"
                   alt="Image"
                   src="/유모차.png"
                 />
+                </Link>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "장난감" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[6px] left-[332px] object-cover"
                   alt="Image"
                   src="/장난감.png"
                 />
+                </Link>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "기저귀" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[68px] left-[178px] object-cover"
                   alt="Image"
                   src="/기저귀.png"
                 />
+                </Link>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "임산부" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[68px] left-[257px] object-cover"
                   alt="Image"
                   src="/임산부.png"
                 />
+                </Link>
+                <Link href={{ pathname: "/trade/search", query: { filter대분류 : "외출용품" } }}>
                 <img
                   className="absolute w-[34px] h-[34px] top-[70px] left-[24px] object-cover"
                   alt="Image"
                   src="/외출용품.png"
                 />
+                </Link>
               </div>
             </div>
             <div className="w-[161px] h-[21px]">
@@ -286,7 +301,11 @@ export default function Trade() {
           <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
         </>
       ) : (
-        <>로딩중입니다.</>
+        <>
+        <div className="absolute top-[40%] left-[40%]">
+        <Spinner label="로딩중입니다" color="primary"/>
+        </div>
+        </>
       )}
       <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </>
