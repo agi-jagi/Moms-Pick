@@ -19,7 +19,7 @@ public class Address {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // TODO: 2023-11-13 BigDecimal -> Double로 수정 
+    // BigDecimal -> Double로 수정 (수정해야할 파일이 너무 많아서 포기)
     @Column(precision = 19, scale = 16, nullable = false)
     private BigDecimal latitude;
 
@@ -43,6 +43,23 @@ public class Address {
         this.longitude = longitude;
         this.addressName = addressName;
         this.addressString = addressString;
-        this.isSet = isSet;
+        this.isSet = false;
     }
+
+    public Address editAddress(BigDecimal latitude, BigDecimal longitude, String addressName, String addressString, Boolean isSet) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.addressName = addressName;
+        this.addressString = addressString;
+        this.isSet = isSet;
+        return this;
+    }
+
+    // 기본 주소 설정 여부
+    public Address editIsSet(Boolean isSet) {
+        this.isSet = isSet;
+        return this;
+    }
+
+
 }

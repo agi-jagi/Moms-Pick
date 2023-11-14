@@ -2,47 +2,50 @@
 
 import { useEffect } from "react";
 import instance from "../_config/axios";
-import { useChattingStore } from "@/store/ChattingStore";
 import { useUnReadStore } from "@/store/UnReadStore";
+import { useConnecting } from "@/store/WebSocket";
 
 const Server = () => {
   let socket: any;
-  const { unReadCountList, setUnReadCountList } = useUnReadStore();
+  const { count, increment } = useUnReadStore();
+  const { isConnect } = useConnecting();
 
-  useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      const jwt = localStorage.getItem("accessToken");
-      // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
-      socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
-      console.log("socket", socket);
-      socket.onopen = (e: any) => {
-        console.log("connected", e);
-      };
-      socket.onmessage = (e: any) => {
-        console.log("message", e.data.message);
-      };
-    } else {
-      return;
-    }
-
+  const connect = () => {
+    let unReadCountDummy: number = count;
     instance
       .get(`/api/chattings`)
       .then((res) => {
-        console.log("chattingList", res);
         res.data.response.forEach((element: any) => {
-          const unReadData = { chatRoomId: element.chatRoomId, unReadCount: element.unreadCount };
-          const dummy = [...unReadCountList, unReadData];
-          setUnReadCountList(dummy);
+          const unReadData = element.unreadCount;
+          unReadCountDummy += unReadData;
         });
+        increment(unReadCountDummy);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+
+    const jwt = localStorage.getItem("accessToken");
+    // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
+    socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
+    socket.onopen = (e: any) => {
+      console.log("connected", e);
+    };
+    socket.onmessage = (e: any) => {
+      console.log("message", e.data.message);
+      increment(1);
+    };
+  };
 
   useEffect(() => {
-    console.log("unread", unReadCountList);
-  }, [unReadCountList]);
+    if (isConnect) {
+      connect();
+    }
+  }, [isConnect]);
+
+  useEffect(() => {
+    console.log("unread", count);
+  }, [count]);
 
   return <></>;
 };

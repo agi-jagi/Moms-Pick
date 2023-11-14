@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Divider } from "@nextui-org/react";
 import { AiOutlineHome } from "react-icons/ai";
 import { LuBaby } from "react-icons/lu";
-import { PiWechatLogoBold } from "react-icons/pi";
 import { AiOutlineUser } from "react-icons/ai";
+import ChattingRedDot from "./ChattingRedDot";
 
 export default function NavBar() {
   return (
@@ -41,7 +41,7 @@ export default function NavBar() {
           <Link href="/chat">
             <div>
               <div className="flex justify-center">
-                <PiWechatLogoBold size="24" />
+                <ChattingRedDot />
               </div>
               <div className="flex justify-center">
                 <p>채팅</p>

@@ -22,6 +22,7 @@ export default function SignUp() {
   const [certifyInput, setCertifyInput] = useState<boolean>(false);
   const [latitude, setLatitude] = useState<any>("");
   const [longitude, setLongitude] = useState<any>("");
+  const [addressBname, setAddressBname] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const router = useRouter();
 
@@ -148,7 +149,7 @@ export default function SignUp() {
       .post("/api/users/addresses", {
         latitude: latitude,
         longitude: longitude,
-        addressName: address,
+        addressName: addressBname,
         addressString: address,
         isSet: true,
       })
@@ -307,6 +308,7 @@ export default function SignUp() {
               setLongitude={setLongitude}
               address={address}
               setAddress={setAddress}
+              setAddressBname={setAddressBname}
             />
           )}
         </div>

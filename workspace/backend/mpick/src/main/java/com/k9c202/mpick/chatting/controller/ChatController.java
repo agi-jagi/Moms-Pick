@@ -20,7 +20,7 @@ import java.util.List;
 public class ChatController {
     private final ChatService chatService;
 
-    // TODO: 2023-11-07  userDetails.getUsername 부분 수정 고려
+    // TODO: 2023-11-07  userDetails.getUsername 부분 수정 고려 ✔
     // 내 채팅방 목록 조회 (로그인 아이디 사용)
     @GetMapping
     public CommonResponse<List<ChatRoomResponse>> getChatRooms(@AuthenticationPrincipal UserDetails userDetails){

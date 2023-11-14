@@ -3,10 +3,7 @@ package com.k9c202.mpick.trade.controller;
 import com.k9c202.mpick.global.function.CommonFunction;
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
-import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
-import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
-import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
-import com.k9c202.mpick.trade.controller.request.WishRequest;
+import com.k9c202.mpick.trade.controller.request.*;
 import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.entity.Trade;
@@ -44,22 +41,6 @@ public class TradeController {
 
 //    final private int size = 9;
     private final TradeService tradeService;
-
-    @Operation(summary = "판매글 검색 및 필터링(미완성)", description = "판매글 검색 및 필터링(미완성)")
-    @PostMapping
-    public CommonResponse<List<TradeSearchResponse>> search(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Integer page,
-            @RequestBody TradeSearchRequest request) {
-
-        if (page == null) {
-            page = 0;
-        }
-
-        List<TradeSearchResponse> result = tradeService.tradeFilter(request, page, keyword);
-
-        return CommonResponse.OK(result);
-    }
 
     @Operation(summary = "판매글 작성", description = "판매글 작성")
     @PostMapping(value = "/item", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -111,4 +92,14 @@ public class TradeController {
         return CommonResponse.OK(true);
     }
 
+    @Operation(summary = "판매 완료 기능", description = "판매 완료 기능")
+    @PutMapping(value = "/item")
+    public CommonResponse<String> tradeComplete(
+            Authentication authentication,
+            @RequestBody TradeCompleteRequest request) {
+
+        tradeService.completeTrade(request);
+
+        return CommonResponse.OK("판매 완료 처리되었습니다.");
+    }
 }

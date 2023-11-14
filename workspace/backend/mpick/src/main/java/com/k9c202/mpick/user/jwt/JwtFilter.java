@@ -2,12 +2,10 @@ package com.k9c202.mpick.user.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.k9c202.mpick.global.response.CommonResponse;
-import com.k9c202.mpick.global.response.ErrorResponse;
 import com.k9c202.mpick.user.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -11,11 +11,11 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 // TODO: 2023-11-09 request 입력값 형식 체크하는 코드 전반적으로 추가하기
+//      유효성 검증 실패 시 MethodArgumentNotValidException
 @Data
 public class AddAddressRequest {
 
-    // TODO: 2023-11-13 예외 메세지 작성
-    // TODO: 2023-11-13   decimal(19,16) 나중에 추가
+    // TODO: 2023-11-13 예외 메세지 작성 (message = "입력값이 없습니다.") ✔
     @NotEmpty
     private BigDecimal latitude;
 
@@ -26,15 +26,17 @@ public class AddAddressRequest {
     @NotEmpty
     private BigDecimal longitude;
 
-    @NotEmpty
+//    @NotEmpty
+    @NotBlank
     @Size(max = 20)
     private String addressName;
 
-    @NotEmpty
+//    @NotEmpty
+    @NotBlank
     @Size(max = 120)
     private String addressString;
 
-    @NotEmpty   // String
+    @NotEmpty
     private Boolean isSet;
 
     public AddressDto toAddressDto() {

@@ -3,10 +3,12 @@
 import { useEffect } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-// import "./InputField.css";
+import { useRouter } from "next/navigation";
 
 let socket: any;
 const InputField = (props: any) => {
+  const router = useRouter();
+
   useEffect(() => {
     const jwt = localStorage.getItem("accessToken");
     // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
@@ -18,8 +20,7 @@ const InputField = (props: any) => {
 
     if (!socket.onmessage) {
       socket.onmessage = async (e: any) => {
-        console.log("Socket readyState:", socket.readyState);
-        await props.chattingReload(e.data);
+        router.push(`/chat/chatting/${JSON.parse(e.data).chatRoomId}`);
       };
     }
 
@@ -53,7 +54,7 @@ const InputField = (props: any) => {
           onClick={() => {
             props.setMessage("");
             const data = {
-              chatRoomId: props.chatRoomId,
+              tradeId: props.tradeId,
               message: props.message,
             };
             if (socket && socket.readyState === WebSocket.OPEN) {

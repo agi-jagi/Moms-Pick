@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class ChatMessageResponse {
     private Long chatRoomId;
     private Long chatMessageId;
+    private Long tradeId;
     private Boolean toMe;   // 나에게 온 메세지인지 여부
     private String message; // 메세지 내용
     private LocalDateTime dateTime; // 각 메세지 전송 시간
@@ -19,6 +20,7 @@ public class ChatMessageResponse {
         return ChatMessageResponse.builder()
                 .chatRoomId(getChatRoomId())
                 .chatMessageId(getChatMessageId())
+                .tradeId(getTradeId())
                 // toMe값 true <-> false 전환
                 .toMe(!getToMe())
                 .message(getMessage())

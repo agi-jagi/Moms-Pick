@@ -8,21 +8,15 @@ import { Container } from "@mui/system";
 import Image from "next/image";
 import profile from "../../../../../../public/profile.png";
 import { useChattingStore } from "@/store/ChattingStore";
+import TradeInfo from "../../start/[trade_id]/tradeinfo";
+import { useUnReadStore } from "@/store/UnReadStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any>([]);
 
   const { messageStore, setMessageStore } = useChattingStore();
-
-  // const chattingReload = async (data: any) => {
-  //   setMessageList((prevMessageList: any) => {
-  //     const updatedList = [...prevMessageList, JSON.parse(data)];
-  //     console.log("Updated list:", updatedList);
-  //     return updatedList;
-  //   });
-  //   setMessageStore(messageList)
-  // };
+  const { decrement } = useUnReadStore();
 
   const chattingReload = async (data: any) => {
     // setMessageList를 비동기적으로 호출
@@ -30,6 +24,7 @@ export default function Chatting(props: any) {
       setMessageList((prevMessageList: any) => {
         const updatedList = [...prevMessageList, JSON.parse(data)];
         console.log("Updated list:", updatedList);
+        decrement(1);
         resolve(updatedList);
         return updatedList;
       });
@@ -51,7 +46,7 @@ export default function Chatting(props: any) {
     instance
       .get(`/api/chattings/${props.params.chatroom_id}`)
       .then((res) => {
-        console.log(res);
+        console.log("???", res);
         setMessageList(res.data.response);
       })
       .catch((err) => {
@@ -84,6 +79,7 @@ export default function Chatting(props: any) {
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
+      {/* <TradeInfo /> */}
       <div>
         <div>
           {messageList.map((message: any, index: number) => {

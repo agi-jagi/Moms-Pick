@@ -1,6 +1,8 @@
 package com.k9c202.mpick.trade.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.k9c202.mpick.chatting.entity.ChatRoom;
+import com.k9c202.mpick.chatting.repository.ChatRoomRepository;
 import com.k9c202.mpick.elateicSearch.dto.ESTradeDto;
 import com.k9c202.mpick.elateicSearch.repository.ESRepository;
 import com.k9c202.mpick.elateicSearch.service.ESService;
@@ -9,6 +11,7 @@ import com.k9c202.mpick.trade.controller.component.ImageSaveForm;
 import com.k9c202.mpick.trade.controller.component.MainCategoryDto;
 import com.k9c202.mpick.trade.controller.component.TradeAddCategoryForm;
 import com.k9c202.mpick.trade.controller.request.TradeAddRequest;
+import com.k9c202.mpick.trade.controller.request.TradeCompleteRequest;
 import com.k9c202.mpick.trade.controller.request.TradeQueryRequest;
 import com.k9c202.mpick.trade.controller.request.TradeSearchRequest;
 import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
@@ -78,15 +81,7 @@ public class TradeService {
     //프론트: 여기 밑에 한줄 주석처리 (밑에 한 군데 더있음)
     private final ESService esService;
 
-    public List<TradeSearchResponse> tradeFilter(TradeSearchRequest request, Integer page, String keyword) {
-
-        TradeQueryRequest queryRequest = request.toQueryRequest(keyword);
-
-        List<TradeSearchResponse> result = tradeQueryRepository.tradeFilterContainer(queryRequest, page);
-
-        return result;
-    }
-
+    private final ChatRoomRepository chatRoomRepository;
 
     // 주소 로직 추가해야함
     public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles, String loginId) throws IOException {
@@ -282,7 +277,7 @@ public class TradeService {
 
 
         return TradeDetailResponse.builder()
-                .Address(trade.getAddress().getAddressString())
+                .Address(trade.getAddress().getAddressName())
                 .nickname(trade.getUser().getNickname())
                 .tradeStatus(trade.getTradeStatus())
                 .price(trade.getPrice())
@@ -403,5 +398,16 @@ public class TradeService {
             trade.tradeStatusDelete();
             tradeRepository.save(trade);
         }
+    }
+
+    public void completeTrade(TradeCompleteRequest request) {
+
+        ChatRoom chatRoom = chatRoomRepository.findById(request.getChatRoomId()).orElseThrow(() -> new NotFoundException("존재하지 않는 채팅방입니다."));
+
+        Trade trade = tradeRepository.findById(chatRoom.getTrade().getId()).orElseThrow(() -> new NotFoundException("존재하지 않는 판매글입니다."));
+
+        trade.completeTrade(chatRoom.getUser());
+
+        tradeRepository.save(trade);
     }
 }
