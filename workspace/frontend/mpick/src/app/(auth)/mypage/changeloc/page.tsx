@@ -12,10 +12,10 @@ import marker from "../../../../../public/marker.png";
 export default function EditMyInfo() {
   const [searchingAddress, setSearchingAddress] = useState<string>("");
   const [addressList, setAddressList] = useState<any>([]);
-  const [latitude, setLatitude] = useState<number>()
-  const [longitude, setLongitude] = useState<number>()
-  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false)
-  const [chooseAddress, setChooseAddress] = useState<string>('')
+  const [latitude, setLatitude] = useState<number>();
+  const [longitude, setLongitude] = useState<number>();
+  const [isAddressSearch, setIsAddressSearch] = useState<boolean>(false);
+  const [chooseAddress, setChooseAddress] = useState<string>("");
 
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -42,30 +42,30 @@ export default function EditMyInfo() {
     setSearchingAddress(fullAddress);
   };
 
-  const selectAddress = (address:any) => {
-    setLatitude(address.latitude)
-    setLongitude(address.longitude)
-    let dummy = addressList
+  const selectAddress = (address: any) => {
+    setLatitude(address.latitude);
+    setLongitude(address.longitude);
+    let dummy = addressList;
     for (let i = 0; i < dummy.length; i++) {
       if (dummy[i].addressId === address.addressId) {
-        dummy[i].isSet = true
-        setChooseAddress(address.addressString)
+        dummy[i].isSet = true;
+        setChooseAddress(address.addressString);
       } else {
-        dummy[i].isSet = false
+        dummy[i].isSet = false;
       }
     }
-    setAddressList(dummy)
-  }
+    setAddressList(dummy);
+  };
 
-  const selectedAddress = (address:any) => {
+  const selectedAddress = (address: any) => {
     for (let i = 0; i < address.length; i++) {
       if (address[i].isSet) {
-        setLatitude(address[i].latitude)
-        setLongitude(address[i].longitude)
-        setChooseAddress(address[i].addressString)
+        setLatitude(address[i].latitude);
+        setLongitude(address[i].longitude);
+        setChooseAddress(address[i].addressString);
       }
     }
-  }
+  };
 
   const getAddressList = async () => {
     await instance
@@ -76,9 +76,9 @@ export default function EditMyInfo() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
-  let count = 0
+  let count = 0;
   const addAddressList = async () => {
     const addressData = {
       latitude: latitude,
@@ -86,39 +86,38 @@ export default function EditMyInfo() {
       addressName: searchingAddress,
       addressString: searchingAddress,
       isSet: true,
-    }
+    };
     if (count === 1) {
-      count --
+      count--;
       await instance
-      .post("/api/users/addresses", addressData)
-      .then((res) => {
-        console.log(res)
-        getAddressList()
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .post("/api/users/addresses", addressData)
+        .then((res) => {
+          console.log(res);
+          getAddressList();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }
+  };
 
   useEffect(() => {
-    console.log(isAddressSearch)
+    console.log(isAddressSearch);
     if (isAddressSearch) {
-      setIsAddressSearch(false)
-      count ++
-      addAddressList()
+      setIsAddressSearch(false);
+      count++;
+      addAddressList();
     }
-  }, [isAddressSearch])
+  }, [isAddressSearch]);
 
-  // 오류 발생 코드
   useEffect(() => {
     if (addressList.length != 0) {
-      selectedAddress(addressList)
+      selectedAddress(addressList);
     }
-  }, [addressList])
+  }, [addressList]);
 
   useEffect(() => {
-    getAddressList()
+    getAddressList();
   }, []);
 
   return (
@@ -151,30 +150,42 @@ export default function EditMyInfo() {
         </div>
         <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
       </div>
-      {
-        longitude ? 
-        <Map latitude={latitude} setLatitude={setLatitude} longitude={longitude} setLongitude={setLongitude} searchingAddress={searchingAddress} setIsAddressSearch={setIsAddressSearch} chooseAddress={chooseAddress}/>
-        : <></>
-      }
-      <div style={{marginTop:'20px', padding:'0 10px'}}>
-        {
-          addressList.map((address:any, index:number) => {
-            return (
-              <div key={index} style={{marginBottom:'10px'}} onClick={() => {selectAddress(address)}}>
-                <div style={{display:'flex', justifyContent:'start'}}>
-                  {
-                    address.isSet ?
-                    <Image src={marker} alt="marker" width={15} height={15} />
-                    : <div style={{width:'15px', height:'15px', backgroundColor:'white'}}></div>
-                  }
-                  <p className="text-xl" style={{marginLeft:'5px'}}>
-                    {address.addressString}
-                  </p>
-                </div>
+      {longitude ? (
+        <Map
+          latitude={latitude}
+          setLatitude={setLatitude}
+          longitude={longitude}
+          setLongitude={setLongitude}
+          searchingAddress={searchingAddress}
+          setIsAddressSearch={setIsAddressSearch}
+          chooseAddress={chooseAddress}
+        />
+      ) : (
+        <></>
+      )}
+      <div style={{ marginTop: "20px", padding: "0 10px" }}>
+        {addressList.map((address: any, index: number) => {
+          return (
+            <div
+              key={index}
+              style={{ marginBottom: "10px" }}
+              onClick={() => {
+                selectAddress(address);
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "start" }}>
+                {address.isSet ? (
+                  <Image src={marker} alt="marker" width={15} height={15} />
+                ) : (
+                  <div style={{ width: "15px", height: "15px", backgroundColor: "white" }}></div>
+                )}
+                <p className="text-xl" style={{ marginLeft: "5px" }}>
+                  {address.addressString}
+                </p>
               </div>
-            )
-          })
-        }
+            </div>
+          );
+        })}
       </div>
       <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>

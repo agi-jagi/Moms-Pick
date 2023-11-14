@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-export default function AddressSearch(props:any) {
+export default function AddressSearch(props: any) {
   const [maps, setMaps] = useState<any>();
   const [markers, setMarkers] = useState<any>([]);
 
@@ -49,13 +49,13 @@ export default function AddressSearch(props:any) {
           };
           const geocoder = new window.kakao.maps.services.Geocoder();
           geocoder.coord2Address(result[0].x, result[0].y, callback);
-          props.setIsAddressSearch(true)
+          props.setIsAddressSearch(true);
         }
       });
     });
   };
 
-  const markerReload = (data:any) => {
+  const markerReload = (data: any) => {
     window.kakao.maps.load(() => {
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(data, function (result: any, status: any) {
@@ -86,23 +86,26 @@ export default function AddressSearch(props:any) {
           };
           const geocoder = new window.kakao.maps.services.Geocoder();
           geocoder.coord2Address(result[0].x, result[0].y, callback);
-          props.setIsAddressSearch(true)
         }
       });
     });
-  }
+  };
 
   useEffect(() => {
     if (props.searchingAddress) {
-      search(props.searchingAddress)
+      search(props.searchingAddress);
     }
-  }, [props.searchingAddress])
-  
+  }, [props.searchingAddress]);
+
   useEffect(() => {
-    if (props.chooseAddress) {
-      markerReload(props.chooseAddress)
+    if (!window.kakao) {
+      console.log(1);
+      return;
     }
-  }, [props.chooseAddress])
+    if (props.chooseAddress) {
+      markerReload(props.chooseAddress);
+    }
+  }, [props.chooseAddress]);
 
   // script가 완전히 load 된 이후, 실행될 함수
   const onLoadKakaoMap = () => {
