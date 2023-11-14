@@ -86,7 +86,7 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
         // 판매자인지 구매자인지 판단
         boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
-        return chatMessageQueryRepository.findAllByChatRoomId(chatRoomId).stream()
+        return chatMessageRepository.findAllByChatRoomId(chatRoomId).stream()
                 .map(chatMessage->convertChatMessageToChatMessageResponse(isBuyer,chatMessage))
                 .collect(Collectors.toList());
     }
