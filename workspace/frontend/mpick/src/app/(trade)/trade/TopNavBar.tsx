@@ -1,8 +1,13 @@
 'use client';
 import { Button, Input } from "@nextui-org/react";
 import {SearchIcon} from "./searchIcon";
+import { useState } from "react";
+import { useTradeStore } from "@/store/TradeStore";
 
 export default function TopNavBar() {
+
+  const { searchWord, setSearchWord } = useTradeStore();
+
   return (
     <div className="flex items-center gap-4 ml-4 mt-4">
       <div className="w-[84px] h-[42px]">
@@ -19,6 +24,7 @@ export default function TopNavBar() {
           label=""
           isClearable
           radius="lg"
+          onValueChange={setSearchWord}
           classNames={{
             label: "text-black/50 dark:text-white/90",
             input: [
@@ -40,7 +46,9 @@ export default function TopNavBar() {
               "!cursor-text",
             ],
           }}
-          placeholder="검색어 입력"
+          // searchWord ? placeholder={searchWord} : placeholder="검색어 입력"
+          placeholder={searchWord ? searchWord : "검색어 입력"}
+          // placeholder="검색어 입력"
           startContent={
             <SearchIcon />
           }
