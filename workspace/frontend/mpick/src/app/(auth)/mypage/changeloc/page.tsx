@@ -56,6 +56,10 @@ export default function EditMyInfo() {
         dummy[i].isSet = false;
       }
     }
+    instance.post(`/api/users/addresses/${address.addressId}`)
+    .then((res) => {
+      console.log(res)
+    })
     setAddressList(dummy);
   };
 
