@@ -2,6 +2,7 @@ package com.k9c202.mpick.user.controller;
 
 import com.k9c202.mpick.global.response.CommonResponse;
 import com.k9c202.mpick.user.controller.request.CheckEmailCodeRequest;
+import com.k9c202.mpick.user.controller.request.SendEmailCodeRequest;
 import com.k9c202.mpick.user.controller.response.EmailVerificationResponse;
 import com.k9c202.mpick.user.service.MailService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class EmailController {
     @PostMapping("/code-request")
     //    public ResponseEntity sendMessage(@RequestParam("email") @Valid @CustomEmail String email) {
 //    public CommonResponse<Object> sendMessage(@RequestParam("email") @Valid String email) {
-    public CommonResponse<Object> sendMessage(@RequestBody String email) {
-        mailService.sendCodeToEmail(email);
+    public CommonResponse<Object> sendMessage(@RequestBody SendEmailCodeRequest sendEmailCodeRequest) {
+        mailService.sendCodeToEmail(sendEmailCodeRequest.getEmail());
 //        return new ResponseEntity<>(HttpStatus.OK);
 //        return ResponseEntity.ok(response);
         return CommonResponse.OK("요청이 성공하였습니다.");

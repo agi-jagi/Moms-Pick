@@ -94,9 +94,9 @@ public class UserController {
     @PostMapping("/check-password")
     public CommonResponse<?> checkPassword(
 //            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody String password) {
+            @RequestBody CheckPasswordRequest checkPasswordRequest) {
 //        userService.checkPassword(userDetails.getUsername(), checkPasswordRequest.getPassword());
-        userService.checkPassword(SecurityUtils.getCurrentLoginId(), password);
+        userService.checkPassword(SecurityUtils.getCurrentLoginId(), checkPasswordRequest.getPassword());
         return CommonResponse.OK(null);
     }
 
@@ -128,15 +128,15 @@ public class UserController {
 
     // 닉네임 변경
     @PutMapping("/change-nickname")
-    public CommonResponse<?> changeNickname(@RequestBody String nickname) {
-        userService.changeNickname(SecurityUtils.getCurrentLoginId(), nickname);
+    public CommonResponse<?> changeNickname(@RequestBody UpdateNicknameRequest updateNicknameRequest) {
+        userService.changeNickname(SecurityUtils.getCurrentLoginId(), updateNicknameRequest.getNickname());
         return CommonResponse.OK(null);
     }
 
     // 소개글 변경
     @PutMapping("/change-intro")
-    public CommonResponse<?> changeUserIntro(@RequestBody String userIntro) {
-        userService.changeUserIntro(SecurityUtils.getCurrentLoginId(), userIntro);
+    public CommonResponse<?> changeUserIntro(@RequestBody UpdateUserIntroRequest updateUserIntroRequest) {
+        userService.changeUserIntro(SecurityUtils.getCurrentLoginId(), updateUserIntroRequest.getUserIntro());
         return CommonResponse.OK(null);
     }
 
