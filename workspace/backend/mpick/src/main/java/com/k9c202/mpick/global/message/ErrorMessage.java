@@ -13,7 +13,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorMessage {
 
-    // TODO: 11/12/23 에러 메세지 공통화
+    // TODO: 11/12/23 에러 메세지 공통화 ✔
     NO_SUCH_USER("해당하는 유저를 찾을 수 없습니다.");
 
     private final String message;

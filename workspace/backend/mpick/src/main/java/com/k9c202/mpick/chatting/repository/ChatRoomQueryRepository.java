@@ -25,7 +25,6 @@ public class ChatRoomQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    // TODO: 2023-11-07 fetch join이 없을 때 결과 확인하기
     // 로그인 ID로 채팅방 리스트 반환하는 함수 정의 (특정 사용자의 채팅방 목록 불러오기)
     // 반환 타입 ChatRoom(.select(chatRoom))
     // fetchJoin으로 채팅방마다 불러와야 하는 정보들을 한번에 가져오기

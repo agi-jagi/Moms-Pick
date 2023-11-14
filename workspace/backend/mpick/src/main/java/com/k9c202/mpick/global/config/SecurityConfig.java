@@ -39,8 +39,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 //  JwtFilter 필터 설정
-                .addFilterBefore(new JwtFilter(tokenProvider, redisService, objectMapper), UsernamePasswordAuthenticationFilter.class)
-                ;
+                .addFilterBefore(new JwtFilter(tokenProvider, redisService, objectMapper), UsernamePasswordAuthenticationFilter.class);
         // HttpSecurity 안에 builder 有
         return http.build();
 
