@@ -8,11 +8,15 @@ import Image from "next/image";
 import logo from "../../public/MOM_s_PICK__2_-removebg-preview.png";
 import axios from "axios";
 import instance from "@/app/_config/axios";
+import { useUnReadStore } from "@/store/UnReadStore";
+import { useConnecting } from "@/store/WebSocket";
 
 export default function Login() {
   const [userId, setUserId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
   const router = useRouter();
+  const { reset } = useUnReadStore();
+  const { setIsConnect } = useConnecting();
 
   const login = () => {
     axios
@@ -24,6 +28,7 @@ export default function Login() {
         if (typeof window !== "undefined") {
           localStorage.setItem("accessToken", res.data.response);
           router.push("/trade");
+          setIsConnect();
         }
       })
       .catch((err) => {
@@ -47,6 +52,7 @@ export default function Login() {
     if (localStorage.getItem("accessToken")) {
       router.push("/trade");
     }
+    reset();
   }, []);
 
   return (

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "./Provider";
+import Server from "./_chatting/Server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#317EFB" />
       </Head>
       <body className={inter.className}>
+        <Server />
         <Provider>{children}</Provider>
       </body>
     </html>

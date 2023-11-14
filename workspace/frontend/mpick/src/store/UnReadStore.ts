@@ -1,16 +1,15 @@
 import { create } from "zustand";
 
-type UnReadCountState = {
-  chatRoomId: number;
-  unReadCount: number;
-};
+interface MyStore {
+  count: number;
+  increment: (value: number) => void;
+  decrement: (value: number) => void;
+  reset: () => void;
+}
 
-type UnReadCountListState = {
-  unReadCountList: UnReadCountState[];
-  setUnReadCountList: (unReadCountList: UnReadCountState[]) => void;
-};
-
-export const useUnReadStore = create<UnReadCountListState>((set) => ({
-  unReadCountList: [],
-  setUnReadCountList: (unReadCountList: UnReadCountState[]) => set({ unReadCountList }),
+export const useUnReadStore = create<MyStore>((set) => ({
+  count: 0,
+  increment: (value) => set((state) => ({ count: state.count + value })),
+  decrement: (value) => set((state) => ({ count: state.count - value })),
+  reset: () => set({ count: 0 }),
 }));

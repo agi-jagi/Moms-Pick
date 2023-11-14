@@ -2,11 +2,7 @@
 
 import { useState, useEffect } from "react";
 import instance from "@/app/_config/axios";
-import { Container } from "@mui/system";
 import { Image } from "@nextui-org/react";
-// import Image from "next/image";
-import profile from "../../../../../../public/profile.png";
-import { useChattingStore } from "@/store/ChattingStore";
 
 export default function TradeInfo(props: any) {
   const [tradeImage, setTradeImage] = useState<string>("");
