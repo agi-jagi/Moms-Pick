@@ -14,10 +14,10 @@ import { useUnReadStore } from "@/store/UnReadStore";
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any>([]);
-  const [tradeId, setTradeId] = useState<number>()
+  const [tradeId, setTradeId] = useState<number>();
 
   const { messageStore, setMessageStore } = useChattingStore();
-  const { nickName } = useOpponent()
+  const { nickName } = useOpponent();
   const { decrement } = useUnReadStore();
 
   const chattingReload = async (data: any) => {
@@ -44,8 +44,9 @@ export default function Chatting(props: any) {
     instance
       .get(`/api/chattings/${props.params.chatroom_id}`)
       .then((res) => {
+        console.log(res);
         setMessageList(res.data.response);
-        setTradeId(res.data.response[0].tradeId)
+        setTradeId(res.data.response[0].tradeId);
       })
       .catch((err) => {
         console.log(err);
@@ -77,7 +78,7 @@ export default function Chatting(props: any) {
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
-      <TradeInfo trade_id={tradeId}/>
+      <TradeInfo trade_id={tradeId} chatroom_id={props.params.chatroom_id} />
       <div>
         <div>
           {messageList.map((message: any, index: number) => {
@@ -129,18 +130,18 @@ export default function Chatting(props: any) {
                       <div>
                         <p>{nickName}</p>
                       </div>
-                    <div
-                      className="your-message"
-                      style={{
-                        backgroundColor: "rgb(247, 247, 247)",
-                        padding: "8px",
-                        maxWidth: "200px",
-                        borderRadius: "8px",
-                        marginLeft: "5px",
-                      }}
-                    >
-                      {message.message}
-                    </div>
+                      <div
+                        className="your-message"
+                        style={{
+                          backgroundColor: "rgb(247, 247, 247)",
+                          padding: "8px",
+                          maxWidth: "200px",
+                          borderRadius: "8px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        {message.message}
+                      </div>
                     </div>
                   </div>
                 )}

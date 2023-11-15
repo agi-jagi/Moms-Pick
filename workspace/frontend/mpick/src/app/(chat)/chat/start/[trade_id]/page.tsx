@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import GoBack from "../../../../(auth)/auth/GoBack";
 import TradeInfo from "./tradeinfo";
-import { useOpponent } from "@/store/ChattingStore";
+import { useSellerNickNameSet } from "@/store/ChattingStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
-  const { nickName } = useOpponent()
+  const { sellerNickName } = useSellerNickNameSet();
 
   return (
     <div>
@@ -26,7 +26,7 @@ export default function Chatting(props: any) {
         >
           <GoBack />
           <div className="flex justify-center">
-            <p className="font-bold text-2xl">{nickName}</p>
+            <p className="font-bold text-2xl">{sellerNickName}</p>
           </div>
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />

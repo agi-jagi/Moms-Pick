@@ -22,13 +22,32 @@ export const useChattingStore = create<MessageListState>((set) => ({
   setMessageStore: (messageStore: MessageDataState[]) => set({ messageStore }),
 }));
 
-
 interface OpponentState {
   nickName: string;
   setNickName: (value: string) => void;
 }
 
 export const useOpponent = create<OpponentState>((set) => ({
-  nickName: '',
-  setNickName: (value) => set(() => ({nickName: value}))
-}))
+  nickName: "",
+  setNickName: (value) => set(() => ({ nickName: value })),
+}));
+
+interface UserState {
+  userNickName: string;
+  setUserNickName: (value: string) => void;
+}
+
+export const useNickNameSet = create<UserState>((set) => ({
+  userNickName: "",
+  setUserNickName: (value) => set(() => ({ userNickName: value })),
+}));
+
+interface SellerState {
+  sellerNickName: string;
+  setSellerNickName: (value: string) => void;
+}
+
+export const useSellerNickNameSet = create<SellerState>((set) => ({
+  sellerNickName: "",
+  setSellerNickName: (value) => set(() => ({ sellerNickName: value })),
+}));
