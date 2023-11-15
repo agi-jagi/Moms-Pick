@@ -2,6 +2,7 @@
 
 import { useTradeStore } from "@/store/TradeStore";
 import { useEffect, useState } from "react";
+import Radius from "../radius";
 import {
   Chip,
   Card,
@@ -33,7 +34,10 @@ import Link from "next/link";
 export default function Search(props: any) {
   
 
-  const { searchWord, setSearchWord } = useTradeStore();
+  const { searchWord, setSearchWord, distance, setDistance } = useTradeStore();
+
+  const [ 반경open, set반경Open ] = useState(false);
+  const handleOpen반경 = () => set반경Open(!반경open);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [filter대분류, setFilter대분류] = useState<string>("");
@@ -161,7 +165,7 @@ export default function Search(props: any) {
             ],
             filter: {
               geo_distance: {
-                distance: "100000km",
+                distance: distance,
                 location: {
                   lat: latitude,
                   lon: longitude,
@@ -246,7 +250,7 @@ export default function Search(props: any) {
     {/* 상단 내비바 */}
     <div className="flex items-center gap-4 ml-4 mt-4">
       <div className="w-[84px] h-[42px]">
-        <div className="relative w-[94px] h-[94px] top-[-20px] left-[-10px]">
+        <div className="relative w-[94px] h-[94px] top-[-20px] left-[-10px]" onClick={() => handleOpen반경()}>
           <div className="absolute h-[19px] top-[33px] left-[46px] [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#212124] text-[14px] tracking-[0] leading-[18.9px] whitespace-nowrap">
             {nowAddress}
           </div>
@@ -556,6 +560,30 @@ export default function Search(props: any) {
           )}
         </ModalContent>
       </Modal>
+
+
+      {/* 반경 설정 모달 */}
+      <Modal isOpen={반경open} onOpenChange={handleOpen반경}>
+            <ModalContent>
+              {() => (
+                <>
+                    <ModalHeader className="flex flex-col gap-1 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold">반경 설정</ModalHeader>
+                    <ModalBody>
+                    < Radius />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        className="bg-[#5E9FF2] text-white"
+                        type="submit"
+                        onClick={handleOpen반경}
+                      >
+                        설정하기
+                      </Button>
+                    </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
     </>
   );
 }
