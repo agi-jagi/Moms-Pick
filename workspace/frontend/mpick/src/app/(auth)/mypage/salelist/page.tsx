@@ -6,7 +6,7 @@ import instance from "@/app/_config/axios";
 import { Image, Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
-export default function mypage() {
+export default function SaleList() {
   const router = useRouter();
   const [saleList, setSaleList] = useState<any>([]);
 
