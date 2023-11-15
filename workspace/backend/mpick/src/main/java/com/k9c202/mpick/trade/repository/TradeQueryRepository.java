@@ -64,7 +64,7 @@ public class TradeQueryRepository {
                         trade.price,
                         trade.tradeStatus))
                 .from(trade)
-                .where(trade.user.id.eq(userId),
+                .where(trade.buyer.id.eq(userId),
                         trade.tradeStatus.ne(TradeStatus.삭제됨))
                 .orderBy(orderSpecifier)
                 .fetch();
