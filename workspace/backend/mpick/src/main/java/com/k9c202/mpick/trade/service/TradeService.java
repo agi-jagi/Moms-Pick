@@ -131,23 +131,6 @@ public class TradeService {
         }
 
 
-//        if (request.getStartMonths() != null) {
-//            for (Integer startMonth : request.getStartMonths()) {
-//                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth)
-//                        .orElseThrow(() -> new NotFoundException("해당 월령 카테고리는 존재하지 않습니다."));
-//
-//                tradeMonthRepository.save(
-//                        TradeMonth.builder()
-//                                .trade(trade)
-//                                .babyMonth(babyMonth)
-//                                .build()
-//                );
-//            }
-//        }
-//        else {
-//            throw new IOException();
-//        }
-
         Integer maxMonthId = Integer.MIN_VALUE;
         Integer minMonthId = Integer.MAX_VALUE;
 
