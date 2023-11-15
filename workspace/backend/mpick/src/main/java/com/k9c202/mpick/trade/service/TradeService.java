@@ -18,7 +18,6 @@ import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.entity.*;
 import com.k9c202.mpick.trade.repository.*;
-import com.k9c202.mpick.trade.util.FileStoreUtil;
 import com.k9c202.mpick.user.entity.Address;
 import com.k9c202.mpick.user.entity.User;
 import com.k9c202.mpick.user.repository.AddressRepository;
