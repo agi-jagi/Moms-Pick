@@ -68,20 +68,9 @@ export default function Trade() {
         <>
         <TopNavBar />
           <div>
-            {/* <div className="flex gap-4 ml-4 items-center mb-4 mt-4">
-      <Avatar isBordered color="default" src="/nezko.jfif" />
-      <Avatar isBordered color="primary" src="/nezko.jfif" />
-      <Avatar isBordered color="secondary" src="/nezko.jfif" />
-      <Avatar isBordered color="success" src="/nezko.jfif" />
-      <Avatar isBordered color="warning" src="/nezko.jfif" />
-      <Avatar isBordered color="danger" src="/nezko.jfif" />
-      
-    </div> */}
-
-            {/* <div className="w-[240px] h-[60px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg">
-             */}
             {/* 상단 배너 */}
-            <img className="mt-6" src="bannerImage.png" alt="" />
+            <img className="mt-6" src="bannerImage.png" alt="광고 배너" />
+
             {/* 대분류 카테고리 */}
             <div className="w-[390px] h-[128px] mt-5">
               <div className="relative h-[128px]">
