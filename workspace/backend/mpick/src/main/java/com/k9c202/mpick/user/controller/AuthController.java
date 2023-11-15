@@ -10,6 +10,8 @@ import com.k9c202.mpick.user.dto.LoginDto;
 import com.k9c202.mpick.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +29,8 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/signup")
-    public CommonResponse<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
+//    public CommonResponse<JoinUserResponse> signup(@Valid @RequestBody JoinUserRequest request) {
+    public ResponseEntity<CommonResponse<?>> signup(@Valid @RequestBody JoinUserRequest request) {
         // ResponseEntity : HTTP 요청(Request)/응답(Response)에 해당하는 HttpHeader/HttpBody를 포함하는 클래스
         // 값 null, 길이제한, 포멧팅 -> JoinUserRequest에서 처리
         // log level : trace, debug, info, warning, error
@@ -41,8 +44,9 @@ public class AuthController {
 
         // 200일 경우, return ResponseEntity.status(200).body(null);과 동일
         // 예외 처리를 어떻게 할지 정해야 함. 일단 성공인 경우만 적어놓음 (500으로 에러 처리 될 것)
-        return CommonResponse.OK(null);
+//        return CommonResponse.OK(null);
         // 다른 형식 예) return ResponseEntity.status(HttpStatus.CONFLICT).body(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.OK(request.toUserDto()));
     }
 
     // 로그인
