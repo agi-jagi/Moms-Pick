@@ -78,7 +78,7 @@ public class UserController {
         return CommonResponse.OK("회원탈퇴 성공");
     }
 
- //    // 회원 정보 수정
+//     // 회원 정보 수정
 //    @PatchMapping
 //    public CommonResponse<UserInfoResponse> updateUserInfo(
 ////            @AuthenticationPrincipal UserDetails userDetails,
