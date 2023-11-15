@@ -3,26 +3,32 @@
 import { useState, useEffect } from "react";
 import instance from "@/app/_config/axios";
 import { Image, Button } from "@nextui-org/react";
-import { useOpponent, useSellerNickNameSet } from "@/store/ChattingStore";
 import { useNickNameSet } from "@/store/ChattingStore";
 
 export default function TradeInfo(props: any) {
   const [tradeImage, setTradeImage] = useState<string>("");
   const [tradeData, setTradeData] = useState<any>({});
-  const { sellerNickName, setSellerNickName } = useSellerNickNameSet();
   const { userNickName } = useNickNameSet();
 
   const saleComplete = () => {
     console.log(1);
-    instance
-      .put(`/api/trades/item`, { chatRoomId: props.chatroom_id })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // instance
+    //   .put(`/api/trades/item`, { chatRoomId: props.chatroom_id })
+    //   .then((res) => {
+    //     console.log(res);
+    //     if (typeof props.setOpenRating != "undefined") {
+    //       props.setOpenRating(true);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
+
+  useEffect(() => {
+    console.log("seller", props.sellerNickName);
+    console.log("me", userNickName);
+  }, [props.sellerNickName]);
 
   useEffect(() => {
     instance
@@ -30,7 +36,7 @@ export default function TradeInfo(props: any) {
       .then((res) => {
         console.log(res.data.response);
         setTradeData(res.data.response);
-        setSellerNickName(res.data.response.nickname);
+        props.setSellerNickName(res.data.response.nickname);
         setTradeImage(res.data.response.tradeImages[0]);
       })
       .catch((err) => {
@@ -41,12 +47,7 @@ export default function TradeInfo(props: any) {
   return (
     <div>
       <div style={{ margin: "10px", display: "flex" }}>
-        <Image
-          alt="detail Item Image"
-          // className="object-cover rounded-xl"
-          src={tradeImage}
-          width={70}
-        />
+        <Image alt="detail Item Image" src={tradeImage} width={70} />
         <div
           style={{
             marginLeft: "10px",
@@ -61,13 +62,14 @@ export default function TradeInfo(props: any) {
             <p className="font-bold">{tradeData.price}원</p>
           </div>
           <div>
-            {userNickName === sellerNickName ? (
+            {userNickName === props.sellerNickName ? (
               tradeData.tradeStatus === "판매완료" ? (
                 <p>{tradeData.tradeStatus}</p>
               ) : (
                 <Button
                   onClick={() => {
                     saleComplete();
+                    props.onOpen();
                   }}
                   style={{ backgroundColor: "#5E9FF2" }}
                 >
