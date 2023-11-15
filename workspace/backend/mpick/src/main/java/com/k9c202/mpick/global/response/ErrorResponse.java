@@ -18,4 +18,9 @@ public class ErrorResponse {
         this.message = throwable.getMessage();
         this.httpStatus = httpStatus;
     }
+
+    public ErrorResponse(String errorMessage, HttpStatus httpStatus) {
+        this.message = errorMessage;
+        this.httpStatus = httpStatus;
+    }
 }

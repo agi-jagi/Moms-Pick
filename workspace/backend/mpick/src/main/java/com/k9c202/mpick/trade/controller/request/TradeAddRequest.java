@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -16,19 +17,19 @@ import java.util.List;
 @NoArgsConstructor
 public class TradeAddRequest {
 
-    @NotEmpty
+    @NotEmpty(message = "대분류 카테고리는 필수 항목입니다.")
     private String mainCategory;
 
     private String subCategory;
 
-    @NotEmpty
+    @NotEmpty(message = "판매글 제목은 필수 항목입니다.")
     private String title;
 
-    @NotEmpty
+    @NotNull(message = "가격은 필수 항목입니다.")
     private Integer price;
 
     private String tradeExplain;
 
-    @NotEmpty
+    @NotEmpty(message = "사용 월령은 필수 항목입니다.")
     private List<Integer> babyMonthIds;
 }
