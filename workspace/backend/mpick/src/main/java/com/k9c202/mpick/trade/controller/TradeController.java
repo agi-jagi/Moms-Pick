@@ -45,8 +45,8 @@ public class TradeController {
     @Operation(summary = "판매글 작성", description = "판매글 작성")
     @PostMapping(value = "/item", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public CommonResponse<Long> tradeAdd(
-            @RequestPart(value = "data") TradeAddRequest request,
-            @RequestPart(value = "files") List<MultipartFile> multipartFiles,
+            @Valid @RequestPart(value = "data") TradeAddRequest request,
+            @Valid @RequestPart(value = "files") List<MultipartFile> multipartFiles,
             Authentication authentication) throws IOException {
 
         Long result = tradeService.tradeAdd(request, multipartFiles, authentication.getName());
@@ -73,7 +73,7 @@ public class TradeController {
     @Operation(summary = "판매글 찜 기능", description = "판매글 찜 기능")
     @PostMapping(value = "/wish")
     public CommonResponse<String> tradeWish(
-            @RequestBody WishRequest wishRequest,
+            @Valid @RequestBody WishRequest wishRequest,
             Authentication authentication) {
 
         String message = tradeService.tradeWish(wishRequest.getTradeId(), authentication.getName());
@@ -96,7 +96,7 @@ public class TradeController {
     @PutMapping(value = "/item")
     public CommonResponse<String> tradeComplete(
             Authentication authentication,
-            @RequestBody TradeCompleteRequest request) {
+            @Valid @RequestBody TradeCompleteRequest request) {
 
         tradeService.completeTrade(request);
 

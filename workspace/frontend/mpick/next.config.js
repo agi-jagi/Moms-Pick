@@ -17,6 +17,12 @@ module.exports = withPWA({
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "m.silvercrossbaby.kr",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   reactStrictMode: true,

@@ -18,7 +18,6 @@ import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.entity.*;
 import com.k9c202.mpick.trade.repository.*;
-import com.k9c202.mpick.trade.util.FileStoreUtil;
 import com.k9c202.mpick.user.entity.Address;
 import com.k9c202.mpick.user.entity.User;
 import com.k9c202.mpick.user.repository.AddressRepository;
@@ -88,13 +87,17 @@ public class TradeService {
     // 주소 로직 추가해야함
     public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles, String loginId) throws IOException {
 
-        Category category = categoryQueryRepository.findCategoryByMainCategoryNameAndSubCategoryName(request.getMainCategory(), request.getSubCategory());
+        Category category = categoryQueryRepository.findCategoryByMainCategoryNameAndSubCategoryName(request.getMainCategory(), request.getSubCategory())
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 카테고리입니다."));
 
         Address address = addressRepository.findByUserLoginIdAndIsSet(loginId, true)
-                .orElseThrow(() -> new NotFoundException("찾을 수 없는 주소입니다."));
+                .orElseThrow(() -> new NotFoundException("주소가 등록되지 않았습니다."));
 
         List<String> imageSaveUrls = new ArrayList<>();
 
+        if (multipartFiles.size() > 5) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미지 파일은 최대 5장까지 업로드 할 수 있습니다.");
+        }
 
         for (MultipartFile multipartFile : multipartFiles) {
             imageSaveUrls.add(
@@ -131,23 +134,6 @@ public class TradeService {
             );
         }
 
-
-//        if (request.getStartMonths() != null) {
-//            for (Integer startMonth : request.getStartMonths()) {
-//                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth)
-//                        .orElseThrow(() -> new NotFoundException("해당 월령 카테고리는 존재하지 않습니다."));
-//
-//                tradeMonthRepository.save(
-//                        TradeMonth.builder()
-//                                .trade(trade)
-//                                .babyMonth(babyMonth)
-//                                .build()
-//                );
-//            }
-//        }
-//        else {
-//            throw new IOException();
-//        }
 
         Integer maxMonthId = Integer.MIN_VALUE;
         Integer minMonthId = Integer.MAX_VALUE;

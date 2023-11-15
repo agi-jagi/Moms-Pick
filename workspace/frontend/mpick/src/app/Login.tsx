@@ -10,6 +10,7 @@ import axios from "axios";
 import instance from "@/app/_config/axios";
 import { useUnReadStore } from "@/store/UnReadStore";
 import { useConnecting } from "@/store/WebSocket";
+import { useNickNameSet } from "@/store/ChattingStore";
 
 export default function Login() {
   const [userId, setUserId] = useState<string>("");
@@ -17,6 +18,7 @@ export default function Login() {
   const router = useRouter();
   const { reset } = useUnReadStore();
   const { setIsConnect } = useConnecting();
+  const { setUserNickName } = useNickNameSet();
 
   const login = () => {
     axios
@@ -25,8 +27,10 @@ export default function Login() {
         password: userPw,
       })
       .then((res) => {
+        console.log(res);
         if (typeof window !== "undefined") {
           localStorage.setItem("accessToken", res.data.response);
+          getNickName();
           router.push("/trade");
           setIsConnect();
         }
@@ -34,6 +38,15 @@ export default function Login() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const getNickName = () => {
+    instance
+      .get("/api/users")
+      .then((res) => {
+        setUserNickName(res.data.response.nickname);
+      })
+      .catch((err) => {});
   };
 
   // 인터셉터 적용 예시

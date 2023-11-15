@@ -4,8 +4,8 @@ import { persist } from "zustand/middleware";
 interface TradeState {
   searchWord: string | null
   setSearchWord: (searchWord: string) => void
-  distance: number | null
-  setDistance: (distance: number) => void
+  distance: string | null
+  setDistance: (distance: string) => void
 }
 
 export const useTradeStore = create<TradeState>()(
@@ -13,8 +13,8 @@ export const useTradeStore = create<TradeState>()(
     (set) => ({
       searchWord: null,
       setSearchWord: (searchWord: string) => set({ searchWord }),
-      distance: null,
-      setDistance: (distance: number) => set({ distance }),
+      distance: "2km",
+      setDistance: (distance: string) => set({ distance }),
     }),
     {
       name: "trade-storage",
