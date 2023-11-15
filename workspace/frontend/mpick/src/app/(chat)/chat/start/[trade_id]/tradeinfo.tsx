@@ -8,21 +8,21 @@ import { useNickNameSet } from "@/store/ChattingStore";
 export default function TradeInfo(props: any) {
   const [tradeImage, setTradeImage] = useState<string>("");
   const [tradeData, setTradeData] = useState<any>({});
+  const [tradeStatus, setTradeStatus] = useState<string>("");
   const { userNickName } = useNickNameSet();
 
   const saleComplete = () => {
-    console.log(1);
-    // instance
-    //   .put(`/api/trades/item`, { chatRoomId: props.chatroom_id })
-    //   .then((res) => {
-    //     console.log(res);
-    //     if (typeof props.setOpenRating != "undefined") {
-    //       props.setOpenRating(true);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    instance
+      .put(`/api/trades/item`, { chatRoomId: props.chatroom_id })
+      .then((res) => {
+        console.log(res);
+        if (typeof props.setOpenRating != "undefined") {
+          props.setOpenRating(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -36,6 +36,7 @@ export default function TradeInfo(props: any) {
       .then((res) => {
         console.log(res.data.response);
         setTradeData(res.data.response);
+        setTradeStatus(res.data.response.tradeStatus);
         props.setSellerNickName(res.data.response.nickname);
         setTradeImage(res.data.response.tradeImages[0]);
       })
@@ -64,7 +65,7 @@ export default function TradeInfo(props: any) {
           <div>
             {userNickName === props.sellerNickName ? (
               tradeData.tradeStatus === "판매완료" ? (
-                <p>{tradeData.tradeStatus}</p>
+                <p>{tradeStatus}</p>
               ) : (
                 <Button
                   onClick={() => {
@@ -73,11 +74,11 @@ export default function TradeInfo(props: any) {
                   }}
                   style={{ backgroundColor: "#5E9FF2" }}
                 >
-                  <p className="text-base">판매완료</p>
+                  판매완료
                 </Button>
               )
             ) : (
-              <p>{tradeData.tradeStatus}</p>
+              <p>{tradeStatus}</p>
             )}
           </div>
         </div>

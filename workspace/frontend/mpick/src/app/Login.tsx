@@ -11,6 +11,7 @@ import instance from "@/app/_config/axios";
 import { useUnReadStore } from "@/store/UnReadStore";
 import { useConnecting } from "@/store/WebSocket";
 import { useNickNameSet } from "@/store/ChattingStore";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [userId, setUserId] = useState<string>("");
@@ -19,6 +20,18 @@ export default function Login() {
   const { reset } = useUnReadStore();
   const { setIsConnect } = useConnecting();
   const { setUserNickName } = useNickNameSet();
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
   const login = () => {
     axios
@@ -36,7 +49,18 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.status);
+        if (err.response.status === 401) {
+          Toast.fire({
+            icon: "error",
+            title: "아이디 또는 비밀번호를 <br/> 다시 입력해주세요",
+          });
+        } else if (err.response.status === 502) {
+          Toast.fire({
+            icon: "error",
+            title: "네트워크 에러",
+          });
+        }
       });
   };
 
