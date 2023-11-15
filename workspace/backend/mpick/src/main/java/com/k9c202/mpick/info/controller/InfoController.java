@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -26,12 +27,13 @@ public class InfoController {
     private final InfoService infoService;
 
     @Operation(summary = "수유실 검색 기능", description = "수유실 검색 기능")
-    @PostMapping("/lactation")
+    @GetMapping("/lactation")
     public CommonResponse<List<LactationRoomInfoResponse>> searchLactation(
             Authentication authentication,
-            @RequestBody @Valid LactationRoomInfoRequest request) {
+            @RequestParam BigDecimal latitude,
+            @RequestParam BigDecimal longitude) {
 
-        return CommonResponse.OK(infoService.lactationList(request));
+        return CommonResponse.OK(infoService.lactationList(latitude, longitude));
     }
 
     @Operation(summary = "유치원 검색 기능", description = "유치원 검색 기능")

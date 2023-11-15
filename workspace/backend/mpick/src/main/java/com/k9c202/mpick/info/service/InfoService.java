@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -33,8 +34,8 @@ public class InfoService {
 
     private final BabyMealQueryRepository babyMealQueryRepository;
 
-    public List<LactationRoomInfoResponse> lactationList(LactationRoomInfoRequest request) {
-        return lactationRoomQueryRepository.findLactationByLocation(request.getLatitude(), request.getLongitude());
+    public List<LactationRoomInfoResponse> lactationList(BigDecimal latitude, BigDecimal longitude) {
+        return lactationRoomQueryRepository.findLactationByLocation(latitude, longitude);
     }
 
     public List<KindergartenInfoResponse> kinderList(KindergartenInfoRequest request) {
