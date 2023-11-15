@@ -55,8 +55,6 @@ export default function Trade() {
     }
   }
 
-  let router = useRouter();
-
   useEffect(() => {
     if (typeof window !== "undefined" && window.document) {
       setIsClient(true);
@@ -69,7 +67,6 @@ export default function Trade() {
       {isClient === true ? (
         <>
         <TopNavBar />
-          {/* 프로필  */}
           <div>
             {/* <div className="flex gap-4 ml-4 items-center mb-4 mt-4">
       <Avatar isBordered color="default" src="/nezko.jfif" />
@@ -84,38 +81,38 @@ export default function Trade() {
             {/* <div className="w-[240px] h-[60px] px-1 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-black shadow-lg">
              */}
             {/* 상단 배너 */}
-            <img className="mt-4" src="asd.gif" alt="" />
+            <img className="mt-6" src="bannerImage.png" alt="" />
             {/* 대분류 카테고리 */}
-            <div className="w-[390px] h-[128px] mt-4">
+            <div className="w-[390px] h-[128px] mt-5">
               <div className="relative h-[128px]">
-              <Link href={{ pathname: "/trade/search", query: { filter대분류 : "이유용품" } }}>
+              
                 <img
                   className="absolute w-[34px] h-[34px] top-[6px] left-[178px] object-cover"
                   alt="Image"
                   src="/이유용품.png"
                 />
-                </Link>
+                
                 <div className="absolute w-[390px] h-[128px] top-0 left-0">
                   <div className="top-[6px] left-[10px] absolute w-[62px] h-[54px]">
                     <div className="absolute w-[34px] h-[34px] top-0 left-[14px] bg-white">
                       <div className="h-[34px]" />
                     </div>
                     <div className="absolute w-[38px] h-[14px] top-[40px] left-[12px] overflow-hidden">
-                      <div className="w-[38px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[38px] absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         유모차
                       </div>
                     </div>
                   </div>
                   <div className="top-[68px] left-[10px] absolute w-[62px] h-[54px]">
                     <div className="relative w-[44px] h-[14px] top-[40px] left-[10px] overflow-hidden">
-                      <div className="w-[44px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[44px] top-[1px] absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         외출용품
                       </div>
                     </div>
                   </div>
                   <div className="top-[6px] left-[87px] absolute w-[62px] h-[54px]">
                     <div className="relative w-[61px] h-[14px] top-[40px] left-px overflow-hidden">
-                      <div className="w-[61px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[61px] absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         수유용품
                       </div>
                     </div>
@@ -124,31 +121,33 @@ export default function Trade() {
                     <div className="relative w-[38px] h-[16px] top-[40px] left-[12px]">
                       <div className="absolute w-[19px] h-[14px] top-0 left-[9px]" />
                       <div className="absolute w-[38px] h-[14px] top-[2px] left-0 overflow-hidden">
-                        <div className="w-[38px] -top-px absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                        <div className="w-[38px] top-[-0.5px] absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                           의류
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="top-[6px] left-[164px] absolute w-[62px] h-[54px]">
+                  <Link href={{ pathname: "/trade/search", query: { filter대분류 : "이유용품" } }}>
                     <div className="relative w-[38px] h-[14px] top-[40px] left-[12px]">
                       <div className="absolute w-[34px] h-[14px] top-0 left-[2px]" />
-                      <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[38px] top-0 absolute h-[13px] left-[-2px] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         이유용품
                       </div>
                     </div>
+                    </Link>
                   </div>
                   <div className="top-[68px] left-[164px] absolute w-[62px] h-[54px]">
                     <div className="relative w-[38px] h-[14px] top-[40px] left-[12px]">
                       <div className="absolute w-[19px] h-[14px] top-0 left-[9px]" />
-                      <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[38px] top-[0.5px] absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         기저귀
                       </div>
                     </div>
                   </div>
                   <div className="top-[6px] left-[241px] absolute w-[62px] h-[54px]">
                     <div className="relative w-[42px] h-[14px] top-[40px] left-[12px] overflow-hidden">
-                      <div className="w-[42px] -top-px absolute h-[13px] left-[-2px] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[42px] absolute h-[13px] left-[-2px] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         목욕용품
                       </div>
                     </div>
@@ -156,7 +155,7 @@ export default function Trade() {
                   <div className="top-[68px] left-[241px] absolute w-[62px] h-[54px]">
                     <div className="relative w-[38px] h-[15px] top-[39px] left-[14px]">
                       <div className="absolute w-[19px] h-[14px] top-px left-[8px]" />
-                      <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[38px] top-[1px] absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         임산부
                       </div>
                     </div>
@@ -181,7 +180,7 @@ export default function Trade() {
                     </div>
                     <div className="absolute w-[38px] h-[14px] top-[40px] left-[14px]">
                       <div className="absolute w-[29px] h-[14px] top-0 left-[3px]" />
-                      <div className="w-[38px] top-0 absolute h-[13px] left-0 [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
+                      <div className="w-[38px] top-0 absolute h-[13px] left-[-1.5px] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#1f1f1f] text-[11px] text-center tracking-[0] leading-[14px] whitespace-nowrap">
                         기타
                       </div>
                     </div>
@@ -246,7 +245,7 @@ export default function Trade() {
               </div>
             </div>
             <div className="w-[161px] h-[21px]">
-              <div className="relative w-[161px] h-[21px] top-0 mt-5 left-4 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold text-[#1f1f1f] text-[18px] tracking-[-0.60px] leading-[24px] whitespace-nowrap">
+              <div className="relative w-[161px] h-[21px] top-0 mt-6 left-4 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold text-[#1f1f1f] text-[18px] tracking-[-0.60px] leading-[24px] whitespace-nowrap">
                 회원님을 위한 추천 상품
               </div>
             </div>
@@ -265,26 +264,27 @@ export default function Trade() {
               disableOnInteraction: false,
             }}
             navigation
-            pagination={{
-              clickable: true,
-            }}
-            className="max-w-full mt-6"
+            // pagination={{
+            //   clickable: true,
+            // }}
+            className="max-w-full mt-7"
           >
             {recommendList.map((item, index) => (
               <SwiperSlide key={index}>
+                
                 <Card
-                  className=""
+                  className="h-[16rem] w-[15rem]"
                   shadow="md"
                   isPressable
                   onPress={() => setTradeId(item.trade_id)}
                 >
                   
-                    <CardBody className="overflow-visible p-0 h-[13rem]">
+                    <CardBody className="overflow-visible w-[15rem] p-0 h-[13rem]">
                     <Link href={"/trade/detail/" + tradeId}>
                       <Image
                         shadow="sm"
                         radius="lg"
-                        className="object-cover h-[13rem] w-full"
+                        className="object-cover h-[13rem] w-[15rem]"
                         alt={item.title}
                         src={item.save_file_name}
                       />
@@ -292,9 +292,10 @@ export default function Trade() {
                     </CardBody>
                   <CardFooter className="text-small justify-between">
                     <b>{item.title}</b>
-                    <p className="text-default-500">{item.price}</p>
+                    <p className="text-default-500">₩ {item.price}</p>
                   </CardFooter>
                 </Card>
+                
               </SwiperSlide>
             ))}
           </Swiper>

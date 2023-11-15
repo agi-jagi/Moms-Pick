@@ -1,6 +1,7 @@
 package com.k9c202.mpick.user.service;
 
 import com.k9c202.mpick.user.entity.User;
+import com.k9c202.mpick.user.entity.UserAuthority;
 import com.k9c202.mpick.user.entity.UserStatus;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 //                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
 //                .collect(Collectors.toList());
 
-//        List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        // 모든 사람은 ROLE_USER 권한이 있고, 관리자 계정은 추가적으로 ROLE_ADMIN 권한 부여
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        if ( user.getUserAuthority() == UserAuthority.ROLE_ADMIN ) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
 
         // 탈퇴한 계정은 로그인을 하지 못하도록 설정
         // user의 status가 2(탈퇴)가 아니면 true, 2(탈퇴)면 false
@@ -64,7 +69,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getLoginId(),
                 user.getPassword(),
 //                true, true, true, true, new ArrayList<>()
-                isEnabled, true, true, true, new ArrayList<>()
+                isEnabled, true, true, true, grantedAuthorities
         );
     }
 

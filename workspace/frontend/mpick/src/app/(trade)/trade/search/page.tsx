@@ -239,6 +239,7 @@ export default function Search(props: any) {
       searchTrade();
     }
   }, [longitude]);
+  
 
 
   return (

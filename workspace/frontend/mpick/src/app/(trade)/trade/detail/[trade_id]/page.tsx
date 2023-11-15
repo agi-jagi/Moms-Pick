@@ -67,14 +67,14 @@ export default function Detail(props: any) {
   }
 
 
-  if (detail === null) {
-    // item 정보가 없을 경우 로딩 또는 오류 처리를 할 수 있습니다.
-    return <>
-    <div className="absolute top-[40%] left-[40%]">
-    <Spinner label="로딩중입니다" color="primary"/>
-    </div>
-    </>
-  }
+  // if (detail === null) {
+  //   // item 정보가 없을 경우 로딩 또는 오류 처리를 할 수 있습니다.
+  //   return <>
+  //   <div className="absolute top-[40%] left-[40%]">
+  //   <Spinner label="로딩중입니다" color="primary"/>
+  //   </div>
+  //   </>
+  // }
 
   return (
     <div>

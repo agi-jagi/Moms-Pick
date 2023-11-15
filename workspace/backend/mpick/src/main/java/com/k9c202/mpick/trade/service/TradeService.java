@@ -1,6 +1,6 @@
 package com.k9c202.mpick.trade.service;
 
-import com.amazonaws.services.kms.model.NotFoundException;
+import com.k9c202.mpick.global.response.NotFoundException;
 import com.k9c202.mpick.chatting.entity.ChatRoom;
 import com.k9c202.mpick.chatting.repository.ChatRoomRepository;
 import com.k9c202.mpick.elateicSearch.dto.ESTradeDto;
@@ -27,9 +27,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.io.IOException;

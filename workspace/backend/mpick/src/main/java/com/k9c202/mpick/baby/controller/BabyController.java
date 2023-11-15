@@ -45,7 +45,7 @@ public class BabyController {
 
     @GetMapping
     @Operation(summary = "아기 리스트", description = "아기 리스트")
-    public CommonResponse<List<BabyDto>> listBaby(Authentication authentication){
+    public CommonResponse<List<BabyDto>> listBaby(Authentication authentication) throws Exception{
 
         return CommonResponse.OK(babyService.loadBaby(authentication.getName()));
     }

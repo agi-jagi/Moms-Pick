@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -35,7 +36,7 @@ public class ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final TradeRepository tradeRepository;
     private final UserRepository userRepository;
-    private ChatMessageQueryRepository chatMessageQueryRepository;
+    private final ChatMessageQueryRepository chatMessageQueryRepository;
 
     // chatRoom entity를 response로 변환
     private ChatRoomResponse convertChatRoomToChatRoomResponse(String loginId, ChatRoom chatRoom) {
@@ -43,10 +44,14 @@ public class ChatService {
         if (chatRoom.getUser().getLoginId().equals(loginId)) {
             return ChatRoomResponse.builder()
                     .chatRoomId(chatRoom.getId())
+                    // 판매자 닉네임을 보내줘야 함. 판매자 정보는 trade를 통해서 접근
                     .nickname(chatRoom.getTrade().getUser().getNickname())
+                    // 판매자 프로필 이미지를 보내줘야 함. 판매자 이미지 정보는 trade를 통해서 접근
                     .profileImage(chatRoom.getTrade().getUser().getProfileImage())
                     .tradeId(chatRoom.getTrade().getId())
                     .tradeTitle(chatRoom.getTrade().getTitle())
+                    .tradeThumbnailImage(chatRoom.getTrade().getThumbNailImage())
+                    // 구매자의 읽지 않은 메세지 개수 정보
                     .unreadCount(chatRoom.getBuyerUnreadCount())
                     // Optional.ofNullable : LastChatMessage가 null일 수도 있기 때문에 Optional로 만듦
                     // null이 아니면 map함수가 실행됨. null이면 null
@@ -59,10 +64,14 @@ public class ChatService {
         } else {
             return ChatRoomResponse.builder()
                     .chatRoomId(chatRoom.getId())
+                    // 구매자 닉네임
                     .nickname(chatRoom.getUser().getNickname())
+                    // 구매자 프로필 이미지
                     .profileImage(chatRoom.getUser().getProfileImage())
                     .tradeId(chatRoom.getTrade().getId())
                     .tradeTitle(chatRoom.getTrade().getTitle())
+                    .tradeThumbnailImage(chatRoom.getTrade().getThumbNailImage())
+                    // 판매자가 읽지 않은 메세지 개수
                     .unreadCount(chatRoom.getSellerUnreadCount())
                     .lastMessage(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getMessage).orElse(null))
                     .lastDateTime(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getCreatedDate).orElse(null))
@@ -71,22 +80,24 @@ public class ChatService {
     }
 
     // 특정 유저 아이디로 채팅방 목록 불러오는 함수
-    // TODO: 2023-11-13 ?? chatRoomRepository.findAllByUserLoginId(loginId);
+    // TODO: 2023-11-13 chatRoomRepository.findAllByUserLoginId(loginId); 🔎
     public List<ChatRoomResponse> getChatRooms(String loginId) {
 //        chatRoomRepository.findAllByUserLoginId(loginId);
         // ** 리스트타입.stream().map(함수).collcet(Collectors.toList()) **
+        // 특정 로그인 아이디에 해당하는 채팅방 정보를 모두 불러오고, chatRoomResponse로 변환하여 return
         return chatRoomQueryRepository.findAllByLoginId(loginId).stream()
                 .map(chatRoom -> convertChatRoomToChatRoomResponse(loginId, chatRoom))
                 .collect(Collectors.toList());
     }
 
     // 로그인 아이디, 채팅방id로 채팅메세지 불러오는 함수
-    // TODO: 2023-11-13 checkBuyer 함수로 대체. boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId); ✔
     public List<ChatMessageResponse> getChatMessages(String loginId, Long chatRoomId){
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
         // 판매자인지 구매자인지 판단
-        boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
-        return chatMessageRepository.findAllByChatRoomId(chatRoomId).stream()
+        // boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
+        boolean isBuyer = checkBuyer(chatRoom, loginId);
+        // 특정 채팅방에 해당하는 채팅메세지 정보를 모두 불러오고, chatMessageResponse로 변환하여 return
+        return chatMessageQueryRepository.findAllByChatRoomId(chatRoomId).stream()
                 .map(chatMessage->convertChatMessageToChatMessageResponse(isBuyer,chatMessage))
                 .collect(Collectors.toList());
     }
@@ -97,7 +108,8 @@ public class ChatService {
                 .chatRoomId(chatMessage.getChatRoom().getId())
                 .chatMessageId(chatMessage.getId())
                 .tradeId(chatMessage.getChatRoom().getTrade().getId())  // tradeId 추가
-                .toMe(chatMessage.getToSeller().equals(!isBuyer))
+                // toSeller를 toMe로 가공
+                .toMe(chatMessage.getToSeller().equals(!isBuyer)) // ToSeller:메세지 수신자 정보(DB), isBuyer: 응답 받는 유저 정보
                 .message(chatMessage.getMessage())
                 .dateTime(chatMessage.getCreatedDate())
                 .build();
@@ -116,7 +128,7 @@ public class ChatService {
                     .sellerUnreadCount(0)
                     .build());
         }
-        // TODO: 2023-11-13 ?? 체크 필요. return convertChatRoomToChatRoomDto(chatRoom);
+        // TODO: 2023-11-13 체크 필요. return convertChatRoomToChatRoomDto(chatRoom); 🔎
         return convertChatRoomToChatRoomDto(chatRoom);
     }
 
@@ -134,6 +146,7 @@ public class ChatService {
                 .buyerUnreadCount(chatRoom.getBuyerUnreadCount())
                 .tradeId(chatRoom.getTrade().getId())
                 .tradeTitle(chatRoom.getTrade().getTitle())
+                .tradeThumbnailImage(chatRoom.getTrade().getThumbNailImage())
                 .lastMessage(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getMessage).orElse(null))
                 .lastDateTime(Optional.ofNullable(chatRoom.getLastChatMessage()).map(ChatMessage::getCreatedDate).orElse(null))
                 .build();
@@ -141,12 +154,10 @@ public class ChatService {
 
     @Transactional
     public ChatMessageResponse addChatMessage(String loginId, ChatMessageRequest chatMessageRequest) {
-        // TODO: 2023-11-13 findById -> findByIdWithUser 커스텀
+        // TODO: 2023-11-13 findById -> findByIdWithUser 커스텀 🔎
         ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequest.getChatRoomId()).orElseThrow();
-        // TODO: 2023-11-13 checkBuyer 함수 따로 정의하기. chatRoom.getUser().getLoginId().equals(loginId)는 알아보기 어려운 형태
-        //         .getLoginId() 부터는 n+1 문제 발생
-        //         boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
-        boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
+//        boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
+        boolean isBuyer = checkBuyer(chatRoom, loginId);
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoom(chatRoom)
                 .toSeller(chatRoom.getUser().getLoginId().equals(loginId))
@@ -157,14 +168,23 @@ public class ChatService {
                 .build();
         ChatMessage save = chatMessageRepository.save(chatMessage);
         chatRoom.setLastChatMessage(save);
-        // TODO: 2023-11-13 if-else문 지양하기 ✔
-        if(isBuyer){
+// if-else문 수정
+//        if(isBuyer){
+//            chatRoom.increaseSellerUnreadCount();
+//            chatRoom.resetBuyerUnreadCount();
+//        }else{
+//            chatRoom.increaseBuyerUnreadCount();
+//            chatRoom.resetSellerUnreadCount();
+//        }
+        if (isBuyer) {
             chatRoom.increaseSellerUnreadCount();
             chatRoom.resetBuyerUnreadCount();
-        }else{
-            chatRoom.increaseBuyerUnreadCount();
-            chatRoom.resetSellerUnreadCount();
+            return convertChatMessageToChatMessageResponse(isBuyer, save);
         }
+
+        chatRoom.increaseBuyerUnreadCount();
+        chatRoom.resetSellerUnreadCount();
+
         return convertChatMessageToChatMessageResponse(isBuyer,save);
     }
 
@@ -173,15 +193,30 @@ public class ChatService {
     public void resetUnreadCount(String loginId, ChatMessageRequest chatMessageRequest) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequest.getChatRoomId()).orElseThrow();
         // 구매자/판매자 여부 체크
-        boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
-        // TODO: 2023-11-13 checkBuyer 함수 따로 사용하기 ✔
+//        boolean isBuyer = chatRoom.getUser().getLoginId().equals(loginId);
+        boolean isBuyer = checkBuyer(chatRoom, loginId);
+        // TODO: 2023-11-13 if~else문 수정 체크 🔎
+        // 구매자인 경우 구매자가 읽지 않은 메세지 수 초기화
+//        if(isBuyer) {
+//            chatRoom.resetBuyerUnreadCount();
+//        // 판매자인 경우 판매자가 읽지 않은 메세지 수 초기화
+//        } else {
+//            chatRoom.resetSellerUnreadCount();
+//        }
         // 구매자인 경우 구매자가 읽지 않은 메세지 수 초기화
         if(isBuyer) {
             chatRoom.resetBuyerUnreadCount();
-        // 판매자인 경우 판매자가 읽지 않은 메세지 수 초기화
-        } else {
-            chatRoom.resetSellerUnreadCount();
+            return;
         }
+        // 판매자인 경우 판매자가 읽지 않은 메세지 수 초기화
+        chatRoom.resetSellerUnreadCount();
     }
+
+
+    // 판매자인지 구매자인지 판단하는 함수
+    private boolean checkBuyer(ChatRoom chatRoom, String loginId) {
+        return chatRoom.getUser().getLoginId().equals(loginId);
+    }
+
 
 }

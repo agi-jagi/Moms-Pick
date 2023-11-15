@@ -79,20 +79,20 @@ public class TokenProvider implements InitializingBean {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        // jwt에서 authority부분을 포함해서 spring security의 User를 생성. 추후 security context에 저장
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
 
-//        Collection<? extends GrantedAuthority> authorities =
-//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-//                        .map(SimpleGrantedAuthority::new)
-//                        .collect(Collectors.toList());
-//
-//        User principal = new User(claims.getSubject(), "", authorities);
-//
-//        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        User principal = new User(claims.getSubject(), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 
         // tokenProvider : 프로젝트에서 authority를 안 쓰기 때문에 빈 array를 넣어주는 것으로 대체함
-        User principal = new User(claims.getSubject(), "", new ArrayList<>());
-
-        return new UsernamePasswordAuthenticationToken(principal, token, new ArrayList<>());
+//        User principal = new User(claims.getSubject(), "", new ArrayList<>());
+//
+//        return new UsernamePasswordAuthenticationToken(principal, token, new ArrayList<>());
 
     }
 
