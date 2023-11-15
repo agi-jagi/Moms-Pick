@@ -6,6 +6,7 @@ import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
 import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
 import com.k9c202.mpick.info.controller.response.*;
+import com.k9c202.mpick.info.entity.SubMealCategory;
 import com.k9c202.mpick.info.service.InfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.Getter;
@@ -37,30 +38,33 @@ public class InfoController {
     }
 
     @Operation(summary = "유치원 검색 기능", description = "유치원 검색 기능")
-    @PostMapping("/kinder")
+    @GetMapping("/kinder")
     public CommonResponse<List<KindergartenInfoResponse>> searchKinder(
             Authentication authentication,
-            @RequestBody KindergartenInfoRequest request) {
+            @RequestParam BigDecimal latitude,
+            @RequestParam BigDecimal longitude) {
 
-        return CommonResponse.OK(infoService.kinderList(request));
+        return CommonResponse.OK(infoService.kinderList(latitude, longitude));
     }
 
     @Operation(summary = "어린이집 검색 기능", description = "어린이집 검색 기능")
-    @PostMapping("/daycare")
+    @GetMapping("/daycare")
     public CommonResponse<List<DayCareCenterInfoResponse>> searchDayCare(
             Authentication authentication,
-            @RequestBody DayCareCenterInfoRequest request) {
+            @RequestParam BigDecimal latitude,
+            @RequestParam BigDecimal longitude) {
 
-        return CommonResponse.OK(infoService.dayCareList(request));
+        return CommonResponse.OK(infoService.dayCareList(latitude, longitude));
     }
 
     @Operation(summary = "유아 음식 이름 리스트 조회", description = "유아 음식 이름 리스트 조회")
-    @PostMapping("/babymeal")
+    @GetMapping("/babymeal")
     public CommonResponse<BabyMealInfoListResponse> searchBabyMealList(
             Authentication authentication,
-            @RequestBody BabyMealInfoRequest request) {
+            @RequestParam SubMealCategory subMealCategory,
+            @RequestParam Integer page) {
 
-        return CommonResponse.OK(infoService.babyMealList(request));
+        return CommonResponse.OK(infoService.babyMealList(subMealCategory, page));
     }
 
     @Operation(summary = "유아 음식 상세 조회", description = "유아 음식 상세 조회")

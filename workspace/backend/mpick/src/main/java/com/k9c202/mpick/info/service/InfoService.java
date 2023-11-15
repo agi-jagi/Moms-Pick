@@ -8,6 +8,7 @@ import com.k9c202.mpick.info.controller.request.DayCareCenterInfoRequest;
 import com.k9c202.mpick.info.controller.request.KindergartenInfoRequest;
 import com.k9c202.mpick.info.controller.request.LactationRoomInfoRequest;
 import com.k9c202.mpick.info.controller.response.*;
+import com.k9c202.mpick.info.entity.SubMealCategory;
 import com.k9c202.mpick.info.repository.BabyMealQueryRepository;
 import com.k9c202.mpick.info.repository.DayCareCenterQueryRepository;
 import com.k9c202.mpick.info.repository.KindergartenQueryRepository;
@@ -38,21 +39,21 @@ public class InfoService {
         return lactationRoomQueryRepository.findLactationByLocation(latitude, longitude);
     }
 
-    public List<KindergartenInfoResponse> kinderList(KindergartenInfoRequest request) {
+    public List<KindergartenInfoResponse> kinderList(BigDecimal latitude, BigDecimal longitude) {
 
-        return kindergartenQueryRepository.findKindergartenByLocation(request.getLatitude(), request.getLongitude());
+        return kindergartenQueryRepository.findKindergartenByLocation(latitude, longitude);
     }
 
-    public List<DayCareCenterInfoResponse> dayCareList(DayCareCenterInfoRequest request) {
+    public List<DayCareCenterInfoResponse> dayCareList(BigDecimal latitude, BigDecimal longitude) {
 
-        return dayCareCenterQueryRepository.findDayCareCenterByLocation(request.getLatitude(), request.getLongitude());
+        return dayCareCenterQueryRepository.findDayCareCenterByLocation(latitude, longitude);
     }
 
-    public BabyMealInfoListResponse babyMealList(BabyMealInfoRequest request) {
+    public BabyMealInfoListResponse babyMealList(SubMealCategory subMealCategory, Integer page) {
 
-        PageCountDto pageCount = babyMealQueryRepository.babyMealMaxPage(request.getSubMealCategory());
+        PageCountDto pageCount = babyMealQueryRepository.babyMealMaxPage(subMealCategory);
 
-        List<BabyMealInfoDto> babyMealInfoDtos = babyMealQueryRepository.findBabyMealBySubCategory(request.getSubMealCategory(), request.getPage());
+        List<BabyMealInfoDto> babyMealInfoDtos = babyMealQueryRepository.findBabyMealBySubCategory(subMealCategory, page);
 
         BabyMealInfoListResponse result = BabyMealInfoListResponse.builder()
                 .maxCount(pageCount.getMaxCount())
