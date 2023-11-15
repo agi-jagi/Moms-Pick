@@ -236,13 +236,16 @@ export default function Search(props: any) {
     setFilter대분류(props.searchParams.filter대분류);
     setSearchWord("");
     getAddress();
-  }, []);
-
-  useEffect(() => {
-    if (longitude) {
+    if (filter대분류) {
       searchTrade();
     }
   }, [longitude]);
+
+  // useEffect(() => {
+  //   if (longitude) {
+  //     searchTrade();
+  //   }
+  // }, [longitude]);
 
 
   return (
