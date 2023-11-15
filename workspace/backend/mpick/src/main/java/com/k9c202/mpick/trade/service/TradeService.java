@@ -87,13 +87,17 @@ public class TradeService {
     // 주소 로직 추가해야함
     public Long tradeAdd(TradeAddRequest request, List<MultipartFile> multipartFiles, String loginId) throws IOException {
 
-        Category category = categoryQueryRepository.findCategoryByMainCategoryNameAndSubCategoryName(request.getMainCategory(), request.getSubCategory());
+        Category category = categoryQueryRepository.findCategoryByMainCategoryNameAndSubCategoryName(request.getMainCategory(), request.getSubCategory())
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 카테고리입니다."));
 
         Address address = addressRepository.findByUserLoginIdAndIsSet(loginId, true)
-                .orElseThrow(() -> new NotFoundException("찾을 수 없는 주소입니다."));
+                .orElseThrow(() -> new NotFoundException("주소가 등록되지 않았습니다."));
 
         List<String> imageSaveUrls = new ArrayList<>();
 
+        if (multipartFiles.size() > 5) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미지 파일은 최대 5장까지 업로드 할 수 있습니다.");
+        }
 
         for (MultipartFile multipartFile : multipartFiles) {
             imageSaveUrls.add(

@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.k9c202.mpick.trade.entity.QCategory.category;
 
@@ -65,25 +66,25 @@ public class CategoryQueryRepository {
         return result;
     }
 
-    public Category findCategoryByMainCategoryNameAndSubCategoryName(String mainCategory, String subCategory) {
+    public Optional<Category> findCategoryByMainCategoryNameAndSubCategoryName(String mainCategory, String subCategory) {
         if (subCategory == null) {
-            return queryFactory
+            return Optional.ofNullable(queryFactory
                     .select(category)
                     .from(category)
                     .where(
                             category.categoryId2.isNull(),
                             category.categoryName.eq(mainCategory)
                     )
-                    .fetchOne();
+                    .fetchOne());
         } else {
-            return queryFactory
+            return Optional.ofNullable(queryFactory
                     .select(category)
                     .from(category)
                     .where(
                             category.categoryId2.isNotNull(),
                             category.categoryName.eq(subCategory)
                     )
-                    .fetchOne();
+                    .fetchOne());
         }
     }
 

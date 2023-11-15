@@ -27,4 +27,8 @@ public class CommonResponse<T> {
     public static <T> CommonResponse<T> ERROR(Throwable throwable, HttpStatus httpStatus){
         return new CommonResponse<>(false, null, new ErrorResponse(throwable,httpStatus));
     }
+
+    public static <T> CommonResponse<T> ERROR(String errorMessage, HttpStatus httpStatus) {
+        return new CommonResponse<>(false, null, new ErrorResponse(errorMessage, httpStatus));
+    }
 }
