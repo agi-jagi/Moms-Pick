@@ -18,7 +18,6 @@ import com.k9c202.mpick.trade.controller.response.TradeDetailResponse;
 import com.k9c202.mpick.trade.controller.response.TradeSearchResponse;
 import com.k9c202.mpick.trade.entity.*;
 import com.k9c202.mpick.trade.repository.*;
-import com.k9c202.mpick.trade.util.FileStoreUtil;
 import com.k9c202.mpick.user.entity.Address;
 import com.k9c202.mpick.user.entity.User;
 import com.k9c202.mpick.user.repository.AddressRepository;
@@ -131,23 +130,6 @@ public class TradeService {
             );
         }
 
-
-//        if (request.getStartMonths() != null) {
-//            for (Integer startMonth : request.getStartMonths()) {
-//                BabyMonth babyMonth = babyMonthRepository.findByStartMonth(startMonth)
-//                        .orElseThrow(() -> new NotFoundException("해당 월령 카테고리는 존재하지 않습니다."));
-//
-//                tradeMonthRepository.save(
-//                        TradeMonth.builder()
-//                                .trade(trade)
-//                                .babyMonth(babyMonth)
-//                                .build()
-//                );
-//            }
-//        }
-//        else {
-//            throw new IOException();
-//        }
 
         Integer maxMonthId = Integer.MIN_VALUE;
         Integer minMonthId = Integer.MAX_VALUE;

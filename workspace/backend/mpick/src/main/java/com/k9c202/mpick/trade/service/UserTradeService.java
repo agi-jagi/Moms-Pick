@@ -1,6 +1,6 @@
 package com.k9c202.mpick.trade.service;
 
-import com.amazonaws.services.kms.model.NotFoundException;
+import com.k9c202.mpick.global.response.NotFoundException;
 import com.k9c202.mpick.trade.controller.response.PurchaseListResponse;
 import com.k9c202.mpick.trade.controller.response.SaleListResponse;
 import com.k9c202.mpick.trade.controller.response.WishListResponse;
