@@ -72,8 +72,9 @@ export default function Meal() {
   console.log("전체 정보", mealInfo);
 
   useEffect(() => {
-    getKindFood(foodCategory, 1);
-  }, [foodCategory]);
+    setFoodCategory("미음");
+    getKindFood("미음", 1);
+  }, []);
 
   console.log("선택한 종류", foodCategory);
 
