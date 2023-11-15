@@ -10,6 +10,7 @@ import Pagination from "@mui/material/Pagination";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { useParentingStore } from "@/store/ParentingStore";
 import DetailModal from "./MealDetail";
+import { FaArrowAltCircleRight } from "react-icons/fa";
 
 export interface BaybMealInfo {
   id: number;
@@ -85,10 +86,10 @@ export default function Meal() {
 
   return (
     <div>
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: "15px" }}>
         <Tabs value={foodCategory} onChange={handleChange} centered>
           {selectedCategory.map((category, index) => (
-            <Tab label={category} value={category} key={index}></Tab>
+            <Tab label={category} value={category} key={index} className="font-bold"></Tab>
           ))}
         </Tabs>
       </Box>
@@ -117,6 +118,27 @@ export default function Meal() {
         </TableBody>
       </Table>
 
+      {/* <div
+        style={{ border: "1px solid black", padding: "20px", margin: "10px", borderRadius: "20px" }}
+      >
+        {mealInfo.map((kind, index) => (
+          <div key={index}>
+            <div
+              className="flex justify-between items-center"
+              onClick={() => {
+                selectedFoodId(kind.id);
+                handleModalOpen(kind);
+              }}
+            >
+              <p className="font-bold text-xl mt-2 mb-1 ml-5">{kind.mealName}</p>
+
+              <FaArrowAltCircleRight className="text-2xl mr-5" />
+            </div>
+            {index < mealInfo.length - 1 && <hr className="mt-2 mb-2" />}
+          </div>
+        ))}
+      </div> */}
+
       {selectedFood && (
         <DetailModal
           meal={selectedFood}
@@ -125,7 +147,7 @@ export default function Meal() {
         ></DetailModal>
       )}
 
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-6">
         <Pagination
           count={maxPage}
           page={currentPage}
@@ -133,6 +155,7 @@ export default function Meal() {
           shape="rounded"
         />
       </div>
+      <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }
