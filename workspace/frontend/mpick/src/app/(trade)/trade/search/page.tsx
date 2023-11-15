@@ -32,6 +32,9 @@ import Link from "next/link";
 
 
 export default function Search(props: any) {
+
+  console.log(props);
+  console.log(props.searchParams.filter대분류);
   
 
   const { searchWord, setSearchWord, distance, setDistance } = useTradeStore();
@@ -236,21 +239,22 @@ export default function Search(props: any) {
     setFilter대분류(props.searchParams.filter대분류);
     setSearchWord("");
     getAddress();
-    if (filter대분류) {
+
+  }, []);
+
+  useEffect(() => {
+    if (longitude) {
       searchTrade();
     }
   }, [longitude]);
-
-  // useEffect(() => {
-  //   if (longitude) {
-  //     searchTrade();
-  //   }
-  // }, [longitude]);
 
 
   return (
     <>
     {/* 상단 내비바 */}
+    <Button onClick={()=>console.log(props.searchParams.filter대분류)}>서치파람스</Button>
+    <Button onClick={()=>console.log(filter대분류)}>filter대분류</Button>
+    
     <div className="flex items-center gap-4 ml-4 mt-4">
       <div className="w-[84px] h-[42px]">
         <div className="relative w-[94px] h-[94px] top-[-20px] left-[-10px]" onClick={() => handleOpen반경()}>
