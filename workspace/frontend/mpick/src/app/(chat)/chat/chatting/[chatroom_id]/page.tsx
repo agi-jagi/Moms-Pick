@@ -10,11 +10,16 @@ import profile from "../../../../../../public/profile.png";
 import { useChattingStore, useOpponent } from "@/store/ChattingStore";
 import TradeInfo from "../../start/[trade_id]/tradeinfo";
 import { useUnReadStore } from "@/store/UnReadStore";
+import { useDisclosure } from "@nextui-org/react";
+import Rating from "./Rating";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any>([]);
   const [tradeId, setTradeId] = useState<number>();
+  const [sellerNickName, setSellerNickName] = useState<string>("");
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const { messageStore, setMessageStore } = useChattingStore();
   const { nickName } = useOpponent();
@@ -78,7 +83,13 @@ export default function Chatting(props: any) {
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
-      <TradeInfo trade_id={tradeId} chatroom_id={props.params.chatroom_id} />
+      <TradeInfo
+        trade_id={tradeId}
+        chatroom_id={props.params.chatroom_id}
+        onOpen={onOpen}
+        sellerNickName={sellerNickName}
+        setSellerNickName={setSellerNickName}
+      />
       <div>
         <div>
           {messageList.map((message: any, index: number) => {
@@ -157,6 +168,7 @@ export default function Chatting(props: any) {
           messageList={messageList}
         />
       </div>
+      <Rating isOpen={isOpen} onOpenChange={onOpenChange} />
       <div style={{ height: "117px", position: "sticky", bottom: "0" }}></div>
     </div>
   );

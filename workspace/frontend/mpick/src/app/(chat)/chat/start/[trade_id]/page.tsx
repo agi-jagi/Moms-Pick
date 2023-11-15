@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import GoBack from "../../../../(auth)/auth/GoBack";
 import TradeInfo from "./tradeinfo";
-import { useSellerNickNameSet } from "@/store/ChattingStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
-  const { sellerNickName } = useSellerNickNameSet();
+  const [sellerNickName, setSellerNickName] = useState<string>("");
 
   return (
     <div>
@@ -31,7 +30,11 @@ export default function Chatting(props: any) {
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
-      <TradeInfo trade_id={props.params.trade_id} />
+      <TradeInfo
+        trade_id={props.params.trade_id}
+        sellerNickName={sellerNickName}
+        setSellerNickName={setSellerNickName}
+      />
       <div>
         <InputField message={message} setMessage={setMessage} tradeId={props.params.trade_id} />
       </div>
