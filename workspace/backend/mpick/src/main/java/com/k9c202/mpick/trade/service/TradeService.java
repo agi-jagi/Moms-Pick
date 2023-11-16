@@ -199,7 +199,7 @@ public class TradeService {
 
         User user = commonFunction.loadUser(loginId);
 
-        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(user.getId());
+        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(trade.getUser().getId());
 
         Long isExistWish = wishQueryRepository.existWish(user.getId(), tradeId);
 
@@ -280,7 +280,7 @@ public class TradeService {
                 .subCategory(subCategory)
                 .tradeBabyMonth(tradeBabyMonth)
                 .isLiked(isExistWish.toString())
-                .profile(user.getProfileImage())
+                .profile(trade.getUser().getProfileImage())
                 .build();
     }
 
