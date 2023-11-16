@@ -74,7 +74,7 @@ export default function TradeInfo(props: any) {
                   }}
                   style={{ backgroundColor: "#5E9FF2" }}
                 >
-                  판매완료
+                  <p className="text-white">판매완료</p>
                 </Button>
               )
             ) : (

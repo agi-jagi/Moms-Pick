@@ -40,7 +40,6 @@ const StarRating = (props: any) => {
 
   return (
     <Base>
-      <Name>별점</Name>
       <RatingField>
         <StarInput onClickRating={handleClickRating} value={5} isHalf={false} />
         <StarInput onClickRating={handleClickRating} value={4.5} isHalf={true} />
@@ -53,7 +52,6 @@ const StarRating = (props: any) => {
         <StarInput onClickRating={handleClickRating} value={1} isHalf={false} />
         <StarInput onClickRating={handleClickRating} value={0.5} isHalf={true} />
       </RatingField>
-      <RatingValue>{props.rating}</RatingValue>
     </Base>
   );
 };

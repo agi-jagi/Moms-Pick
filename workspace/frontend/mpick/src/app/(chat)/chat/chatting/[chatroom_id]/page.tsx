@@ -6,6 +6,7 @@ import GoBack from "../../../../(auth)/auth/GoBack";
 import instance from "@/app/_config/axios";
 import { Container } from "@mui/system";
 import Image from "next/image";
+import { Button } from "@nextui-org/react";
 import profile from "../../../../../../public/profile.png";
 import { useChattingStore, useOpponent } from "@/store/ChattingStore";
 import TradeInfo from "../../start/[trade_id]/tradeinfo";
@@ -19,12 +20,16 @@ export default function Chatting(props: any) {
   const [tradeId, setTradeId] = useState<number>();
   const [sellerNickName, setSellerNickName] = useState<string>("");
   const [userNickName, setUserNickName] = useState<string>("");
+  const [isSaleDone, setIsSaleDone] = useState<boolean>(false);
+  const [isSellerRatingDone, setIsSellerRatingDone] = useState<boolean>(false);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const { messageStore, setMessageStore } = useChattingStore();
   const { nickName } = useOpponent();
   const { decrement } = useUnReadStore();
+
+  console.log("???", isSellerRatingDone);
 
   const chattingReload = async (data: any) => {
     // setMessageList를 비동기적으로 호출
@@ -115,18 +120,22 @@ export default function Chatting(props: any) {
                       marginBottom: "10px",
                     }}
                   >
-                    <div
-                      className="my-message"
-                      style={{
-                        backgroundColor: "#a0d3e9",
-                        padding: "8px",
-                        maxWidth: "200px",
-                        borderRadius: "8px",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      {message.message}
-                    </div>
+                    {message.message === "adfoighaosigjoiaetjhoiasjerfoisaeut8oewithj" ? (
+                      <></>
+                    ) : (
+                      <div
+                        className="my-message"
+                        style={{
+                          backgroundColor: "#a0d3e9",
+                          padding: "8px",
+                          maxWidth: "200px",
+                          borderRadius: "8px",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {message.message}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div
@@ -138,34 +147,101 @@ export default function Chatting(props: any) {
                       marginBottom: "10px",
                     }}
                   >
-                    <div
-                      style={{
-                        borderRadius: "100px",
-                        overflow: "hidden",
-                        width: "45px",
-                        height: "45px",
-                      }}
-                    >
-                      <Image src={profile} alt="profile" objectFit="cover" />
-                    </div>
-                    <div>
-                      <div>
-                        <p>{nickName}</p>
-                      </div>
+                    {message.message === "adfoighaosigjoiaetjhoiasjerfoisaeut8oewithj" ? (
+                      userNickName === sellerNickName ? (
+                        <></>
+                      ) : (
+                        <div
+                          className="your-message-container"
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            alignItems: "start",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              borderRadius: "100px",
+                              overflow: "hidden",
+                              width: "45px",
+                              height: "45px",
+                            }}
+                          >
+                            <Image src={profile} alt="profile" objectFit="cover" />
+                          </div>
+                          <div>
+                            <div>
+                              <p>{nickName}</p>
+                            </div>
+                            <div
+                              className="your-message"
+                              style={{
+                                backgroundColor: "rgb(247, 247, 247)",
+                                padding: "8px",
+                                maxWidth: "200px",
+                                borderRadius: "8px",
+                                marginLeft: "5px",
+                                wordWrap: "break-word",
+                              }}
+                            >
+                              <div>
+                                <div>판매자는 어땠나요?</div>
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                  <Button
+                                    onClick={() => {
+                                      onOpen();
+                                    }}
+                                    style={{ backgroundColor: "#5E9FF2" }}
+                                  >
+                                    <p className="text-white">별점주기</p>
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    ) : (
                       <div
-                        className="your-message"
+                        className="your-message-container"
                         style={{
-                          backgroundColor: "rgb(247, 247, 247)",
-                          padding: "8px",
-                          maxWidth: "200px",
-                          borderRadius: "8px",
-                          marginLeft: "5px",
-                          wordWrap: "break-word",
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          alignItems: "start",
+                          marginBottom: "10px",
                         }}
                       >
-                        {message.message}
+                        <div
+                          style={{
+                            borderRadius: "100px",
+                            overflow: "hidden",
+                            width: "45px",
+                            height: "45px",
+                          }}
+                        >
+                          <Image src={profile} alt="profile" objectFit="cover" />
+                        </div>
+                        <div>
+                          <div>
+                            <p>{nickName}</p>
+                          </div>
+                          <div
+                            className="your-message"
+                            style={{
+                              backgroundColor: "rgb(247, 247, 247)",
+                              padding: "8px",
+                              maxWidth: "200px",
+                              borderRadius: "8px",
+                              marginLeft: "5px",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            <div>{message.message}</div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
               </Container>
@@ -178,9 +254,19 @@ export default function Chatting(props: any) {
           chatRoomId={props.params.chatroom_id}
           chattingReload={chattingReload}
           messageList={messageList}
+          isSaleDone={isSaleDone}
+          setIsSaleDone={setIsSaleDone}
+          isSellerRatingDone={isSellerRatingDone}
+          setIsSellerRatingDone={setIsSellerRatingDone}
         />
       </div>
-      <Rating isOpen={isOpen} onOpenChange={onOpenChange} tradeId={tradeId} />
+      <Rating
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        tradeId={tradeId}
+        chatRoomId={props.params.chatroom_id}
+        setIsSaleDone={setIsSaleDone}
+      />
       <div style={{ height: "117px", position: "sticky", bottom: "0" }}></div>
     </div>
   );

@@ -51,19 +51,11 @@ export default function Rating(props: any) {
                     onClick={() => {
                       onClose();
                       ratingOpponent();
-                      if (props.isSeller) {
-                        const data = {
-                          chatRoomId: props.chatRoomId,
-                          message: "<Button onClick={onOpen()}>판매자는 어땠나요?</Button>",
-                        };
-                        if (props.socket && props.socket.readyState === WebSocket.OPEN) {
-                          props.socket.send(JSON.stringify(data));
-                        }
-                      }
+                      props.setIsSaleDone(true);
                     }}
                     // onPress={onClose}
                   >
-                    확인
+                    <p className="text-white">확인</p>
                   </Button>
                 </div>
               </ModalHeader>

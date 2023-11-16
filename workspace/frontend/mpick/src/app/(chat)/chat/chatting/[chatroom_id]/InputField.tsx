@@ -28,17 +28,27 @@ const InputField = (props: any) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (props.isSaleDone) {
+      if (props.isSellerRatingDone === false) {
+        const data = {
+          chatRoomId: props.chatRoomId,
+          message: "adfoighaosigjoiaetjhoiasjerfoisaeut8oewithj",
+        };
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify(data));
+        }
+        props.setIsSaleDone(false);
+        props.setIsSellerRatingDone(true);
+      }
+    }
+  }, [props.isSaleDone]);
+
   return (
     <div
       className="input-area"
       style={{ display: "flex", position: "fixed", bottom: "80px", width: "100%", zIndex: "1" }}
     >
-      <div
-        className="plus-button"
-        style={{ display: "flex", justifyContent: "center", width: "50px", fontSize: "24px" }}
-      >
-        +
-      </div>
       <div
         className="input-container"
         style={{ display: "flex", justifyContent: "space-between", width: "100%" }}

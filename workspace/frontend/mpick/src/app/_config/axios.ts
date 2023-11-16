@@ -40,11 +40,6 @@ instance.interceptors.response.use(
       localStorage.clear();
       window.location.href = "/";
       return Promise.reject(error);
-    } else if (error.response.status === 500) {
-      alert("세션이 만료되어 로그아웃 되었습니다");
-      localStorage.clear();
-      window.location.href = "/";
-      return Promise.reject(error);
     } else if (error.response.status === 401) {
       alert("세션이 만료되어 로그아웃 되었습니다");
       localStorage.clear();
