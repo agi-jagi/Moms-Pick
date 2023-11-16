@@ -1,9 +1,10 @@
 'use client';
 
-import GoBack from '@/app/(auth)/auth/GoBack';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Spinner } from '@nextui-org/react';
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
 import { Card, CardHeader, CardBody, Image, Avatar, Button } from "@nextui-org/react";
 
@@ -23,6 +24,8 @@ export default function Detail(props: any) {
   const toggleLike = () => {
     setIsLiked(isLiked === "0" ? "1" : "0");
   };
+
+  const router = useRouter();
 
   useEffect(() => {
 
@@ -70,25 +73,35 @@ export default function Detail(props: any) {
   if (detail === null) {
     // item 정보가 없을 경우 로딩 또는 오류 처리를 할 수 있습니다.
     return <>
-    <div className="absolute top-[40%] left-[40%]">
-    <Spinner label="로딩중입니다" color="primary"/>
+    <div className="absolute top-[40%] left-[25%]">
+    <Spinner label="당신을 위해 준비중입니다." color="primary"/>
     </div>
     </>
   }
 
   return (
     <div>
-    <GoBack />
+    
       <Card className="py-4 flex mt-2">
-      <CardBody className="overflow-visible py-2 justify-center">
+        
+      <CardBody className="overflow-visible py-2 justify-center relative">
+        
         <Image
           alt="detail Item Image"
           className="object-cover rounded-xl"
           src={detail.tradeImages[0]}
           width={270}
         />
+        
+        <IoMdArrowRoundBack
+        size="30"
+        className="absolute top-2 left-4 m-2 cursor-pointer z-10"
+        onClick={() => router.back()}
+        />
       </CardBody>
+      
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+        
         <div className="flex mb-4 items-center">
         <Avatar isBordered color="primary" className="ml-2 mr-2" src={detail.profile} />
         <h4 className="font-semibold text-md ml-2 mt-1">{detail.nickname}</h4>
@@ -148,14 +161,18 @@ export default function Detail(props: any) {
           </Link>
         </Button>
     </Card>
+
+    
+    
         <Button
           size="sm"
           color={isLiked === "1" ? 'default' : 'warning'}
           aria-label='Like'
-          className="!absolute top-4 right-4 rounded-full"
+          className="!absolute top-6 right-[110px] rounded-full mt-4 z-10"
           isIconOnly
           onClick={() => {toggleLike(); addWish();}}
         >
+          
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -166,6 +183,7 @@ export default function Detail(props: any) {
             d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/>
           </svg>
         </Button>
+        
 
     <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>

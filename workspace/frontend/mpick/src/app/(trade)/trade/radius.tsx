@@ -97,9 +97,9 @@ export default function Radius() {
     <div>
       <div className="mt-1" id="map" style={{ width: "auto", height: "500px" }}></div>
       <div className="mt-2 gap-2">
-      <Button className="mr-1" onClick={() => {settingRadius(circle, 2000); setDistance("2km");}}>2km</Button>
-      <Button className="mr-1" onClick={() => {settingRadius(circle, 4000); setDistance("4km");}}>4km</Button>
-      <Button onClick={() => {settingRadius(circle, 6000); setDistance("6km");}}>6km</Button>
+      <Button className="mr-1 bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" onClick={() => {settingRadius(circle, 2000); setDistance("2km");}}>2km</Button>
+      <Button className="mr-1 bg-gradient-to-r from-cyan-200 to-cyan-400 text-black shadow-lg" onClick={() => {settingRadius(circle, 4000); setDistance("4km");}}>4km</Button>
+      <Button className="bg-gradient-to-r from-yellow-200 via-green-200 to-green-500 text-black shadow-lg" onClick={() => {settingRadius(circle, 6000); setDistance("6km");}}>6km</Button>
       </div>
     </div>
   );

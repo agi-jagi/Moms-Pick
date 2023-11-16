@@ -393,7 +393,7 @@ export default function Search(props: any) {
                   <form onSubmit={(e) => registerTrade(e)}>
                     <ModalHeader className="flex flex-col gap-1">판매글 등록</ModalHeader>
                     <ModalBody>
-                      <input type="file" name="image_files" accept="image/*" />
+                      <input type="file" name="image_files" accept="image/*" multiple />
                       <Input
                         variant="faded"
                         label="글 제목"
@@ -475,10 +475,11 @@ export default function Search(props: any) {
           {/* 검색 결과 리스트 */}
         </div>
       </div>
-      <div className="mt-6 gap-2 grid grid-cols-2 sm:grid-cols-4">
+        { filter대분류 ? (
+        <div className="mt-6 gap-2 grid grid-cols-2 sm:grid-cols-4">
         {searchList.map((item: any, index: number) => (
-          <Card className="mt-1 mb-2" shadow="sm" key={index} isPressable onPress={() => setTradeId(item._source.id)}>
-            <CardBody className="overflow-visible p-0">
+          <Card className="mx-2 mt-1 mb-2" shadow="sm" key={index} isPressable onPress={() => setTradeId(item._source.id)}>
+                <CardBody className="overflow-visible p-0">
               <Link href={"/trade/detail/" + tradeId} onClick={() => console.log(tradeId)}>
                 <Image
                   shadow="sm"
@@ -493,12 +494,20 @@ export default function Search(props: any) {
             </CardBody>
 
             <CardFooter className="text-small justify-between">
-              <b>{item._source.title}</b>
+              <p>{item._source.title}</p>
               <p className="text-default-500">₩ {item._source.price}</p>
             </CardFooter>
           </Card>
         ))}
       </div>
+      ) : (
+        <div className="absolute top-[220px] left-[110px]">
+          검색 결과가 없습니다. <br/>
+          대분류를 선택해주세요.
+        </div>
+      )}
+        
+      
 
       {/* 필터링 카테고리 모달 */}
       <Modal
@@ -574,7 +583,9 @@ export default function Search(props: any) {
             <ModalContent>
               {() => (
                 <>
-                    <ModalHeader className="flex flex-col gap-1 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold">반경 설정</ModalHeader>
+                    <ModalHeader className="flex flex-col gap-1 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold">반경 설정
+                    : {distance}
+                    </ModalHeader>
                     <ModalBody>
                     < Radius />
                     </ModalBody>

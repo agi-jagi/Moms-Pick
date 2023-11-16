@@ -4,6 +4,7 @@ import {SearchIcon} from "./searchIcon";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useTradeStore } from "@/store/TradeStore";
 
 import Radius from "./radius";
 
@@ -13,6 +14,8 @@ export default function TopNavBar() {
   const handleOpen반경 = () => set반경Open(!반경open);
 
   const [ nowAddress, setNowAddress ] = useState<string>("");
+
+  const { distance } = useTradeStore();
 
   const [longitude, setLongitude] = useState<string>("");
   const [latitude, setLatitude] = useState<string>("");
@@ -89,7 +92,8 @@ export default function TopNavBar() {
               {() => (
                 <>
                   
-                    <ModalHeader className="flex flex-col gap-1 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold">반경 설정</ModalHeader>
+                    <ModalHeader className="flex flex-col gap-1 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold">반경 설정
+                    : {distance}</ModalHeader>
                     <ModalBody>
                     < Radius />
                     </ModalBody>
