@@ -177,7 +177,7 @@ export default function Search(props: any) {
             },
           },
         },
-        size: 8,
+        size: 30,
         from: 0,
       };
 
