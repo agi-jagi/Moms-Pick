@@ -7,6 +7,7 @@ import instance from "@/app/_config/axios";
 import { Container } from "@mui/system";
 import Image from "next/image";
 import { Button } from "@nextui-org/react";
+import Avatar from "@mui/material/Avatar";
 import profile from "../../../../../../public/profile.png";
 import { useChattingStore, useOpponent } from "@/store/ChattingStore";
 import TradeInfo from "../../start/[trade_id]/tradeinfo";
@@ -28,8 +29,6 @@ export default function Chatting(props: any) {
   const { messageStore, setMessageStore } = useChattingStore();
   const { nickName } = useOpponent();
   const { decrement } = useUnReadStore();
-
-  console.log("???", isSellerRatingDone);
 
   const chattingReload = async (data: any) => {
     // setMessageList를 비동기적으로 호출
@@ -168,11 +167,29 @@ export default function Chatting(props: any) {
                               height: "45px",
                             }}
                           >
-                            <Image src={profile} alt="profile" objectFit="cover" />
+                            {message.otherProfile === null ? (
+                              <div>
+                                <Image
+                                  src={profile}
+                                  alt="profile"
+                                  width={50}
+                                  height={50}
+                                  style={{ borderRadius: "100%" }}
+                                />
+                              </div>
+                            ) : (
+                              <div>
+                                <Avatar
+                                  src={message.otherProfile}
+                                  alt="profile"
+                                  sx={{ margin: "auto", width: 50, height: 50 }}
+                                />
+                              </div>
+                            )}
                           </div>
                           <div>
                             <div>
-                              <p>{nickName}</p>
+                              <p>{message.otherNickname}</p>
                             </div>
                             <div
                               className="your-message"
@@ -216,15 +233,34 @@ export default function Chatting(props: any) {
                           style={{
                             borderRadius: "100px",
                             overflow: "hidden",
-                            width: "45px",
-                            height: "45px",
+                            width: "50px",
+                            height: "50px",
                           }}
                         >
-                          <Image src={profile} alt="profile" objectFit="cover" />
+                          {message.otherProfile === null ? (
+                            <div>
+                              <Image
+                                src={profile}
+                                alt="profile"
+                                width={50}
+                                height={50}
+                                style={{ borderRadius: "100%" }}
+                              />
+                              <Image src={profile} alt="profile" objectFit="cover" />
+                            </div>
+                          ) : (
+                            <div>
+                              <Avatar
+                                src={message.otherProfile}
+                                alt="profile"
+                                sx={{ margin: "auto", width: 50, height: 50 }}
+                              />
+                            </div>
+                          )}
                         </div>
                         <div>
                           <div>
-                            <p>{nickName}</p>
+                            <p>{message.otherNickname}</p>
                           </div>
                           <div
                             className="your-message"
