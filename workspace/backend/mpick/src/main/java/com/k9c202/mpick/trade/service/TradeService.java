@@ -199,7 +199,7 @@ public class TradeService {
 
         User user = commonFunction.loadUser(loginId);
 
-        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(trade.getId(), trade.getUser().getId());
+        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(trade.getUser().getId());
 
         Long isExistWish = wishQueryRepository.existWish(user.getId(), tradeId);
 
