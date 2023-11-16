@@ -11,6 +11,7 @@ import com.k9c202.mpick.chatting.repository.ChatRoomQueryRepository;
 import com.k9c202.mpick.chatting.repository.ChatRoomRepository;
 import com.k9c202.mpick.chatting.controller.response.ChatMessageResponse;
 import com.k9c202.mpick.trade.repository.TradeRepository;
+import com.k9c202.mpick.user.entity.User;
 import com.k9c202.mpick.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -113,12 +114,20 @@ public class ChatService {
 
     // 채팅메세지 Entity를 ChatMessageResponse로 변환
     private ChatMessageResponse convertChatMessageToChatMessageResponse(boolean isBuyer, ChatMessage chatMessage) {
+        User me = isBuyer ? chatMessage.getChatRoom().getUser() : chatMessage.getChatRoom().getTrade().getUser();
+        User other = isBuyer ? chatMessage.getChatRoom().getTrade().getUser() : chatMessage.getChatRoom().getUser();
         return ChatMessageResponse.builder()
                 .chatRoomId(chatMessage.getChatRoom().getId())
                 .chatMessageId(chatMessage.getId())
                 .tradeId(chatMessage.getChatRoom().getTrade().getId())  // tradeId 추가
                 // toSeller를 toMe로 가공
                 .toMe(chatMessage.getToSeller().equals(!isBuyer)) // ToSeller:메세지 수신자 정보(DB), isBuyer: 응답 받는 유저 정보
+                .myProfile(me.getProfileImage())
+                .myNickname(me.getNickname())
+                .myLoginId(me.getLoginId())
+                .otherProfile(other.getProfileImage())
+                .otherNickname(other.getNickname())
+                .otherLoginId(other.getLoginId())
                 .message(chatMessage.getMessage())
                 .dateTime(chatMessage.getCreatedDate())
                 .build();
