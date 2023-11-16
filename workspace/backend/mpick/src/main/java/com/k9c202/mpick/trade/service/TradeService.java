@@ -217,7 +217,7 @@ public class TradeService {
 
         BigDecimal userRating = BigDecimal.valueOf(0.0);
 
-        if (userRatings.size() < 10) {
+        if (userRatings.size() < 2) {
             userRating = BigDecimal.valueOf(-1.0);
         }
         else {
