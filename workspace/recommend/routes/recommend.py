@@ -1,12 +1,17 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Header
 from fastapi.responses import JSONResponse
 from sqlalchemy import desc, asc, func
 from fastapi.responses import JSONResponse
+
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
 
 from db.connection import engineconnection
 
 from model.trade import Trade
 from model.user import User
+from model.wish import Wish
 
 from schema.RecommendRequest import RecommendRequest
 from schema.RecommendResponse import RecommendResponse, serialize_recommend_response
@@ -23,34 +28,42 @@ router = APIRouter(
 @router.post("", response_model = List[RecommendResponse])
 async def get_recommend_list(RecommendRequest: RecommendRequest):
 
-    dummy_result = []
-
-    for i in range(1, 11):
-    
-        dummy_result.append(
-            {
-                'trade_id' : i,
-                'nickname' : '네즈코' + str(i),
-                'title' : '벽력일섬' + str(i),
-                'price' : 100000,
-                'save_file_name' : 'https://data.onnada.com/character/202105/3731841375_83bd7463_1.PNG'
-            }
-        )
-
     try:
-    #     result = session.query(Trade).limit(9).all()
-        
-    #     for i in range(len(result)):
-    #         user = session.query(User).filter(User.user_id == result[i].seller_id).first()
-    #         trade_image = session.query(TradeImage).filter(TradeImage.trade_id == result[i].trade_id).first()
-    #         result[i] = serialize_recommend_response(result[i], user, trade_image)
+        wishes = session.query(Wish).filter(Wish.user_id == RecommendRequest.user_id).all()
 
-        result = session.query(Trade).limit(10).all()
+        wishTradeIds = []
+
+
+        if len(wishes) != 0:
+
+
+            for wish in wishes:
+                wishTradeIds.append(wish.trade_id)
+            
+            result = session.query(Trade).filter(
+                (Trade.user_id != RecommendRequest.user_id) &
+                (Trade.trade_id not in wishTradeIds) & 
+                (Trade.buyer_id is None) &
+                Trade.trade_status == '판매중'
+                ).order_by(
+                (Trade.view_count + Trade.wish_count).desc()
+            ).all()
+        else:
+            result = session.query(Trade).filter(
+                (Trade.user_id != RecommendRequest.user_id) & 
+                (Trade.buyer_id == None) &
+                (Trade.trade_status == '판매중')
+                ).order_by(
+                (Trade.view_count + Trade.wish_count).desc()
+            ).all()
+
+        if len(result) < 10:
+            result = session.query(Trade).all()
 
         for i in range(len(result)):
             user = session.query(User).filter(User.user_id == result[i].user_id).first()
             result[i] = serialize_recommend_response(result[i], user)
-        response = JSONResponse(content=result, status_code=200)
+        response = JSONResponse(content=result[:10], status_code=200)
 
         return response
     except Exception as e:
@@ -58,5 +71,3 @@ async def get_recommend_list(RecommendRequest: RecommendRequest):
 
     finally:
         session.close()
-
-
