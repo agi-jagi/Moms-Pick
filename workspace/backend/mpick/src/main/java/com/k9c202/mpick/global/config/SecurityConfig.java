@@ -26,7 +26,7 @@ public class SecurityConfig {
     @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 // tokenProvider를 매개변수로 받을 수 있도록 수정
-    // TODO: 2023-11-15 security
+    // TODO: 2023-11-15 security filterChain
         public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider, RedisService redisService, ObjectMapper objectMapper) throws Exception {
         http
                 .csrf().disable()
@@ -35,9 +35,10 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeHttpRequest -> authorizeHttpRequest
                         // 아래 url은 권한 필요X
-                        // .antMatchers("/api/login","/api/join","/api/emails/*").permitAll()
-//                        .antMatchers("/api/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있어야 접근 가능
-                        .antMatchers("/**").permitAll()
+                        .antMatchers("/api/auth/**").permitAll()
+                        .antMatchers("/api/swagger-ui/**", "api-docs/**").permitAll()
+                        // 아래 url은 관리자 권한 필요
+                        .antMatchers("/api/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한이 있어야 접근 가능
                         // 나머지 경로는 권한(인증) 필요
                         .anyRequest().authenticated()
                 )
