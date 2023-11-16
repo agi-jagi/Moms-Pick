@@ -32,7 +32,7 @@ export default function Rating(props: any) {
                   style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
                 >
                   <p>상대방은 어땠나요?</p>
-                  <Button color="primary" onPress={onClose}>
+                  <Button style={{ backgroundColor: "#5E9FF2" }} onPress={onClose}>
                     확인
                   </Button>
                 </div>

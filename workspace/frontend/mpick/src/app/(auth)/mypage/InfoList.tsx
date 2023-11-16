@@ -15,7 +15,12 @@ export default function InfoList() {
         backgroundColor: "white",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{ display: "flex", justifyContent: "space-between" }}
+        onClick={() => {
+          router.push("/mypage/wishlist");
+        }}
+      >
         <div style={{ display: "flex", alignItems: "center" }}>
           <p className="font-bold text-base">찜 목록</p>
         </div>
@@ -28,6 +33,9 @@ export default function InfoList() {
           borderTop: "1px solid grey",
           marginTop: "10px",
           paddingTop: "10px",
+        }}
+        onClick={() => {
+          router.push("/mypage/buylist");
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
