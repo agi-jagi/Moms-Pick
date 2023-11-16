@@ -124,7 +124,11 @@ export default function Detail(props: any) {
         <h5 className="ml-2 font-semibold">{detail.title}</h5>
         <small className="ml-2 text-gray-700">₩ {detail.price}</small>
         <p className="mt-4 ml-2">{detail.mainCategory} | { detail.subCategory ? detail.subCategory : "없음" } | {detail.tradeBabyMonth} | 
-        <span className="ml-2 text-blue-500">{detail.tradeStatus}</span>
+        { detail.tradeStatus === "판매중" ? (
+        <span className="ml-2 text-[#5E9FF2]">{detail.tradeStatus}</span>
+      ) : (
+        <span className="ml-2 text-red-500">{detail.tradeStatus}</span>
+      )}
         </p>
         <p className="mt-4 ml-2 mr-2">{detail.tradeExplain} Lorem ipsum dolor, sit amet consectetur adipisicing elit. Exercitationem sed maxime officiis soluta expedita cum. Dicta eos, Tempore.</p>
         <div className="flex items-center gap-2 ml-1 mt-4 mb-2 mr-2">
