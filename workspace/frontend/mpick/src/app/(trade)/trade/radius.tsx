@@ -8,7 +8,9 @@ import { useTradeStore } from "@/store/TradeStore";
 export default function Radius() {
   const { settingRadius } = useKakaomap();
 
-  const { distance, setDistance } = useTradeStore();
+
+
+  const { distance, setDistance, storeLatitude, storeLongitude } = useTradeStore();
 
   const [values, setValue] = useState<number>(2000); // 초기값 설정
   const [circle, setCircle] = useState<any>(null);
@@ -33,8 +35,10 @@ export default function Radius() {
       navigator.geolocation.getCurrentPosition((position) => {
         const mapContainer = document.getElementById("map");
         centerPosition = new window.kakao.maps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude
+          // position.coords.latitude,
+          // position.coords.longitude
+          storeLatitude,
+          storeLongitude
         ); // 지도의 중심좌표
         const mapOption = {
           center: centerPosition,
@@ -42,8 +46,10 @@ export default function Radius() {
         };
         map = new window.kakao.maps.Map(mapContainer, mapOption);
         const markerPosition = new window.kakao.maps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude
+          // position.coords.latitude,
+          // position.coords.longitude
+          storeLatitude,
+          storeLongitude
         );
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
