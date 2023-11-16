@@ -20,6 +20,8 @@ export default function TopNavBar() {
   const [longitude, setLongitude] = useState<string>("");
   const [latitude, setLatitude] = useState<string>("");
 
+  const { storeLatitude, setStoreLatitude , storeLongitude, setStoreLongitude } = useTradeStore();
+
   useEffect(() => {
 
     async function getAddress() {
@@ -33,7 +35,9 @@ export default function TopNavBar() {
         for (let i = 0; res.data.response.length; i++) {
           if (res.data.response[i].isSet) {
             setLatitude(res.data.response[i].latitude);
+            setStoreLatitude(res.data.response[i].latitude);
             setLongitude(res.data.response[i].longitude);
+            setStoreLongitude(res.data.response[i].longitude);
             setNowAddress(res.data.response[i].addressName);
           }
         }

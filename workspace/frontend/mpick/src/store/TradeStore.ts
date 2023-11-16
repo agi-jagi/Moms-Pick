@@ -6,6 +6,10 @@ interface TradeState {
   setSearchWord: (searchWord: string) => void
   distance: string | null
   setDistance: (distance: string) => void
+  storeLongitude: number | null
+  setStoreLongitude: (longitude: number) => void
+  storeLatitude: number | null
+  setStoreLatitude: (latitude: number) => void
 }
 
 export const useTradeStore = create<TradeState>()(
@@ -15,6 +19,10 @@ export const useTradeStore = create<TradeState>()(
       setSearchWord: (searchWord: string) => set({ searchWord }),
       distance: "2km",
       setDistance: (distance: string) => set({ distance }),
+      storeLongitude: null,
+      setStoreLongitude: (storeLongitude: number) => set({ storeLongitude }),
+      storeLatitude: null,
+      setStoreLatitude: (storeLatitude: number) => set({ storeLatitude }),
     }),
     {
       name: "trade-storage",
