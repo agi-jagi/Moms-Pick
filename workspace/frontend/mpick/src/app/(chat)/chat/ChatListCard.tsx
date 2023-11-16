@@ -63,7 +63,7 @@ export default function Chat() {
           채팅기록이 없습니다
         </div>
       ) : (
-        chatList.map((info: any, index: any) => {
+        chatList.map((info: any, index: number) => {
           const timeDiff = timeCheck(info.lastDateTime);
           return (
             <div
@@ -112,7 +112,11 @@ export default function Chat() {
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {info.lastMessage}
+                      {info.lastMessage === "adfoighaosigjoiaetjhoiasjerfoisaeut8oewithj" ? (
+                        <div>상대방이 별점을 줬습니다</div>
+                      ) : (
+                        <div>{info.lastMessage}</div>
+                      )}
                     </div>
                   </div>
                 </div>

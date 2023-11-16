@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import ChangePw from "./changepw";
+import Avatar from "@mui/material/Avatar";
 
 const style = {
   position: "absolute" as "absolute",
@@ -224,9 +225,11 @@ export default function EditMyInfo() {
             onClick={() => {
               changeInfo();
             }}
-            color="primary"
+            style={{
+              backgroundColor: "#5E9FF2",
+            }}
           >
-            <p className="text-base">저장</p>
+            <p className="text-base text-white">저장</p>
           </Button>
         </div>
         <hr style={{ borderTopWidth: "2px", marginTop: "10px" }} />
@@ -261,12 +264,10 @@ export default function EditMyInfo() {
                         style={{ borderRadius: "100%" }}
                       />
                     ) : (
-                      <Image
+                      <Avatar
                         src={userProfile}
                         alt="profile"
-                        width={70}
-                        height={70}
-                        style={{ borderRadius: "100%" }}
+                        sx={{ margin: "auto", width: 70, height: 70 }}
                       />
                     )}
                     <div style={{ position: "absolute", bottom: "2px", right: "2px" }}>
@@ -316,9 +317,11 @@ export default function EditMyInfo() {
                     onClick={() => {
                       router.push("/mypage/changeloc");
                     }}
-                    color="primary"
+                    style={{
+                      backgroundColor: "#5E9FF2",
+                    }}
                   >
-                    <p className="text-base">위치변경</p>
+                    <p className="text-base text-white">위치변경</p>
                   </Button>
                 </div>
               </div>
@@ -355,9 +358,11 @@ export default function EditMyInfo() {
                   onClick={() => {
                     setOpen(true);
                   }}
-                  color="primary"
+                  style={{
+                    backgroundColor: "#5E9FF2",
+                  }}
                 >
-                  <p className="text-base">비밀번호 변경</p>
+                  <p className="text-base text-white">비밀번호 변경</p>
                 </Button>
               </div>
             </div>

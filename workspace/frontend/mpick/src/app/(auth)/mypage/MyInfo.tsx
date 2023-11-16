@@ -7,6 +7,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import instance from "@/app/_config/axios";
 import { Button, Input } from "@nextui-org/react";
+import Avatar from "@mui/material/Avatar";
 import { useRouter } from "next/navigation";
 
 export default function MyInfo() {
@@ -56,12 +57,10 @@ export default function MyInfo() {
           {userProfileImage === "" ? (
             <Image src={profile} alt="profile" width={70} style={{ borderRadius: "100%" }} />
           ) : (
-            <Image
+            <Avatar
               src={userProfileImage}
               alt="profile"
-              width={70}
-              height={70}
-              style={{ borderRadius: "100%" }}
+              sx={{ margin: "auto", width: 70, height: 70 }}
             />
           )}
           <div className="flex items-center ml-8">
@@ -72,13 +71,13 @@ export default function MyInfo() {
                   onClick={() => {
                     router.push("/mypage/edit");
                   }}
-                  color="primary"
                   style={{
-                    width: "100%",
-                    height: "100%",
+                    width: "100px",
+                    height: "30px",
+                    backgroundColor: "#5E9FF2",
                   }}
                 >
-                  <p className="text-base">내 정보 수정</p>
+                  <p className="text-base text-white">내 정보 수정</p>
                 </Button>
               ) : (
                 <p>최근 위치 : {userAddress}</p>
@@ -124,9 +123,11 @@ export default function MyInfo() {
                   onClick={() => {
                     router.push("/mypage/changeloc");
                   }}
-                  color="primary"
+                  style={{
+                    backgroundColor: "#5E9FF2",
+                  }}
                 >
-                  <p className="text-base">위치변경</p>
+                  <p className="text-base text-white">위치변경</p>
                 </Button>
               </div>
             </div>
