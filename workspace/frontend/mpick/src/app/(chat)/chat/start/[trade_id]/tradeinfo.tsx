@@ -27,7 +27,7 @@ export default function TradeInfo(props: any) {
 
   useEffect(() => {
     console.log("seller", props.sellerNickName);
-    console.log("me", userNickName);
+    console.log("me", props.userNickName);
   }, [props.sellerNickName]);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function TradeInfo(props: any) {
             <p className="font-bold">{tradeData.price}원</p>
           </div>
           <div>
-            {userNickName === props.sellerNickName ? (
+            {props.userNickName === props.sellerNickName ? (
               tradeData.tradeStatus === "판매완료" ? (
                 <p>{tradeStatus}</p>
               ) : (
@@ -78,7 +78,13 @@ export default function TradeInfo(props: any) {
                 </Button>
               )
             ) : (
-              <p>{tradeStatus}</p>
+              <p
+                onClick={() => {
+                  props.onOpen();
+                }}
+              >
+                {tradeStatus}
+              </p>
             )}
           </div>
         </div>
