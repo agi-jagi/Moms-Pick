@@ -27,27 +27,16 @@ export default function MyInfo() {
         if (res.data.response.profileImage) {
           setUserProfileImage(res.data.response.profileImage);
         }
-        console.log(res.data.response);
       })
       .catch((err) => {});
     instance.get("/api/users/addresses").then((res) => {
-      console.log(res);
       for (let i = 0; i < res.data.response.length; i++) {
         if (res.data.response[i].isSet) {
           const address = res.data.response[i].addressName;
           setUserAddress(address);
-          // const addressSplit = address.split(" ");
-          // for (let j = 0; addressSplit.length; j++) {
-          //   if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
-          //     setUserAddress(addressSplit[j]);
-          //   }
-          // }
         }
       }
     });
-    // .catch((err) => {
-    //   console.log(err);
-    // });
   }, []);
 
   return (

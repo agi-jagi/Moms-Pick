@@ -35,9 +35,8 @@ const DetailModal: React.FC<DetailModalProps> = ({ open, onClose }) => {
         const response = await instance.get(`/api/info/babymeal/${foodId}`);
         setDetailFoodInfo(response.data.response);
         setCookMethod(response.data.response.cookMethod);
-        console.log("디테일 정보 조회 성공", response.data.response);
       } catch (error) {
-        console.log("디테일 정보 조회 실패", error);
+        console.log("디테일 정보 조회 실패");
       }
     };
 

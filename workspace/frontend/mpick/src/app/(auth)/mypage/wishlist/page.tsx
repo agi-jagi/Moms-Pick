@@ -15,12 +15,9 @@ export default function SaleList() {
     instance
       .get(`/api/users/wish-list`)
       .then((res) => {
-        console.log("????", res.data.response);
         setWishList(res.data.response);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   return (

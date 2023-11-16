@@ -45,7 +45,6 @@ export default function MyFamily() {
   const [updateModal, setUpdateModal] = useState<boolean>(false);
   const [selectedBaby, setSelectedBaby] = useState<any>({});
 
-  console.log("babyList", babyList);
   const showModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -81,13 +80,11 @@ export default function MyFamily() {
           return baby.babyId === updateBaby.babyId ? updateBaby : baby;
         })
       );
-      console.log(response.data.response, "아이 정보 업데이트 성공");
     } catch (error) {
-      console.log("아이 정보 업데이트 실패", error);
+      console.log("아이 정보 업데이트 실패");
     }
   };
 
-  console.log("selectBaby", selectedBaby);
   const handleDelete = async () => {
     const babyId = selectedBaby.babyId;
     const babyData = {
@@ -97,10 +94,9 @@ export default function MyFamily() {
       const response = await instance.delete("/api/profiles/child", { data: babyData });
       const deleteBabyInfo = babyList.filter((baby) => baby.babyId !== babyId);
       setBabyList(deleteBabyInfo);
-      console.log(response.data.response, "아이 정보 삭제 성공");
       setUpdateModal(false);
     } catch (error) {
-      console.log("아이 정보 삭제 실패", error);
+      console.log("아이 정보 삭제 실패");
     }
   };
 
@@ -115,9 +111,8 @@ export default function MyFamily() {
       const response = await instance.post("/api/profiles/child", babyData);
       getBabyInfo();
       setNewBaby({ babyName: "", babyGender: "", babyBirth: "", babyOrder: 0 });
-      console.log(response.data, "아이 정보 추가 성공");
     } catch (error) {
-      console.log(error, "아이 정보 추가 실패");
+      console.log("아이 정보 추가 실패");
     }
   };
 
@@ -140,9 +135,8 @@ export default function MyFamily() {
     try {
       const response = await instance.get("/api/profiles/child");
       setBabyList(response.data.response);
-      console.log("아이 정보 가져오기 성공", response.data.response);
     } catch (error) {
-      console.log("아이 정보 가져오기 실패", error);
+      console.log("아이 정보 가져오기 실패");
     }
   };
 

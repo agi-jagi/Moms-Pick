@@ -6,7 +6,6 @@ import { PiWechatLogoBold } from "react-icons/pi";
 
 export default function ChattingRedDot() {
   const { count } = useUnReadStore();
-  console.log(count);
   return (
     <div>
       {count > 0 ? (

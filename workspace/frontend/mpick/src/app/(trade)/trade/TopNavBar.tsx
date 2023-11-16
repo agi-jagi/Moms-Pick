@@ -37,7 +37,6 @@ export default function TopNavBar() {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(res.data.response);
         for (let i = 0; res.data.response.length; i++) {
           if (res.data.response[i].isSet) {
             setLatitude(res.data.response[i].latitude);
@@ -47,9 +46,7 @@ export default function TopNavBar() {
             setNowAddress(res.data.response[i].addressName);
           }
         }
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
     getAddress();
   }, []);

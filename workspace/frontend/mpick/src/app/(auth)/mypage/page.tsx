@@ -16,7 +16,7 @@ export default function mypage() {
         </div>
       </div>
       <hr style={{ borderTopWidth: "2px" }} />
-      <div style={{ padding: "20px 0", backgroundColor: "rgb(247, 247, 247)", height: "81vh" }}>
+      <div style={{ padding: "20px 0", backgroundColor: "rgb(247, 247, 247)" }}>
         <Myfamily />
         <InfoList />
       </div>

@@ -99,7 +99,6 @@ export default function AddressSearch(props: any) {
 
   useEffect(() => {
     if (!window.kakao) {
-      console.log(1);
       return;
     }
     if (props.chooseAddress) {

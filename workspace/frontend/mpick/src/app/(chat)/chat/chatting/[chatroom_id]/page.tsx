@@ -35,7 +35,6 @@ export default function Chatting(props: any) {
     await new Promise((resolve) => {
       setMessageList((prevMessageList: any) => {
         const updatedList = [...prevMessageList, JSON.parse(data)];
-        console.log("Updated list:", updatedList);
         decrement(1);
         resolve(updatedList);
         return updatedList;
@@ -54,19 +53,15 @@ export default function Chatting(props: any) {
     instance
       .get(`/api/chattings/${props.params.chatroom_id}`)
       .then((res) => {
-        console.log(res);
         setMessageList(res.data.response);
         setTradeId(res.data.response[0].tradeId);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
 
     instance
       .get("/api/users")
       .then((res) => {
         setUserNickName(res.data.response.nickname);
-        console.log(res.data.response);
       })
       .catch((err) => {});
   }, []);

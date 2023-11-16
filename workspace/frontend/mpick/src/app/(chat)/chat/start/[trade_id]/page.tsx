@@ -11,10 +11,7 @@ export default function Chatting(props: any) {
   const [sellerNickName, setSellerNickName] = useState<string>("");
   const { setNickName } = useOpponent();
 
-  console.log(sellerNickName);
-
   useEffect(() => {
-    console.log("???", sellerNickName);
     if (sellerNickName != "") {
       setNickName(sellerNickName);
     }

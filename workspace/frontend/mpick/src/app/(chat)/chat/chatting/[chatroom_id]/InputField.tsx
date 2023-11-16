@@ -12,13 +12,10 @@ const InputField = (props: any) => {
     // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
     socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
 
-    socket.onopen = (e: any) => {
-      console.log("connected", e);
-    };
+    socket.onopen = (e: any) => {};
 
     if (!socket.onmessage) {
       socket.onmessage = async (e: any) => {
-        console.log("Socket readyState:", socket.readyState);
         await props.chattingReload(e.data);
       };
     }

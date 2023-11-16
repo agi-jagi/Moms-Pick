@@ -20,12 +20,8 @@ export default function Rating(props: any) {
       .put(`/api/users/trades/${props.tradeId}/rating`, {
         rate: rating,
       })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((res) => {})
+      .catch((err) => {});
   };
 
   return (

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Image from "next/image";
-import marker from "../../../../public/marker.png";
 import search from "../../../../public/search.png";
 
 declare global {
@@ -29,7 +28,6 @@ export default function AddressSearch(props: any) {
   const handleComplete = (data: any) => {
     let fullAddress = data.address;
     let extraAddress = "";
-    console.log(data);
     props.setAddressBname(data.bname);
     props.setAddress(data.address);
 
@@ -65,21 +63,6 @@ export default function AddressSearch(props: any) {
           const bounds = new window.kakao.maps.LatLngBounds();
           bounds.extend(markerPosition);
           maps.setBounds(bounds);
-
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          // var marker = new window.kakao.maps.Marker({
-          //   map: map,
-          //   position: coords
-          // });
-
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          // var infowindow = new window.kakao.maps.InfoWindow({
-          //   content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-          // });
-          // infowindow.open(map, marker);
-
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          // map.setCenter(coords);
         }
       });
     });
@@ -115,7 +98,6 @@ export default function AddressSearch(props: any) {
 
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
-            console.log(result);
             props.setAddress(result[0].road_address.address_name);
             props.setAddressBname(result[0].address.region_3depth_name);
           }

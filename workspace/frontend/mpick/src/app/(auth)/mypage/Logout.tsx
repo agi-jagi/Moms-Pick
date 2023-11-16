@@ -46,7 +46,6 @@ const Logout = () => {
               icon: "error",
               title: "네트워크 에러",
             });
-            console.log(err);
           });
       }}
     >

@@ -121,9 +121,7 @@ export default function SignUp() {
         .then((res) => {
           getToken();
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 
@@ -139,9 +137,7 @@ export default function SignUp() {
           setUserAddress();
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const setUserAddress = () => {
@@ -160,9 +156,7 @@ export default function SignUp() {
         });
         router.push("/auth/babyauth");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const idCheck = () => {
@@ -271,6 +265,7 @@ export default function SignUp() {
         });
       })
       .catch((err) => {
+        console.log(err);
         Toast.fire({
           icon: "error",
           title: "메일 전송 실패",

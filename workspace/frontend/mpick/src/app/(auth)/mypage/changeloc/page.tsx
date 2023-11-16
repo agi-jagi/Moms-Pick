@@ -56,10 +56,7 @@ export default function EditMyInfo() {
         dummy[i].isSet = false;
       }
     }
-    instance.post(`/api/users/addresses/${address.addressId}`)
-    .then((res) => {
-      console.log(res)
-    })
+    instance.post(`/api/users/addresses/${address.addressId}`).then((res) => {});
     setAddressList(dummy);
   };
 
@@ -79,9 +76,7 @@ export default function EditMyInfo() {
       .then((res) => {
         setAddressList(res.data.response);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   let count = 0;
@@ -98,17 +93,13 @@ export default function EditMyInfo() {
       await instance
         .post("/api/users/addresses", addressData)
         .then((res) => {
-          console.log(res);
           getAddressList();
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 
   useEffect(() => {
-    console.log(isAddressSearch);
     if (isAddressSearch) {
       setIsAddressSearch(false);
       count++;
