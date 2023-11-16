@@ -292,8 +292,8 @@ export default function Trade() {
         </>
       ) : (
         <>
-        <div className="absolute top-[40%] left-[40%]">
-        <Spinner label="로딩중입니다" color="primary"/>
+        <div className="absolute top-[40%] left-[25%]">
+        <Spinner label="당신을 위해 준비중입니다." color="primary"/>
         </div>
         </>
       )}

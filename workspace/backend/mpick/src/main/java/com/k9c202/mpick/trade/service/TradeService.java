@@ -199,7 +199,7 @@ public class TradeService {
 
         User user = commonFunction.loadUser(loginId);
 
-        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(user.getId());
+        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(trade.getUser().getId());
 
         Long isExistWish = wishQueryRepository.existWish(user.getId(), tradeId);
 
@@ -217,7 +217,7 @@ public class TradeService {
 
         BigDecimal userRating = BigDecimal.valueOf(0.0);
 
-        if (userRatings.size() < 10) {
+        if (userRatings.size() < 2) {
             userRating = BigDecimal.valueOf(-1.0);
         }
         else {
@@ -280,7 +280,7 @@ public class TradeService {
                 .subCategory(subCategory)
                 .tradeBabyMonth(tradeBabyMonth)
                 .isLiked(isExistWish.toString())
-                .profile(user.getProfileImage())
+                .profile(trade.getUser().getProfileImage())
                 .build();
     }
 
@@ -393,6 +393,10 @@ public class TradeService {
         ChatRoom chatRoom = chatRoomRepository.findById(request.getChatRoomId()).orElseThrow(() -> new NotFoundException("존재하지 않는 채팅방입니다."));
 
         Trade trade = tradeRepository.findById(chatRoom.getTrade().getId()).orElseThrow(() -> new NotFoundException("존재하지 않는 판매글입니다."));
+
+        if (trade.getTradeStatus() != TradeStatus.판매중) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "판매 완료되거나 삭제된 상품입니다.");
+        }
 
         trade.completeTrade(chatRoom.getUser());
 
