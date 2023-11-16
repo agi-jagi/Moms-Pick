@@ -44,6 +44,7 @@ export default function Education() {
   const [daycares, setDaycares] = useState<Daycare[]>([
     { dayCareCenterName: "", establish: "", address: "", hpAddress: "" },
   ]);
+  const [isMapSetting, setIsMapSetting] = useState<boolean>(false);
 
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -118,6 +119,26 @@ export default function Education() {
       });
     });
   };
+
+  const settingMarkers = (data: any) => {
+    let fullAddress = data.address;
+
+    window.kakao.maps.load(() => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(fullAddress, function (result: any, status: any) {
+        // 정상적으로 검색이 완료됐으면
+        if (status === window.kakao.maps.services.Status.OK) {
+          const markerPosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+          const marker = new window.kakao.maps.Marker({
+            position: markerPosition,
+          });
+          markers.push(marker);
+          marker.setMap(maps);
+        }
+      });
+    });
+  };
+
   // script가 완전히 load 된 이후, 실행될 함수
   const onLoadKakaoMap = () => {
     window.kakao.maps.load(() => {
@@ -145,7 +166,7 @@ export default function Education() {
         infowindow.open(map, marker);
         setMarkers([marker]);
         marker.setMap(map);
-
+        setIsMapSetting(true);
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
             setAddress(result[0].address.address_name);
@@ -233,10 +254,28 @@ export default function Education() {
     }
   }, [latitude, longitude]);
 
-  console.log("위도", latitude);
-  console.log("경도", longitude);
+  useEffect(() => {
+    console.log(isMapSetting);
+    console.log(kindergartens);
+    if (isMapSetting && kindergartens.length > 0) {
+      for (let i = 0; i < kindergartens.length; i++) {
+        settingMarkers(kindergartens[i]);
+        console.log(1);
+      }
+    }
+  }, [isMapSetting, kindergartens]);
 
-  console.log("교육", education);
+  useEffect(() => {
+    console.log(isMapSetting);
+    console.log(daycares);
+    if (isMapSetting && daycares.length > 0) {
+      for (let i = 0; i < daycares.length; i++) {
+        settingMarkers(daycares[i]);
+        console.log(1);
+      }
+    }
+  }, [isMapSetting, daycares]);
+
   return (
     <div>
       <div style={{ padding: "0 1px" }}>

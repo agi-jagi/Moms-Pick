@@ -26,9 +26,8 @@ export default function Nursing() {
   const [address, setAddress] = useState<string>("");
   const [latitude, setLatitude] = useState<any>("");
   const [longitude, setLongitude] = useState<any>("");
-  const [lactations, setLactations] = useState<Lactation[]>([
-    { facilityName: "", buildingName: "", address: "" },
-  ]);
+  const [lactations, setLactations] = useState<Lactation[]>([]);
+  const [isMapSetting, setIsMapSetting] = useState<boolean>(false);
 
   const open = useDaumPostcodePopup(
     "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
@@ -103,6 +102,26 @@ export default function Nursing() {
       });
     });
   };
+
+  const settingMarkers = (data: any) => {
+    let fullAddress = data.address;
+
+    window.kakao.maps.load(() => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(fullAddress, function (result: any, status: any) {
+        // 정상적으로 검색이 완료됐으면
+        if (status === window.kakao.maps.services.Status.OK) {
+          const markerPosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+          const marker = new window.kakao.maps.Marker({
+            position: markerPosition,
+          });
+          markers.push(marker);
+          marker.setMap(maps);
+        }
+      });
+    });
+  };
+
   // script가 완전히 load 된 이후, 실행될 함수
   const onLoadKakaoMap = () => {
     window.kakao.maps.load(() => {
@@ -130,7 +149,7 @@ export default function Nursing() {
         infowindow.open(map, marker);
         setMarkers([marker]);
         marker.setMap(map);
-
+        setIsMapSetting(true);
         const callback = function (result: any, status: any) {
           if (status === window.kakao.maps.services.Status.OK) {
             setAddress(result[0].address.address_name);
@@ -163,9 +182,6 @@ export default function Nursing() {
     }
   }, []);
 
-  console.log("위도", latitude);
-  console.log("경도", longitude);
-
   const nursingRoom = async () => {
     try {
       const response = await instance.get("/api/info/lactation", {
@@ -191,7 +207,17 @@ export default function Nursing() {
       nursingRoom();
     }
   }, [latitude, longitude]);
-  console.log("수유실 정보", lactations);
+
+  useEffect(() => {
+    console.log(isMapSetting);
+    console.log(lactations);
+    if (isMapSetting && lactations.length > 0) {
+      for (let i = 0; i < lactations.length; i++) {
+        settingMarkers(lactations[i]);
+        console.log(1);
+      }
+    }
+  }, [isMapSetting, lactations]);
 
   return (
     <div>
