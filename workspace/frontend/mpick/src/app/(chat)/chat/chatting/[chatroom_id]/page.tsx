@@ -18,6 +18,7 @@ export default function Chatting(props: any) {
   const [messageList, setMessageList] = useState<any>([]);
   const [tradeId, setTradeId] = useState<number>();
   const [sellerNickName, setSellerNickName] = useState<string>("");
+  const [userNickName, setUserNickName] = useState<string>("");
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -56,6 +57,14 @@ export default function Chatting(props: any) {
       .catch((err) => {
         console.log(err);
       });
+
+    instance
+      .get("/api/users")
+      .then((res) => {
+        setUserNickName(res.data.response.nickname);
+        console.log(res.data.response);
+      })
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -89,6 +98,7 @@ export default function Chatting(props: any) {
         onOpen={onOpen}
         sellerNickName={sellerNickName}
         setSellerNickName={setSellerNickName}
+        userNickName={userNickName}
       />
       <div>
         <div>
@@ -112,6 +122,7 @@ export default function Chatting(props: any) {
                         padding: "8px",
                         maxWidth: "200px",
                         borderRadius: "8px",
+                        wordWrap: "break-word",
                       }}
                     >
                       {message.message}
@@ -149,6 +160,7 @@ export default function Chatting(props: any) {
                           maxWidth: "200px",
                           borderRadius: "8px",
                           marginLeft: "5px",
+                          wordWrap: "break-word",
                         }}
                       >
                         {message.message}
@@ -168,7 +180,7 @@ export default function Chatting(props: any) {
           messageList={messageList}
         />
       </div>
-      <Rating isOpen={isOpen} onOpenChange={onOpenChange} />
+      <Rating isOpen={isOpen} onOpenChange={onOpenChange} tradeId={tradeId} />
       <div style={{ height: "117px", position: "sticky", bottom: "0" }}></div>
     </div>
   );

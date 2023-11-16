@@ -4,10 +4,21 @@ import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import GoBack from "../../../../(auth)/auth/GoBack";
 import TradeInfo from "./tradeinfo";
+import { useOpponent } from "@/store/ChattingStore";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
   const [sellerNickName, setSellerNickName] = useState<string>("");
+  const { setNickName } = useOpponent();
+
+  console.log(sellerNickName);
+
+  useEffect(() => {
+    console.log("???", sellerNickName);
+    if (sellerNickName != "") {
+      setNickName(sellerNickName);
+    }
+  }, [sellerNickName]);
 
   return (
     <div>
