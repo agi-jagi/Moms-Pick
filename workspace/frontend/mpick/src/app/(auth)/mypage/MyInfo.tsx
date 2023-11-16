@@ -31,7 +31,7 @@ export default function MyInfo() {
       .catch((err) => {});
     instance.get("/api/users/addresses").then((res) => {
       console.log(res);
-      for (let i = 0; res.data.response.length; i++) {
+      for (let i = 0; i < res.data.response.length; i++) {
         if (res.data.response[i].isSet) {
           const address = res.data.response[i].addressName;
           setUserAddress(address);

@@ -1,7 +1,11 @@
+"use client";
+
 import { IoIosArrowForward } from "react-icons/io";
+import { useRouter } from "next/navigation";
 import Logout from "./Logout";
 
 export default function InfoList() {
+  const router = useRouter();
   return (
     <div
       style={{
@@ -11,7 +15,12 @@ export default function InfoList() {
         backgroundColor: "white",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{ display: "flex", justifyContent: "space-between" }}
+        onClick={() => {
+          router.push("/mypage/wishlist");
+        }}
+      >
         <div style={{ display: "flex", alignItems: "center" }}>
           <p className="font-bold text-base">찜 목록</p>
         </div>
@@ -24,6 +33,9 @@ export default function InfoList() {
           borderTop: "1px solid grey",
           marginTop: "10px",
           paddingTop: "10px",
+        }}
+        onClick={() => {
+          router.push("/mypage/buylist");
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -39,26 +51,16 @@ export default function InfoList() {
           marginTop: "10px",
           paddingTop: "10px",
         }}
+        onClick={() => {
+          router.push("/mypage/salelist");
+        }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <p className="font-bold text-base">판매 목록</p>
         </div>
         <IoIosArrowForward size="30" />
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          borderTop: "1px solid grey",
-          marginTop: "10px",
-          paddingTop: "10px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <p className="font-bold text-base">설정</p>
-        </div>
-        <IoIosArrowForward size="30" />
-      </div>
+
       <Logout />
     </div>
   );

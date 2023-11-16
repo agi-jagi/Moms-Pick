@@ -167,13 +167,13 @@ export default function Nursing() {
   console.log("경도", longitude);
 
   const nursingRoom = async () => {
-    const data = {
-      latitude: latitude,
-      longitude: longitude,
-    };
-
     try {
-      const response = await instance.post("/api/info/lactation", data);
+      const response = await instance.get("/api/info/lactation", {
+        params: {
+          latitude: latitude,
+          longitude: longitude,
+        },
+      });
       console.log("수유실 조회 성공", response.data.response);
       const lactationData: Lactation[] = response.data.response.map((item: Lactation) => ({
         facilityName: item.facilityName,

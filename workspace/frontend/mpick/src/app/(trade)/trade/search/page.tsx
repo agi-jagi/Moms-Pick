@@ -2,6 +2,7 @@
 
 import { useTradeStore } from "@/store/TradeStore";
 import { useEffect, useState } from "react";
+import Radius from "../radius";
 import {
   Chip,
   Card,
@@ -31,9 +32,15 @@ import Link from "next/link";
 
 
 export default function Search(props: any) {
+
+  console.log(props);
+  console.log(props.searchParams.filter대분류);
   
 
-  const { searchWord, setSearchWord } = useTradeStore();
+  const { searchWord, setSearchWord, distance, setDistance } = useTradeStore();
+
+  const [ 반경open, set반경Open ] = useState(false);
+  const handleOpen반경 = () => set반경Open(!반경open);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [filter대분류, setFilter대분류] = useState<string>("");
@@ -161,7 +168,7 @@ export default function Search(props: any) {
             ],
             filter: {
               geo_distance: {
-                distance: "100000km",
+                distance: distance,
                 location: {
                   lat: latitude,
                   lon: longitude,
@@ -232,6 +239,7 @@ export default function Search(props: any) {
     setFilter대분류(props.searchParams.filter대분류);
     setSearchWord("");
     getAddress();
+
   }, []);
 
   useEffect(() => {
@@ -244,9 +252,12 @@ export default function Search(props: any) {
   return (
     <>
     {/* 상단 내비바 */}
+    {/* <Button onClick={()=>console.log(props.searchParams.filter대분류)}>서치파람스</Button>
+    <Button onClick={()=>console.log(filter대분류)}>filter대분류</Button> */}
+    
     <div className="flex items-center gap-4 ml-4 mt-4">
       <div className="w-[84px] h-[42px]">
-        <div className="relative w-[94px] h-[94px] top-[-20px] left-[-10px]">
+        <div className="relative w-[94px] h-[94px] top-[-20px] left-[-10px]" onClick={() => handleOpen반경()}>
           <div className="absolute h-[19px] top-[33px] left-[46px] [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-Regular',Helvetica] font-normal text-[#212124] text-[14px] tracking-[0] leading-[18.9px] whitespace-nowrap">
             {nowAddress}
           </div>
@@ -382,7 +393,7 @@ export default function Search(props: any) {
                   <form onSubmit={(e) => registerTrade(e)}>
                     <ModalHeader className="flex flex-col gap-1">판매글 등록</ModalHeader>
                     <ModalBody>
-                      <input type="file" name="image_files" accept="image/*" />
+                      <input type="file" name="image_files" accept="image/*" multiple />
                       <Input
                         variant="faded"
                         label="글 제목"
@@ -464,10 +475,11 @@ export default function Search(props: any) {
           {/* 검색 결과 리스트 */}
         </div>
       </div>
-      <div className="mt-6 gap-2 grid grid-cols-2 sm:grid-cols-4">
+        { filter대분류 ? (
+        <div className="mt-6 gap-2 grid grid-cols-2 sm:grid-cols-4">
         {searchList.map((item: any, index: number) => (
-          <Card className="mt-1 mb-2" shadow="sm" key={index} isPressable onPress={() => setTradeId(item._source.id)}>
-            <CardBody className="overflow-visible p-0">
+          <Card className="mx-2 mt-1 mb-2" shadow="sm" key={index} isPressable onPress={() => setTradeId(item._source.id)}>
+                <CardBody className="overflow-visible p-0">
               <Link href={"/trade/detail/" + tradeId} onClick={() => console.log(tradeId)}>
                 <Image
                   shadow="sm"
@@ -482,12 +494,20 @@ export default function Search(props: any) {
             </CardBody>
 
             <CardFooter className="text-small justify-between">
-              <b>{item._source.title}</b>
+              <p>{item._source.title}</p>
               <p className="text-default-500">₩ {item._source.price}</p>
             </CardFooter>
           </Card>
         ))}
       </div>
+      ) : (
+        <div className="absolute top-[220px] left-[110px]">
+          검색 결과가 없습니다. <br/>
+          대분류를 선택해주세요.
+        </div>
+      )}
+        
+      
 
       {/* 필터링 카테고리 모달 */}
       <Modal
@@ -556,6 +576,32 @@ export default function Search(props: any) {
           )}
         </ModalContent>
       </Modal>
+
+
+      {/* 반경 설정 모달 */}
+      <Modal isOpen={반경open} onOpenChange={handleOpen반경}>
+            <ModalContent>
+              {() => (
+                <>
+                    <ModalHeader className="flex flex-col gap-1 [text-shadow:0px_4px_4px_#00000040] [font-family:'Pretendard-SemiBold',Helvetica] font-semibold">반경 설정
+                    : {distance}
+                    </ModalHeader>
+                    <ModalBody>
+                    < Radius />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        className="bg-[#5E9FF2] text-white"
+                        type="submit"
+                        onClick={()=>{handleOpen반경(); searchTrade();}}
+                      >
+                        설정하기
+                      </Button>
+                    </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
     </>
   );
 }

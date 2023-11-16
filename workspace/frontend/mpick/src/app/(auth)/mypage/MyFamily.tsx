@@ -29,6 +29,7 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
+  borderRadius: "20px",
   p: 4,
 };
 
@@ -188,16 +189,16 @@ export default function MyFamily() {
                 <Image
                   src={boy}
                   alt="boy"
-                  width={70}
-                  height={70}
+                  width={80}
+                  height={60}
                   style={{ borderRadius: "100%" }}
                 />
               ) : baby.babyGender === "F" ? (
                 <Image
                   src={girl}
                   alt="girl"
-                  width={70}
-                  height={70}
+                  width={80}
+                  height={60}
                   style={{ borderRadius: "100%" }}
                 />
               ) : (
@@ -224,15 +225,7 @@ export default function MyFamily() {
         handleUpdate={handleUpdateBaby}
         handleDelete={handleDelete}
       ></UpdateBabyInfo>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          borderTop: "1px solid",
-          marginTop: "20px",
-          paddingTop: "20px",
-        }}
-      >
+      <div className="flex justify-center mt-5 pt-5" style={{ borderTop: "1px solid" }}>
         <div className="flex items-center">
           <p className="font-bold text-lg mr-1">새 가족이 생겼어요</p>
           <div onClick={showModal}>

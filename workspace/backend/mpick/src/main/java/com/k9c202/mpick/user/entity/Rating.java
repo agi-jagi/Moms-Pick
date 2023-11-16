@@ -1,7 +1,9 @@
 package com.k9c202.mpick.user.entity;
 
 import com.k9c202.mpick.trade.entity.Trade;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +32,18 @@ public class Rating {
 
     @Column(precision = 2, scale = 1, nullable = false)
     private BigDecimal rate;
+
+    @Builder
+    private Rating(User reviewer, User reviewee, Trade trade, BigDecimal rate) {
+        this.reviewer = reviewer;
+        this.reviewee = reviewee;
+        this.trade = trade;
+        this.rate = rate;
+    }
+
+    public void editRate(BigDecimal rate) {
+        this.rate = rate;
+    }
+
 
 }

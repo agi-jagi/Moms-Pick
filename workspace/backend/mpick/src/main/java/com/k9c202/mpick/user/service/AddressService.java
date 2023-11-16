@@ -30,11 +30,10 @@ public class AddressService {
 
     // 주소 등록
     public AddressResponse addAddress(AddressDto addressDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loginId = authentication.getName();
-        // TODO: 2023-11-13 getUserEntity 함수 따로 정의 ✔
-        //      User user = userRepository.findOneByLoginId(loginId)
-        //                  .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String loginId = authentication.getName();
+        String loginId = SecurityUtils.getCurrentLoginId();
+
         /* createAddress로 따로 함수 정의
         Address address = Address.builder()
                 .latitude((addressDto.getLatitude()))
@@ -45,23 +44,28 @@ public class AddressService {
                 .user(user)
                 .build();
          */
+
+        // TODO: 2023-11-13 getUserEntity 함수 따로 정의 ✔
         User user = userRepository.findOneByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         Address address = createAddress(addressDto, user);
-        // TODO: 2023-11-13 save -> edit로 수정 ✔
+
         // TODO: 2023-11-14 isSet false로 변경하는 방식 수정하기
         Address savedAddress = addressRepository.save(address);
         List<Address> addresses = addressRepository.findAllByUserLoginId(loginId);
         makeStatusFalse(addresses);
         savedAddress.editIsSet(true);
+
         return AddressResponse.of(savedAddress);
     }
 
     // 주소 삭제
     public void deleteAddress(Long addressId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loginId = authentication.getName();
-        // TODO: 2023-11-13 문제 해결하기
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String loginId = authentication.getName();
+        String loginId = SecurityUtils.getCurrentLoginId();
+        // TODO: 2023-11-13 문제 해결하기 🔎
 //        addressRepository.deleteByIdAndUserLoginId(addressId,loginId);
         addressRepository.deleteById(addressId);
     }
@@ -76,11 +80,6 @@ public class AddressService {
          */
         Address oldAddress = getMyAddressEntity(addressId);
 
-        // addressRepository.save(address) 대신 edit 함수 사용하기 (Address 엔티티 파일에 따로 정의)
-        // Address savedAddress = addressRepository.save(address);
-        Address editedAddress = oldAddress.editAddress(addressDto.getLatitude(), addressDto.getLongitude(), addressDto.getAddressName(), addressDto.getAddressString(), addressDto.getIsSet());
-
-
         /*
         Address address = Address.builder()
                 .id(oldAddress.getId())
@@ -90,7 +89,13 @@ public class AddressService {
                 .addressString(addressDto.getAddressString())
                 .isSet(addressDto.getIsSet())
                 .user(oldAddress.getUser())
-                .build(); */
+                .build();
+        */
+
+        // Address savedAddress = addressRepository.save(address);
+
+        // addressRepository.save(address) 대신 edit 함수 사용하기 (Address 엔티티 파일에 따로 정의)
+        Address editedAddress = oldAddress.editAddress(addressDto.getLatitude(), addressDto.getLongitude(), addressDto.getAddressName(), addressDto.getAddressString(), addressDto.getIsSet());
 
 //        return AddressResponse.of(savedAddress);
         return AddressResponse.of(editedAddress);

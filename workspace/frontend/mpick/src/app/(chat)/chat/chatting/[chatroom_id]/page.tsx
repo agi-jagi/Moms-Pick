@@ -7,15 +7,22 @@ import instance from "@/app/_config/axios";
 import { Container } from "@mui/system";
 import Image from "next/image";
 import profile from "../../../../../../public/profile.png";
-import { useChattingStore } from "@/store/ChattingStore";
+import { useChattingStore, useOpponent } from "@/store/ChattingStore";
 import TradeInfo from "../../start/[trade_id]/tradeinfo";
 import { useUnReadStore } from "@/store/UnReadStore";
+import { useDisclosure } from "@nextui-org/react";
+import Rating from "./Rating";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any>([]);
+  const [tradeId, setTradeId] = useState<number>();
+  const [sellerNickName, setSellerNickName] = useState<string>("");
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const { messageStore, setMessageStore } = useChattingStore();
+  const { nickName } = useOpponent();
   const { decrement } = useUnReadStore();
 
   const chattingReload = async (data: any) => {
@@ -39,15 +46,12 @@ export default function Chatting(props: any) {
   };
 
   useEffect(() => {
-    console.log("????", messageStore);
-  }, [messageStore]);
-
-  useEffect(() => {
     instance
       .get(`/api/chattings/${props.params.chatroom_id}`)
       .then((res) => {
-        console.log("???", res);
+        console.log(res);
         setMessageList(res.data.response);
+        setTradeId(res.data.response[0].tradeId);
       })
       .catch((err) => {
         console.log(err);
@@ -74,12 +78,18 @@ export default function Chatting(props: any) {
         >
           <GoBack />
           <div className="flex justify-center">
-            <p className="font-bold text-3xl">채팅</p>
+            <p className="font-bold text-2xl">{nickName}</p>
           </div>
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
-      {/* <TradeInfo /> */}
+      <TradeInfo
+        trade_id={tradeId}
+        chatroom_id={props.params.chatroom_id}
+        onOpen={onOpen}
+        sellerNickName={sellerNickName}
+        setSellerNickName={setSellerNickName}
+      />
       <div>
         <div>
           {messageList.map((message: any, index: number) => {
@@ -127,17 +137,22 @@ export default function Chatting(props: any) {
                     >
                       <Image src={profile} alt="profile" objectFit="cover" />
                     </div>
-                    <div
-                      className="your-message"
-                      style={{
-                        backgroundColor: "rgb(247, 247, 247)",
-                        padding: "8px",
-                        maxWidth: "200px",
-                        borderRadius: "8px",
-                        marginLeft: "5px",
-                      }}
-                    >
-                      {message.message}
+                    <div>
+                      <div>
+                        <p>{nickName}</p>
+                      </div>
+                      <div
+                        className="your-message"
+                        style={{
+                          backgroundColor: "rgb(247, 247, 247)",
+                          padding: "8px",
+                          maxWidth: "200px",
+                          borderRadius: "8px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        {message.message}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -153,6 +168,7 @@ export default function Chatting(props: any) {
           messageList={messageList}
         />
       </div>
+      <Rating isOpen={isOpen} onOpenChange={onOpenChange} />
       <div style={{ height: "117px", position: "sticky", bottom: "0" }}></div>
     </div>
   );

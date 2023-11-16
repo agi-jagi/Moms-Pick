@@ -9,6 +9,8 @@ import com.k9c202.mpick.user.service.AddressQueryService;
 import com.k9c202.mpick.user.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +37,6 @@ public class AddressController {
      */
 
     // TODO: 2023-11-13 @Valid 안붙이면 유효성 검증 실행이 안됨
-    // TODO: 2023-11-13 POST는 HttpStatus 201로 내보내기
     // 내 위치 목록 조회
     @GetMapping
     public CommonResponse<List<AddressResponse>> addressList(){
@@ -43,9 +44,14 @@ public class AddressController {
     }
 
     // 내 위치 추가
+//    @PostMapping
+//    public CommonResponse<AddressResponse> addAddress(@RequestBody AddAddressRequest addressRequest){
+//        return CommonResponse.OK(addressService.addAddress(addressRequest.toAddressDto()));
+//    }
     @PostMapping
-    public CommonResponse<AddressResponse> addAddress(@RequestBody AddAddressRequest addressRequest){
-        return CommonResponse.OK(addressService.addAddress(addressRequest.toAddressDto()));
+    public ResponseEntity<CommonResponse<?>> addAddress(@RequestBody AddAddressRequest addressRequest){
+        AddressResponse newAddress = addressService.addAddress(addressRequest.toAddressDto());
+        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.OK(newAddress));
     }
 
     // TODO: 2023-11-13 물음표는 사용하지 말 것 -> 컴파일 시점에 오류를 잡을 수 없음
@@ -66,10 +72,15 @@ public class AddressController {
     }
 
     // 기본 주소 설정
+//    @PostMapping("/{addressId}")
+//    public CommonResponse<?> setDefaultAddress(@PathVariable("addressId") Long addressId) {
+//        addressService.setDefaultAddress(SecurityUtils.getCurrentLoginId(), addressId);
+//        return CommonResponse.OK(null);
+//    }
     @PostMapping("/{addressId}")
-    public CommonResponse<?> setDefaultAddress(@PathVariable("addressId") Long addressId) {
+    public ResponseEntity<CommonResponse<?>> setDefaultAddress(@PathVariable("addressId") Long addressId) {
         addressService.setDefaultAddress(SecurityUtils.getCurrentLoginId(), addressId);
-        return CommonResponse.OK(null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.OK(null));
     }
 
 

@@ -3,15 +3,11 @@
 import { useState, useEffect } from "react";
 import InputField from "./InputField";
 import GoBack from "../../../../(auth)/auth/GoBack";
-import instance from "@/app/_config/axios";
-import { Container } from "@mui/system";
-import Image from "next/image";
-import profile from "../../../../../../public/profile.png";
-import { useChattingStore } from "@/store/ChattingStore";
 import TradeInfo from "./tradeinfo";
 
 export default function Chatting(props: any) {
   const [message, setMessage] = useState("");
+  const [sellerNickName, setSellerNickName] = useState<string>("");
 
   return (
     <div>
@@ -29,12 +25,16 @@ export default function Chatting(props: any) {
         >
           <GoBack />
           <div className="flex justify-center">
-            <p className="font-bold text-3xl">채팅</p>
+            <p className="font-bold text-2xl">{sellerNickName}</p>
           </div>
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
       </div>
-      <TradeInfo trade_id={props.params.trade_id} />
+      <TradeInfo
+        trade_id={props.params.trade_id}
+        sellerNickName={sellerNickName}
+        setSellerNickName={setSellerNickName}
+      />
       <div>
         <InputField message={message} setMessage={setMessage} tradeId={props.params.trade_id} />
       </div>
