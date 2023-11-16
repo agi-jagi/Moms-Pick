@@ -35,6 +35,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -199,7 +200,7 @@ public class TradeService {
 
         User user = commonFunction.loadUser(loginId);
 
-        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(trade.getId(), trade.getUser().getId());
+        List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(trade.getUser().getId());
 
         Long isExistWish = wishQueryRepository.existWish(user.getId(), tradeId);
 
@@ -222,10 +223,10 @@ public class TradeService {
         }
         else {
             for (BigDecimal rating : userRatings) {
-                userRating.add(rating);
+                userRating = userRating.add(rating);
             }
 
-            userRating.divide(new BigDecimal(userRatings.size()));
+            userRating = userRating.divide(new BigDecimal(userRatings.size()), 1, RoundingMode.HALF_UP);
         }
 
         String tradeBabyMonth;

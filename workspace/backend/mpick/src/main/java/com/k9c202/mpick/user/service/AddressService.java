@@ -44,16 +44,19 @@ public class AddressService {
                 .user(user)
                 .build();
          */
+
         // TODO: 2023-11-13 getUserEntity 함수 따로 정의 ✔
         User user = userRepository.findOneByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         Address address = createAddress(addressDto, user);
+
         // TODO: 2023-11-14 isSet false로 변경하는 방식 수정하기
         Address savedAddress = addressRepository.save(address);
         List<Address> addresses = addressRepository.findAllByUserLoginId(loginId);
         makeStatusFalse(addresses);
         savedAddress.editIsSet(true);
+
         return AddressResponse.of(savedAddress);
     }
 
@@ -88,6 +91,7 @@ public class AddressService {
                 .user(oldAddress.getUser())
                 .build();
         */
+
         // Address savedAddress = addressRepository.save(address);
 
         // addressRepository.save(address) 대신 edit 함수 사용하기 (Address 엔티티 파일에 따로 정의)

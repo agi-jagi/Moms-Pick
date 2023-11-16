@@ -51,7 +51,16 @@ export default function Chat() {
   return (
     <div>
       {chatList.length === 0 ? (
-        <div>채팅 목록 없음</div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
+          }}
+        >
+          채팅기록이 없습니다
+        </div>
       ) : (
         chatList.map((info: any, index: any) => {
           const timeDiff = timeCheck(info.lastDateTime);
@@ -68,13 +77,23 @@ export default function Chat() {
               <div key={index} style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ display: "flex" }}>
                   <div style={{ marginRight: "15px" }}>
-                    <NextImage
-                      src={profile}
-                      alt="profile"
-                      width={50}
-                      height={50}
-                      style={{ borderRadius: "100%" }}
-                    />
+                    {info.profileImage ? (
+                      <NextImage
+                        src={info.profileImage}
+                        alt="profile"
+                        width={50}
+                        height={50}
+                        style={{ borderRadius: "100%" }}
+                      />
+                    ) : (
+                      <NextImage
+                        src={profile}
+                        alt="profile"
+                        width={50}
+                        height={50}
+                        style={{ borderRadius: "100%" }}
+                      />
+                    )}
                   </div>
                   <div>
                     <div style={{ display: "flex" }}>
@@ -86,8 +105,15 @@ export default function Chat() {
                         <p className="font-light text-xs">{timeDiff}</p>
                       </div>
                     </div>
-                    <div>
-                      <p>{info.lastMessage}</p>
+                    <div
+                      style={{
+                        width: "200px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {info.lastMessage}
                     </div>
                   </div>
                 </div>

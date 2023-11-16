@@ -34,8 +34,9 @@ public class Rating {
     private BigDecimal rate;
 
     @Builder
-    private Rating(User reviewer, Trade trade, BigDecimal rate) {
+    private Rating(User reviewer, User reviewee, Trade trade, BigDecimal rate) {
         this.reviewer = reviewer;
+        this.reviewee = reviewee;
         this.trade = trade;
         this.rate = rate;
     }
