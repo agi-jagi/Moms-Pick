@@ -273,9 +273,13 @@ export default function Education() {
                     <TableCell className="text-center">{daycare.establish}</TableCell>
                     <TableCell className="text-center">{daycare.address}</TableCell>
                     <TableCell className="text-center">
-                      <a href={daycare.hpAddress} target="_blank" rel="noopener noreferrer">
-                        이동
-                      </a>
+                      {daycare.hpAddress !== "nan" ? (
+                        <a href={daycare.hpAddress} target="_blank" rel="noopener noreferrer">
+                          이동
+                        </a>
+                      ) : (
+                        <p onClick={() => alert("사이트가 존재하지 않습니다.")}>이동</p>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
@@ -285,9 +289,13 @@ export default function Education() {
                     <TableCell className="text-center">{kindergarten.establish}</TableCell>
                     <TableCell>{kindergarten.address}</TableCell>
                     <TableCell className="text-center">
-                      <a href={kindergarten.hpAddress} target="_blank" rel="noopener noreferrer">
-                        이동
-                      </a>
+                      {kindergarten.hpAddress ? (
+                        <a href={kindergarten.hpAddress} target="_blank" rel="noopener noreferrer">
+                          이동
+                        </a>
+                      ) : (
+                        <p onClick={() => alert("사이트가 존재하지 않습니다.")}></p>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
