@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import { Image, Button } from "@nextui-org/react";
+import Avatar from "@mui/material/Avatar";
 import profile from "../../../../public/profile.png";
 import instance from "@/app/_config/axios";
 import { useRouter } from "next/navigation";
@@ -78,12 +79,10 @@ export default function Chat() {
                 <div style={{ display: "flex" }}>
                   <div style={{ marginRight: "15px" }}>
                     {info.profileImage ? (
-                      <NextImage
+                      <Avatar
                         src={info.profileImage}
                         alt="profile"
-                        width={50}
-                        height={50}
-                        style={{ borderRadius: "100%" }}
+                        sx={{ margin: "auto", width: 50, height: 50 }}
                       />
                     ) : (
                       <NextImage
