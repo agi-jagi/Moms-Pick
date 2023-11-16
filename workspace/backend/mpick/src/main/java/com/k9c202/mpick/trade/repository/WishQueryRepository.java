@@ -27,12 +27,13 @@ public class WishQueryRepository {
 
     public WishQueryRepository(EntityManager em) { this.queryFactory = new JPAQueryFactory(em); }
 
-    public List<BigDecimal> findRatingByUserId(Long userId) {
+    public List<BigDecimal> findRatingByUserId(Long tradeId, Long userId) {
 
         List<BigDecimal> result = queryFactory
                 .select(rating.rate)
                 .from(rating)
-                .where(rating.reviewer.id.eq(userId))
+                .where(rating.trade.id.eq(tradeId),
+                        rating.reviewer.id.ne(userId))
                 .fetch();
 
         return result;

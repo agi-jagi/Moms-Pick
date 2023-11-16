@@ -19,7 +19,11 @@ public class Rating {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="reviewer", nullable = false)
+    @JoinColumn(name = "reviewee", nullable = false)
+    private User reviewee;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="reviewer")
     private User reviewer;
 
     @ManyToOne(fetch = FetchType.LAZY)
