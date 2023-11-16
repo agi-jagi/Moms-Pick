@@ -33,7 +33,7 @@ import Link from "next/link";
 
 export default function Search(props: any) {
 
-  // console.log(props);
+  console.log(props);
   // console.log(props.searchParams.filter대분류);
   
 
