@@ -50,7 +50,8 @@ public class AddressController {
 //    }
     @PostMapping
     public ResponseEntity<CommonResponse<?>> addAddress(@RequestBody AddAddressRequest addressRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.OK(addressRequest.toAddressDto()));
+        AddressResponse newAddress = addressService.addAddress(addressRequest.toAddressDto());
+        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.OK(newAddress));
     }
 
     // TODO: 2023-11-13 물음표는 사용하지 말 것 -> 컴파일 시점에 오류를 잡을 수 없음
