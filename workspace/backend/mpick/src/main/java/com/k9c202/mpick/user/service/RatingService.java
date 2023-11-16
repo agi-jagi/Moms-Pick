@@ -29,6 +29,7 @@ public class RatingService {
     public Float updateRating(String loginId, Long tradeId, Float rate) {
 
         Trade trade = tradeRepository.findById(tradeId).orElseThrow();
+
         if (trade.getTradeStatus() == TradeStatus.판매중) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "아직 판매중인 상품입니다.");
         }
@@ -40,6 +41,7 @@ public class RatingService {
         User seller = trade.getUser();
         User reviewer = null;
         User reviewee = null;
+
         // 평가자가 판매자일 경우
         if (seller.getLoginId().equals(loginId)) {
             reviewer = seller;
@@ -60,6 +62,7 @@ public class RatingService {
                     .reviewer(reviewer)
                     .reviewee(reviewee)
                     .trade(trade)
+                    .rate(BigDecimal.valueOf(rate))
                     .build();
         } else {
             rating.editRate(BigDecimal.valueOf(rate));

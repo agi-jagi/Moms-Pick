@@ -198,7 +198,7 @@ public class TradeService {
         Trade trade = tradeRepository.findById(tradeId).orElseThrow(() -> new NotFoundException("없는 판매글입니다."));
 
         User user = commonFunction.loadUser(loginId);
-
+        // 특정 trade에 대한 평점을 가져오는게 아니라 모든 trade에 대한 평점을 가져와야 하는거 아닌가..?
         List<BigDecimal> userRatings = wishQueryRepository.findRatingByUserId(trade.getId(), trade.getUser().getId());
 
         Long isExistWish = wishQueryRepository.existWish(user.getId(), tradeId);
