@@ -19,30 +19,30 @@ interface LabelProps {
 
 const Label = styled.label<LabelProps>`
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 4rem;
   color: lightgray;
 
   ${({ isHalf }) =>
     isHalf &&
     css`
       position: absolute;
-      width: 12px;
+      width: 32px;
       overflow: hidden;
 
       &:nth-of-type(10) {
-        transform: translate(-108px);
+        transform: translate(-288px);
       }
       &:nth-of-type(8) {
-        transform: translate(-84px);
+        transform: translate(-224px);
       }
       &:nth-of-type(6) {
-        transform: translate(-60px);
+        transform: translate(-160px);
       }
       &:nth-of-type(4) {
-        transform: translate(-36px);
+        transform: translate(-96px);
       }
       &:nth-of-type(2) {
-        transform: translate(-12px);
+        transform: translate(-32px);
       }
     `}
 `;
