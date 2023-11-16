@@ -91,7 +91,7 @@ export default function Chatting(props: any) {
         >
           <GoBack />
           <div className="flex justify-center">
-            <p className="font-bold text-2xl">{nickName}</p>
+            <p className="font-bold text-2xl">{sellerNickName}</p>
           </div>
         </div>
         <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />

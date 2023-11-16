@@ -189,16 +189,16 @@ export default function MyFamily() {
                 <Image
                   src={boy}
                   alt="boy"
-                  width={80}
-                  height={60}
+                  width={70}
+                  height={70}
                   style={{ borderRadius: "100%" }}
                 />
               ) : baby.babyGender === "F" ? (
                 <Image
                   src={girl}
                   alt="girl"
-                  width={80}
-                  height={60}
+                  width={70}
+                  height={70}
                   style={{ borderRadius: "100%" }}
                 />
               ) : (

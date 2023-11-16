@@ -36,31 +36,49 @@ export default function SaleList() {
         </div>
       </div>
       <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
-      {buyList.map((info: any, index: number) => {
-        return (
-          <div
-            key={index}
-            onClick={() => {
-              router.push(`/trade/detail/${info.tradeId}`);
-            }}
-          >
-            <div className="flex justify-between items-center">
-              <p className="text-red-600 text-xl font-bold mt-3 mb-3">{info.tradeStatus}</p>
-              <FaAngleRight className="text-3xl" />
-            </div>
-            <div className="flex gap-5">
-              <Image src={info.thumbNailImage} alt="물건사진" width={100} height={100} />
-              <div>
-                <p>{info.nickname}</p>
-                <p className="font-bold text-lg mt-2">{info.title}</p>
-                <p className="font-bold text-lg mt-2">{info.price}원</p>
+      {buyList.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
+          }}
+        >
+          <p className="text-semibold">구매기록이 없습니다</p>
+        </div>
+      ) : (
+        <div>
+          {buyList.map((info: any, index: number) => {
+            return (
+              <div
+                key={index}
+                onClick={() => {
+                  router.push(`/trade/detail/${info.tradeId}`);
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div>
+                    <p className="text-red-600 text-xl font-bold mb-3">{info.tradeStatus}</p>
+                    <div className="flex gap-5">
+                      <Image src={info.thumbNailImage} alt="물건사진" width={100} height={100} />
+                      <div>
+                        <p>{info.nickname}</p>
+                        <p className="font-bold text-lg mt-2">{info.title}</p>
+                        <p className="font-bold text-lg mt-2">{info.price}원</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <FaAngleRight className="text-3xl" />
+                  </div>
+                </div>
+                <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
               </div>
-            </div>
-            <hr style={{ borderTopWidth: "2px", margin: "10px 0" }} />
-          </div>
-        );
-      })}
-
+            );
+          })}
+        </div>
+      )}
       <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
