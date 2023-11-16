@@ -394,6 +394,10 @@ public class TradeService {
 
         Trade trade = tradeRepository.findById(chatRoom.getTrade().getId()).orElseThrow(() -> new NotFoundException("존재하지 않는 판매글입니다."));
 
+        if (trade.getTradeStatus() != TradeStatus.판매중) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "판매 완료되거나 삭제된 상품입니다.");
+        }
+
         trade.completeTrade(chatRoom.getUser());
 
         tradeRepository.save(trade);
