@@ -35,8 +35,11 @@ export default function Radius(props: any) {
         centerPosition = new window.kakao.maps.LatLng(
           // position.coords.latitude,
           // position.coords.longitude
-          props.latitude,
-          props.longitude
+          // props.latitude,
+          // props.longitude
+          storeLatitude,
+          storeLongitude
+
         ); // 지도의 중심좌표
         const mapOption = {
           center: centerPosition,
@@ -46,8 +49,10 @@ export default function Radius(props: any) {
         const markerPosition = new window.kakao.maps.LatLng(
           // position.coords.latitude,
           // position.coords.longitude
-          props.latitude,
-          props.longitude
+          // props.latitude,
+          // props.longitude
+          storeLatitude,
+          storeLongitude
         );
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,

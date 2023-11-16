@@ -31,6 +31,10 @@ import axios from "axios";
 import Link from "next/link";
 
 export default function Search(props: any) {
+
+  console.log(props);
+  console.log(props.searchParams.filter대분류);
+
   const { searchWord, setSearchWord, distance, setDistance } = useTradeStore();
 
   const [반경open, set반경Open] = useState(false);
