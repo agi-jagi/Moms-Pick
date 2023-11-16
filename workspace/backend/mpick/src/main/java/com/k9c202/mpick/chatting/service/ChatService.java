@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,9 +86,17 @@ public class ChatService {
 //        chatRoomRepository.findAllByUserLoginId(loginId);
         // ** 리스트타입.stream().map(함수).collcet(Collectors.toList()) **
         // 특정 로그인 아이디에 해당하는 채팅방 정보를 모두 불러오고, chatRoomResponse로 변환하여 return
-        return chatRoomQueryRepository.findAllByLoginId(loginId).stream()
-                .map(chatRoom -> convertChatRoomToChatRoomResponse(loginId, chatRoom))
-                .collect(Collectors.toList());
+//        return chatRoomQueryRepository.findAllByLoginId(loginId).stream()
+//                .map(chatRoom -> convertChatRoomToChatRoomResponse(loginId, chatRoom))
+//                .collect(Collectors.toList());
+        // 역순 정렬
+        List<ChatRoomResponse> chatRooms = chatRoomQueryRepository.findAllByLoginId(loginId).stream()
+            .map(chatRoom -> convertChatRoomToChatRoomResponse(loginId, chatRoom))
+            .collect(Collectors.toList());
+
+        Collections.reverse(chatRooms);
+
+        return chatRooms;
     }
 
     // 로그인 아이디, 채팅방id로 채팅메세지 불러오는 함수
