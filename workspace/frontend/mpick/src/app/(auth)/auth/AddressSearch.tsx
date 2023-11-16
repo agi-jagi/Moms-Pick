@@ -158,7 +158,7 @@ export default function AddressSearch(props: any) {
           <button type="button" onClick={handleClick}>
             <Image src={search} alt="marker" width={30} height={30} />
           </button>
-          <p className="font-bold text-base">지번주소 : {props.address}</p>
+          <p className="font-bold text-base ml-2">{props.address}</p>
         </div>
       </div>
     </div>
