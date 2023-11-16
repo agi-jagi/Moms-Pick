@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
+import { Image, Button } from "@nextui-org/react";
 import profile from "../../../../public/profile.png";
-import car from "../../../../public/유모차.png";
 import instance from "@/app/_config/axios";
 import { useRouter } from "next/navigation";
 import { useUnReadStore } from "@/store/UnReadStore";
+import { useOpponent } from "@/store/ChattingStore";
 
 export default function Chat() {
   const router = useRouter();
   const [chatList, setChatList] = useState<any>([]);
   const { decrement } = useUnReadStore();
+  const { setNickName } = useOpponent();
 
   const timeCheck = (time: string) => {
     const dateString = time;
@@ -59,13 +61,14 @@ export default function Chat() {
               style={{ margin: "20px 20px 0 20px" }}
               onClick={() => {
                 router.push(`/chat/chatting/${info.chatRoomId}`);
+                setNickName(info.nickname);
                 decrement(info.unreadCount);
               }}
             >
               <div key={index} style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ display: "flex" }}>
                   <div style={{ marginRight: "15px" }}>
-                    <Image
+                    <NextImage
                       src={profile}
                       alt="profile"
                       width={50}
@@ -89,7 +92,7 @@ export default function Chat() {
                   </div>
                 </div>
                 <div>
-                  <Image src={car} alt="물건사진" width={50} height={50} />
+                  <Image src={info.tradeThumbnailImage} alt="물건사진" width={50} height={50} />
                 </div>
               </div>
             </div>

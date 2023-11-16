@@ -183,13 +183,13 @@ export default function Education() {
   };
 
   const getKindergarten = async () => {
-    const data = {
-      latitude: latitude,
-      longitude: longitude,
-    };
-
     try {
-      const response = await instance.post("/api/info/kinder", data);
+      const response = await instance.get("/api/info/kinder", {
+        params: {
+          latitude: latitude,
+          longitude: longitude,
+        },
+      });
       console.log("유치원 정보 조회 성공", response.data.response);
       const kindergartenData: Kindergarten[] = response.data.response.map((item: Kindergarten) => ({
         kinderName: item.kinderName,
@@ -206,13 +206,13 @@ export default function Education() {
   console.log("유치원 정보", kindergartens);
 
   const getDaycare = async () => {
-    const data = {
-      latitude: latitude,
-      longitude: longitude,
-    };
-
     try {
-      const response = await instance.post("/api/info/daycare", data);
+      const response = await instance.get("/api/info/daycare", {
+        params: {
+          latitude: latitude,
+          longitude: longitude,
+        },
+      });
       console.log("어린이집 정보 조회 성공", response.data.response);
       const daycareData: Daycare[] = response.data.response.map((item: Daycare) => ({
         dayCareCenterName: item.dayCareCenterName,

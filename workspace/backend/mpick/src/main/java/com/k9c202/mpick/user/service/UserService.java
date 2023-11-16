@@ -11,6 +11,7 @@ import com.k9c202.mpick.user.dto.UserDto;
 import com.k9c202.mpick.user.entity.User;
 import com.k9c202.mpick.user.entity.UserStatus;
 import com.k9c202.mpick.user.jwt.JwtFilter;
+import com.k9c202.mpick.user.jwt.SecurityUtils;
 import com.k9c202.mpick.user.jwt.TokenProvider;
 import com.k9c202.mpick.user.repository.UserQueryRepository;
 import com.k9c202.mpick.user.repository.UserRepository;
@@ -70,15 +71,16 @@ public class UserService {
     // 생성자 형식 -> User a = new User(nickname,password,status,....)
     // 아래는 builder 형식
 
-    // 정보 조회
+    // 유저 정보 조회
     public UserInfoResponse getUserInfo() {
         // 유저 아이디 정보는 SecurityContextHolder.getContext().getAuthentication().getName()으로 얻을 수 있음
         // JwtFilter에서 setAuthentication
         // 방법2(회원정보수정)/ @AuthenticationPrincipal UserDetails userDetails
         //      userDetails.getUsername()
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loginId = authentication.getName();
-        System.out.println("loginId = " + loginId);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String loginId = authentication.getName();
+//        System.out.println("loginId = " + loginId);
+        String loginId = SecurityUtils.getCurrentLoginId();
         // 로그인 아이디에 해당하는 유저 정보 불러오기
         // findOneByLoginId는 Optional 클래스를 반환하는데, User 클래스를 얻어야 함
         // UserRepository에서 지정해준 클래스(User)로 반환하도록 Optional 함수 중 .orElseThrow 사용
@@ -186,7 +188,6 @@ public class UserService {
 //            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
-
     }
 
     // 현재 비밀번호 변경

@@ -10,6 +10,7 @@ import Pagination from "@mui/material/Pagination";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { useParentingStore } from "@/store/ParentingStore";
 import DetailModal from "./MealDetail";
+import { FaAngleRight } from "react-icons/fa";
 
 export interface BaybMealInfo {
   id: number;
@@ -49,12 +50,13 @@ export default function Meal() {
   console.log("페이지", currentPage);
 
   const getKindFood = async (foodCategory: string, page: number) => {
-    const data = {
-      subMealCategory: foodCategory,
-      page: page,
-    };
     try {
-      const response = await instance.post("/api/info/babymeal", data);
+      const response = await instance.get("/api/info/babymeal", {
+        params: {
+          subMealCategory: foodCategory,
+          page: page,
+        },
+      });
       console.log("음식 종류 조회 성공", response.data.response);
       const mealInfo: BaybMealInfo[] = response.data.response.babyMealInfoDtoList.map(
         (meal: BaybMealInfo) => ({
@@ -72,8 +74,9 @@ export default function Meal() {
   console.log("전체 정보", mealInfo);
 
   useEffect(() => {
-    getKindFood(foodCategory, 1);
-  }, [foodCategory]);
+    setFoodCategory("미음");
+    getKindFood("미음", 1);
+  }, []);
 
   console.log("선택한 종류", foodCategory);
 
@@ -84,14 +87,19 @@ export default function Meal() {
 
   return (
     <div>
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <Box sx={{ width: "100%", bgcolor: "background.paper", marginBottom: "15px" }}>
         <Tabs value={foodCategory} onChange={handleChange} centered>
           {selectedCategory.map((category, index) => (
-            <Tab label={category} value={category} key={index}></Tab>
+            <Tab
+              label={category}
+              value={category}
+              key={index}
+              className="font-bold text-base"
+            ></Tab>
           ))}
         </Tabs>
       </Box>
-      <Table isStriped aria-label="Example static collection table">
+      {/* <Table isStriped aria-label="Example static collection table">
         <TableHeader>
           <TableColumn className="text-center font-bold text-base">이름</TableColumn>
           <TableColumn className="text-center font-bold text-base">보기</TableColumn>
@@ -114,7 +122,29 @@ export default function Meal() {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> */}
+
+      {mealInfo.map((kind, index) => (
+        <div key={index}>
+          <div
+            className="flex justify-between items-center"
+            style={{
+              border: "1px solid black",
+              padding: "10px",
+              margin: "8px",
+              borderRadius: "15px",
+            }}
+            onClick={() => {
+              selectedFoodId(kind.id);
+              handleModalOpen(kind);
+            }}
+          >
+            <p className="font-bold text-lg mt-1 mb-1 ml-5">{kind.mealName}</p>
+
+            <FaAngleRight className="text-2xl mr-5" />
+          </div>
+        </div>
+      ))}
 
       {selectedFood && (
         <DetailModal
@@ -124,7 +154,7 @@ export default function Meal() {
         ></DetailModal>
       )}
 
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-4">
         <Pagination
           count={maxPage}
           page={currentPage}
@@ -132,6 +162,7 @@ export default function Meal() {
           shape="rounded"
         />
       </div>
+      <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );
 }

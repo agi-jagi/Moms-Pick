@@ -105,9 +105,9 @@ public class MailService {
     private void checkDuplicatedEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
-            log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
+            log.debug("checkDuplicatedEmail exception occur email: {}", email);
 //            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-            throw new RuntimeException("Member exists");
+            throw new RuntimeException("중복된 이메일입니다.");
         }
     }
 
