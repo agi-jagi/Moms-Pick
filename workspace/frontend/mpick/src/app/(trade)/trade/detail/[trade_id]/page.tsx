@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Spinner } from '@nextui-org/react';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { useNickNameSet } from '@/store/ChattingStore';
 
 import { Card, CardHeader, CardBody, Image, Avatar, Button } from "@nextui-org/react";
 
@@ -19,6 +20,8 @@ export default function Detail(props: any) {
   const tradeId = props.params.trade_id
 
   const [ detail, setDetail ] = useState<any>(null);
+
+  const { userNickName } = useNickNameSet();
 
   const [ isLiked, setIsLiked ] = useState<string>("0");
   const toggleLike = () => {
@@ -154,7 +157,11 @@ export default function Detail(props: any) {
           </span>
           </div>
       </CardHeader>
-      <Button className="bg-[#5E9FF2] text-white text-md flex items-center mt-4" size="lg" 
+
+      { userNickName === detail.nickname ? (
+        <div></div>
+      ) : (
+        <Button className="bg-[#5E9FF2] text-white text-md flex items-center mt-4" size="lg" 
       fullWidth={true}
       >
         <Link href={"/chat/start/" + tradeId}>
@@ -164,6 +171,7 @@ export default function Detail(props: any) {
           </div>
           </Link>
         </Button>
+      ) }
     </Card>
 
     
@@ -188,7 +196,6 @@ export default function Detail(props: any) {
           </svg>
         </Button>
         
-
     <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );

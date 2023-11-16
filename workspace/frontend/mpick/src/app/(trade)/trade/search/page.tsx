@@ -593,7 +593,7 @@ export default function Search(props: any) {
                       <Button
                         className="bg-[#5E9FF2] text-white"
                         type="submit"
-                        onClick={handleOpen반경}
+                        onClick={()=>{handleOpen반경(); searchTrade();}}
                       >
                         설정하기
                       </Button>
