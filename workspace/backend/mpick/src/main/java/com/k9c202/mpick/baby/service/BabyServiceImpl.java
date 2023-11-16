@@ -40,7 +40,7 @@ public class BabyServiceImpl implements BabyService{
 
             return "success";
         }else {
-            throw new ResponseStatusException(HttpStatus.MULTI_STATUS,"아이 5명 초과");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"아이 5명 초과");
         }
     }
 
