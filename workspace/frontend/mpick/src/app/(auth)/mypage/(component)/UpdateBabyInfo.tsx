@@ -67,8 +67,6 @@ const UpdateBabyInfo: React.FC<UpdateBabyModalProps> = ({
     onClose();
   };
 
-  console.log("updateBaby", updateBaby);
-
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>

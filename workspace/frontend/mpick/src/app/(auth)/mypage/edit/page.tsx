@@ -75,11 +75,8 @@ export default function EditMyInfo() {
     if (userNickName != "") {
       await instance
         .put("/api/users/change-nickname", { nickname: userNickName })
-        .then((res) => {
-          console.log(res);
-        })
+        .then((res) => {})
         .catch((err) => {
-          console.log(err);
           Toast.fire({
             icon: "error",
             title: "닉네임 변경 실패",
@@ -94,11 +91,8 @@ export default function EditMyInfo() {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((res) => {
-          console.log(res);
-        })
+        .then((res) => {})
         .catch((err) => {
-          console.log(err);
           Toast.fire({
             icon: "error",
             title: "프로필 이미지 변경 실패",
@@ -112,7 +106,6 @@ export default function EditMyInfo() {
       await instance
         .post("/api/auth/emails/code-request", { email: userEmail })
         .then((res) => {
-          console.log(res);
           Swal.fire({
             title: "이메일 인증코드를 입력하세요",
             input: "text",
@@ -128,7 +121,6 @@ export default function EditMyInfo() {
                 instance
                   .put("/api/users/change-email", { email: userEmail, authCode: code })
                   .then((res) => {
-                    console.log(res);
                     Toast.fire({
                       icon: "success",
                       title: "변경이 완료되었습니다",
@@ -136,7 +128,6 @@ export default function EditMyInfo() {
                     router.push("/mypage");
                   })
                   .catch((err) => {
-                    console.log(err);
                     Toast.fire({
                       icon: "error",
                       title: "이메일 변경 실패",
@@ -153,7 +144,6 @@ export default function EditMyInfo() {
           });
         })
         .catch((err) => {
-          console.log(err);
           Toast.fire({
             icon: "error",
             title: "이메일 전송 실패",
@@ -166,7 +156,7 @@ export default function EditMyInfo() {
         icon: "success",
         title: "변경이 완료되었습니다",
       });
-      // router.push("/mypage");
+      router.push("/mypage");
     }
   };
 
@@ -184,21 +174,14 @@ export default function EditMyInfo() {
     instance
       .get("/api/users/addresses")
       .then((res) => {
-        for (let i = 0; res.data.response.length; i++) {
+        for (let i = 0; i < res.data.response.length; i++) {
           if (res.data.response[i].isSet) {
-            const address = res.data.response[i].addressString;
-            const addressSplit = address.split(" ");
-            for (let j = 0; addressSplit.length; j++) {
-              if (addressSplit[j].charAt(addressSplit[j].length - 1) === "동") {
-                setPrevAddress(addressSplit[j]);
-              }
-            }
+            const address = res.data.response[i].addressName;
+            setPrevAddress(address);
           }
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   return (
@@ -310,7 +293,11 @@ export default function EditMyInfo() {
               >
                 <div>
                   <p className="font-bold text-lg mr-1">위치 설정</p>
-                  <p className="text-base mr-1">기본 위치 : {userAddress}</p>
+                  {userAddress === "" ? (
+                    <p className="text-base mr-1">기본 위치 : {prevAddress}</p>
+                  ) : (
+                    <p className="text-base mr-1">기본 위치 : {userAddress}</p>
+                  )}
                 </div>
                 <div style={{ display: "flex", alignItems: "bottom" }}>
                   <Button

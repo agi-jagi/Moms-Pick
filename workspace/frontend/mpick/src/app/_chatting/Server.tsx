@@ -21,18 +21,16 @@ const Server = () => {
         });
         increment(unReadCountDummy);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
 
     const jwt = localStorage.getItem("accessToken");
     // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
     socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
     socket.onopen = (e: any) => {
-      console.log("connected", e);
+      console.log("connected");
     };
     socket.onmessage = (e: any) => {
-      console.log("message", e.data.message);
+      console.log("message");
       increment(1);
     };
   };
@@ -42,10 +40,6 @@ const Server = () => {
       connect();
     }
   }, [isConnect]);
-
-  useEffect(() => {
-    console.log("unread", count);
-  }, [count]);
 
   return <></>;
 };

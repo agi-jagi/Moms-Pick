@@ -15,7 +15,6 @@ import { FaRegEye } from "react-icons/fa";
 import Link from "next/link";
 
 export default function Detail(props: any) {
-  console.log(props);
   const tradeId = props.params.trade_id;
 
   const [detail, setDetail] = useState<any>(null);
@@ -38,15 +37,12 @@ export default function Detail(props: any) {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(res.data);
         setDetail(res.data.response);
         setIsLiked(res.data.response.isLiked);
         if (res.data.response.isLiked === "1") {
           setLikeCount(true);
         }
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
 
     getDetail();
@@ -63,11 +59,7 @@ export default function Detail(props: any) {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-
-      console.log(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   if (detail === null) {

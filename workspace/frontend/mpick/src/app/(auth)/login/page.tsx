@@ -26,21 +26,7 @@ export default function Login() {
           router.push("/trade");
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  // 인터셉터 적용 예시
-  const test = () => {
-    instance
-      .get("/api/test")
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   return (

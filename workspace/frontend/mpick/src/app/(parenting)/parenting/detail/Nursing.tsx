@@ -190,7 +190,6 @@ export default function Nursing() {
           longitude: longitude,
         },
       });
-      console.log("수유실 조회 성공", response.data.response);
       const lactationData: Lactation[] = response.data.response.map((item: Lactation) => ({
         facilityName: item.facilityName,
         buildingName: item.buildingName,
@@ -198,7 +197,7 @@ export default function Nursing() {
       }));
       setLactations(lactationData);
     } catch (error) {
-      console.log("수유실 조회 실패", error);
+      console.log("수유실 조회 실패");
     }
   };
 
@@ -209,12 +208,9 @@ export default function Nursing() {
   }, [latitude, longitude]);
 
   useEffect(() => {
-    console.log(isMapSetting);
-    console.log(lactations);
     if (isMapSetting && lactations.length > 0) {
       for (let i = 0; i < lactations.length; i++) {
         settingMarkers(lactations[i]);
-        console.log(1);
       }
     }
   }, [isMapSetting, lactations]);

@@ -15,12 +15,9 @@ export default function SaleList() {
     instance
       .get(`/api/users/purchase-list`)
       .then((res) => {
-        console.log("???", res.data.response);
         setBuyList(res.data.response);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   return (

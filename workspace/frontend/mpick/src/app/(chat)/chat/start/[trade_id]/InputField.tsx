@@ -15,7 +15,7 @@ const InputField = (props: any) => {
     socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
 
     socket.onopen = (e: any) => {
-      console.log("connected", e);
+      console.log("connected");
     };
 
     if (!socket.onmessage) {

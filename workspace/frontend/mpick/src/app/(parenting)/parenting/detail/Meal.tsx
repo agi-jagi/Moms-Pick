@@ -47,8 +47,6 @@ export default function Meal() {
     getKindFood(foodCategory, page);
   };
 
-  console.log("페이지", currentPage);
-
   const getKindFood = async (foodCategory: string, page: number) => {
     try {
       const response = await instance.get("/api/info/babymeal", {
@@ -57,7 +55,6 @@ export default function Meal() {
           page: page,
         },
       });
-      console.log("음식 종류 조회 성공", response.data.response);
       const mealInfo: BaybMealInfo[] = response.data.response.babyMealInfoDtoList.map(
         (meal: BaybMealInfo) => ({
           id: meal.id,
@@ -67,23 +64,18 @@ export default function Meal() {
       setMealInfo(mealInfo);
       setMaxPage(response.data.response.maxPage);
     } catch (error) {
-      console.log("음식 종류 조회 실패", error);
+      console.log("음식 종류 조회 실패");
     }
   };
-
-  console.log("전체 정보", mealInfo);
 
   useEffect(() => {
     setFoodCategory("미음");
     getKindFood("미음", 1);
   }, []);
 
-  console.log("선택한 종류", foodCategory);
-
   const selectedFoodId = (id: number) => {
     setFoodId(id);
   };
-  console.log("선택한 아이디", foodId);
 
   return (
     <div>

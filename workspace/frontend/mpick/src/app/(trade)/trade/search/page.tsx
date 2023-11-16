@@ -31,9 +31,6 @@ import axios from "axios";
 import Link from "next/link";
 
 export default function Search(props: any) {
-  console.log(props);
-  console.log(props.searchParams.filter대분류);
-
   const { searchWord, setSearchWord, distance, setDistance } = useTradeStore();
 
   const [반경open, set반경Open] = useState(false);
@@ -140,11 +137,8 @@ export default function Search(props: any) {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res.data);
       setSelectedMonthList([]);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   // 판매글 검색 요청 함수
@@ -182,11 +176,8 @@ export default function Search(props: any) {
         },
       });
 
-      console.log(res.data);
       setSearchList(res.data.hits.hits);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   // getCategory 함수를 useEffect 내에서 호출
@@ -199,9 +190,7 @@ export default function Search(props: any) {
           },
         });
         setCategoryList(res.data.response.category);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
 
     getCategory(); // useEffect 내에서 getCategory 호출
@@ -216,8 +205,6 @@ export default function Search(props: any) {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-        console.log(res.data.response);
-        // console.log(res.data.response[0].latitude);
         for (let i = 0; res.data.response.length; i++) {
           if (res.data.response[i].isSet) {
             setLatitude(res.data.response[i].latitude);
@@ -225,9 +212,7 @@ export default function Search(props: any) {
             setNowAddress(res.data.response[i].addressName);
           }
         }
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
     setFilter대분류(props.searchParams.filter대분류);
     setSearchWord("");
@@ -480,7 +465,7 @@ export default function Search(props: any) {
               onPress={() => setTradeId(item._source.id)}
             >
               <CardBody className="overflow-visible p-0">
-                <Link href={"/trade/detail/" + tradeId} onClick={() => console.log(tradeId)}>
+                <Link href={"/trade/detail/" + tradeId}>
                   <Image
                     shadow="sm"
                     radius="lg"

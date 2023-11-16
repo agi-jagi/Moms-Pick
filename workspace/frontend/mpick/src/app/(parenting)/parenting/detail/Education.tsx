@@ -211,7 +211,6 @@ export default function Education() {
           longitude: longitude,
         },
       });
-      console.log("유치원 정보 조회 성공", response.data.response);
       const kindergartenData: Kindergarten[] = response.data.response.map((item: Kindergarten) => ({
         kinderName: item.kinderName,
         establish: item.establish,
@@ -220,11 +219,9 @@ export default function Education() {
       }));
       setKindergartens(kindergartenData);
     } catch (error) {
-      console.log("유치원 정보 조회 실패", error);
+      console.log("유치원 정보 조회 실패");
     }
   };
-
-  console.log("유치원 정보", kindergartens);
 
   const getDaycare = async () => {
     try {
@@ -234,7 +231,6 @@ export default function Education() {
           longitude: longitude,
         },
       });
-      console.log("어린이집 정보 조회 성공", response.data.response);
       const daycareData: Daycare[] = response.data.response.map((item: Daycare) => ({
         dayCareCenterName: item.dayCareCenterName,
         establish: item.establish,
@@ -243,7 +239,7 @@ export default function Education() {
       }));
       setDaycares(daycareData);
     } catch (error) {
-      console.log("어린이집 정보 조회 실패", error);
+      console.log("어린이집 정보 조회 실패");
     }
   };
 
@@ -255,23 +251,17 @@ export default function Education() {
   }, [latitude, longitude]);
 
   useEffect(() => {
-    console.log(isMapSetting);
-    console.log(kindergartens);
     if (isMapSetting && kindergartens.length > 0) {
       for (let i = 0; i < kindergartens.length; i++) {
         settingMarkers(kindergartens[i]);
-        console.log(1);
       }
     }
   }, [isMapSetting, kindergartens]);
 
   useEffect(() => {
-    console.log(isMapSetting);
-    console.log(daycares);
     if (isMapSetting && daycares.length > 0) {
       for (let i = 0; i < daycares.length; i++) {
         settingMarkers(daycares[i]);
-        console.log(1);
       }
     }
   }, [isMapSetting, daycares]);

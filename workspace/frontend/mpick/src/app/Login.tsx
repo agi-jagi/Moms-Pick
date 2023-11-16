@@ -40,7 +40,6 @@ export default function Login() {
         password: userPw,
       })
       .then((res) => {
-        console.log(res);
         if (typeof window !== "undefined") {
           localStorage.setItem("accessToken", res.data.response);
           getNickName();
@@ -49,7 +48,6 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        console.log(err.response.status);
         if (err.response.status === 401) {
           Toast.fire({
             icon: "error",
@@ -71,18 +69,6 @@ export default function Login() {
         setUserNickName(res.data.response.nickname);
       })
       .catch((err) => {});
-  };
-
-  // 인터셉터 적용 예시
-  const test = () => {
-    instance
-      .get("/api/test")
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   useEffect(() => {

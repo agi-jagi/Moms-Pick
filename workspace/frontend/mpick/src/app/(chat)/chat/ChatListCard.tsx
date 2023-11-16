@@ -41,12 +41,9 @@ export default function Chat() {
     instance
       .get("/api/chattings")
       .then((res) => {
-        console.log("chat", res.data.response);
         setChatList(res.data.response);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   return (

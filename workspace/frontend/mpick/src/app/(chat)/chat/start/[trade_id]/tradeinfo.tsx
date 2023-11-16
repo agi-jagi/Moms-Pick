@@ -15,34 +15,25 @@ export default function TradeInfo(props: any) {
     instance
       .put(`/api/trades/item`, { chatRoomId: props.chatroom_id })
       .then((res) => {
-        console.log(res);
         if (typeof props.setOpenRating != "undefined") {
           props.setOpenRating(true);
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
-  useEffect(() => {
-    console.log("seller", props.sellerNickName);
-    console.log("me", props.userNickName);
-  }, [props.sellerNickName]);
+  useEffect(() => {}, [props.sellerNickName]);
 
   useEffect(() => {
     instance
       .get(`/api/trades/item/${props.trade_id}`)
       .then((res) => {
-        console.log(res.data.response);
         setTradeData(res.data.response);
         setTradeStatus(res.data.response.tradeStatus);
         props.setSellerNickName(res.data.response.nickname);
         setTradeImage(res.data.response.tradeImages[0]);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, [props.trade_id]);
 
   return (

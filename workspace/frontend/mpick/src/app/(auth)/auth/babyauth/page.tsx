@@ -34,7 +34,6 @@ export default function BabyAuth() {
   ]);
   const router = useRouter();
   const babyOrder = { "첫 째": 1, "둘 째": 2, "셋 째": 3, "넷 째": 4, "다섯 째": 5 };
-  console.log(babyList);
 
   const babyNameInput = (index: number, babyName: string) => {
     const newBaby = [...babyList];
@@ -106,15 +105,12 @@ export default function BabyAuth() {
         };
         try {
           const response = await axios.post("/api/profiles/child", data);
-          console.log(response.data, "아이 등록 성공");
           Toast.fire({
             icon: "success",
             title: "아이 정보가 등록되었습니다.",
           });
           router.push("/trade");
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       } else {
         Swal.fire({
           icon: "warning",
