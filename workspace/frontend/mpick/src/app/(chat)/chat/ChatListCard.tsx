@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import NextImage from "next/image";
-import { Image, Button } from "@nextui-org/react";
+import { Image, Button, Badge } from "@nextui-org/react";
 import Avatar from "@mui/material/Avatar";
 import profile from "../../../../public/profile.png";
 import instance from "@/app/_config/axios";
@@ -76,11 +76,31 @@ export default function Chat() {
                 <div style={{ display: "flex" }}>
                   <div style={{ marginRight: "15px" }}>
                     {info.profileImage ? (
-                      <Avatar
-                        src={info.profileImage}
-                        alt="profile"
-                        sx={{ margin: "auto", width: 50, height: 50 }}
-                      />
+                      info.unreadCount > 0 ? (
+                        <Badge color="danger" content={info.unreadCount} shape="circle">
+                          <Avatar
+                            src={info.profileImage}
+                            alt="profile"
+                            sx={{ margin: "auto", width: 50, height: 50 }}
+                          />
+                        </Badge>
+                      ) : (
+                        <Avatar
+                          src={info.profileImage}
+                          alt="profile"
+                          sx={{ margin: "auto", width: 50, height: 50 }}
+                        />
+                      )
+                    ) : info.unreadCount > 0 ? (
+                      <Badge color="danger" content={info.unreadCount} shape="circle">
+                        <NextImage
+                          src={profile}
+                          alt="profile"
+                          width={50}
+                          height={50}
+                          style={{ borderRadius: "100%" }}
+                        />
+                      </Badge>
                     ) : (
                       <NextImage
                         src={profile}
