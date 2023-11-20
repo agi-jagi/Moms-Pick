@@ -100,19 +100,20 @@
             </a> 
         </td>
         <td style="min-width: 150px;">
-            <a href="https://github.com/ChoiCharles">
-              <img src="https://avatars.githubusercontent.com/u/122588654?v=4" width="200">
-              <br />
-              <b>ChoiCharles</b>
-            </a> 
-        </td>
-        <td style="min-width: 150px;">
             <a href="https://github.com/cjjss11">
               <img src="https://avatars.githubusercontent.com/u/122518199?v=4" width="200">
               <br />
               <b>yangJin-H</b>
             </a> 
         </td>
+        <td style="min-width: 150px;">
+            <a href="https://github.com/ChoiCharles">
+              <img src="https://avatars.githubusercontent.com/u/122588654?v=4" width="200">
+              <br />
+              <b>ChoiCharles</b>
+            </a> 
+        </td>
+        
     </tr>
     <tr align="center">
         <td>
@@ -128,10 +129,10 @@
             방상제
         </td>
         <td>
-            최찬석
+            최지수
         </td>
         <td>
-            최지수
+            최찬석
         </td>
     </tr>
 </table>
