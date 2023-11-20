@@ -27,7 +27,7 @@ module.exports = withPWA({
   },
   reactStrictMode: true,
   env: {
-    KAKAOMAP_APPKEY: "a7d4463b676b95709da00fcec2cdfbc1",
+    KAKAOMAP_APPKEY: "c8f165df66717610ad6f6a2d45b89a42",
   },
   async rewrites() {
     return [
