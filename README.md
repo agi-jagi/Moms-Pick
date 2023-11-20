@@ -16,13 +16,6 @@
     - 맘맘
   
 
-- 배포 환경
-    - https://j9c105.p.ssafy.io/
-
-- API 연동 규격서
-    - https://j9c105.p.ssafy.io/api/swagger-ui/index.html
-
-
 ## 맘스픽
 <div align=center>
   <img src="readme_assets/logo.png" height="400" width="400" />
