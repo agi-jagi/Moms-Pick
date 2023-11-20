@@ -1,0 +1,88 @@
+version: '3'
+
+volumes:
+  esdata:
+    driver: local
+networks:
+  mpick_network:
+    external: true
+   
+services:
+    
+  kibana-server:
+    restart: on-failure
+    image: docker.elastic.co/kibana/kibana:7.16.2
+    environment:
+      ELASTICSEARCH_HOSTS: "http://es-server:9200"
+    ports:
+      - "5601:5601"
+    networks:
+      - mpick_network
+
+
+  spring:
+    build: ./backend/mpick
+    ports:
+      - "5000:5000"
+    restart: on-failure
+    networks:
+      - mpick_network
+    depends_on: 
+      mpick-mysql:
+        condition: service_healthy
+      
+         
+    environment:
+      SPRING_DATA_REDIS_HOST: mpick-redis # redis 컨테이너 이름
+      SPRING_DATASOURCE_URL: # 'jdbc:mysql://mpick-mysql:MYSQLPORT/DBNAME'
+      SPRING_DATASOURCE_USERNAME: # MYSQL USERNAME
+      SPRING_DATASOURCE_PASSWORD: # MYSQLPASSWORD
+      JWT_SECRET: # JWT_SECRET
+      EMAIL_HOST: # 인증용 이메일 Host
+      EMAIL_PORT: # 인증용 이메일 Port번호
+      EMAIL_PASSWORD: # 인증용 이메일 Password
+      EMAIL_ID: # 인증용 이메일
+      S3_accessKey: # 발급받은 S3 access key
+      S3_secretKey: # 발급받은 S3 secret key
+      redis_port: # Redis Port번호
+
+
+  front:
+    build: ./frontend/mpick
+    ports:
+      - "3000:3000"
+    restart: on-failure
+    networks:
+      - mpick_network
+
+  python:
+    build: ./recommend
+    ports:
+      - "8000:8000"
+    restart: on-failure
+    networks:
+      - mpick_network
+
+  mpick-mysql:
+    restart: on-failure
+    image: 'mysql:latest'
+    container_name: 'mpick-mysql'
+    environment:
+      MYSQL_DATABASE: #DBNAME mpick
+      MYSQL_ROOT_PASSWORD: # MYSQLPASSWORD
+      TZ: Asia/Seoul
+    networks:
+      - mpick_network
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      start_period: 30s
+  
+  mpick-redis:
+    restart: on-failure
+    image: redis:latest
+    container_name: mpick-redis
+    networks:
+      - mpick_network
