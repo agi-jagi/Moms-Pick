@@ -28,9 +28,9 @@ export default function ParentingInfo() {
     height: isMobile ? "auto" : "1024px",
     marginTop: "20px",
     transform: "scale(1.05)",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)", // 강화된 그림자 효과
-    borderRadius: "15px", // 라운드 코너
-    transition: "transform 0.3s ease-in-out,, boxShadow 0.3s ease-in-out", // 부드러운 전환 효과
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
+    borderRadius: "15px",
+    transition: "transform 0.3s ease-in-out,, boxShadow 0.3s ease-in-out",
   };
 
   return (
@@ -48,15 +48,6 @@ export default function ParentingInfo() {
           <Image src={education1} alt="교육기관" layout="responsive" style={imageSize}></Image>
         </Link>
       </div>
-      {/* <Link href="/parenting/detail" passHref onClick={() => setParenting("교육기관")}>
-        <Image
-          src={education22}
-          alt="교육"
-          layout="responsive"
-          width={isMobile ? 512 : 768}
-          height={isMobile ? 767 : 1024}
-        ></Image>
-      </Link> */}
       <div style={{ height: "77px", position: "sticky", bottom: "0" }}></div>
     </div>
   );

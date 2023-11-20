@@ -57,7 +57,6 @@ export default function Nursing() {
     window.kakao.maps.load(() => {
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(fullAddress, function (result: any, status: any) {
-        // 정상적으로 검색이 완료됐으면
         if (status === window.kakao.maps.services.Status.OK) {
           for (let i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
@@ -83,21 +82,6 @@ export default function Nursing() {
           };
           const geocoder = new window.kakao.maps.services.Geocoder();
           geocoder.coord2Address(result[0].x, result[0].y, callback);
-
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          // var marker = new window.kakao.maps.Marker({
-          //   map: map,
-          //   position: coords
-          // });
-
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          // var infowindow = new window.kakao.maps.InfoWindow({
-          //   content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-          // });
-          // infowindow.open(map, marker);
-
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          // map.setCenter(coords);
         }
       });
     });
@@ -109,7 +93,6 @@ export default function Nursing() {
     window.kakao.maps.load(() => {
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(fullAddress, function (result: any, status: any) {
-        // 정상적으로 검색이 완료됐으면
         if (status === window.kakao.maps.services.Status.OK) {
           const markerPosition = new window.kakao.maps.LatLng(result[0].y, result[0].x);
           const marker = new window.kakao.maps.Marker({
@@ -122,7 +105,6 @@ export default function Nursing() {
     });
   };
 
-  // script가 완전히 load 된 이후, 실행될 함수
   const onLoadKakaoMap = () => {
     window.kakao.maps.load(() => {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -134,7 +116,7 @@ export default function Nursing() {
           position.coords.longitude
         );
         const mapOption = {
-          center: coord, // 지도의 중심좌표
+          center: coord,
         };
         map = new window.kakao.maps.Map(mapContainer, mapOption);
         setMaps(map);
@@ -165,19 +147,10 @@ export default function Nursing() {
   useEffect(() => {
     if (count === 0) {
       count++;
-      // DOM을 이용하여 script 태그를 만들어주자.
       const mapScript = document.createElement("script");
-      // script.async = true 라면,
-      // 해당 스크립트가 다른 페이지와는 비동기적으로 동작함을 의미한다.
       mapScript.async = true;
-      // script.src에 map을 불러오는 api를 넣어주자.
-      // 여기에서 우리가 기존에 발급 받았던 apiKey를 넣어주면 된다.
       mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAOMAP_APPKEY}&libraries=services&autoload=false`;
-
-      //이제 우리가 만든 script를 document에 붙여주자.
       document.head.appendChild(mapScript);
-
-      // sciprt가 완전히 load 된 이후, 지도를 띄우는 코드를 실행시킨다.
       mapScript.addEventListener("load", onLoadKakaoMap);
     }
   }, []);

@@ -91,30 +91,6 @@ export default function Meal() {
           ))}
         </Tabs>
       </Box>
-      {/* <Table isStriped aria-label="Example static collection table">
-        <TableHeader>
-          <TableColumn className="text-center font-bold text-base">이름</TableColumn>
-          <TableColumn className="text-center font-bold text-base">보기</TableColumn>
-        </TableHeader>
-        <TableBody>
-          {mealInfo.map((kind, index) => (
-            <TableRow key={index}>
-              <TableCell className="text-center">{kind.mealName}</TableCell>
-              <TableCell className="text-center">
-                <Button
-                  onClick={() => {
-                    selectedFoodId(kind.id);
-                    handleModalOpen(kind);
-                  }}
-                  className="bg-[#5E9FF2] text-white"
-                >
-                  상세보기
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table> */}
 
       {mealInfo.map((kind, index) => (
         <div key={index}>
