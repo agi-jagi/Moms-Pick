@@ -22,26 +22,30 @@
   <h3>맘스픽 Logo</p>
 </div>
 
-## 플로우 소개
-|1-1. 부품 확인|1-2. 부품 선택|
+## 화면 내용
+|1-1. 로그인|1-2. 회원가입|
 |:---:|:---:|
-|![proc1-2](/readme_assets/proc1-2.jpg)|![proc1-3](/readme_assets/proc1-3.jpg)|
-|가지고 있거나, 미래에 구매할 컴퓨터 부품을 선택합니다.|부품 검색 및 선택|
+|![proc1-2](/readme_assets/C202 시연 시나리오_page-0001.jpg)|![proc1-3](/readme_assets/C202 시연 시나리오_page-0002.jpg)|
 
-|2. 용도 선택|3. 세부 용도 선택|
-|:---:|:---:|
-|![proc2](/readme_assets/proc2.png)|![proc3](/readme_assets/proc3.jpg)|
-|사용할 용도를 선택합니다.|게임 등 상세한 용도를 선택합니다.|
 
-|4. 예산 선택 및 보유 여부 확인|5. 우선순위 선택|
-|:---:|:---:|
-|![proc4](/readme_assets/proc4.jpg)|![proc5](/readme_assets/proc5.jpg)|
-|예산 선택 및 보유 여부 확인|최대 3가지의 우선순위를 정합니다.|
 
-|6-1. 추천 결과 확인|6-2. 추천 결과 상세|
+|2. 메인페이지 |3. 검색 & 필터링|
 |:---:|:---:|
-|![proc-end](/readme_assets/proc-end.jpg)|![modal](/readme_assets/modal.jpg)|
-|선택한 조건에 맞는 추천 결과를 확인합니다.|추천 결과를 조회 및 저장을 할 수 있습니다.|
+|![proc4](/readme_assets/C202 시연 시나리오_page-0005.jpg)|![proc5](/readme_assets/C202 시연 시나리오_page-0006.jpg)|
+
+
+|4. 상세페이지|5. 채팅|
+|:---:|:---:|
+|![proc-end](/readme_assets/C202 시연 시나리오_page-0007.jpg)|![modal](/readme_assets/C202 시연 시나리오_page-0008.jpg)|
+
+|6-1. 육아정보|6-2. 육아정보|
+|:---:|:---:|
+|![proc-end](/readme_assets/C202 시연 시나리오_page-0009.jpg)|![modal](/readme_assets/C202 시연 시나리오_page-0010.jpg)|
+
+|7-1. 마이페이지|7-2. 마이페이지|
+|:---:|:---:|
+|![proc-end](/readme_assets/C202 시연 시나리오_page-0011.jpg)|![modal](/readme_assets/C202 시연 시나리오_page-0012.jpg)|
+
 
 ## 팀원 소개
 
