@@ -68,7 +68,7 @@ services:
     image: 'mysql:latest'
     container_name: 'mpick-mysql'
     environment:
-      MYSQL_DATABASE: #DBNAME mpick
+      MYSQL_DATABASE: #DBNAME 
       MYSQL_ROOT_PASSWORD: # MYSQLPASSWORD
       TZ: Asia/Seoul
     networks:
