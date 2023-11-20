@@ -103,7 +103,7 @@
             <a href="https://github.com/cjjss11">
               <img src="https://avatars.githubusercontent.com/u/122518199?v=4" width="200">
               <br />
-              <b>yangJin-H</b>
+              <b>cjjss11</b>
             </a> 
         </td>
         <td style="min-width: 150px;">
@@ -113,7 +113,6 @@
               <b>ChoiCharles</b>
             </a> 
         </td>
-        
     </tr>
     <tr align="center">
         <td>
