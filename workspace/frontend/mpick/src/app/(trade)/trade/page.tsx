@@ -39,7 +39,7 @@ export default function Trade() {
     },
   };
 
-  const fastAPIURL = "https://k9c202.p.ssafy.io";
+  const fastAPIURL = process.env.MPICK_WEBSOCKET_URL;
 
   async function getRecommend() {
     try {

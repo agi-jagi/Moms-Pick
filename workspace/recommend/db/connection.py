@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from decouple import config
+from starlette.config import Config
 
 # db_info = {
 #     "user": config('SQL_USER'),
@@ -10,12 +11,19 @@ from decouple import config
 #     "database": config('DB_NAME')
 # }
 
+config = Config(".env")
+SQL_USER = config('SQL_USER')
+SQL_PASSWORD = config('SQL_PASSWORD')
+DB_HOST = config('DB_HOST')
+DB_PORT = config('DB_PORT')
+DB_NAME = config('DB_NAME')
+
 db_info = {
-    "user": "root",
-    "password": "ssafy_mpick_c202",
-    "host": "mpick-mysql",
-    "port": 3306,
-    "database": "mpick"
+    "user": SQL_USER,
+    "password": SQL_PASSWORD,
+    "host": DB_HOST,
+    "port": DB_PORT,
+    "database": DB_NAME
 }
 
 conn_string = f'mysql+pymysql://{db_info["user"]}:{db_info["password"]}@{db_info["host"]}:{db_info["port"]}/{db_info["database"]}'

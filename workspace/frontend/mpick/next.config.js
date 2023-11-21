@@ -33,12 +33,12 @@ module.exports = withPWA({
     return [
       {
         source: "/api/:path*",
-        destination: "https://k9c202.p.ssafy.io/api/:path*",
+        destination: process.env.MPICK_URL + "/api/:path*",
         // destination: "http://localhost:5000/api/:path*",
       },
       {
         source: "/mpick/_search",
-        destination: "http://k9c202.p.ssafy.io:9200/mpick/_search",
+        destination: process.env.MPICK_URL + ":9200/mpick/_search",
       },
       // {
       //   source: "/ws",

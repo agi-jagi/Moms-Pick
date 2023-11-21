@@ -25,7 +25,7 @@ const Server = () => {
 
     const jwt = localStorage.getItem("accessToken");
     // socket = new WebSocket("ws://localhost:5000/ws?jwt=" + jwt);
-    socket = new WebSocket("wss://k9c202.p.ssafy.io/ws?jwt=" + jwt);
+    socket = new WebSocket(process.env.MPICK_WEBSOCKET_URL  + "/ws?jwt=" + jwt);
     socket.onopen = (e: any) => {
       console.log("connected");
     };
