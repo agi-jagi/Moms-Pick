@@ -25,26 +25,26 @@
 ## 화면 내용
 |1-1. 로그인|1-2. 회원가입|
 |:---:|:---:|
-|![proc1-2](/readme_assets/C202 시연 시나리오_page-0001.jpg)|![proc1-3](/readme_assets/C202 시연 시나리오_page-0002.jpg)|
+|![proc1-2](/readme_assets/C202시연시나리오_page-0001.jpg)|![proc1-3](/readme_assets/C202시연시나리오_page-0002.jpg)|
 
 
 
 |2. 메인페이지 |3. 검색 & 필터링|
 |:---:|:---:|
-|![proc4](/readme_assets/C202 시연 시나리오_page-0005.jpg)|![proc5](/readme_assets/C202 시연 시나리오_page-0006.jpg)|
+|![proc4](/readme_assets/C202시연시나리오_page-0005.jpg)|![proc5](/readme_assets/C202시연시나리오_page-0006.jpg)|
 
 
 |4. 상세페이지|5. 채팅|
 |:---:|:---:|
-|![proc-end](/readme_assets/C202 시연 시나리오_page-0007.jpg)|![modal](/readme_assets/C202 시연 시나리오_page-0008.jpg)|
+|![proc-end](/readme_assets/C202시연시나리오_page-0007.jpg)|![modal](/readme_assets/C202시연시나리오_page-0008.jpg)|
 
 |6-1. 육아정보|6-2. 육아정보|
 |:---:|:---:|
-|![proc-end](/readme_assets/C202 시연 시나리오_page-0009.jpg)|![modal](/readme_assets/C202 시연 시나리오_page-0010.jpg)|
+|![proc-end](/readme_assets/C202시연시나리오_page-0009.jpg)|![modal](/readme_assets/C202시연시나리오_page-0010.jpg)|
 
 |7-1. 마이페이지|7-2. 마이페이지|
 |:---:|:---:|
-|![proc-end](/readme_assets/C202 시연 시나리오_page-0011.jpg)|![modal](/readme_assets/C202 시연 시나리오_page-0012.jpg)|
+|![proc-end](/readme_assets/C202시연시나리오_page-0011.jpg)|![modal](/readme_assets/C202시연시나리오_page-0012.jpg)|
 
 
 ## 팀원 소개
