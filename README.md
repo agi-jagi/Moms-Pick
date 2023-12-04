@@ -151,8 +151,8 @@
 
 - 데이터베이스 스키마 설계
 - 배포를 위한 인프라 구축
-- 회원 API 개발
-- 로그인을 위한 JWT 구현
+- 회원 도메인 기능 구현
+- WebSocket을 활용한 실시간 채팅 기능 구현
 
 🙋🏻‍♂️ 정호윤  
 
@@ -190,8 +190,8 @@
 
 ## 사용 기술  
 
-- java
-- spring boot
+- Java
+- Spring Boot
 - FastAPI
 - JPA
 - QueryDsl
